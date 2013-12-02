@@ -34,9 +34,9 @@ class login_command extends abstract_command_class{
     protected function _run() {
         global $conf;
         $ret=new ArrayJSonGenerator();
-        $response=false;
+        $response=array($this->params['do']==='login', false);
         if($this->params['do']==='login'){
-            $response = $this->isUserAuthenticated();
+            $response["loginResult"] = $this->isUserAuthenticated();
         }else if($this->isUserAuthenticated()){
             $this->_logoff();
         }
@@ -45,45 +45,41 @@ class login_command extends abstract_command_class{
         $ret->add(new BasicJsonGenerator(BasicJsonGenerator::SECTOK_DATA, 
                 getSecurityToken()));
         
-        if($response){
+        if($response["loginResult"]){
             $ret->add(new BasicJsonGenerator(BasicJsonGenerator::DATA_TYPE, 
             ModelInterface::getLoginPageResponse()));
-//            $ret->add(new BasicJsonGenerator(BasicJsonGenerator::COMMAND_TYPE, 
-//                array("type" => BasicJsonGenerator::CHANGE_DOM_STYLE,
-//                      "id" => "loginButton", 
-//                      "propertyName" => "display", 
-//                      "propertyValue" => "none")));  
-//            $ret->add(new BasicJsonGenerator(BasicJsonGenerator::COMMAND_TYPE, 
-//                array("type" => BasicJsonGenerator::CHANGE_DOM_STYLE,
-//                      "id" => "exitButton", 
-//                      "propertyName" => "display", 
-//                      "propertyValue" => "")));  
             $ret->add(new BasicJsonGenerator(BasicJsonGenerator::COMMAND_TYPE, 
                 array("type" => BasicJsonGenerator::CHANGE_WIDGET_PROPERTY,
                       "id" => "exitButton", 
                       "propertyName" => "visible", 
                       "propertyValue" => true)));              
+            $ret->add(new BasicJsonGenerator(BasicJsonGenerator::COMMAND_TYPE, 
+                array("type" => BasicJsonGenerator::CHANGE_WIDGET_PROPERTY,
+                      "id" => "loginButton", 
+                      "propertyName" => "visible", 
+                      "propertyValue" => false)));              
         }else{
             $ret->add(new BasicJsonGenerator(BasicJsonGenerator::DATA_TYPE, 
             ModelInterface::getLogoutPageResponse())); //TO DO internacionalització
-//            $ret->add(new BasicJsonGenerator(BasicJsonGenerator::COMMAND_TYPE, 
-//                array("type" => BasicJsonGenerator::CHANGE_DOM_STYLE,
-//                      "id" => "loginButton", 
-//                      "propertyName" => "display", 
-//                      "propertyValue" => "")));  
-//            $ret->add(new BasicJsonGenerator(BasicJsonGenerator::COMMAND_TYPE, 
-//                array("type" => BasicJsonGenerator::CHANGE_DOM_STYLE,
-//                      "id" => "exitButton", 
-//                      "propertyName" => "display", 
-//                      "propertyValue" => "none")));  
             $ret->add(new BasicJsonGenerator(BasicJsonGenerator::COMMAND_TYPE, 
                 array("type" => BasicJsonGenerator::CHANGE_WIDGET_PROPERTY,
                       "id" => "exitButton", 
                       "propertyName" => "visible", 
                       "propertyValue" => false)));              
+            $ret->add(new BasicJsonGenerator(BasicJsonGenerator::COMMAND_TYPE, 
+                array("type" => BasicJsonGenerator::CHANGE_WIDGET_PROPERTY,
+                      "id" => "loginButton", 
+                      "propertyName" => "visible", 
+                      "propertyValue" => true)));              
+            $ret->add(new BasicJsonGenerator(BasicJsonGenerator::COMMAND_TYPE, 
+                    array("type" => BasicJsonGenerator::RELOAD_WIDGET_CONTENT
+                      ,"id" => "tab_index_nTree"
+                    )));  
+            $ret->add(new BasicJsonGenerator(BasicJsonGenerator::COMMAND_TYPE, 
+                    array("type" => BasicJsonGenerator::REMOVE_ALL_WIDGET_CHILDREN
+                      ,"id" => "bodyContent" 
+                    )));  
         }
-
-        
         return $ret->getJsonEncoded();
     }
     
