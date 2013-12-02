@@ -41,7 +41,7 @@ class login_command extends abstract_command_class{
             $this->_logoff();
         }
         $ret->add(new BasicJsonGenerator(BasicJsonGenerator::LOGIN_INFO, 
-                $response));
+                $response));/*TO DO: afegir si és login(true) o logout(false)*/
         $ret->add(new BasicJsonGenerator(BasicJsonGenerator::SECTOK_DATA, 
                 getSecurityToken()));
         

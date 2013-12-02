@@ -20,8 +20,12 @@ class BasicJsonGenerator implements JsonGenerator{
     const ERROR_TYPE=4;
     const LOGIN_INFO=5;
     const SECTOK_DATA=6;
-    const CHANGE_DOM_STYLE="change_dom_style";
-    const CHANGE_WIDGET_PROPERTY="change_widget_property";
+    const CHANGE_DOM_STYLE="change_dom_style"; //domId afectat + propietat de l'estil a modificar + valor 
+    const CHANGE_WIDGET_PROPERTY="change_widget_property"; //widgetId afectat + propietat a modificar + valor 
+    const RELOAD_WIDGET_CONTENT="reaload_widget_content"; //widgetId afectat
+    const ADD_WIDGET_CHILD="add_widget_child"; ////widgetId afectat + widgetId del fill a afegir + tipus de widget a crear + JSON amb els paràmetres per defecte
+    const REMOVE_WIDGET_CHILD="remove_widget_child"; //widgetId afectat + widgetId del fill a eliminar
+    const REMOVE_ALL_WIDGET_CHILDREN="remove_all_widget_children"; //widgetId afectat
     private $value;
     private $type;
     private $encoder;
