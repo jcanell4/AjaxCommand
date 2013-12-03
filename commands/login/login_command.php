@@ -73,7 +73,7 @@ class login_command extends abstract_command_class{
                       "propertyValue" => true)));              
             $ret->add(new BasicJsonGenerator(BasicJsonGenerator::COMMAND_TYPE, 
                     array("type" => BasicJsonGenerator::RELOAD_WIDGET_CONTENT
-                      ,"id" => "tab_index_nTree"
+                      ,"id" => "tb_index"
                     )));  
             $ret->add(new BasicJsonGenerator(BasicJsonGenerator::COMMAND_TYPE, 
                     array("type" => BasicJsonGenerator::REMOVE_ALL_WIDGET_CHILDREN
