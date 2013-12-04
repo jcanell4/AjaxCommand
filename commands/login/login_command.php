@@ -34,7 +34,8 @@ class login_command extends abstract_command_class{
     protected function _run() {
         global $conf;
         $ret=new ArrayJSonGenerator();
-        $response=array($this->params['do']==='login', false);
+        $response=array("loginRequest" => $this->params['do']==='login'
+                , "loginResult" => false);
         if($this->params['do']==='login'){
             $response["loginResult"] = $this->isUserAuthenticated();
         }else if($this->isUserAuthenticated()){
