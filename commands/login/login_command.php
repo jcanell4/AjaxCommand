@@ -66,8 +66,6 @@ class login_command extends abstract_command_class{
 							"id" => "tb_index")));
         }
 		else{
-            $ret->add(new BasicJsonGenerator(BasicJsonGenerator::DATA_TYPE, 
-					ModelInterface::getLogoutPageResponse())); //TO DO internacionalització
             $ret->add(new BasicJsonGenerator(BasicJsonGenerator::COMMAND_TYPE, 
 					  array("type" => BasicJsonGenerator::CHANGE_WIDGET_PROPERTY,
 							"id" => "exitButton", 
@@ -84,6 +82,8 @@ class login_command extends abstract_command_class{
             $ret->add(new BasicJsonGenerator(BasicJsonGenerator::COMMAND_TYPE, 
                       array("type" => BasicJsonGenerator::REMOVE_ALL_WIDGET_CHILDREN,
 							"id" => "bodyContent")));
+            $ret->add(new BasicJsonGenerator(BasicJsonGenerator::DATA_TYPE, 
+					ModelInterface::getLogoutPageResponse())); //TO DO internacionalització
         }
         return $ret->getJsonEncoded();
     }
