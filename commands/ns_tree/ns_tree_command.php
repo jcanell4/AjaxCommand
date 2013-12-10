@@ -109,6 +109,10 @@ class ns_tree_command extends abstract_command_class {
 
     public function setInfo(&$data,$base,$file,$type,$lvl,$opts){
         search_index($data, $base, $file, $type, $lvl, $opts);
+    }
+
+    protected function getDokuwikiAct() {
+        return "";
     }    
 }
 

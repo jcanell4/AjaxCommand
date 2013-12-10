@@ -34,6 +34,10 @@ class commandreport_command extends abstract_command_class{
                 $response));/*TO DO: afegir si és login(true) o logout(false)*/
         return $ret->getJsonEncoded();
     }
+
+    protected function getDokuwikiAct() {
+        return "";
+    }
 }
 
 ?>

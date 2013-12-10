@@ -13,13 +13,43 @@
 if(!defined('DOKU_INC')) die();
 if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN',DOKU_INC.'lib/plugins/');
 if(!defined('DOKU_COMMAND')) define('DOKU_COMMAND',DOKU_PLUGIN."ajaxcommand/");
-require_once(DOKU_COMMAND.'JsonGenerator.php');
+
+if(!defined('DW_ACT_SHOW')) define('DW_ACT_SHOW',"show/");
+if(!defined('DW_ACT_EDIT')) define('DW_ACT_EDIT',"edit/");
+//    const DW_ACT_PREVIEW="preview";
+//    const DW_ACT_SAVE="save";
+//    const DW_ACT_BACKLINK="backlink";
+//    const DW_ACT_REVISIONS="revisions";    
+//    const DW_ACT_DIFF="diff";
+//    const DW_ACT_SUBSCRIBE="subscribe";
+//    const DW_ACT_UNSUBSCRIBE="unsubscribe";
+//    const DW_ACT_SUBSCRIBENS="subscribens";
+//    const DW_ACT_UNSUBSCRIBENS="unsubscribens";
+//    const DW_ACT_INDEX="index";
+//    const DW_ACT_RECENT="recent";
+//    const DW_ACT_SEARCH="search";
+//    const DW_ACT_EXPORT_RAW="export_raw";
+//    const DW_ACT_EXPORT_XHTML="export_xhtml";
+//    const DW_ACT_EXPORT_XHTMLBODY="export_xhtmlbody";
+//    const DW_ACT_CHECK="check";
+//    const DW_ACT_INDEX="register";
+//    const DW_ACT_LOGIN="login";
+//    const DW_ACT_LOGOUT="logout";
+//    const DW_ACT_EXPORT_PROFILE="profile";
+//    const DW_ACT_EXPORT_RESENDPWD="resendpwd";
+//    const DW_ACT_EXPORT_ADMIN="admin";
+//    const DW_ACT_RECOVER="recover";
+//    const DW_ACT_DRAFT="draft";
+//    const DW_ACT_WORDBLOCK="wordblock";
+//    const DW_ACT_CONFLICT="conflict";
+//    const DW_ACT_CANCEL="cancel";
+//    const DW_ACT_DRAFTDEL="draftdel";
 
 class ModelInterface {
     //put your code here
-    function getContentPageResponse($pid, $pdo, $prev){
+    public function getContentPageResponse($pid, $pdo, $prev){
         global $conf;
-        $pageToSend = ModelInterface::getFormatedPage($pid, $pdo, $prev);
+        $pageToSend = ModelInterface::getContentPage($pid, $pdo, $prev);
         $pageTitle = tpl_pagetitle($pid, true);
         $contentData = array('id' => \str_replace(":", "_",$pageTitle),
                                 'title' => $pageTitle,
@@ -27,17 +57,17 @@ class ModelInterface {
         return $contentData;        
     }
     
-    function getLoginPageResponse(){
+    public function getLoginPageResponse(){
         return ModelInterface::getContentPageResponse("start", "show", null);                
     }
     
-    function getLogoutPageResponse(){
+    public function getLogoutPageResponse(){
         return array('id' => "logout_info",
         'title' => "desconectat",
         'content' => "Accés restringit. Per accedir cal que us identifiqueu");                
     }
     
-    function getFormatedPage($pid, $pdo, $prev){
+    private function getContentPage($pid, $pdo, $prev){
         global $ID;
         global $ACT;
         global $REV;
@@ -58,6 +88,18 @@ class ModelInterface {
         return $html_output;
         
     }
+    
+    public function getFormatedPage($pid, $prev){
+        return ModelInterface::getContentPage($pid, 
+                                                DW_ACT_SHOW, 
+                                                $prev);
+    }
+    
+    public function getCodePage($pid, $pdo, $prev){
+        return ModelInterface::getContentPage($pid, 
+                                                DW_ACT_EDIT, 
+                                                $prev);
+    }    
 }
 
 ?>

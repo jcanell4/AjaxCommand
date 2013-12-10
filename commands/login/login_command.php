@@ -28,6 +28,12 @@ class login_command extends abstract_command_class{
         $this->setParameters($defaultValues);        
     }
     
+    protected function getDokuwikiAct(){
+        return $this->params['do'];
+    }
+
+
+    
     //tpl_content(((tpl_getConf("vector_toc_position") === "article") ? true : false));
     protected function _run() {
         global $conf;

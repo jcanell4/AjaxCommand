@@ -5,6 +5,8 @@
  *
  * @author professor
  */
+require_once(dirname(__FILE__).'/ModelInterface.php');
+
 abstract class abstract_command_class {
     const T_BOOLEAN = "boolean";
     const T_INTEGER = "integer";
@@ -15,7 +17,6 @@ abstract class abstract_command_class {
     const T_OBJECT = "object";
     const T_FUNCTION = "function";
     const T_METHOD = "method";
-    
     
     protected $params = array();
     protected $types = array();
@@ -38,6 +39,8 @@ abstract class abstract_command_class {
     protected function setParameterDefaultValues($defaultValue){
         $this->setParameters($defaultValue);
     }
+    
+    abstract protected function getDokuwikiAct();
 
     public function setParameters($params){
         foreach ($params as $key => $value){
@@ -50,11 +53,24 @@ abstract class abstract_command_class {
     }
     
     public function run($permission=NULL){
+        $brun=false;
         if(!$this->authenticatedUsersOnly 
                 || $this->isSecurityTokenVerified()
                 && $this->isUserAuthenticated()
                 && $this->isAuthorized($permission)){
-            $ret = $this->_run();
+            if($this->getDokuwikiAct()){
+                // give plugins an opportunity to process the action
+                $evt = new Doku_Event('ACTION_ACT_PREPROCESS',
+                                            $this->getDokuwikiAct());                
+                $brun = ($evt->advise_before());
+            }
+            if(!$this->getDokuwikiAct() || $brun){
+                $ret = $this->_run();
+            }
+            if($this->getDokuwikiAct()){
+                $evt->advise_after();
+                unset($evt);
+            }
         }else{
             $this->error=true;
             $this->errorMessage="permission denied"; /*TODO internacionalització */

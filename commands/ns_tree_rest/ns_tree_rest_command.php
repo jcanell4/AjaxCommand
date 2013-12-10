@@ -80,6 +80,10 @@ class ns_tree_rest_command extends abstract_rest_command_class{
         return $strData;      
         
     }
+
+    protected function getDokuwikiAct() {
+        return "";
+    }
 }
 
 ?>

@@ -7,6 +7,7 @@
 if(!defined('DOKU_INC')) die();
 if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN',DOKU_INC.'lib/plugins/');
 if(!defined('DOKU_COMMAND')) define('DOKU_COMMAND',DOKU_PLUGIN."ajaxcommand/");
+require_once (DOKU_COMMAND.'JsonGenerator.php');
 require_once(DOKU_COMMAND.'abstract_command_class.php');
 require_once (DOKU_COMMAND.'ModelInterface.php');
 
@@ -25,6 +26,10 @@ class page_command extends abstract_command_class{
         );
 
         $this->setParameters($defaultValues);        
+    }
+    
+    protected function getDokuwikiAct(){
+        return $this->params['do'];
     }
     
     //tpl_content(((tpl_getConf("vector_toc_position") === "article") ? true : false));
