@@ -22,6 +22,7 @@ abstract class abstract_command_class {
     protected $types = array();
     protected $permissionFor = array();
     protected $authenticatedUsersOnly=true;
+    protected $content='';
     var $error = false;
     var $errorMessage = '';
     var $throwsException=false;
@@ -53,24 +54,37 @@ abstract class abstract_command_class {
     }
     
     public function run($permission=NULL){
+        global $ACT;
+        
         $brun=false;
         if(!$this->authenticatedUsersOnly 
                 || $this->isSecurityTokenVerified()
                 && $this->isUserAuthenticated()
                 && $this->isAuthorized($permission)){
+            
+            $this->_start();
+            $old_act = $ACT;
             if($this->getDokuwikiAct()){
                 // give plugins an opportunity to process the action
-                $evt = new Doku_Event('ACTION_ACT_PREPROCESS',
-                                            $this->getDokuwikiAct());                
+                $ACT = $this->getDokuwikiAct();
+                $evt = new Doku_Event('ACTION_ACT_PREPROCESS', $ACT);                
+                ob_start();
                 $brun = ($evt->advise_before());
+                $this->content = ob_get_clean();
             }
             if(!$this->getDokuwikiAct() || $brun){
-                $ret = $this->_run();
+                $this->_preprocess();
             }
             if($this->getDokuwikiAct()){
+                ob_start();
                 $evt->advise_after();
+                $this->content .= ob_get_clean();
                 unset($evt);
             }
+            $ret = $this->_run();  
+            
+            $ACT = $old_act;
+            $this->_finish();
         }else{
             $this->error=true;
             $this->errorMessage="permission denied"; /*TODO internacionalització */
@@ -78,7 +92,7 @@ abstract class abstract_command_class {
         if($this->error && $this->throwsException){
             throw new Exception($this->errorMessage);
         }
-        return $ret;
+        return $ret ;
     }
     
     protected function isUserAuthenticated(){
@@ -98,8 +112,16 @@ abstract class abstract_command_class {
         return $found;
     }
 
+    protected function _start(){        
+    }
+    protected function _preprocess(){ 
+        if($this->content){
+            $this->content.="\n";
+        }
+    }
     protected abstract function _run();
-    
+    protected function _finish(){        
+    }
 }
 
 ?>

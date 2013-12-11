@@ -12,6 +12,9 @@ require_once(DOKU_COMMAND.'abstract_command_class.php');
 require_once (DOKU_COMMAND.'ModelInterface.php');
 
 class page_command extends abstract_command_class{
+    private $old_id;
+    private $old_do;
+    private $old_rev;
 
     public function __construct() {
         parent::__construct();
@@ -32,18 +35,44 @@ class page_command extends abstract_command_class{
         return $this->params['do'];
     }
     
-    //tpl_content(((tpl_getConf("vector_toc_position") === "article") ? true : false));
+    protected function _start() {
+        global $ID;
+        global $ACT;
+        global $REV;
+        
+        $this->old_id = $ID;
+        $this->old_do = $ACT;
+        $this->old_rev = $REV;
+        
+        $ID = $this->params['id'];
+        $ACT = $this->params['do'];
+        $REV = $this->params['rev'];
+    }
+    
+    protected function _preprocess() {
+        ModelInterface::doFormatedPagePreProcess($this->params['id']);
+    }
+
     protected function _run() {
         return $this->getResponse();
     }
     
+    protected function _finish() {
+        $ID = $this->old_id;
+        $ACT = $this->old_do;
+        $REV = $this->old_rev;
+    }
+    
+    
+    
+    
     private function getResponse() {
         global $conf;
         $ret=new ArrayJSonGenerator();
-        $contentData = ModelInterface::getContentPageResponse(
+        $contentData = ModelInterface::getFormatedPageResponse(
                                                     $this->params['id'],
-                                                    $this->params['do'],
-                                                    $this->params['rev']);
+                                                    $this->params['rev'],
+                                                    $this->content);
         $pageTitle = $contentData['title'];
         $ret->add(new BasicJsonGenerator(BasicJsonGenerator::TITLE_TYPE,
                 $pageTitle." - ".hsc($conf["title"])));
