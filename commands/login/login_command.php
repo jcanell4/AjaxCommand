@@ -91,12 +91,14 @@ class login_command extends abstract_command_class{
             $ret->add(new BasicJsonGenerator(BasicJsonGenerator::COMMAND_TYPE, 
                       array("type" => BasicJsonGenerator::REMOVE_ALL_WIDGET_CHILDREN,
 							"id" => "bodyContent")));
-
-			$arrLogout = $this->modelInterface->getLogoutPageResponse();
-			$arrLogout["isTab"] = false;
+            //Josep: QUÊ VOLS FER AQUÍ? En parelem?
+            //comento i torno a l'anterior
+//			$arrLogout = $this->modelInterface->getLogoutPageResponse();
+//			$arrLogout["isTab"] = false;
+//            $ret->add(new BasicJsonGenerator(BasicJsonGenerator::DATA_TYPE, 
+//					$arrLogout));
             $ret->add(new BasicJsonGenerator(BasicJsonGenerator::DATA_TYPE, 
-					$arrLogout));
-//					$this->modelInterface->getLogoutPageResponse())); //TO DO internacionalització
+					$this->modelInterface->getLogoutPageResponse())); //TO DO internacionalització
         }
         return $ret->getJsonEncoded();
     }
