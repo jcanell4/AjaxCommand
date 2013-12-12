@@ -24,7 +24,6 @@ class login_command extends abstract_command_class{
 //        $this->types['p'] = abstract_command_class::T_STRING;
 
         $defaultValues=array('do' => 'login');
-
         $this->setParameters($defaultValues);    
     }
     
@@ -32,8 +31,6 @@ class login_command extends abstract_command_class{
         return $this->params['do'];
     }
 
-
-    
     //tpl_content(((tpl_getConf("vector_toc_position") === "article") ? true : false));
     protected function _run() {
         global $conf;
@@ -66,10 +63,15 @@ class login_command extends abstract_command_class{
 					  array("type" => BasicJsonGenerator::CHANGE_WIDGET_PROPERTY,
 							"id" => "loginButton", 
 							"propertyName" => "visible", 
-							"propertyValue" => false)));              
+							"propertyValue" => false)));      
             $ret->add(new BasicJsonGenerator(BasicJsonGenerator::COMMAND_TYPE, 
                       array("type" => BasicJsonGenerator::RELOAD_WIDGET_CONTENT,
 							"id" => "tb_index")));
+			//elimina, si existe, la pestaña 'desconectat'
+			$logout = $this->modelInterface->getLogoutPageResponse();
+            $ret->add(new BasicJsonGenerator(BasicJsonGenerator::COMMAND_TYPE, 
+                      array("type" => BasicJsonGenerator::REMOVE_WIDGET_CHILD,
+							"id" => $logout['id'])));
         }
 		else{
             $ret->add(new BasicJsonGenerator(BasicJsonGenerator::COMMAND_TYPE, 
@@ -88,8 +90,12 @@ class login_command extends abstract_command_class{
             $ret->add(new BasicJsonGenerator(BasicJsonGenerator::COMMAND_TYPE, 
                       array("type" => BasicJsonGenerator::REMOVE_ALL_WIDGET_CHILDREN,
 							"id" => "bodyContent")));
+			$arrLogout = $this->modelInterface->getLogoutPageResponse();
+			$arrLogout["isTab"] = false;
             $ret->add(new BasicJsonGenerator(BasicJsonGenerator::DATA_TYPE, 
-					$this->modelInterface->getLogoutPageResponse())); //TO DO internacionalització
+					$arrLogout));
+//            $ret->add(new BasicJsonGenerator(BasicJsonGenerator::DATA_TYPE, 
+//					$this->modelInterface->getLogoutPageResponse())); //TO DO internacionalització
         }
         return $ret->getJsonEncoded();
     }
