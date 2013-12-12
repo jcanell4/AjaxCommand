@@ -111,7 +111,7 @@ class ns_tree_command extends abstract_command_class {
         search_index($data, $base, $file, $type, $lvl, $opts);
     }
 
-    protected function getDokuwikiAct() {
+    public function getDokuwikiAct() {
         return "";
     }    
 }

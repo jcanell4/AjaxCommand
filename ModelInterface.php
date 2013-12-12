@@ -14,11 +14,15 @@ if(!defined('DOKU_INC')) die();
 if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN',DOKU_INC.'lib/plugins/');
 if(!defined('DOKU_COMMAND')) define('DOKU_COMMAND',DOKU_PLUGIN."ajaxcommand/");
 //require common
+require_once DOKU_INC.'inc/actions.php';
 
 
-if(!defined('DW_ACT_SHOW')) define('DW_ACT_SHOW',"show/");
-if(!defined('DW_ACT_EDIT')) define('DW_ACT_EDIT',"edit/");
-//    const DW_ACT_PREVIEW="preview";
+if(!defined('DW_ACT_SHOW')) define('DW_ACT_SHOW',"show");
+if(!defined('DW_ACT_EDIT')) define('DW_ACT_EDIT',"edit");
+if(!defined('DW_ACT_PREVIEW')) define('DW_ACT_PREVIEW',"preview");
+if(!defined('DW_ACT_RECOVER')) define('DW_ACT_RECOVER',"recover");
+if(!defined('DW_ACT_DENIED')) define('DW_ACT_DENIED',"denied");
+
 //    const DW_ACT_SAVE="save";
 //    const DW_ACT_BACKLINK="backlink";
 //    const DW_ACT_REVISIONS="revisions";    
@@ -40,32 +44,97 @@ if(!defined('DW_ACT_EDIT')) define('DW_ACT_EDIT',"edit/");
 //    const DW_ACT_EXPORT_PROFILE="profile";
 //    const DW_ACT_EXPORT_RESENDPWD="resendpwd";
 //    const DW_ACT_EXPORT_ADMIN="admin";
-//    const DW_ACT_RECOVER="recover";
 //    const DW_ACT_DRAFT="draft";
 //    const DW_ACT_WORDBLOCK="wordblock";
 //    const DW_ACT_CONFLICT="conflict";
 //    const DW_ACT_CANCEL="cancel";
 //    const DW_ACT_DRAFTDEL="draftdel";
 
+
+
+function onFormatRender($data){
+    html_show();
+}
+
+function onCodeRender($data){
+    switch($data){
+            case 'edit':
+            case 'recover':
+                html_edit();
+                break;
+            case 'preview':
+                html_edit();
+                html_show($TEXT);
+                break; 
+            case 'denied':
+                print p_locale_xhtml('denied');
+                break;            
+    }
+}
+
 class ModelInterface {
-    public function doFormatedPagePreProcess($pid){
-            unlock($pid); //try to unlock        
+    protected $params;
+    
+    public function runPreprocess($command){
+        global $ACT;
+        
+        $brun=false;
+        if($command->getDokuwikiAct()){
+            // give plugins an opportunity to process the action
+            $ACT = $command->getDokuwikiAct();
+            $evt = new Doku_Event('ACTION_ACT_PREPROCESS', $ACT);                
+            ob_start();
+            $brun = ($evt->advise_before());
+            $command->content = ob_get_clean();
+        }
+        if(!$command->getDokuwikiAct() || $brun){
+            $command->preprocess();
+        }
+        if($command->getDokuwikiAct()){
+            ob_start();
+            $evt->advise_after();
+            $command->content .= ob_get_clean();
+            unset($evt);
+        }
     }
     
-    private function doEditPagePreProcess($pid, $prev){
-        if(in_array($pdo, array('edit', 'preview', 'recover'))) {
+    public function doFormatedPagePreProcess($pid){
+        $this->params['id'] = $pid;
+        unlock($pid); //try to unlock        
+    }
+    
+    private function doEditPagePreProcess($pdo, $pid, $prev=NULL, $prange=NULL){
+        global $ID;
+        global $ACT;
+        global $RANGE;
+        global $REV;
+    
+        if(in_array($pdo, array(DW_ACT_EDIT, DW_ACT_PREVIEW, DW_ACT_RECOVER))) {
+            $REV =  $this->params['rev'] = $prev;
+            $RANGE =  $this->params['range'] = $prange;
+            $ID=   $this->params['id'] = $pid;
+            $ACT = $this->params['do']=$pdo;
             $ACT = act_edit($ACT);
+            // check permissions again - the action may have changed
+            $ACT = act_permcheck($ACT);            
         }
     }
     
     
-    public function getFormatedPageResponse($pid, $prev, $pageToSend=""){
-        $pageToSend .= ModelInterface::getFormatedPage($pid, $prev);
-        return ModelInterface::getContentPage($pid, $pageToSend);        
+    public function getFormatedPageResponse($pid, $prev=NULL, $pageToSend=""){
+        global $ID;
+        global $ACT;
+        global $REV;
+
+        $REV =  $this->params['rev'] = $prev;
+        $ID=   $this->params['id'] = $pid;
+        $ACT = DW_ACT_SHOW;
+        $pageToSend .= $this->getFormatedPage();
+        return $this->getContentPage($pageToSend);        
     }
     
     public function getLoginPageResponse(){
-        return ModelInterface::getFormatedPageResponse("start", null);                
+        return $this->getFormatedPageResponse("start");                
     }
     
     public function getLogoutPageResponse(){
@@ -74,80 +143,48 @@ class ModelInterface {
         'content' => "Accés restringit. Per accedir cal que us identifiqueu");                
     }
     
-    public function getCodePageResponse($pid, $pdo, $prev){
-        $pageToSend = ModelInterface::getCodePage($pid, $pdo, $prev);
-        return ModelInterface::getContentPage($pid, $pageToSend);        
+    public function getCodePageResponse($pdo, $pid, $prev=NULL, $prange=NULL,
+                                        $pageToSend=""){
+        global $ID;
+        global $ACT;
+        global $RANGE;
+        global $REV;
+
+        $REV =  $this->params['rev'] = $prev;
+        $RANGE =  $this->params['range'] = $prange;
+        $ID=   $this->params['id'] = $pid;
+        $ACT = $this->params['do']=$pdo;
+        
+        $pageToSend .= $this->getCodePage();
+        return $this->getContentPage($pageToSend);        
     }
     
-    private function getContentPage($pid, $pageToSend){
-        $pageTitle = tpl_pagetitle($pid, true);
+    public function isDenied(){
+        return $this->params['do']==DW_ACT_DENIED;
+    }
+
+
+    private function getContentPage($pageToSend){
+        $pageTitle = tpl_pagetitle($this->params['id'], true);
         $contentData = array('id' => \str_replace(":", "_",$pageTitle),
                                 'title' => $pageTitle,
                                 'content' => $pageToSend);
         return $contentData;                
     }
     
-    private function getFormatedPage($pid, $prev){
-        global $ID;
-        global $REV;
-        $old_ID = $ID;
-        $old_REV = $REV;
-        
-        $ID = $pid;
-        $REV = $prev;
+    private function getFormatedPage(){
         ob_start();
 //        trigger_event('TPL_ACT_RENDER', $do, "tpl_content_core");
-        trigger_event('TPL_ACT_RENDER', $ACT);
-        html_show();
+        trigger_event('TPL_ACT_RENDER', $ACT, 'onFormatRender');
         $html_output = ob_get_clean()."\n";
-        
-        $ID = $old_ID;
-        $REV = $old_REV;
-        
         return $html_output;
     }
 
-    private function getCodePage($pid, $pdo, $prev){
+    private function getCodePage(){
         ob_start();
-        trigger_event('TPL_ACT_RENDER', $pdo, "tpl_content_core");
+        trigger_event('TPL_ACT_RENDER', $ACT, "onCodeRender");
         $html_output = ob_get_clean()."\n";
         return $html_output;
     }
-    
-//    private function getContentPage(){
-//        global $ID;
-//        global $ACT;
-//        global $REV;
-//        
-//        ob_start();
-//        trigger_event('TPL_ACT_RENDER', $ACT, "tpl_content_core");
-//        $html_output = ob_get_clean()."\n";
-//        return $html_output;
-//        
-//    }
-    
-//    public function getCodePage($pid, $pdo, $prev){
-//        global $ID;
-//        global $ACT;
-//        global $REV;
-//        
-//        $old_id = $ID;
-//        $old_do = $ACT;
-//        $old_rev = $REV;
-//        
-//        $ID  =  $pid;
-//        $ACT =  $pdo;
-//        $REV =  $rpev;
-//        $ACT = act_edit($ACT);
-//        // check permissions again - the action may have changed
-//        $ACT = act_permcheck($ACT);
-//        
-//        $ret = ModelInterface::getContentPage();
-//        $ID  =  $old_id;
-//        $ACT =  $old_do;
-//        $REV =  $old_rev;
-//        return $ret;
-//    }    
 }
-
 ?>

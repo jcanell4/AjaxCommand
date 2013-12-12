@@ -25,10 +25,10 @@ class login_command extends abstract_command_class{
 
         $defaultValues=array('do' => 'login');
 
-        $this->setParameters($defaultValues);        
+        $this->setParameters($defaultValues);    
     }
     
-    protected function getDokuwikiAct(){
+    public function getDokuwikiAct(){
         return $this->params['do'];
     }
 
@@ -56,7 +56,7 @@ class login_command extends abstract_command_class{
         
         if($response["loginResult"]){
             $ret->add(new BasicJsonGenerator(BasicJsonGenerator::DATA_TYPE, 
-					ModelInterface::getLoginPageResponse()));
+					$this->modelInterface->getLoginPageResponse()));
             $ret->add(new BasicJsonGenerator(BasicJsonGenerator::COMMAND_TYPE, 
 					  array("type" => BasicJsonGenerator::CHANGE_WIDGET_PROPERTY,
 							"id" => "exitButton", 
@@ -89,7 +89,7 @@ class login_command extends abstract_command_class{
                       array("type" => BasicJsonGenerator::REMOVE_ALL_WIDGET_CHILDREN,
 							"id" => "bodyContent")));
             $ret->add(new BasicJsonGenerator(BasicJsonGenerator::DATA_TYPE, 
-					ModelInterface::getLogoutPageResponse())); //TO DO internacionalització
+					$this->modelInterface->getLogoutPageResponse())); //TO DO internacionalització
         }
         return $ret->getJsonEncoded();
     }

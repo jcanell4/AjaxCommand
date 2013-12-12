@@ -81,7 +81,7 @@ class ns_tree_rest_command extends abstract_rest_command_class{
         
     }
 
-    protected function getDokuwikiAct() {
+    public function getDokuwikiAct() {
         return "";
     }
 }

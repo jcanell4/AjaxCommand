@@ -22,12 +22,16 @@ abstract class abstract_command_class {
     protected $types = array();
     protected $permissionFor = array();
     protected $authenticatedUsersOnly=true;
-    protected $content='';
+    protected $modelInterface;
+
+    var $content='';
     var $error = false;
     var $errorMessage = '';
     var $throwsException=false;
     
-    public function __construct() {}
+    public function __construct() {
+        $this->modelInterface = new ModelInterface();
+    }
 
     public function setThrowsException($onoff){
         $this->throwsException=$onoff;
@@ -41,7 +45,7 @@ abstract class abstract_command_class {
         $this->setParameters($defaultValue);
     }
     
-    abstract protected function getDokuwikiAct();
+    abstract public function getDokuwikiAct();
 
     public function setParameters($params){
         foreach ($params as $key => $value){
@@ -54,37 +58,20 @@ abstract class abstract_command_class {
     }
     
     public function run($permission=NULL){
-        global $ACT;
-        
-        $brun=false;
         if(!$this->authenticatedUsersOnly 
                 || $this->isSecurityTokenVerified()
                 && $this->isUserAuthenticated()
                 && $this->isAuthorized($permission)){
             
-            $this->_start();
-            $old_act = $ACT;
-            if($this->getDokuwikiAct()){
-                // give plugins an opportunity to process the action
-                $ACT = $this->getDokuwikiAct();
-                $evt = new Doku_Event('ACTION_ACT_PREPROCESS', $ACT);                
-                ob_start();
-                $brun = ($evt->advise_before());
-                $this->content = ob_get_clean();
-            }
-            if(!$this->getDokuwikiAct() || $brun){
-                $this->_preprocess();
-            }
-            if($this->getDokuwikiAct()){
-                ob_start();
-                $evt->advise_after();
-                $this->content .= ob_get_clean();
-                unset($evt);
-            }
+//            $this->_start();
+            $this->modelInterface->runPreprocess($this);
             $ret = $this->_run();  
             
-            $ACT = $old_act;
-            $this->_finish();
+//            $this->_finish();
+            if($this->modelInterface->isDenied()){
+                $this->error=true;
+                $this->errorMessage="permission denied"; /*TODO internacionalització */
+            }
         }else{
             $this->error=true;
             $this->errorMessage="permission denied"; /*TODO internacionalització */
@@ -112,16 +99,16 @@ abstract class abstract_command_class {
         return $found;
     }
 
-    protected function _start(){        
-    }
-    protected function _preprocess(){ 
+//    protected function _start(){        
+//    }
+    public function preprocess(){ 
         if($this->content){
             $this->content.="\n";
         }
     }
     protected abstract function _run();
-    protected function _finish(){        
-    }
+//    protected function _finish(){        
+//    }
 }
 
 ?>

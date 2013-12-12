@@ -35,7 +35,7 @@ class commandreport_command extends abstract_command_class{
         return $ret->getJsonEncoded();
     }
 
-    protected function getDokuwikiAct() {
+    public function getDokuwikiAct() {
         return "";
     }
 }
