@@ -47,7 +47,8 @@ class login_command extends abstract_command_class{
         }
 		
         $ret->add(new BasicJsonGenerator(BasicJsonGenerator::LOGIN_INFO,
-				$response));/*TO DO: afegir si és login(true) o logout(false)*/
+				$response));	//afegir si és login(true) o logout(false)
+
         $ret->add(new BasicJsonGenerator(BasicJsonGenerator::SECTOK_DATA,
 				getSecurityToken()));
         
@@ -68,10 +69,10 @@ class login_command extends abstract_command_class{
                       array("type" => BasicJsonGenerator::RELOAD_WIDGET_CONTENT,
 							"id" => "tb_index")));
 			//elimina, si existe, la pestaña 'desconectat'
-			$logout = $this->modelInterface->getLogoutPageResponse();
-            $ret->add(new BasicJsonGenerator(BasicJsonGenerator::COMMAND_TYPE, 
-                      array("type" => BasicJsonGenerator::REMOVE_WIDGET_CHILD,
-							"id" => $logout['id'])));
+//			$logout = $this->modelInterface->getLogoutPageResponse();
+//          $ret->add(new BasicJsonGenerator(BasicJsonGenerator::COMMAND_TYPE, 
+//                    array("type" => BasicJsonGenerator::REMOVE_WIDGET_CHILD,
+//							"id" => $logout['id'])));
         }
 		else{
             $ret->add(new BasicJsonGenerator(BasicJsonGenerator::COMMAND_TYPE, 
