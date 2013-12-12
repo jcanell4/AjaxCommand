@@ -12,15 +12,11 @@ require_once(DOKU_COMMAND.'abstract_command_class.php');
 require_once (DOKU_COMMAND.'ModelInterface.php');
 
 class page_command extends abstract_command_class{
-//    private $old_id;
-//    private $old_do;
-//    private $old_rev;
 
     public function __construct() {
         parent::__construct();
         $this->types['id'] = abstract_command_class::T_STRING;
         $this->types['idx'] = abstract_command_class::T_STRING;
-//        $this->types['do'] = abstract_command_class::T_STRING;
         $this->types['rev'] = abstract_command_class::T_STRING;
 
         $defaultValues = array(
@@ -32,7 +28,6 @@ class page_command extends abstract_command_class{
     }
     
     public function getDokuwikiAct(){
-//        return $this->params['do'];
         return DW_ACT_SHOW;
     }
     
@@ -51,9 +46,9 @@ class page_command extends abstract_command_class{
                                                     $this->params['id'],
                                                     $this->params['rev'],
                                                     $this->content);
-        $pageTitle = $contentData['title'];
-        $ret->add(new BasicJsonGenerator(BasicJsonGenerator::TITLE_TYPE,
-                $pageTitle." - ".hsc($conf["title"])));
+//        $pageTitle = $contentData['title'];
+//        $ret->add(new BasicJsonGenerator(BasicJsonGenerator::TITLE_TYPE,
+//                $pageTitle." - ".hsc($conf["title"])));
         $ret->add(new BasicJsonGenerator(BasicJsonGenerator::DATA_TYPE, 
                 $contentData));
         $ret->add(new BasicJsonGenerator(BasicJsonGenerator::COMMAND_TYPE, 

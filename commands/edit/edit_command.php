@@ -12,9 +12,6 @@ require_once(DOKU_COMMAND.'abstract_command_class.php');
 require_once (DOKU_COMMAND.'ModelInterface.php');
 
 class edit_command extends abstract_command_class{
-    private $old_id;
-    private $old_do;
-    private $old_rev;
 
     public function __construct() {
         parent::__construct();
@@ -26,7 +23,7 @@ class edit_command extends abstract_command_class{
 
         $defaultValues = array(
             'id' => 'index',
-            'do' => 'show',
+            'do' => 'edit',
         );
 
         $this->setParameters($defaultValues);        
@@ -36,46 +33,29 @@ class edit_command extends abstract_command_class{
         return $this->params['do'];
     }
     
-    protected function _start() {
-        global $ID;
-        global $ACT;
-        global $REV;
-        
-        $this->old_id = $ID;
-        $this->old_do = $ACT;
-        $this->old_rev = $REV;
-        
-        $ID = $this->params['id'];
-        $ACT = $this->params['do'];
-        $REV = $this->params['rev'];
-    }
-    
     public function preprocess() {
-        $this->modelInterface->doFormatedPagePreProcess($this->params['id']);
+        $this->modelInterface->doEditPagePreProcess($this->params['do']
+                                                ,$this->params['id']
+                                                ,$this->params['rev']
+                                                ,$this->params['range']);
     }
 
     protected function _run() {
         return $this->getResponse();
     }
     
-    protected function _finish() {
-        $ID = $this->old_id;
-        $ACT = $this->old_do;
-        $REV = $this->old_rev;
-    }
-    
-    
     private function getResponse() {
         global $conf;
         $ret=new ArrayJSonGenerator();
-        $contentData = $this->modelInterface->getCodePage(
+        $contentData = $this->modelInterface->getCodePageResponse(
+                                                    $this->params['do'],
                                                     $this->params['id'],
                                                     $this->params['rev'],
                                                     $this->params['range'],
                                                     $this->content);
-        $pageTitle = $contentData['title'];
-        $ret->add(new BasicJsonGenerator(BasicJsonGenerator::TITLE_TYPE,
-                $pageTitle." - ".hsc($conf["title"])));
+//        $pageTitle = $contentData['title'];
+//        $ret->add(new BasicJsonGenerator(BasicJsonGenerator::TITLE_TYPE,
+//                $pageTitle." - ".hsc($conf["title"])));
         $ret->add(new BasicJsonGenerator(BasicJsonGenerator::DATA_TYPE, 
                 $contentData));
         return $ret->getJsonEncoded();        

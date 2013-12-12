@@ -103,7 +103,7 @@ class ModelInterface {
         unlock($pid); //try to unlock        
     }
     
-    private function doEditPagePreProcess($pdo, $pid, $prev=NULL, $prange=NULL){
+    public function doEditPagePreProcess($pdo, $pid, $prev=NULL, $prange=NULL){
         global $ID;
         global $ACT;
         global $RANGE;
@@ -173,6 +173,8 @@ class ModelInterface {
     }
     
     private function getFormatedPage(){
+        global $ACT;
+        
         ob_start();
 //        trigger_event('TPL_ACT_RENDER', $do, "tpl_content_core");
         trigger_event('TPL_ACT_RENDER', $ACT, 'onFormatRender');
@@ -181,8 +183,10 @@ class ModelInterface {
     }
 
     private function getCodePage(){
+        global $ACT;
+
         ob_start();
-        trigger_event('TPL_ACT_RENDER', $ACT, "onCodeRender");
+        trigger_event('TPL_ACT_RENDER', $ACT, 'onCodeRender');
         $html_output = ob_get_clean()."\n";
         return $html_output;
     }
