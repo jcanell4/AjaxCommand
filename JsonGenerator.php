@@ -13,13 +13,14 @@ interface JsonGenerator{
 }
 
 class BasicJsonGenerator implements JsonGenerator{
-    const DATA_TYPE=0;
+    const HTML_TYPE=0;
     const TITLE_TYPE=1;
     const INFO_TYPE=2;
     const COMMAND_TYPE=3;
     const ERROR_TYPE=4;
     const LOGIN_INFO=5;
     const SECTOK_DATA=6;
+    const DATA_TYPE=7;
     const PROCESS_DOM_FROM_FUNCTION="process_dom_from_function"; //domId afectat + AMD (true/flase) + nom funcio/modul on es troba la funció + extra prams
     const CHANGE_DOM_STYLE="change_dom_style"; //domId afectat + propietat de l'estil a modificar + valor 
     const CHANGE_WIDGET_PROPERTY="change_widget_property"; //widgetId afectat + propietat a modificar + valor 
@@ -39,8 +40,8 @@ class BasicJsonGenerator implements JsonGenerator{
     
     public function getJson(){
         //$arrayTypes = BasicJsonGenerator::TYPES;
-        $arrayTypes = array("data", "title", "info", "command", "error"
-                            , "login", "sectok");
+        $arrayTypes = array("html", "title", "info", "command", "error"
+                            , "login", "sectok", "data");
         $data=array(
             "type" => $arrayTypes[$this->type],
             "value" => $this->value,

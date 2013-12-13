@@ -99,7 +99,14 @@ class ModelInterface {
     }
     
     public function doFormatedPagePreProcess($pid){
-        $this->params['id'] = $pid;
+        global $ID;
+        global $ACT;
+        
+        $ID = $this->params['id'] = $pid;
+        $ACT = DW_ACT_SHOW;
+
+        $this->fillInfo();        
+        
         unlock($pid); //try to unlock        
     }
     
@@ -114,6 +121,9 @@ class ModelInterface {
             $RANGE =  $this->params['range'] = $prange;
             $ID=   $this->params['id'] = $pid;
             $ACT = $this->params['do']=$pdo;
+            
+            $this->fillInfo();        
+            
             $ACT = act_edit($ACT);
             // check permissions again - the action may have changed
             $ACT = act_permcheck($ACT);            
@@ -163,6 +173,11 @@ class ModelInterface {
         return $this->params['do']==DW_ACT_DENIED;
     }
 
+
+    public function fillInfo(){
+        global $INFO;
+        $INFO = pageinfo();
+    }
 
     private function getContentPage($pageToSend){
         $pageTitle = tpl_pagetitle($this->params['id'], true);

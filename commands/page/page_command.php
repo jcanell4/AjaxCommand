@@ -49,7 +49,7 @@ class page_command extends abstract_command_class{
 //        $pageTitle = $contentData['title'];
 //        $ret->add(new BasicJsonGenerator(BasicJsonGenerator::TITLE_TYPE,
 //                $pageTitle." - ".hsc($conf["title"])));
-        $ret->add(new BasicJsonGenerator(BasicJsonGenerator::DATA_TYPE, 
+        $ret->add(new BasicJsonGenerator(BasicJsonGenerator::HTML_TYPE, 
                 $contentData));
         $ret->add(new BasicJsonGenerator(BasicJsonGenerator::COMMAND_TYPE, 
                   array("type" => BasicJsonGenerator::PROCESS_DOM_FROM_FUNCTION,

@@ -40,7 +40,7 @@ if(isset($_POST['call'])){
 
 //if(!checkSecurityToken()) die("CSRF Attack");
 
-fillinfo();
+//fillinfo();
 if(@file_exists(DOKU_INC."lib/plugins/ownInit/init.php")){
     require_once (DOKU_INC."lib/plugins/ownInit/init.php");
     own_init();
@@ -64,11 +64,6 @@ if(existCommand($call)){
 function isUserAuthenticated(){
     global $_SERVER;
     return $_SERVER['REMOTE_USER'];
-}
-
-function fillinfo(){
-    global $INFO;
-    $INFO = pageinfo();
 }
 
 function existCommand($command){

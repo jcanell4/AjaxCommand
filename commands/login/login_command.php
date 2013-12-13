@@ -53,7 +53,7 @@ class login_command extends abstract_command_class{
 				getSecurityToken()));
         
         if($response["loginResult"]){
-            $ret->add(new BasicJsonGenerator(BasicJsonGenerator::DATA_TYPE, 
+            $ret->add(new BasicJsonGenerator(BasicJsonGenerator::HTML_TYPE, 
 					$this->modelInterface->getLoginPageResponse()));
             $ret->add(new BasicJsonGenerator(BasicJsonGenerator::COMMAND_TYPE, 
 					  array("type" => BasicJsonGenerator::CHANGE_WIDGET_PROPERTY,
@@ -95,9 +95,9 @@ class login_command extends abstract_command_class{
             //comento i torno a l'anterior
 //			$arrLogout = $this->modelInterface->getLogoutPageResponse();
 //			$arrLogout["isTab"] = false;
-//            $ret->add(new BasicJsonGenerator(BasicJsonGenerator::DATA_TYPE, 
+//            $ret->add(new BasicJsonGenerator(BasicJsonGenerator::HTML_TYPE, 
 //					$arrLogout));
-            $ret->add(new BasicJsonGenerator(BasicJsonGenerator::DATA_TYPE, 
+            $ret->add(new BasicJsonGenerator(BasicJsonGenerator::HTML_TYPE, 
 					$this->modelInterface->getLogoutPageResponse())); //TO DO internacionalització
         }
         return $ret->getJsonEncoded();
