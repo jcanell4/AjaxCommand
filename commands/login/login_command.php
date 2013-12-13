@@ -91,12 +91,6 @@ class login_command extends abstract_command_class{
             $ret->add(new BasicJsonGenerator(BasicJsonGenerator::COMMAND_TYPE, 
                       array("type" => BasicJsonGenerator::REMOVE_ALL_WIDGET_CHILDREN,
 							"id" => "bodyContent")));
-            //Josep: QUÊ VOLS FER AQUÍ? En parelem?
-            //comento i torno a l'anterior
-//			$arrLogout = $this->modelInterface->getLogoutPageResponse();
-//			$arrLogout["isTab"] = false;
-//            $ret->add(new BasicJsonGenerator(BasicJsonGenerator::HTML_TYPE, 
-//					$arrLogout));
             $ret->add(new BasicJsonGenerator(BasicJsonGenerator::HTML_TYPE, 
 					$this->modelInterface->getLogoutPageResponse())); //TO DO internacionalització
         }
