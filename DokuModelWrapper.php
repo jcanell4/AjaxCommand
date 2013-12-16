@@ -6,7 +6,7 @@
  */
 
 /**
- * Description of ModelInterface
+ * Description of DokuModelWrapper
  *
  * @author professor
  */
@@ -17,6 +17,7 @@ if(!defined('DOKU_COMMAND')) define('DOKU_COMMAND',DOKU_PLUGIN."ajaxcommand/");
 require_once DOKU_INC.'inc/actions.php';
 
 
+if(!defined('DW_DEFAULT_PAGE')) define('DW_DEFAULT_PAGE',"start");
 if(!defined('DW_ACT_SHOW')) define('DW_ACT_SHOW',"show");
 if(!defined('DW_ACT_EDIT')) define('DW_ACT_EDIT',"edit");
 if(!defined('DW_ACT_PREVIEW')) define('DW_ACT_PREVIEW',"preview");
@@ -72,79 +73,85 @@ function onCodeRender($data){
     }
 }
 
-class ModelInterface {
+class DokuModelWrapper {
     protected $params;
+    protected $dataTmp;
+    protected $ppEvt;
     
-    public function runPreprocess($command){
-        global $ACT;
-        
-        $brun=false;
-        if($command->getDokuwikiAct()){
-            // give plugins an opportunity to process the action
-            $ACT = $command->getDokuwikiAct();
-            $evt = new Doku_Event('ACTION_ACT_PREPROCESS', $ACT);                
-            ob_start();
-            $brun = ($evt->advise_before());
-            $command->content = ob_get_clean();
-        }
-        if(!$command->getDokuwikiAct() || $brun){
-            $command->preprocess();
-        }
-        if($command->getDokuwikiAct()){
-            ob_start();
-            $evt->advise_after();
-            $command->content .= ob_get_clean();
-            unset($evt);
-        }
-    }
-    
-    public function doFormatedPagePreProcess($pid){
+    public function startPageProcess($pdo, $pid=NULL, $prev=NULL, $prange=NULL, 
+                $pdate=NULL, $ppre=NULL, $ptext=NULL, $psuf=null, $psum=NULL){
         global $ID;
         global $ACT;
-        
-        $ID = $this->params['id'] = $pid;
-        $ACT = DW_ACT_SHOW;
-
-        $this->fillInfo();        
-        
-        unlock($pid); //try to unlock        
-    }
-    
-    public function doEditPagePreProcess($pdo, $pid, $prev=NULL, $prange=NULL){
-        global $ID;
-        global $ACT;
-        global $RANGE;
         global $REV;
+        global $RANGE;
+        global $DATE;
+        global $PRE;
+        global $TEXT;
+        global $SUF;
+        global $SUM;
+        
+        $ACT = $this->params['do'] = $pdo;
+        if(!$pid){
+            $pid=DW_DEFAULT_PAGE;
+        }
+        $ID = $this->params['id'] = $pid;
+        if($prev){
+            $REV = $this->params['rev'] = $prev;
+        }
+        if($prange){
+            $RANGE = $this->params['range'] = $prange;
+        }
+        if($pdate){
+            $DATE = $this->params['date'] = $pdate;
+        }
+        if($ppre){
+            $PRE = $this->params['pre'] = $ppre;
+        }
+        if($ptext){
+            $TEXT = $this->params['text'] = $ptext;
+        }
+        if($psuf){
+            $SUF = $this->params['suf'] = $psuf;
+        }
+        if($psum){
+            $SUM = $this->params['sum'] = $psum;
+        }
+        
+        $this->fillInfo();
+        
+        trigger_event('DOKUWIKI_STARTED',  $this->dataTmp);
+    }
     
-        if(in_array($pdo, array(DW_ACT_EDIT, DW_ACT_PREVIEW, DW_ACT_RECOVER))) {
-            $REV =  $this->params['rev'] = $prev;
-            $RANGE =  $this->params['range'] = $prange;
-            $ID=   $this->params['id'] = $pid;
-            $ACT = $this->params['do']=$pdo;
-            
-            $this->fillInfo();        
-            
+    public function doFormatedPagePreProcess(){
+        $content = "";
+        if($this->runBeforePreprocess($content)){
+            unlock($this->params['id']); //try to unlock   
+        }
+        $this->runAfterPreprocess($content);
+        return $content;
+    }
+    
+    public function doEditPagePreProcess(){
+        global $ACT;
+        
+        $content = "";
+        if($this->runBeforePreprocess($content)){
             $ACT = act_edit($ACT);
             // check permissions again - the action may have changed
             $ACT = act_permcheck($ACT);            
         }
+        $this->runAfterPreprocess($content);
+        return $content;        
     }
     
     
-    public function getFormatedPageResponse($pid, $prev=NULL, $pageToSend=""){
-        global $ID;
-        global $ACT;
-        global $REV;
-
-        $REV =  $this->params['rev'] = $prev;
-        $ID=   $this->params['id'] = $pid;
-        $ACT = DW_ACT_SHOW;
-        $pageToSend .= $this->getFormatedPage();
+    public function getFormatedPageResponse(){
+        $pageToSend = $this->getFormatedPage();
         return $this->getContentPage($pageToSend);        
     }
     
     public function getLoginPageResponse(){
-        return $this->getFormatedPageResponse("start");                
+        return $this->getFormatedPageResponse();                
     }
     
     public function getLogoutPageResponse(){
@@ -153,19 +160,8 @@ class ModelInterface {
         'content' => "Accés restringit. Per accedir cal que us identifiqueu");                
     }
     
-    public function getCodePageResponse($pdo, $pid, $prev=NULL, $prange=NULL,
-                                        $pageToSend=""){
-        global $ID;
-        global $ACT;
-        global $RANGE;
-        global $REV;
-
-        $REV =  $this->params['rev'] = $prev;
-        $RANGE =  $this->params['range'] = $prange;
-        $ID=   $this->params['id'] = $pid;
-        $ACT = $this->params['do']=$pdo;
-        
-        $pageToSend .= $this->getCodePage();
+    public function getCodePageResponse(){
+        $pageToSend = $this->getCodePage();
         return $this->getContentPage($pageToSend);        
     }
     
@@ -173,10 +169,40 @@ class ModelInterface {
         return $this->params['do']==DW_ACT_DENIED;
     }
 
+    public function getJsInfo(){
+        global $JSINFO;
+        $this->fillInfo();
+        return $JSINFO;                        
+    }
 
-    public function fillInfo(){
+    private function runBeforePreprocess(&$content){
+        global $ACT;
+        
+        $brun=false;
+        // give plugins an opportunity to process the action
+        $this->ppEvt = new Doku_Event('ACTION_ACT_PREPROCESS', $ACT);                
+        ob_start();
+        $brun = ($this->ppEvt->advise_before());
+        $content = ob_get_clean();
+        return $brun;
+    }
+
+    private function runAfterPreprocess(&$content){
+        ob_start();
+        $this->ppEvt->advise_after();
+        $content .= ob_get_clean();
+        unset($this->ppEvt);
+    }
+    
+    private function fillInfo(){
         global $INFO;
+        global $JSINFO;
+        global $ID;
+        
         $INFO = pageinfo();
+        //export minimal infos to JS, plugins can add more
+        $JSINFO['id']        = $ID;
+        $JSINFO['namespace'] = (string) $INFO['namespace']; 
     }
 
     private function getContentPage($pageToSend){

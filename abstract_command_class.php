@@ -5,7 +5,7 @@
  *
  * @author professor
  */
-require_once(dirname(__FILE__).'/ModelInterface.php');
+require_once(dirname(__FILE__).'/DokuModelWrapper.php');
 
 abstract class abstract_command_class {
     const T_BOOLEAN = "boolean";
@@ -22,7 +22,8 @@ abstract class abstract_command_class {
     protected $types = array();
     protected $permissionFor = array();
     protected $authenticatedUsersOnly=true;
-    protected $modelInterface;
+    protected $runPreprocess=false;
+    protected $modelWrapper;
 
     var $content='';
     var $error = false;
@@ -30,7 +31,7 @@ abstract class abstract_command_class {
     var $throwsException=false;
     
     public function __construct() {
-        $this->modelInterface = new ModelInterface();
+        $this->modelWrapper = new DokuModelWrapper();
     }
 
     public function setThrowsException($onoff){
@@ -45,8 +46,42 @@ abstract class abstract_command_class {
         $this->setParameters($defaultValue);
     }
     
-    abstract public function getDokuwikiAct();
-
+    public function getDwAct(){
+        return "";
+    }
+    
+    public function getDwId(){
+        return "";
+    }
+    
+    public function getDwRev(){
+        return NULL;
+    }
+    
+    public function getDwRange(){
+        return NULL;
+    }
+    
+    public function getDwDate(){
+        return NULL;
+    }
+    
+    public function getDwPre(){
+        return NULL;
+    }
+    
+    public function getDwText(){
+        return NULL;
+    }
+    
+    public function getDwSuf(){
+        return NULL;
+    }
+    
+    public function getDwSum(){
+        return NULL;
+    }
+    
     public function setParameters($params){
         foreach ($params as $key => $value){
             if(isset($this->types[$key]) 
@@ -63,12 +98,13 @@ abstract class abstract_command_class {
                 && $this->isUserAuthenticated()
                 && $this->isAuthorized($permission)){
             
-//            $this->_start();
-            $this->modelInterface->runPreprocess($this);
-            $ret = $this->_run();  
+            $ret="";
+            $this->startCommand();
+            $ret .= $this->preprocess();
+            $ret .= $this->_run();  
             
 //            $this->_finish();
-            if($this->modelInterface->isDenied()){
+            if($this->modelWrapper->isDenied()){
                 $this->error=true;
                 $this->errorMessage="permission denied"; /*TODO internacionalització */
             }
@@ -82,6 +118,10 @@ abstract class abstract_command_class {
         return $ret ;
     }
     
+    abstract protected function startCommand();
+
+    abstract protected function preprocess();
+
     protected function isUserAuthenticated(){
         global $_SERVER;
         return $_SERVER['REMOTE_USER']?true:false;
@@ -99,13 +139,6 @@ abstract class abstract_command_class {
         return $found;
     }
 
-//    protected function _start(){        
-//    }
-    public function preprocess(){ 
-        if($this->content){
-            $this->content.="\n";
-        }
-    }
     protected abstract function _run();
 //    protected function _finish(){        
 //    }

@@ -20,11 +20,9 @@ abstract class abstract_rest_command_class extends abstract_command_class {
     protected $defaultContentType='none';
   
     public function __construct() {
-
+        parent::__construct();
         $this->types['method'] = abstract_command_class::T_STRING;
-
         $defaultValues = array('GET');
-
         $this->setParameters($defaultValues);
     }
 
@@ -114,7 +112,7 @@ abstract class abstract_rest_command_class extends abstract_command_class {
     
     protected function _run() {
         $this->dispatchRequest($this->params['method']);
-    }
+    }    
 }
 
 ?>

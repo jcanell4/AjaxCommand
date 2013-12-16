@@ -7,9 +7,10 @@
 if(!defined('DOKU_INC')) die();
 if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN',DOKU_INC.'lib/plugins/');
 if(!defined('DOKU_COMMAND')) define('DOKU_COMMAND',DOKU_PLUGIN."ajaxcommand/");
+require_once (DOKU_COMMAND.'AjaxCmdResponseHandler.php');
 require_once(DOKU_COMMAND.'JsonGenerator.php');
 require_once(DOKU_COMMAND.'abstract_command_class.php');
-require_once (DOKU_COMMAND.'ModelInterface.php');
+require_once (DOKU_COMMAND.'DokuModelWrapper.php');
 
 
 class commandreport_command extends abstract_command_class{
@@ -30,13 +31,17 @@ class commandreport_command extends abstract_command_class{
         }
         $response = substr($response, 0, -2);
         
-        $ret->add(new BasicJsonGenerator(BasicJsonGenerator::INFO_TYPE, 
-                $response));/*TO DO: afegir si és login(true) o logout(false)*/
+        $ret->add(new BasicJsonGenerator(AjaxCmdResponseHandler::INFO_TYPE, 
+                $response));
         return $ret->getJsonEncoded();
     }
 
-    public function getDokuwikiAct() {
-        return "";
+    protected function preprocess() {
+        
+    }
+
+    protected function startCommand() {
+        
     }
 }
 
