@@ -110,5 +110,3 @@ function getParams($input, $without){
     return $params;    
 }
 
-
-//Setup VIM: ex: et ts=2 :

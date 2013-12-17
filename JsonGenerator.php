@@ -1,6 +1,6 @@
 <?php
 /**
- * Description of BasicJsonGenerator
+ * Description of ResponseGenerator
  *
  * @author professor
  */
@@ -12,7 +12,7 @@ interface JsonGenerator{
     public function getJsonEncoded();    
 }
 
-class BasicJsonGenerator implements JsonGenerator{
+class ResponseGenerator implements JsonGenerator{
     const HTML_TYPE=0;
     const TITLE_TYPE=1;
     const INFO_TYPE=2;
@@ -28,6 +28,8 @@ class BasicJsonGenerator implements JsonGenerator{
     const ADD_WIDGET_CHILD="add_widget_child"; ////widgetId afectat + widgetId del fill a afegir + tipus de widget a crear + JSON amb els paràmetres per defecte
     const REMOVE_WIDGET_CHILD="remove_widget_child"; //widgetId afectat + widgetId del fill a eliminar
     const REMOVE_ALL_WIDGET_CHILDREN="remove_all_widget_children"; //widgetId afectat
+    const JSINFO="jsinfo"; //informació per el javascrip
+        
     private $value;
     private $type;
     private $encoder;
@@ -39,7 +41,7 @@ class BasicJsonGenerator implements JsonGenerator{
     }
     
     public function getJson(){
-        //$arrayTypes = BasicJsonGenerator::TYPES;
+        //$arrayTypes = ResponseGenerator::TYPES;
         $arrayTypes = array("html", "title", "info", "command", "error"
                             , "login", "sectok", "data");
         $data=array(
