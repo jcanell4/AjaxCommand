@@ -173,8 +173,10 @@ class DokuModelWrapper {
         if($mEvt ->advise_before()){
             $toc = tpl_toc(true);
             $metaId = \str_replace(":", "_",$this->params['id']).'_toc';
-            $meta = $this->getMetaPage('', 'Taula de continguts', $toc);
-        }        
+            $meta = $this->getMetaPage($metaId, 'Taula de continguts', $toc);
+        }       
+        $mEvt->advise_after();
+        unset($mEvt);        
         $ret['meta']=$meta;
         return $ret;        
     }
