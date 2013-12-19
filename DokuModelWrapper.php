@@ -119,7 +119,8 @@ class DokuModelWrapper {
         
         $this->fillInfo();
         
-        trigger_event('DOKUWIKI_STARTED',  $this->dataTmp);
+//        trigger_event('DOKUWIKI_STARTED',  $this->dataTmp);
+        trigger_event('AJAX_COMMAND_STARTED',  $this->dataTmp);
     }
     
     public function doFormatedPagePreProcess(){
@@ -163,6 +164,17 @@ class DokuModelWrapper {
     public function getCodePageResponse(){
         $pageToSend = $this->getCodePage();
         return $this->getContentPage($pageToSend);        
+    }
+    
+    public function getMetaResponse(){
+        $meta=array();
+        $mEvt = new Doku_Event('ADD_META', $meta);                
+        if($mEvt ->advise_before()){
+            $toc = tpl_toc(true);
+            $meta = $this->getMetaPage('', 'Taula de continguts', $toc);
+        }        
+        return $meta;
+        
     }
     
     public function isDenied(){
@@ -212,6 +224,14 @@ class DokuModelWrapper {
                                 'content' => $pageToSend);
         return $contentData;                
     }
+    
+    private function getMetaPage($metaId, $metaTitle, $metaToSend){
+        $contentData = array('id' => $metaId,
+            'title' => $metaTitle,
+            'content' => $metaToSend);
+        return $contentData;                
+    }
+    
     
     private function getFormatedPage(){
         global $ACT;
