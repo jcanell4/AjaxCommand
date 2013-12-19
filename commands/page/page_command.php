@@ -60,7 +60,7 @@ class page_command extends abstract_page_process_cmd{
                 $contentData));
         
         $metaData = $this->modelWrapper->getMetaResponse();
-        $ret->add(new ResponseGenerator(ResponseGenerator::HTML_TYPE, 
+        $ret->add(new ResponseGenerator(ResponseGenerator::META_INFO, 
                 $metaData));
         $ret->add(new ResponseGenerator(ResponseGenerator::COMMAND_TYPE, 
                   array("type" => ResponseGenerator::PROCESS_DOM_FROM_FUNCTION,
