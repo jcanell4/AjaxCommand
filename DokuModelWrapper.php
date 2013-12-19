@@ -167,14 +167,16 @@ class DokuModelWrapper {
     }
     
     public function getMetaResponse(){
+        $ret=array('docId' => \str_replace(":", "_",$this->params['id']));
         $meta=array();
         $mEvt = new Doku_Event('ADD_META', $meta);                
         if($mEvt ->advise_before()){
             $toc = tpl_toc(true);
+            $metaId = \str_replace(":", "_",$this->params['id']).'_toc';
             $meta = $this->getMetaPage('', 'Taula de continguts', $toc);
         }        
-        return $meta;
-        
+        $ret['meta']=$meta;
+        return $ret;        
     }
     
     public function isDenied(){
@@ -219,7 +221,7 @@ class DokuModelWrapper {
 
     private function getContentPage($pageToSend){
         $pageTitle = tpl_pagetitle($this->params['id'], true);
-        $contentData = array('id' => \str_replace(":", "_",$pageTitle),
+        $contentData = array('id' => \str_replace(":", "_",$this->params['id']),
                                 'title' => $pageTitle,
                                 'content' => $pageToSend);
         return $contentData;                
