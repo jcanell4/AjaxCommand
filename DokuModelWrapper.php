@@ -73,6 +73,13 @@ function onCodeRender($data){
     }
 }
 
+function wrapper_tpl_toc(){
+    $toc = tpl_toc(true);
+    $toc = preg_replace('/(<!-- TOC START -->\s?)(.*\s?)(<div class=.*tocheader.*<\/div>)((.*\s)*)(<!-- TOC END -->)/i', 
+                        '$1<div class="dokuwiki">$2$4</div>$6', $toc);
+    return $toc;
+}
+
 class DokuModelWrapper {
     protected $params;
     protected $dataTmp;
@@ -167,13 +174,14 @@ class DokuModelWrapper {
     }
     
     public function getMetaResponse(){
+        global $lang;
         $ret=array('docId' => \str_replace(":", "_",$this->params['id']));
         $meta=array();
         $mEvt = new Doku_Event('ADD_META', $meta);                
         if($mEvt ->advise_before()){
-            $toc = tpl_toc(true);
+            $toc = wrapper_tpl_toc();
             $metaId = \str_replace(":", "_",$this->params['id']).'_toc';
-            $meta = $this->getMetaPage($metaId, 'Taula de continguts', $toc);
+            $meta[] = $this->getMetaPage($metaId, $lang['toc'], $toc);
         }       
         $mEvt->advise_after();
         unset($mEvt);        
