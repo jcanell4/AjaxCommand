@@ -9,7 +9,7 @@ if (!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN',DOKU_INC.'lib/plugins/');
 if (!defined('DOKU_COMMAND')) define('DOKU_COMMAND',DOKU_PLUGIN."ajaxcommand/");
 require_once (DOKU_COMMAND.'AjaxCmdResponseHandler.php');
 require_once (DOKU_COMMAND.'JsonGenerator.php');
-require_once(DOKU_COMMAND.'abstract_page_process_cmd.php');
+require_once (DOKU_COMMAND.'abstract_page_process_cmd.php');
 require_once (DOKU_COMMAND.'DokuModelWrapper.php');
 
 
@@ -101,6 +101,9 @@ class login_command extends abstract_page_process_cmd{
             $ret->add(new ResponseGenerator(ResponseGenerator::COMMAND_TYPE, 
                       array("type" => ResponseGenerator::REMOVE_ALL_WIDGET_CHILDREN,
 							"id" => "bodyContent")));
+            $ret->add(new ResponseGenerator(ResponseGenerator::COMMAND_TYPE, 
+                      array("type" => ResponseGenerator::REMOVE_ALL_WIDGET_CHILDREN,
+							"id" => "zonaMetaInfo")));
             $ret->add(new ResponseGenerator(ResponseGenerator::HTML_TYPE, 
 					$this->modelWrapper->getLogoutPageResponse())); //TO DO internacionalització
         }
