@@ -75,7 +75,7 @@ function onCodeRender($data){
 
 function wrapper_tpl_toc(){
     $toc = tpl_toc(true);
-    $toc = preg_replace('/(<!-- TOC START -->\s?)(.*\s?)(<div class=.*tocheader.*<\/div>)((.*\s)*)(<!-- TOC END -->)/i', 
+    $toc = preg_replace('/(<!-- TOC START -->\s?)(.*\s?)(<div class=.*tocheader.*<\/div>|<h3 class=.*toggle.*<\/h3>)((.*\s)*)(<!-- TOC END -->)/i', 
                         '$1<div class="dokuwiki">$2$4</div>$6', $toc);
     return $toc;
 }

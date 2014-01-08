@@ -69,6 +69,11 @@ class edit_command extends abstract_page_process_cmd{
 //                $pageTitle." - ".hsc($conf["title"])));
         $ret->add(new ResponseGenerator(ResponseGenerator::DATA_TYPE, 
                 $contentData));
+        $ret->add(new ResponseGenerator(ResponseGenerator::COMMAND_TYPE, 
+                  array("type" => ResponseGenerator::PROCESS_FUNCTION,
+		    "amd" => true,
+                    "processName" => "ioc/dokuwiki/ace-main",
+                    )));   
         return $ret->getJsonEncoded();        
     }
 }
