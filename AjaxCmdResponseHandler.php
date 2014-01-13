@@ -32,6 +32,22 @@ class AjaxCmdResponseHandler {
         );                  
     }
     
+    public function addProcessFunction(/*Boolean*/ $isAmd, 
+                                       /*String*/ $processName, 
+                                       /*Any*/ $params){
+        $this->response->add(
+            new ResponseGenerator(
+                ResponseGenerator::COMMAND_TYPE, 
+                array(
+                    "type" => ResponseGenerator::PROCESS_FUNCTION,
+                    "amd" => $isAmd,
+                    "processName" => $processName,
+                    "params" => $params,
+                )
+            )
+        );                          
+    }
+
     public function addProcessDomFromFunction(/*String*/ $domId, 
                                             /*Boolean*/ $isAmd, 
                                             /*String*/ $processName, 
@@ -131,6 +147,10 @@ class AjaxCmdResponseHandler {
                 ResponseGenerator::INFO_TYPE, 
                 $info));
         
+    }
+    
+    public function getResponse(){
+        return $this->response->getJsonEncoded();
     }
     
 }

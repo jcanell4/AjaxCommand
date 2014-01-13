@@ -198,6 +198,16 @@ class DokuModelWrapper {
         $this->fillInfo();
         return $JSINFO;                        
     }
+    
+    public function getToolbarIds(){
+        return array("varName" => "toolbar", 
+                    "toolbarId" => "tool__bar",
+                    "wikiTextId" => "wiki__text");
+    }
+    
+    public function getSignature(){
+        return toolbar_signature();
+    }
 
     private function runBeforePreprocess(&$content){
         global $ACT;
@@ -263,5 +273,6 @@ class DokuModelWrapper {
         $html_output = ob_get_clean()."\n";
         return $html_output;
     }
+    
 }
 ?>

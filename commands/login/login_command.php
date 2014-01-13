@@ -38,8 +38,13 @@ class login_command extends abstract_page_process_cmd{
 
     //tpl_content(((tpl_getConf("vector_toc_position") === "article") ? true : false));
     protected function _run() {
+        return $this->getResponse();
+    }
+    
+    private function getResponse(){
         global $conf;
-        $ret=new ArrayJSonGenerator();
+        $ret = new AjaxCmdResponseHandler();
+        //$ret=new ArrayJSonGenerator();
         $response=array("loginRequest" => $this->params['do']==='login'
 						,"loginResult" => false);
 
@@ -51,63 +56,80 @@ class login_command extends abstract_page_process_cmd{
 			$response["loginResult"] = false;
         }
 		
-        $ret->add(new ResponseGenerator(ResponseGenerator::LOGIN_INFO,
-				$response));	//afegir si és login(true) o logout(false)
-
-        $ret->add(new ResponseGenerator(ResponseGenerator::SECTOK_DATA,
-				getSecurityToken()));
-        
+        $ret->addLoginInfo($response);
+        $ret->addSectokData(getSecurityToken());
+//        $ret->add(new ResponseGenerator(ResponseGenerator::LOGIN_INFO,
+//				$response));	
+//        $ret->add(new ResponseGenerator(ResponseGenerator::SECTOK_DATA,
+//				getSecurityToken()));        
         if($response["loginResult"]){
-            $ret->add(new ResponseGenerator(ResponseGenerator::COMMAND_TYPE, 
-                  array("type" => ResponseGenerator::JSINFO,
-		    "value" => $this->modelWrapper->getJsInfo(),
-                )));                  
+            $ret->addSetJsInfo($this->modelWrapper->getJsInfo());
+            $ret->addHtmlDoc($this->modelWrapper->getLoginPageResponse());
+            $ret->addChangeWidgetProperty("exitButton", "visible", true);
+            $ret->addChangeWidgetProperty("loginButton", "visible", false);
+            $ret->addReloadWidgetContent("tb_index");
+            //elimina, si existe, la pestaña 'desconectat'
+            $logout = $this->modelWrapper->getLogoutPageResponse();
+            $ret->addRemoveWidgetChild($logout['id']);
+            $sig = $this->modelWrapper->getSignature();
             
-            $ret->add(new ResponseGenerator(ResponseGenerator::HTML_TYPE, 
-					$this->modelWrapper->getLoginPageResponse()));
-            $ret->add(new ResponseGenerator(ResponseGenerator::COMMAND_TYPE, 
-					  array("type" => ResponseGenerator::CHANGE_WIDGET_PROPERTY,
-							"id" => "exitButton", 
-							"propertyName" => "visible", 
-							"propertyValue" => true)));              
-            $ret->add(new ResponseGenerator(ResponseGenerator::COMMAND_TYPE, 
-					  array("type" => ResponseGenerator::CHANGE_WIDGET_PROPERTY,
-							"id" => "loginButton", 
-							"propertyName" => "visible", 
-							"propertyValue" => false)));      
-            $ret->add(new ResponseGenerator(ResponseGenerator::COMMAND_TYPE, 
-                      array("type" => ResponseGenerator::RELOAD_WIDGET_CONTENT,
-							"id" => "tb_index")));
+//            $ret->add(new ResponseGenerator(ResponseGenerator::COMMAND_TYPE, 
+//                  array("type" => ResponseGenerator::JSINFO,
+//		    "value" => $this->modelWrapper->getJsInfo(),
+//                )));                              
+//            $ret->add(new ResponseGenerator(ResponseGenerator::HTML_TYPE, 
+//					$this->modelWrapper->getLoginPageResponse()));
+//            $ret->add(new ResponseGenerator(ResponseGenerator::COMMAND_TYPE, 
+//					  array("type" => ResponseGenerator::CHANGE_WIDGET_PROPERTY,
+//							"id" => "exitButton", 
+//							"propertyName" => "visible", 
+//							"propertyValue" => true)));              
+//            $ret->add(new ResponseGenerator(ResponseGenerator::COMMAND_TYPE, 
+//					  array("type" => ResponseGenerator::CHANGE_WIDGET_PROPERTY,
+//							"id" => "loginButton", 
+//							"propertyName" => "visible", 
+//							"propertyValue" => false)));      
+//            $ret->add(new ResponseGenerator(ResponseGenerator::COMMAND_TYPE, 
+//                      array("type" => ResponseGenerator::RELOAD_WIDGET_CONTENT,
+//							"id" => "tb_index")));
 			//elimina, si existe, la pestaña 'desconectat'
-			$logout = $this->modelWrapper->getLogoutPageResponse();
-			$ret->add(new ResponseGenerator(ResponseGenerator::COMMAND_TYPE, 
-					array("type" => ResponseGenerator::REMOVE_WIDGET_CHILD,
-							"id" => $logout['id'])));
+//			$logout = $this->modelWrapper->getLogoutPageResponse();
+//			$ret->add(new ResponseGenerator(ResponseGenerator::COMMAND_TYPE, 
+//					array("type" => ResponseGenerator::REMOVE_WIDGET_CHILD,
+//							"id" => $logout['id'])));
+        }else{
+            $ret->addChangeWidgetProperty("exitButton", "visible", false);
+            $ret->addChangeWidgetProperty("loginButton", "visible", true);
+            $ret->addReloadWidgetContent("tb_index");
+            $ret->addRemoveAllWidgetChildren("bodyContent");
+            $ret->addRemoveAllWidgetChildren("zonaMetaInfo");
+            $ret->addHtmlDoc($this->modelWrapper->getLogoutPageResponse());
+            $sig = '';
+//            $ret->add(new ResponseGenerator(ResponseGenerator::COMMAND_TYPE, 
+//					  array("type" => ResponseGenerator::CHANGE_WIDGET_PROPERTY,
+//							"id" => "exitButton", 
+//							"propertyName" => "visible", 
+//							"propertyValue" => false)));              
+//            $ret->add(new ResponseGenerator(ResponseGenerator::COMMAND_TYPE, 
+//					  array("type" => ResponseGenerator::CHANGE_WIDGET_PROPERTY,
+//							"id" => "loginButton", 
+//							"propertyName" => "visible", 
+//							"propertyValue" => true)));              
+//            $ret->add(new ResponseGenerator(ResponseGenerator::COMMAND_TYPE, 
+//                      array("type" => ResponseGenerator::RELOAD_WIDGET_CONTENT,
+//							"id" => "tb_index")));
+//            $ret->add(new ResponseGenerator(ResponseGenerator::COMMAND_TYPE, 
+//                      array("type" => ResponseGenerator::REMOVE_ALL_WIDGET_CHILDREN,
+//							"id" => "bodyContent")));
+//            $ret->add(new ResponseGenerator(ResponseGenerator::COMMAND_TYPE, 
+//                      array("type" => ResponseGenerator::REMOVE_ALL_WIDGET_CHILDREN,
+//							"id" => "zonaMetaInfo")));
+//            $ret->add(new ResponseGenerator(ResponseGenerator::HTML_TYPE, 
+//					$this->modelWrapper->getLogoutPageResponse())); 
         }
-		else{
-            $ret->add(new ResponseGenerator(ResponseGenerator::COMMAND_TYPE, 
-					  array("type" => ResponseGenerator::CHANGE_WIDGET_PROPERTY,
-							"id" => "exitButton", 
-							"propertyName" => "visible", 
-							"propertyValue" => false)));              
-            $ret->add(new ResponseGenerator(ResponseGenerator::COMMAND_TYPE, 
-					  array("type" => ResponseGenerator::CHANGE_WIDGET_PROPERTY,
-							"id" => "loginButton", 
-							"propertyName" => "visible", 
-							"propertyValue" => true)));              
-            $ret->add(new ResponseGenerator(ResponseGenerator::COMMAND_TYPE, 
-                      array("type" => ResponseGenerator::RELOAD_WIDGET_CONTENT,
-							"id" => "tb_index")));
-            $ret->add(new ResponseGenerator(ResponseGenerator::COMMAND_TYPE, 
-                      array("type" => ResponseGenerator::REMOVE_ALL_WIDGET_CHILDREN,
-							"id" => "bodyContent")));
-            $ret->add(new ResponseGenerator(ResponseGenerator::COMMAND_TYPE, 
-                      array("type" => ResponseGenerator::REMOVE_ALL_WIDGET_CHILDREN,
-							"id" => "zonaMetaInfo")));
-            $ret->add(new ResponseGenerator(ResponseGenerator::HTML_TYPE, 
-					$this->modelWrapper->getLogoutPageResponse())); //TO DO internacionalització
-        }
-        return $ret->getJsonEncoded();
+        $ret->addProcessFunction(true, "ioc/dokuwiki/setSignature", $sig);
+//        return $ret->getJsonEncoded();  
+        return $ret->getResponse();
     }
     
     private function _logoff(){

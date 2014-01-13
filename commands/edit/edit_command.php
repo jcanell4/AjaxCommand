@@ -57,24 +57,24 @@ class edit_command extends abstract_page_process_cmd{
     
     private function getResponse() {
         global $conf;
-        $ret=new ArrayJSonGenerator();
+        $ret=new AjaxCmdResponseHandler();
         $contentData = $this->modelWrapper->getCodePageResponse(
                                                     $this->params['do'],
                                                     $this->params['id'],
                                                     $this->params['rev'],
                                                     $this->params['range'],
                                                     $this->content);
-//        $pageTitle = $contentData['title'];
-//        $ret->add(new ResponseGenerator(ResponseGenerator::TITLE_TYPE,
-//                $pageTitle." - ".hsc($conf["title"])));
-        $ret->add(new ResponseGenerator(ResponseGenerator::DATA_TYPE, 
-                $contentData));
-        $ret->add(new ResponseGenerator(ResponseGenerator::COMMAND_TYPE, 
-                  array("type" => ResponseGenerator::PROCESS_FUNCTION,
-		    "amd" => true,
-                    "processName" => "ioc/dokuwiki/ace-main",
-                    )));   
-        return $ret->getJsonEncoded();        
+        $ret->addWikiCodeDoc($contentData);
+        $ret->addProcessFunction(true, "ioc/dokuwiki/processEditing", 
+                                $this->modelWrapper->getToolbarIds());
+//        $ret->add(new ResponseGenerator(ResponseGenerator::DATA_TYPE, 
+//                $contentData));
+//        $ret->add(new ResponseGenerator(ResponseGenerator::COMMAND_TYPE, 
+//                  array("type" => ResponseGenerator::PROCESS_FUNCTION,
+//		    "amd" => true,
+//                    "processName" => "ioc/dokuwiki/ace-main",
+//                    )));   
+        return $ret->getResponse();        
     }
 }
 
