@@ -15,9 +15,7 @@ session_write_close();
 
 header('Content-Type: text/html; charset=utf-8');
 
-//global $INPUT;
 global $_SERVER;
-//global $JSINFO;
 global $_GET;
 global $_POST;
 
@@ -78,11 +76,37 @@ function existCommand($command){
 
 function callCommand($str_command, $arr_parameters){
     global $INFO;
+    $respHandObj;
+    
+    $respHandDir = tpl_incdir().'cmd_response_handler/';
+    $respHandClass = $str_command.'_response_handler';
+    $respHandFile = $respHandDir.$respHandClass.'.php';
+    if(@file_exists($respHandFile)){
+        require_once($respHandFile);
+        $respHandObj = new $respHandClass();
+    }else{
+        //CamelCase
+        $respHandClass = strtoupper(substr($str_command, 0,1))
+                                .strtolower(substr($str_command, 1))
+                                .'ResponseHandler';
+        $respHandFile = $respHandDir.$respHandClass.'.php';
+        if(@file_exists($respHandFile)){
+            require_once($respHandFile);
+            $respHandObj = new $respHandClass();
+        }else{
+            $respHandObj=NULL;
+        }        
+    }
     $str_command .= '_command';
     $command = new $str_command();
     
+    if($respHandObj){
+        $command->setResponseHandler($respHandObj);
+    }    
     $command->setParameters($arr_parameters);
+    
     $ret = $command->run($INFO['userinfo']['grps']);
+    
     if($command->error){
         $ret=$command->errorMessage;
     }

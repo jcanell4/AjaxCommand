@@ -7,10 +7,10 @@
 if(!defined('DOKU_INC')) die();
 if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN',DOKU_INC.'lib/plugins/');
 if(!defined('DOKU_COMMAND')) define('DOKU_COMMAND',DOKU_PLUGIN."ajaxcommand/");
-require_once (DOKU_COMMAND.'AjaxCmdResponseHandler.php');
+require_once (DOKU_COMMAND.'AjaxCmdResponseGenerator.php');
 require_once (DOKU_COMMAND.'JsonGenerator.php');
 require_once(DOKU_COMMAND.'abstract_page_process_cmd.php');
-require_once (DOKU_COMMAND.'DokuModelWrapper.php');
+//require_once (DOKU_COMMAND.'DokuModelWrapper.php');
 
 class edit_command extends abstract_page_process_cmd{
 
@@ -57,7 +57,7 @@ class edit_command extends abstract_page_process_cmd{
     
     private function getResponse() {
         global $conf;
-        $ret=new AjaxCmdResponseHandler();
+        $ret=new AjaxCmdResponseGenerator();
         $contentData = $this->modelWrapper->getCodePageResponse(
                                                     $this->params['do'],
                                                     $this->params['id'],
@@ -67,10 +67,10 @@ class edit_command extends abstract_page_process_cmd{
         $ret->addWikiCodeDoc($contentData);
         $ret->addProcessFunction(true, "ioc/dokuwiki/processEditing", 
                                 $this->modelWrapper->getToolbarIds());
-//        $ret->add(new ResponseGenerator(ResponseGenerator::DATA_TYPE, 
+//        $ret->add(new JSonGeneratorImpl(JSonGenerator::DATA_TYPE, 
 //                $contentData));
-//        $ret->add(new ResponseGenerator(ResponseGenerator::COMMAND_TYPE, 
-//                  array("type" => ResponseGenerator::PROCESS_FUNCTION,
+//        $ret->add(new JSonGeneratorImpl(JSonGenerator::COMMAND_TYPE, 
+//                  array("type" => JSonGenerator::PROCESS_FUNCTION,
 //		    "amd" => true,
 //                    "processName" => "ioc/dokuwiki/ace-main",
 //                    )));   

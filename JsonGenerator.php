@@ -1,6 +1,6 @@
 <?php
 /**
- * Description of ResponseGenerator
+ * Description of JSonGeneratorImpl
  *
  * @author professor
  */
@@ -8,11 +8,6 @@ if(!defined('DOKU_INC')) define('DOKU_INC',dirname(__FILE__).'/../../');
 require_once(DOKU_INC.'inc/JSON.php');
 
 interface JsonGenerator{
-    public function getJson();
-    public function getJsonEncoded();    
-}
-
-class ResponseGenerator implements JsonGenerator{
     const HTML_TYPE=0;
     const TITLE_TYPE=1;
     const INFO_TYPE=2;
@@ -31,7 +26,12 @@ class ResponseGenerator implements JsonGenerator{
     const REMOVE_WIDGET_CHILD="remove_widget_child"; //widgetId afectat + widgetId del fill a eliminar
     const REMOVE_ALL_WIDGET_CHILDREN="remove_all_widget_children"; //widgetId afectat
     const JSINFO="jsinfo"; //informació per el javascrip
-        
+
+    public function getJson();
+    public function getJsonEncoded();    
+}
+
+class JSonGeneratorImpl implements JsonGenerator{
     private $value;
     private $type;
     private $encoder;
@@ -43,7 +43,7 @@ class ResponseGenerator implements JsonGenerator{
     }
     
     public function getJson(){
-        //$arrayTypes = ResponseGenerator::TYPES;
+        //$arrayTypes = JSonGenerator::TYPES;
         $arrayTypes = array("html", "title", "info", "command", "error"
                             ,"login", "sectok", "data", "metainfo");
         $data=array(

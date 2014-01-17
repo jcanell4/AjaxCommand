@@ -5,7 +5,10 @@
  *
  * @author professor
  */
-require_once(dirname(__FILE__).'/DokuModelWrapper.php');
+if(!defined('DOKU_INC')) die();
+if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN',DOKU_INC.'lib/plugins/');
+require_once(DOKU_PLUGIN.'ajaxcommand/DokuModelAdapter.php');
+require_once(DOKU_PLUGIN.'ajaxcommand/ResponseHandler.php');
 
 abstract class abstract_command_class {
     const T_BOOLEAN = "boolean";
@@ -17,13 +20,16 @@ abstract class abstract_command_class {
     const T_OBJECT = "object";
     const T_FUNCTION = "function";
     const T_METHOD = "method";
-    
+
+    protected $responseHandler=NULL;
+
     protected $params = array();
     protected $types = array();
     protected $permissionFor = array();
     protected $authenticatedUsersOnly=true;
     protected $runPreprocess=false;
     protected $modelWrapper;
+    
 
     var $content='';
     var $error = false;
@@ -31,7 +37,15 @@ abstract class abstract_command_class {
     var $throwsException=false;
     
     public function __construct() {
-        $this->modelWrapper = new DokuModelWrapper();
+        $this->modelWrapper = new DokuModelAdapter();
+    }
+    
+    public function setResponseHandler($respHand){
+        $this->responseHandler=$respHand;
+    }
+    
+    public function getResponseHandler(){
+        return $this->responseHandler;
     }
 
     public function setThrowsException($onoff){

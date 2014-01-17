@@ -7,10 +7,10 @@
 if(!defined('DOKU_INC')) die();
 if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN',DOKU_INC.'lib/plugins/');
 if(!defined('DOKU_COMMAND')) define('DOKU_COMMAND',DOKU_PLUGIN."ajaxcommand/");
-require_once (DOKU_COMMAND.'AjaxCmdResponseHandler.php');
+require_once (DOKU_COMMAND.'AjaxCmdResponseGenerator.php');
 require_once (DOKU_COMMAND.'JsonGenerator.php');
 require_once(DOKU_COMMAND.'abstract_page_process_cmd.php');
-require_once (DOKU_COMMAND.'DokuModelWrapper.php');
+//require_once (DOKU_COMMAND.'DokuModelWrapper.php');
 
 class page_command extends abstract_page_process_cmd{
 
@@ -48,30 +48,18 @@ class page_command extends abstract_page_process_cmd{
     }
     
     private function getResponse() {
-        global $conf;
-        $ret=new ArrayJSonGenerator();
+        $ret=new AjaxCmdResponseGenerator();
         $contentData = $this->modelWrapper->getFormatedPageResponse();
-        $ret->add(new ResponseGenerator(ResponseGenerator::COMMAND_TYPE, 
-                  array("type" => ResponseGenerator::JSINFO,
-		    "value" => $this->modelWrapper->getJsInfo(),
-                )));                  
+ 
+        if($this->getResponseHandler()){
+            $this->getResponseHandler()->processResponse($this->params, 
+                                                        $contentData, $ret);
+        }else{
+            $ret->addHtmlDoc($contentData["id"], $contentData["ns"],
+                    $contentData["title"], $contentData["content"]);
+        }
         
-        $ret->add(new ResponseGenerator(ResponseGenerator::HTML_TYPE, 
-                $contentData));
-        
-        $metaData = $this->modelWrapper->getMetaResponse();
-        $ret->add(new ResponseGenerator(ResponseGenerator::META_INFO, 
-                $metaData));
-        $ret->add(new ResponseGenerator(ResponseGenerator::COMMAND_TYPE, 
-                  array("type" => ResponseGenerator::PROCESS_DOM_FROM_FUNCTION,
-		    "id" => $contentData['id'], 
-                    "amd" => true,
-                    "processName" => "ioc/dokuwiki/processContentPage",
-                    "params" => array(
-                        "ns" => $contentData['title'], 
-                        "command" => "lib/plugins/ajaxcommand/ajax.php?call=edit",
-                     ))));                  
-        return $ret->getJsonEncoded();        
+        return $ret->getResponse();        
     }
 }
 

@@ -6,13 +6,11 @@
  */
 
 /**
- * Description of DokuModelWrapper
+ * Description of DokuModelAdapter
  *
  * @author professor
  */
 if(!defined('DOKU_INC')) die();
-if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN',DOKU_INC.'lib/plugins/');
-if(!defined('DOKU_COMMAND')) define('DOKU_COMMAND',DOKU_PLUGIN."ajaxcommand/");
 //require common
 require_once DOKU_INC.'inc/actions.php';
 
@@ -58,6 +56,8 @@ function onFormatRender($data){
 }
 
 function onCodeRender($data){
+    global $TEXT;
+    
     switch($data){
             case 'edit':
             case 'recover':
@@ -80,11 +80,14 @@ function wrapper_tpl_toc(){
     return $toc;
 }
 
-class DokuModelWrapper {
+class DokuModelAdapter {
     protected $params;
     protected $dataTmp;
     protected $ppEvt;
     
+    /**
+     * Inicia tractament d'una pàgina de la dokuwiki
+     */
     public function startPageProcess($pdo, $pid=NULL, $prev=NULL, $prange=NULL, 
                 $pdate=NULL, $ppre=NULL, $ptext=NULL, $psuf=null, $psum=NULL){
         global $ID;
@@ -130,6 +133,12 @@ class DokuModelWrapper {
         trigger_event('AJAX_COMMAND_STARTED',  $this->dataTmp);
     }
     
+    /**
+     * Realitza el per-procés d'una pàgina de la dokuwiki en format HTML. 
+     * Permet afegir etiquetes HTML al contingut final durant la fase de 
+     * preprocés 
+     * @return string 
+     */
     public function doFormatedPagePreProcess(){
         $content = "";
         if($this->runBeforePreprocess($content)){
@@ -152,20 +161,11 @@ class DokuModelWrapper {
         return $content;        
     }
     
-    
     public function getFormatedPageResponse(){
+        $id = $this->params['id'];
+        $pageTitle = tpl_pagetitle($this->params['id'], true);
         $pageToSend = $this->getFormatedPage();
         return $this->getContentPage($pageToSend);        
-    }
-    
-    public function getLoginPageResponse(){
-        return $this->getFormatedPageResponse();                
-    }
-    
-    public function getLogoutPageResponse(){
-        return array('id' => "logout_info",
-        'title' => "desconectat",
-        'content' => "Accés restringit. Per accedir cal que us identifiqueu");                
     }
     
     public function getCodePageResponse(){
@@ -205,10 +205,6 @@ class DokuModelWrapper {
                     "wikiTextId" => "wiki__text");
     }
     
-    public function getSignature(){
-        return toolbar_signature();
-    }
-
     private function runBeforePreprocess(&$content){
         global $ACT;
         
@@ -242,6 +238,7 @@ class DokuModelWrapper {
     private function getContentPage($pageToSend){
         $pageTitle = tpl_pagetitle($this->params['id'], true);
         $contentData = array('id' => \str_replace(":", "_",$this->params['id']),
+                                'ns' => $this->params['id'],
                                 'title' => $pageTitle,
                                 'content' => $pageToSend);
         return $contentData;                
@@ -272,7 +269,6 @@ class DokuModelWrapper {
         trigger_event('TPL_ACT_RENDER', $ACT, 'onCodeRender');
         $html_output = ob_get_clean()."\n";
         return $html_output;
-    }
-    
+    }    
 }
 ?>
