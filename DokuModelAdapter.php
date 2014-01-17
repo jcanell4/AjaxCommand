@@ -59,17 +59,17 @@ function onCodeRender($data){
     global $TEXT;
     
     switch($data){
-            case 'edit':
-            case 'recover':
-                html_edit();
-                break;
-            case 'preview':
-                html_edit();
-                html_show($TEXT);
-                break; 
-            case 'denied':
-                print p_locale_xhtml('denied');
-                break;            
+		case 'edit':
+		case 'recover':
+			html_edit();
+			break;
+		case 'preview':
+			html_edit();
+			html_show($TEXT);
+			break; 
+		case 'denied':
+			print p_locale_xhtml('denied');
+			break;            
     }
 }
 

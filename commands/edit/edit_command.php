@@ -1,6 +1,6 @@
 <?php
 /**
- * Description of page_command
+ * Description 
  *
  * @author Josep Cañellas
  */
