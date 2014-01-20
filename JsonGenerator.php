@@ -17,6 +17,8 @@ interface JsonGenerator{
     const SECTOK_DATA=6;
     const DATA_TYPE=7;
     const META_INFO=8;
+    const REMOVE_CONTENT_TAB=9; 
+    const REMOVE_ALL_CONTENT_TAB=10; 
     const PROCESS_FUNCTION="process_function";
     const PROCESS_DOM_FROM_FUNCTION="process_dom_from_function"; //domId afectat + AMD (true/flase) + nom funcio/modul on es troba la funció + extra prams
     const CHANGE_DOM_STYLE="change_dom_style"; //domId afectat + propietat de l'estil a modificar + valor 
@@ -25,6 +27,8 @@ interface JsonGenerator{
     const ADD_WIDGET_CHILD="add_widget_child"; ////widgetId afectat + widgetId del fill a afegir + tipus de widget a crear + JSON amb els paràmetres per defecte
     const REMOVE_WIDGET_CHILD="remove_widget_child"; //widgetId afectat + widgetId del fill a eliminar
     const REMOVE_ALL_WIDGET_CHILDREN="remove_all_widget_children"; //widgetId afectat
+//    const REMOVE_META_TAB="remove_meta_tab"; 
+//    const REMOVE_ALL_META_TAB="remove_all_meta_tab"; 
     const JSINFO="jsinfo"; //informació per el javascrip
 
     public function getJson();
@@ -36,16 +40,18 @@ class JSonGeneratorImpl implements JsonGenerator{
     private $type;
     private $encoder;
     
-    public function __construct(/*integer*/ $type, $valueToSend) {
+    public function __construct(/*integer*/ $type, $valueToSend=NULL) {
         $this->type = $type;
-        $this->value=$valueToSend;
+        if($valueToSend!=NULL){
+            $this->value=$valueToSend;
+        }
         $this->encoder=new JSON();
     }
     
     public function getJson(){
         //$arrayTypes = JSonGenerator::TYPES;
         $arrayTypes = array("html", "title", "info", "command", "error"
-                            ,"login", "sectok", "data", "metainfo");
+                            ,"login", "sectok", "data", "metainfo", "remove", "removeall");
         $data=array(
             "type" => $arrayTypes[$this->type],
             "value" => $this->value,

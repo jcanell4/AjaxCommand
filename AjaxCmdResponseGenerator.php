@@ -141,13 +141,14 @@ class AjaxCmdResponseGenerator {
         
     }
     
-    public function addRemoveWidgetChild(/*String*/ $widgetId){
+    public function addRemoveWidgetChild(/*String*/ $widgetId, /*String*/ $childId){
         $this->response->add(
             new JSonGeneratorImpl(
                 JSonGenerator::COMMAND_TYPE, 
                 array(
                     "type" => JSonGenerator::REMOVE_WIDGET_CHILD,
-                    "id" => $widgetId)));
+                    "id" => $widgetId,
+                    "childId" => $childId)));
         
     }
 
@@ -160,6 +161,36 @@ class AjaxCmdResponseGenerator {
                     "id" => $widgetId)));
         
     }
+
+    public function addRemoveContentTab(/*String*/ $tabId){
+        $this->response->add(
+            new JSonGeneratorImpl(JSonGenerator::REMOVE_CONTENT_TAB, $tabId));
+    }
+
+    public function addRemoveAllContentTab(){
+        $this->response->add(
+            new JSonGeneratorImpl(JSonGenerator::REMOVE_ALL_CONTENT_TAB));
+    }
+
+//    public function addRemoveMetaTab(/*String*/ $tabId){
+//        $this->response->add(
+//            new JSonGeneratorImpl(
+//                JSonGenerator::COMMAND_TYPE, 
+//                array(
+//                    "type" => JSonGenerator::REMOVE_META_TAB,
+//                    "id" => $tabId)));
+//        
+//    }
+//
+//    public function addRemoveAllMetaTab(/*String*/ $widgetId){
+//        $this->response->add(
+//            new JSonGeneratorImpl(
+//                JSonGenerator::COMMAND_TYPE, 
+//                array(
+//                    "type" => JSonGenerator::REMOVE_ALL_META_TAB,
+//                    "id" => $widgetId)));
+//        
+//    }
 
     public function addInfoDta($info){
         $this->response->add(

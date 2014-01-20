@@ -64,9 +64,18 @@ class edit_command extends abstract_page_process_cmd{
                                                     $this->params['rev'],
                                                     $this->params['range'],
                                                     $this->content);
-        $ret->addWikiCodeDoc($contentData);
-        $ret->addProcessFunction(true, "ioc/dokuwiki/processEditing", 
-                                $this->modelWrapper->getToolbarIds());
+        if($this->getResponseHandler()){
+            $this->getResponseHandler()->processResponse($this->params, 
+                                                        $contentData, $ret);
+        }else{
+            $ret->addWikiCodeDoc($contentData["id"], $contentData["ns"],
+                    $contentData["title"], $contentData["content"]);
+        }
+        
+        return $ret->getResponse();        
+        
+//        $ret->addProcessFunction(true, "ioc/dokuwiki/processEditing", 
+//                                $this->modelWrapper->getToolbarIds());
 //        $ret->add(new JSonGeneratorImpl(JSonGenerator::DATA_TYPE, 
 //                $contentData));
 //        $ret->add(new JSonGeneratorImpl(JSonGenerator::COMMAND_TYPE, 
@@ -74,7 +83,7 @@ class edit_command extends abstract_page_process_cmd{
 //		    "amd" => true,
 //                    "processName" => "ioc/dokuwiki/ace-main",
 //                    )));   
-        return $ret->getResponse();        
+//        return $ret->getResponse();        
     }
 }
 
