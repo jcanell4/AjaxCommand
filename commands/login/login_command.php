@@ -49,7 +49,7 @@ class login_command extends abstract_page_process_cmd{
         $response=array("loginRequest" => $this->params['do']==='login'
 						,"loginResult" => false);
 
-	if($this->params['do']==='login'){
+		if($this->params['do']==='login'){
             $response["loginResult"] = $this->isUserAuthenticated();
         }else if($this->isUserAuthenticated()){
             $this->_logoff();
