@@ -19,6 +19,7 @@ abstract class ResponseHandler {
     const LOGIN = 'login';
     const PAGE = 'page';
     const EDIT = 'edit';
+    const CANCEL = 'cancel';
 
     private $cmd;
     

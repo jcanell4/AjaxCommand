@@ -17,6 +17,7 @@ require_once DOKU_INC.'inc/actions.php';
 
 if(!defined('DW_DEFAULT_PAGE')) define('DW_DEFAULT_PAGE',"start");
 if(!defined('DW_ACT_SHOW')) define('DW_ACT_SHOW',"show");
+if(!defined('DW_ACT_DRAFTDEL')) define('DW_ACT_DRAFTDEL',"draftdel");
 if(!defined('DW_ACT_EDIT')) define('DW_ACT_EDIT',"edit");
 if(!defined('DW_ACT_PREVIEW')) define('DW_ACT_PREVIEW',"preview");
 if(!defined('DW_ACT_RECOVER')) define('DW_ACT_RECOVER',"recover");
@@ -159,6 +160,12 @@ class DokuModelAdapter {
         }
         $this->runAfterPreprocess($content);
         return $content;        
+    }
+    
+    public function doCancelEditPreProcess(){
+        global $ACT;
+        
+        $ACT = act_draftdel($ACT);
     }
     
     public function getFormatedPageResponse(){
