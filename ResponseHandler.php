@@ -20,6 +20,7 @@ abstract class ResponseHandler {
     const PAGE = 'page';
     const EDIT = 'edit';
     const CANCEL = 'cancel';
+    const SAVE = 'save';
 
     private $cmd;
     

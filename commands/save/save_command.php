@@ -12,27 +12,29 @@ require_once (DOKU_COMMAND.'JsonGenerator.php');
 require_once(DOKU_COMMAND.'abstract_page_process_cmd.php');
 //require_once (DOKU_COMMAND.'DokuModelWrapper.php');
 
-class edit_command extends abstract_page_process_cmd{
+class save_command extends abstract_page_process_cmd{
 
     public function __construct() {
         parent::__construct();
         $this->types['id'] = abstract_command_class::T_STRING;
-//        $this->types['idx'] = abstract_command_class::T_STRING;
-        $this->types['do'] = abstract_command_class::T_STRING;
         $this->types['rev'] = abstract_command_class::T_STRING;
         $this->types['range'] = abstract_command_class::T_STRING;
         $this->types['date'] = abstract_command_class::T_STRING; 
+        $this->types['prefix'] = abstract_command_class::T_STRING; 
+        $this->types['suffix'] = abstract_command_class::T_STRING; 
+        $this->types['changecheck'] = abstract_command_class::T_STRING; 
+        $this->types['target'] = abstract_command_class::T_STRING; 
+        $this->types['summary'] = abstract_command_class::T_STRING; 
 
         $defaultValues = array(
             'id' => 'index',
-            'do' => 'edit',
         );
 
         $this->setParameters($defaultValues);        
     }
     
     public function getDwAct(){
-        return $this->params['do'];
+        return DW_ACT_SAVE;
     }
     
     public function getDwId() {
@@ -46,9 +48,29 @@ class edit_command extends abstract_page_process_cmd{
     public function getDwRange() {
         return $this->params['range'];
     }
+    
+    public function getDwDate() {
+        return $this->params['date'];
+    }
+
+    public function getDwPre() {
+        return $this->params['prefix'];
+    }
+    
+    public function getDwSuf() {
+        return $this->params['suffix'];
+    }
+    
+    public function getDwSum() {
+        return $this->params['summary'];
+    }
+    
+    public function getDwText() {
+        return $this->params['wikitext'];
+    }
 
     protected function preprocess() {
-        $this->modelWrapper->doEditPagePreProcess();
+        $this->modelWrapper->doSavePreProcess();
     }
 
     protected function _run() {
@@ -58,12 +80,7 @@ class edit_command extends abstract_page_process_cmd{
     private function getResponse() {
         global $conf;
         $ret=new AjaxCmdResponseGenerator();
-        $contentData = $this->modelWrapper->getCodePageResponse(/*
-                                                    $this->params['do'],
-                                                    $this->params['id'],
-                                                    $this->params['rev'],
-                                                    $this->params['range'],
-                                                    $this->content*/);
+        $contentData = $this->modelWrapper->getCodePageResponse();
         if($this->getResponseHandler()){
             $this->getResponseHandler()->processResponse($this->params, 
                                                         $contentData, $ret);
@@ -73,17 +90,6 @@ class edit_command extends abstract_page_process_cmd{
         }
         
         return $ret->getResponse();        
-        
-//        $ret->addProcessFunction(true, "ioc/dokuwiki/processEditing", 
-//                                $this->modelWrapper->getToolbarIds());
-//        $ret->add(new JSonGeneratorImpl(JSonGenerator::DATA_TYPE, 
-//                $contentData));
-//        $ret->add(new JSonGeneratorImpl(JSonGenerator::COMMAND_TYPE, 
-//                  array("type" => JSonGenerator::PROCESS_FUNCTION,
-//		    "amd" => true,
-//                    "processName" => "ioc/dokuwiki/ace-main",
-//                    )));   
-//        return $ret->getResponse();        
     }
 }
 

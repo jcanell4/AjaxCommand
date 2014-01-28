@@ -40,7 +40,6 @@ class cancel_command extends abstract_page_process_cmd{
     
     public function preprocess() {
         return $this->modelWrapper->doCancelEditPreprocess();
-//        return $this->modelWrapper->doFormatedPagePreProcess();
     }
 
     protected function _run() {

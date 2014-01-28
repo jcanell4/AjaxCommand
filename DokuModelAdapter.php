@@ -18,6 +18,7 @@ require_once DOKU_INC.'inc/actions.php';
 if(!defined('DW_DEFAULT_PAGE')) define('DW_DEFAULT_PAGE',"start");
 if(!defined('DW_ACT_SHOW')) define('DW_ACT_SHOW',"show");
 if(!defined('DW_ACT_DRAFTDEL')) define('DW_ACT_DRAFTDEL',"draftdel");
+if(!defined('DW_ACT_DRAFTDEL')) define('DW_ACT_SAVE',"save");
 if(!defined('DW_ACT_EDIT')) define('DW_ACT_EDIT',"edit");
 if(!defined('DW_ACT_PREVIEW')) define('DW_ACT_PREVIEW',"preview");
 if(!defined('DW_ACT_RECOVER')) define('DW_ACT_RECOVER',"recover");
@@ -116,13 +117,13 @@ class DokuModelAdapter {
             $DATE = $this->params['date'] = $pdate;
         }
         if($ppre){
-            $PRE = $this->params['pre'] = $ppre;
+            $PRE = $this->params['pre'] = cleanText(substr($ppre, 0, -1));
         }
-        if($ptext){
-            $TEXT = $this->params['text'] = $ptext;
+        if($ptext){            
+            $TEXT = $this->params['text'] = cleanText($ptext);            
         }
         if($psuf){
-            $SUF = $this->params['suf'] = $psuf;
+            $SUF = $this->params['suf'] = cleanText($psuf);
         }
         if($psum){
             $SUM = $this->params['sum'] = $psum;
@@ -162,10 +163,19 @@ class DokuModelAdapter {
         return $content;        
     }
     
+    public function doSavePreProcess(){
+        global $ACT;
+        
+        act_save($ACT);
+        $ACT = $this->params['do'] = "edit";
+        $this->doEditPagePreProcess();
+    }
+    
     public function doCancelEditPreProcess(){
         global $ACT;
         
         $ACT = act_draftdel($ACT);
+        $this->doFormatedPagePreProcess();
     }
     
     public function getFormatedPageResponse(){

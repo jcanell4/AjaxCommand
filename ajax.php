@@ -19,22 +19,25 @@ global $_SERVER;
 global $_GET;
 global $_POST;
 
+$method = $_SERVER['REQUEST_METHOD'];
 //call the requested function
 if(isset($_POST['call'])){
+    $without = 'call';
     $call = $_POST['call'];
-    $params = getParams('post', 'call');
 }else if(isset($_GET['call'])){
+    $without = 'call';
     $call = $_GET['call'];
-    $params = getParams('get', 'call');
 }else if(isset($_POST['ajax'])){
+    $without = 'ajax';
     $call = $_POST['ajax'];
-    $params = getParams('post', 'ajax');
 }else if(isset($_GET['ajax'])){
+    $without = 'ajax';
     $call = $_GET['ajax'];
-    $params = getParams('get', 'ajax');
 }else{
     exit;
 }
+$params = getParams($without);
+
 
 //if(!checkSecurityToken()) die("CSRF Attack");
 
@@ -113,9 +116,20 @@ function callCommand($str_command, $arr_parameters){
     return $ret;
 }
 
-function getParams($input, $without){
+function getParams($without){
     global $JSINFO;
     $params = array();
+    foreach ($_GET as $key => $value){
+        if($key!==$without || $key!==$JSINFO['sectokParamName']){
+            $params[$key]=$value;
+        }
+    }
+    foreach ($_POST as $key => $value){
+        if($key!==$without || $key!==$JSINFO['sectokParamName']){
+            $params[$key]=$value;
+        }
+    }
+    /*
     switch ($input){
         case 'post':
             foreach ($_POST as $key => $value){
@@ -131,6 +145,7 @@ function getParams($input, $without){
                 }
             }
     }
+    */
     return $params;    
 }
 
