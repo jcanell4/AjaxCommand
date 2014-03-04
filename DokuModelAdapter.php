@@ -251,8 +251,7 @@ class DokuModelAdapter {
         $JSINFO['id']        = $ID;
         $JSINFO['namespace'] = (string) $INFO['namespace']; 
     }
-
-    private function getContentPage($pageToSend){
+   private function getContentPage($pageToSend){
         $pageTitle = tpl_pagetitle($this->params['id'], true);
         $contentData = array('id' => \str_replace(":", "_",$this->params['id']),
                                 'ns' => $this->params['id'],
