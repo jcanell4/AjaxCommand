@@ -132,7 +132,7 @@ class DokuModelAdapter {
         $this->fillInfo();
         
 //        trigger_event('DOKUWIKI_STARTED',  $this->dataTmp);
-        trigger_event('AJAX_COMMAND_STARTED',  $this->dataTmp);
+//        trigger_event('WIOC_AJAX_COMMAND_STARTED',  $this->dataTmp);
     }
     
     /**
@@ -194,7 +194,7 @@ class DokuModelAdapter {
         global $lang;
         $ret=array('docId' => \str_replace(":", "_",$this->params['id']));
         $meta=array();
-        $mEvt = new Doku_Event('ADD_META', $meta);                
+        $mEvt = new Doku_Event('WIOC_ADD_META', $meta);                
         if($mEvt ->advise_before()){
             $toc = wrapper_tpl_toc();
             $metaId = \str_replace(":", "_",$this->params['id']).'_toc';
