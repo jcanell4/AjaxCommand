@@ -9,10 +9,9 @@ if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN',DOKU_INC.'lib/plugins/');
 if(!defined('DOKU_COMMAND')) define('DOKU_COMMAND',DOKU_PLUGIN."ajaxcommand/");
 require_once (DOKU_COMMAND.'AjaxCmdResponseGenerator.php');
 require_once (DOKU_COMMAND.'JsonGenerator.php');
-require_once(DOKU_COMMAND.'abstract_page_process_cmd.php');
-//require_once (DOKU_COMMAND.'DokuModelWrapper.php');
+require_once(DOKU_COMMAND.'abstract_command_class.php');
 
-class edit_command extends abstract_page_process_cmd{
+class edit_command extends abstract_command_class{
 
     public function __construct() {
         parent::__construct();
@@ -30,60 +29,20 @@ class edit_command extends abstract_page_process_cmd{
 
         $this->setParameters($defaultValues);        
     }
-    
-    public function getDwAct(){
-        return $this->params['do'];
-    }
-    
-    public function getDwId() {
-        return $this->params['id'];
-    }
-
-    public function getDwRev() {
-        return $this->params['rev'];
-    }
-
-    public function getDwRange() {
-        return $this->params['range'];
-    }
-
-    protected function preprocess() {
-        $this->modelWrapper->doEditPagePreProcess();
-    }
 
     protected function _run() {
-        return $this->getResponse();
+        $contentData = $this->modelWrapper->getCodePage(
+            $this->params['do'],
+            $this->params['id'],
+            $this->params['rev'],
+            $this->params['range']
+        );    
+        return $contentData;
     }
     
-    private function getResponse() {
-        global $conf;
-        $ret=new AjaxCmdResponseGenerator();
-        $contentData = $this->modelWrapper->getCodePageResponse(/*
-                                                    $this->params['do'],
-                                                    $this->params['id'],
-                                                    $this->params['rev'],
-                                                    $this->params['range'],
-                                                    $this->content*/);
-        if($this->getResponseHandler()){
-            $this->getResponseHandler()->processResponse($this->params, 
-                                                        $contentData, $ret);
-        }else{
-            $ret->addWikiCodeDoc($contentData["id"], $contentData["ns"],
+    protected function getDefaultResponse($response, &$ret) {
+        $ret->addWikiCodeDoc($contentData["id"], $contentData["ns"],
                     $contentData["title"], $contentData["content"]);
-        }
-        
-        return $ret->getResponse();        
-        
-//        $ret->addProcessFunction(true, "ioc/dokuwiki/processEditing", 
-//                                $this->modelWrapper->getToolbarIds());
-//        $ret->add(new JSonGeneratorImpl(JSonGenerator::DATA_TYPE, 
-//                $contentData));
-//        $ret->add(new JSonGeneratorImpl(JSonGenerator::COMMAND_TYPE, 
-//                  array("type" => JSonGenerator::PROCESS_FUNCTION,
-//		    "amd" => true,
-//                    "processName" => "ioc/dokuwiki/ace-main",
-//                    )));   
-//        return $ret->getResponse();        
     }
 }
 

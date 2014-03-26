@@ -13,6 +13,7 @@
 if(!defined('DOKU_INC')) die();
 //require common
 require_once DOKU_INC.'inc/actions.php';
+require_once(DOKU_COMMAND.'DokuModel.php');
 
 
 if(!defined('DW_DEFAULT_PAGE')) define('DW_DEFAULT_PAGE',"start");
@@ -82,15 +83,46 @@ function wrapper_tpl_toc(){
     return $toc;
 }
 
-class DokuModelAdapter {
+class DokuModelAdapter implements DokuModel{
     protected $params;
     protected $dataTmp;
     protected $ppEvt;
     
+    public function getHtmlPage($pid, $prev=NULL){
+        $this->startPageProcess(DW_ACT_SHOW, $pid, $prev);
+        $this->doFormatedPagePreProcess();
+        return $this->getFormatedPageResponse();
+    }
+    
+    public function getCodePage($pdo, $pid, $prev=NULL, $prange=NULL){
+         $this->startPageProcess($pdo, $pid, $prev, $prange);
+         $this->doEditPagePreProcess();
+         return $this->getCodePageResponse();
+    }
+    
+    public function cancelEdition($pid, $prev=NULL){
+        $this->startPageProcess(DW_ACT_DRAFTDEL, $pid, $prev);
+        $this->doCancelEditPreprocess();
+        return $this->getFormatedPageResponse();
+    }
+    
+    public function saveEdition($pid, $prev=NULL, $prange=NULL, 
+                $pdate=NULL, $ppre=NULL, $ptext=NULL, $psuf=null, $psum=NULL){
+        $this->startPageProcess(DW_ACT_SAVE, $pid, $prev, $prange, $pdate, 
+                                $ppre, $ptext, $psuf, $psum);
+        $this->doSavePreProcess();
+        $this->doEditPagePreProcess();
+        return $this->getCodePageResponse();
+    }
+    
+    public function isDenied(){
+        return $this->params['do']==DW_ACT_DENIED;
+    }
+
     /**
      * Inicia tractament d'una pàgina de la dokuwiki
      */
-    public function startPageProcess($pdo, $pid=NULL, $prev=NULL, $prange=NULL, 
+    private function startPageProcess($pdo, $pid=NULL, $prev=NULL, $prange=NULL, 
                 $pdate=NULL, $ppre=NULL, $ptext=NULL, $psuf=null, $psum=NULL){
         global $ID;
         global $ACT;
@@ -141,7 +173,7 @@ class DokuModelAdapter {
      * preprocés 
      * @return string 
      */
-    public function doFormatedPagePreProcess(){
+    private function doFormatedPagePreProcess(){
         $content = "";
         if($this->runBeforePreprocess($content)){
             unlock($this->params['id']); //try to unlock   
@@ -150,7 +182,7 @@ class DokuModelAdapter {
         return $content;
     }
     
-    public function doEditPagePreProcess(){
+    private function doEditPagePreProcess(){
         global $ACT;
         
         $content = "";
@@ -163,7 +195,7 @@ class DokuModelAdapter {
         return $content;        
     }
     
-    public function doSavePreProcess(){
+    private function doSavePreProcess(){
         global $ACT;
         
         act_save($ACT);
@@ -171,26 +203,26 @@ class DokuModelAdapter {
         $this->doEditPagePreProcess();
     }
     
-    public function doCancelEditPreProcess(){
+    private function doCancelEditPreProcess(){
         global $ACT;
         
         $ACT = act_draftdel($ACT);
         $this->doFormatedPagePreProcess();
     }
     
-    public function getFormatedPageResponse(){
+    private function getFormatedPageResponse(){
         $id = $this->params['id'];
         $pageTitle = tpl_pagetitle($this->params['id'], true);
         $pageToSend = $this->getFormatedPage();
         return $this->getContentPage($pageToSend);        
     }
     
-    public function getCodePageResponse(){
-        $pageToSend = $this->getCodePage();
+    private function getCodePageResponse(){
+        $pageToSend = $this->_getCodePage();
         return $this->getContentPage($pageToSend);        
     }
     
-    public function getMetaResponse(){
+    private function getMetaResponse(){
         global $lang;
         $ret=array('docId' => \str_replace(":", "_",$this->params['id']));
         $meta=array();
@@ -206,17 +238,13 @@ class DokuModelAdapter {
         return $ret;        
     }
     
-    public function isDenied(){
-        return $this->params['do']==DW_ACT_DENIED;
-    }
-
-    public function getJsInfo(){
+    private function getJsInfo(){
         global $JSINFO;
         $this->fillInfo();
         return $JSINFO;                        
     }
     
-    public function getToolbarIds(){
+    private function getToolbarIds(){
         return array("varName" => "toolbar", 
                     "toolbarId" => "tool__bar",
                     "wikiTextId" => "wiki__text");
@@ -278,7 +306,7 @@ class DokuModelAdapter {
         return $html_output;
     }
 
-    private function getCodePage(){
+    private function _getCodePage(){
         global $ACT;
 
         ob_start();

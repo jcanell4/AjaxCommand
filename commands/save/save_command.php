@@ -9,10 +9,10 @@ if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN',DOKU_INC.'lib/plugins/');
 if(!defined('DOKU_COMMAND')) define('DOKU_COMMAND',DOKU_PLUGIN."ajaxcommand/");
 require_once (DOKU_COMMAND.'AjaxCmdResponseGenerator.php');
 require_once (DOKU_COMMAND.'JsonGenerator.php');
-require_once(DOKU_COMMAND.'abstract_page_process_cmd.php');
+require_once(DOKU_COMMAND.'abstract_command_class.php');
 //require_once (DOKU_COMMAND.'DokuModelWrapper.php');
 
-class save_command extends abstract_page_process_cmd{
+class save_command extends abstract_command_class{
 
     public function __construct() {
         parent::__construct();
@@ -33,63 +33,19 @@ class save_command extends abstract_page_process_cmd{
         $this->setParameters($defaultValues);        
     }
     
-    public function getDwAct(){
-        return DW_ACT_SAVE;
-    }
-    
-    public function getDwId() {
-        return $this->params['id'];
-    }
-
-    public function getDwRev() {
-        return $this->params['rev'];
-    }
-
-    public function getDwRange() {
-        return $this->params['range'];
-    }
-    
-    public function getDwDate() {
-        return $this->params['date'];
-    }
-
-    public function getDwPre() {
-        return $this->params['prefix'];
-    }
-    
-    public function getDwSuf() {
-        return $this->params['suffix'];
-    }
-    
-    public function getDwSum() {
-        return $this->params['summary'];
-    }
-    
-    public function getDwText() {
-        return $this->params['wikitext'];
-    }
-
-    protected function preprocess() {
-        $this->modelWrapper->doSavePreProcess();
-    }
-
     protected function _run() {
-        return $this->getResponse();
+        $ret = $this->modelWrapper->saveEdition(
+                        $this->params['id'], $this->params['rev'], 
+                        $this->params['range'], $this->params['date'], 
+                        $this->params['prefix'], $this->params['wikitext'], 
+                        $this->params['suffix'], $this->params['summary']                
+        );
+        return $ret;
     }
     
-    private function getResponse() {
-        global $conf;
-        $ret=new AjaxCmdResponseGenerator();
-        $contentData = $this->modelWrapper->getCodePageResponse();
-        if($this->getResponseHandler()){
-            $this->getResponseHandler()->processResponse($this->params, 
-                                                        $contentData, $ret);
-        }else{
-            $ret->addWikiCodeDoc($contentData["id"], $contentData["ns"],
+    protected function getDefaultResponse($response, &$ret) {
+        $ret->addWikiCodeDoc($contentData["id"], $contentData["ns"],
                     $contentData["title"], $contentData["content"]);
-        }
-        
-        return $ret->getResponse();        
     }
 }
 

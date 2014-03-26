@@ -8,7 +8,7 @@
 if(!defined('DOKU_INC')) die();
 if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN',DOKU_INC.'lib/plugins/');
 require_once(DOKU_PLUGIN.'ajaxcommand/DokuModelAdapter.php');
-require_once(DOKU_PLUGIN.'ajaxcommand/ResponseHandler.php');
+require_once(DOKU_PLUGIN.'ajaxcommand/AbstractResponseHandler.php');
 
 abstract class abstract_command_class {
     const T_BOOLEAN = "boolean";
@@ -59,43 +59,7 @@ abstract class abstract_command_class {
     protected function setParameterDefaultValues($defaultValue){
         $this->setParameters($defaultValue);
     }
-    
-    public function getDwAct(){
-        return "";
-    }
-    
-    public function getDwId(){
-        return "";
-    }
-    
-    public function getDwRev(){
-        return NULL;
-    }
-    
-    public function getDwRange(){
-        return NULL;
-    }
-    
-    public function getDwDate(){
-        return NULL;
-    }
-    
-    public function getDwPre(){
-        return NULL;
-    }
-    
-    public function getDwText(){
-        return NULL;
-    }
-    
-    public function getDwSuf(){
-        return NULL;
-    }
-    
-    public function getDwSum(){
-        return NULL;
-    }
-    
+       
     public function setParameters($params){
         foreach ($params as $key => $value){
             if(isset($this->types[$key]) 
@@ -112,12 +76,9 @@ abstract class abstract_command_class {
                 && $this->isUserAuthenticated()
                 && $this->isAuthorized($permission)){
             
-            $ret="";
-            $this->startCommand();
-            $ret .= $this->preprocess();
-            $ret .= $this->_run();  
+            $ret = $this->getResponse();  
             
-//            $this->_finish();
+            
             if($this->modelWrapper->isDenied()){
                 $this->error=true;
                 $this->errorMessage="permission denied"; /*TODO internacionalització */
@@ -132,9 +93,22 @@ abstract class abstract_command_class {
         return $ret ;
     }
     
-    abstract protected function startCommand();
-
-    abstract protected function preprocess();
+    protected function getResponse(){
+        $ret=new AjaxCmdResponseGenerator();
+        $response = $this->_run();
+ 
+        if($this->getResponseHandler()){
+            $this->getResponseHandler()->processResponse($this->params, 
+                                                        $response, $ret);
+        }else{
+            $this->getDefaultResponse($response, $ret);
+        }
+        
+        return $ret->getResponse();        
+        
+    }
+    
+    protected abstract function getDefaultResponse($response, &$responseGenerator);
 
     protected function isUserAuthenticated(){
         global $_SERVER;
@@ -154,8 +128,6 @@ abstract class abstract_command_class {
     }
 
     protected abstract function _run();
-//    protected function _finish(){        
-//    }
 }
 
 ?>

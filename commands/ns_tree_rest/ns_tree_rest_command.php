@@ -81,11 +81,11 @@ class ns_tree_rest_command extends abstract_rest_command_class{
         
     }
     
-    protected function startCommand(){        
-    }
-    
-    protected function preprocess(){        
-    }
+//    protected function startCommand(){        
+//    }
+//    
+//    protected function preprocess(){        
+//    }
 }
 
 ?>

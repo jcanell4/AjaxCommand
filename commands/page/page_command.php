@@ -9,10 +9,10 @@ if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN',DOKU_INC.'lib/plugins/');
 if(!defined('DOKU_COMMAND')) define('DOKU_COMMAND',DOKU_PLUGIN."ajaxcommand/");
 require_once (DOKU_COMMAND.'AjaxCmdResponseGenerator.php');
 require_once (DOKU_COMMAND.'JsonGenerator.php');
-require_once(DOKU_COMMAND.'abstract_page_process_cmd.php');
+require_once(DOKU_COMMAND.'abstract_command_class.php');
 //require_once (DOKU_COMMAND.'DokuModelWrapper.php');
 
-class page_command extends abstract_page_process_cmd{
+class page_command extends abstract_command_class{
 
     public function __construct() {
         parent::__construct();
@@ -27,39 +27,18 @@ class page_command extends abstract_page_process_cmd{
 
         $this->setParameters($defaultValues);        
     }
-    
-    public function getDwAct(){
-        return DW_ACT_SHOW;
-    }
-    public function getDwId() {
-        return $this->params['id'];
-    }
-
-    public function getDwRev() {
-        return $this->params['rev'];
-    }
-    
-    public function preprocess() {
-        return $this->modelWrapper->doFormatedPagePreProcess();
-    }
 
     protected function _run() {
-        return $this->getResponse();
+        $contentData = $this->modelWrapper->getHtmlPage(
+                $this->params['id'],
+                $this->params['rev']
+        );
+        return $contentData;
     }
     
-    private function getResponse() {
-        $ret=new AjaxCmdResponseGenerator();
-        $contentData = $this->modelWrapper->getFormatedPageResponse();
- 
-        if($this->getResponseHandler()){
-            $this->getResponseHandler()->processResponse($this->params, 
-                                                        $contentData, $ret);
-        }else{
-            $ret->addHtmlDoc($contentData["id"], $contentData["ns"],
+    protected function getDefaultResponse($response, &$responseGenerator) {
+        $responseGenerator->addHtmlDoc($contentData["id"], $contentData["ns"],
                     $contentData["title"], $contentData["content"]);
-        }
-        
-        return $ret->getResponse();        
     }
 }
 

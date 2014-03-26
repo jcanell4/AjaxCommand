@@ -113,6 +113,13 @@ abstract class abstract_rest_command_class extends abstract_command_class {
     protected function _run() {
         $this->dispatchRequest($this->params['method']);
     }    
+    
+    protected function getDefaultResponse($response, &$responseGenerator) {
+    }
+
+    protected function getResponse(){
+        return $this->_run();
+    }    
 }
 
 ?>

@@ -6,7 +6,7 @@
  */
 
 /**
- * Description of ResponseHandler
+ * Description of AbstractResponseHandler
  *
  * @author Josep Cañellas <jcanell4@ioc.cat>
  */
@@ -15,7 +15,7 @@ if (!defined("DOKU_INC")) die();
 if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN',DOKU_INC.'lib/plugins/');
 require_once(DOKU_PLUGIN.'ajaxcommand/AjaxCmdResponseGenerator.php');
 
-abstract class ResponseHandler {
+abstract class AbstractResponseHandler {
     const LOGIN = 'login';
     const PAGE = 'page';
     const EDIT = 'edit';
