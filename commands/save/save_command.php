@@ -33,7 +33,7 @@ class save_command extends abstract_command_class{
         $this->setParameters($defaultValues);        
     }
     
-    protected function _run() {
+    protected function process() {
         $ret = $this->modelWrapper->saveEdition(
                         $this->params['id'], $this->params['rev'], 
                         $this->params['range'], $this->params['date'], 

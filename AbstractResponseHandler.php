@@ -35,16 +35,16 @@ abstract class AbstractResponseHandler {
     public function processResponse($requestParams, 
                                             $responseData, 
                                             &$ajaxCmdResponseGenerator){
-        $this->preProcess($requestParams, $ajaxCmdResponseGenerator);
-        $this->process($requestParams, $responseData, $ajaxCmdResponseGenerator);
-        $this->postProcess($requestParams, $responseData, $ajaxCmdResponseGenerator);        
+        $this->preResponse($requestParams, $ajaxCmdResponseGenerator);
+        $this->response($requestParams, $responseData, $ajaxCmdResponseGenerator);
+        $this->postResponse($requestParams, $responseData, $ajaxCmdResponseGenerator);        
     }
     
-    protected abstract function process($requestParams, $responseData, 
+    protected abstract function response($requestParams, $responseData, 
                                                   &$ajaxCmdResponseGenerator);
-    protected abstract function preProcess($requestParams, 
+    protected abstract function preResponse($requestParams, 
                                                   &$ajaxCmdResponseGenerator);    
-    protected abstract function postProcess($requestParams, $responseData, 
+    protected abstract function postResponse($requestParams, $responseData, 
                                                   &$ajaxCmdResponseGenerator);
 }
 

@@ -8,6 +8,7 @@
 
 if(!defined('DOKU_INC')) define('DOKU_INC',dirname(__FILE__).'/../../../');
 require_once(DOKU_INC.'inc/init.php');
+require_once(DOKU_INC.'inc/template.php');
 if(!defined('DOKU_COMMANDS')) define('DOKU_COMMANDS',dirname(__FILE__).'/commands/');
 //close session
 session_write_close();
@@ -81,7 +82,12 @@ function callCommand($str_command, $arr_parameters){
     global $INFO;
     $respHandObj;
     
-    $respHandDir = tpl_incdir().'cmd_response_handler/';
+    if(is_callable('tpl_incdir')){
+        $tpl_incdir=  tpl_incdir();
+    }else{
+        $tpl_incdir = DOKU_TPLINC;
+    }
+    $respHandDir = $tpl_incdir.'cmd_response_handler/';
     $respHandClass = $str_command.'_response_handler';
     $respHandFile = $respHandDir.$respHandClass.'.php';
     if(@file_exists($respHandFile)){

@@ -28,7 +28,7 @@ class page_command extends abstract_command_class{
         $this->setParameters($defaultValues);        
     }
 
-    protected function _run() {
+    protected function process() {
         $contentData = $this->modelWrapper->getHtmlPage(
                 $this->params['id'],
                 $this->params['rev']

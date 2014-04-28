@@ -110,7 +110,7 @@ abstract class abstract_rest_command_class extends abstract_command_class {
       $this->methodNotAllowedResponse();
     }
     
-    protected function _run() {
+    protected function process() {
         $this->dispatchRequest($this->params['method']);
     }    
     
@@ -118,7 +118,7 @@ abstract class abstract_rest_command_class extends abstract_command_class {
     }
 
     protected function getResponse(){
-        return $this->_run();
+        return $this->process();
     }    
 }
 
