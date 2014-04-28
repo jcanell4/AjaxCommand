@@ -11,12 +11,12 @@ require_once (DOKU_COMMAND.'AjaxCmdResponseGenerator.php');
 require_once(DOKU_COMMAND.'abstract_command_class.php');
 
 
-class commandreport_command extends abstract_command_class{
+class auth_commandreport_command extends abstract_command_class{
 
     public function __construct() {
         
         parent::__construct();
-        $this->authenticatedUsersOnly=false;
+        $this->authenticatedUsersOnly=true;
     }
     
     protected function process() {
