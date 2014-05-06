@@ -13,7 +13,7 @@
 if(!defined('DOKU_INC')) die();
 //require common
 require_once DOKU_INC.'inc/actions.php';
-require_once(DOKU_COMMAND.'DokuModel.php');
+require_once(DOKU_COMMAND.'WikiIocModel.php');
 
 
 if(!defined('DW_DEFAULT_PAGE')) define('DW_DEFAULT_PAGE',"start");
@@ -83,7 +83,7 @@ function wrapper_tpl_toc(){
     return $toc;
 }
 
-class DokuModelAdapter implements DokuModel{
+class DokuModelAdapter implements WikiIocModel{
     protected $params;
     protected $dataTmp;
     protected $ppEvt;
