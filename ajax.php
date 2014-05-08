@@ -83,11 +83,11 @@ function callCommand($str_command, $arr_parameters){
     $respHandObj;
     
     if(is_callable('tpl_incdir')){
-        $tpl_incdir=  tpl_incdir();
+        $tplincdir=  tpl_incdir();
     }else{
-        $tpl_incdir = DOKU_TPLINC;
+        $tplincdir = DOKU_TPLINC;
     }
-    $respHandDir = $tpl_incdir.'cmd_response_handler/';
+    $respHandDir = $tplincdir.'cmd_response_handler/';
     $respHandClass = $str_command.'_response_handler';
     $respHandFile = $respHandDir.$respHandClass.'.php';
     if(@file_exists($respHandFile)){
