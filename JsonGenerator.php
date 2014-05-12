@@ -10,6 +10,7 @@ require_once(DOKU_INC.'inc/JSON.php');
 interface JsonGenerator{
     const HTML_TYPE=0;
     const TITLE_TYPE=1;
+    const INFO_RESPONSE_CODE=11;
     const INFO_TYPE=2;
     const COMMAND_TYPE=3;
     const ERROR_TYPE=4;
@@ -51,7 +52,8 @@ class JSonGeneratorImpl implements JsonGenerator{
     public function getJson(){
         //$arrayTypes = JSonGenerator::TYPES;
         $arrayTypes = array("html", "title", "info", "command", "error"
-                            ,"login", "sectok", "data", "metainfo", "remove", "removeall");
+                            ,"login", "sectok", "data", "metainfo", "remove"
+                            ,"removeall", "resp_code");
         $data=array(
             "type" => $arrayTypes[$this->type],
             "value" => $this->value,

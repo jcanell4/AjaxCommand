@@ -36,7 +36,7 @@ class page_command extends abstract_command_class{
         return $contentData;
     }
     
-    protected function getDefaultResponse($response, &$responseGenerator) {
+    protected function getDefaultResponse($contentData, &$responseGenerator) {
         $responseGenerator->addHtmlDoc($contentData["id"], $contentData["ns"],
                     $contentData["title"], $contentData["content"]);
     }
