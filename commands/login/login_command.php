@@ -27,7 +27,7 @@ class login_command extends abstract_command_class{
         $this->setParameters($defaultValues);    
     }
     
-    protected function _run() {
+    protected function process() {
         $response=array("loginRequest" => $this->params['do']==='login'
 						,"loginResult" => false);
 

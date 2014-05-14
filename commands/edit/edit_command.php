@@ -30,7 +30,7 @@ class edit_command extends abstract_command_class{
         $this->setParameters($defaultValues);        
     }
 
-    protected function _run() {
+    protected function process() {
         $contentData = $this->modelWrapper->getCodePage(
             $this->params['do'],
             $this->params['id'],

@@ -95,7 +95,7 @@ abstract class abstract_command_class {
     
     protected function getResponse(){
         $ret=new AjaxCmdResponseGenerator();
-        $response = $this->_run();
+        $response = $this->process();
  
         if($this->getResponseHandler()){
             $this->getResponseHandler()->processResponse($this->params, 
@@ -127,7 +127,7 @@ abstract class abstract_command_class {
         return $found;
     }
 
-    protected abstract function _run();
+    protected abstract function process();
 }
 
 ?>

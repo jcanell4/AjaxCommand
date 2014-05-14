@@ -40,7 +40,7 @@ class ns_tree_command extends abstract_command_class {
 
 
     //put your code here
-    protected function _run() {
+    protected function process() {
         $sortOptions=array(0 => 'name', 'date');
         global $conf;
         $tree = array();
