@@ -199,6 +199,17 @@ class AjaxCmdResponseGenerator {
         
     }
     
+    public function addInfoProcessCommand($responseCode, $info){
+        $this->response->add(
+            new JSonGeneratorImpl(
+                JSonGenerator::INFO_RESPONSE_CODE, 
+                array(
+                    "code" => $responseCode,
+                    "info" => $info,
+                )));
+        
+    }
+    
     public function addMetadata($docId, $meta){
         $this->response->add(
                 new JSonGeneratorImpl(JSonGenerator::META_INFO, 

@@ -44,8 +44,8 @@ class save_command extends abstract_command_class{
     }
     
     protected function getDefaultResponse($response, &$ret) {
-        $ret->addWikiCodeDoc($contentData["id"], $contentData["ns"],
-                    $contentData["title"], $contentData["content"]);
+        $ret->addWikiCodeDoc($response["id"], $response["ns"],
+                    $response["title"], $response["content"]);
     }
 }
 

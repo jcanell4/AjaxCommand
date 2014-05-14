@@ -23,7 +23,7 @@ class action_plugin_ajaxcommand extends DokuWiki_Action_Plugin {
                             "ioc/dokuwiki/processAceEditor",
                             array(
                                 "key"=>"edit_ace",
-                                "buttonId" => WikiIocCfg::Instance()->getConfig("saveButton"),
+                                "buttonId" => $event->data["tplComponents"]->getConfig("saveButton"),
                                 "textAreaId" => 'wiki__text',
                             ));
         }
