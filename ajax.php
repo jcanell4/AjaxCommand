@@ -19,6 +19,7 @@ header('Content-Type: text/html; charset=utf-8');
 global $_SERVER;
 global $_GET;
 global $_POST;
+global $_FILES;
 
 $method = $_SERVER['REQUEST_METHOD'];
 //call the requested function
@@ -134,6 +135,11 @@ function getParams($without){
         if($key!==$without || $key!==$JSINFO['sectokParamName']){
             $params[$key]=$value;
         }
+    }
+    foreach ($_FILES as $key => $value){
+        if($key!==$without || $key!==$JSINFO['sectokParamName']){
+            $params[$key]=$value;
+        }        
     }
     /*
     switch ($input){
