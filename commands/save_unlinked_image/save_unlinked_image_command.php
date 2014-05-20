@@ -77,22 +77,22 @@ class save_unlinked_image_command extends abstract_command_class {
         $info = "";
         switch ($responseCode) {
             case -3:
-                $info = "";
+                $info = "No s'ha pogut dessar el fitxer";
                 break;
             case -2:
-                $info = "";
+                $info = "El nom del fitxer ja existeix";
                 break;
             case -1:
-                $info = "";
+                $info = "Comanda no definida";
                 break;
             case 0:
-                $info = "";
+                $info = "Nom del fitxer disponible";
                 break;
             case 1:
-                $info = "";
+                $info = "Fitxer dessat correctament";
                 break;
             default:
-                $info = "Error inesperado";
+                $info = "Error inesperat";
                 break;
         }
 
@@ -119,7 +119,19 @@ class save_unlinked_image_command extends abstract_command_class {
         $response = "-3";
         foreach ($this->params as $key => $value) {
             if (is_array($value)) {
-                //TODO
+                print "fitxer trobat\n";
+                if ($value["error"] == 0 && $value["type"] == "image/png" && is_uploaded_file($value["tmp_name"])) {
+                    print "Es una imatge! \n";
+                    $nameImage = $value["filename"];
+                    $contentImage = file_get_contents($value["tmp_name"]);
+                    if ($contentImage) {
+                        print "Tinc el contingut\n";
+                        if (file_put_contents($nameImage, $contentImage)) {
+                            print "He guardat el fitxer \n";
+                            $response = 1;
+                        }
+                    }
+                }
             }
         }
         return $response;
