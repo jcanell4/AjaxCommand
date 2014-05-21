@@ -17,13 +17,12 @@ require_once(DOKU_COMMAND . 'abstract_command_class.php');
 class save_unlinked_image_command extends abstract_command_class {
 
     public function __construct() {
-
         parent::__construct();
-        $this->authenticatedUsersOnly = false;
+        $this->authenticatedUsersOnly = true;
     }
 
     protected function process() {
-        $response = $this->params;
+        $response = "-1";
         if (array_key_exists("do", $this->params)) {
             $do = $this->params["do"];
             print "$do \n";
@@ -37,30 +36,10 @@ class save_unlinked_image_command extends abstract_command_class {
                     $response = $this->saveImage();
                     break;
                 default:
-                    $response = "-1"; //do=S no esperat
+                    $response = "-1"; //do=X no esperat
                     break;
             }
-        } else {
-            $response = "-1";
         }
-
-//        foreach ($this->params as $key => $value) {
-//            if(is_array($value)){
-//                if($value["error"]==0 
-//                                && is_uploaded_file($value["tmp_name"])){
-//                    $response .= $key."= {filename:".$value["name"];
-//                    $response .= ", type:".$value["type"];
-//                    $response .= ", content["
-//                             .file_get_contents($value["tmp_name"])."]}, ";
-//                }else{
-//                    $response .= $key."= ERROR(".$value["error"]."), ";
-//                }
-//            }else{
-//                $response .= $key."= ".$value.", ";
-//            }
-//        }
-//        $response = substr($response, 0, -2);
-
         return $response;
     }
 
@@ -95,13 +74,16 @@ class save_unlinked_image_command extends abstract_command_class {
                 $info = "Error inesperat";
                 break;
         }
-
         $ret->addInfoProcessCommand($responseCode, $info);
     }
 
+    /**
+     * 
+     * @return string
+     */
     private function nameExists() {
         $response = "";
-        $imageDir = "directori_imatges"; //TODO
+        $imageDir = "data/media/repository/pde"; //TODO
         if (array_key_exists("imageName", $this->params)) {
             $imageName = $this->params["imageName"];
             if (file_exists($_SERVER['DOCUMENT_ROOT'] . $imageDir . $imageName)) {
@@ -115,21 +97,23 @@ class save_unlinked_image_command extends abstract_command_class {
         return $response;
     }
 
+    /**
+     * 
+     * @return string
+     */
     private function saveImage() {
         $response = "-3";
-        foreach ($this->params as $key => $value) {
-            if (is_array($value)) {
-                print "fitxer trobat\n";
-                if ($value["error"] == 0 && $value["type"] == "image/png" && is_uploaded_file($value["tmp_name"])) {
-                    print "Es una imatge! \n";
-                    $nameImage = $value["filename"];
-                    $contentImage = file_get_contents($value["tmp_name"]);
-                    if ($contentImage) {
-                        print "Tinc el contingut\n";
-                        if (file_put_contents($nameImage, $contentImage)) {
-                            print "He guardat el fitxer \n";
-                            $response = 1;
-                        }
+        if (array_key_exists("file", $this->params)) {
+            $value = $this->params;
+            print "fitxer trobat\n";
+            if ($value["error"] == 0 && $value["type"] == "image/png" && is_uploaded_file($value["tmp_name"])) {
+                $nameImage = $value["filename"];
+                $contentImage = file_get_contents($value["tmp_name"]);
+                if ($contentImage) {
+                    $dirImages = "data/media/repository/pde";
+                    if (file_put_contents($dirImages + $nameImage, $contentImage)) {
+                        print "He guardat el fitxer \n";
+                        $response = "1";
                     }
                 }
             }
