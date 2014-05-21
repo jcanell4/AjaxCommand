@@ -20,24 +20,24 @@ class commandreport_command extends abstract_command_class{
     }
     
     protected function process() {
-        $response = "params: ";
+        $response = (array("params" => array())); 
         foreach ($this->params as $key => $value) {
             if(is_array($value)){
                 if($value["error"]==0 
                                 && is_uploaded_file($value["tmp_name"])){
-                    $response .= $key."= {filename:".$value["name"];
-                    $response .= ", type:".$value["type"];
-                    $response .= ", content["
-                             .file_get_contents($value["tmp_name"])."]}, ";
+                    
+                    $response["params"][$key]=array(
+                            "filename" => $value["name"],
+                            "type" => $value["type"],
+                            "content" => file_get_contents($value["tmp_name"])
+                     );
                 }else{
-                    $response .= $key."= ERROR(".$value["error"]."), ";
+                     $response["params"][$key]= "ERROR(".$value["error"].")";
                 }
             }else{
-                $response .= $key."= ".$value.", ";
+                  $response["params"][$key]= $value;
             }
         }
-        $response = substr($response, 0, -2);
-        
         return $response;
     }
 
