@@ -27,8 +27,8 @@ class save_unlinked_image_command extends abstract_command_class {
             $do = $this->params["do"];
             print "$do \n";
             switch ($do) {
-                case "askName":
-                    print "askName\n";
+                case "existImageName":
+                    print "existImageName\n";
                     $response = $this->nameExists();
                     break;
                 case "saveImage":

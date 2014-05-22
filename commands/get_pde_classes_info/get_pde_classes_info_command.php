@@ -25,8 +25,10 @@ class get_pde_classes_info_command extends abstract_command_class {
         $response = "";
         //TODO, agafar el fitxer xml i transformarlo en JSON.
         //Falta possar la ruta.
-        if (file_exists('test.xml')) {
-            $xml = simplexml_load_file('test.xml');
+        $rutaXml= "lib/_java/pde/xml/";
+        $xml = "algorismes.xml";
+        if (file_exists($_SERVER["DOCUMENT_ROOT"].$rutaXml.$xml)) {
+            $sxml = simplexml_load_file($_SERVER["DOCUMENT_ROOT"].$rutaXml.$xml);
             $response = json_encode($sxml);
         } else {
             exit('Failed to open test.xml.');
