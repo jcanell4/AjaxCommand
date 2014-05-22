@@ -74,7 +74,7 @@ class save_unlinked_image_command extends abstract_command_class {
                 $info = "Error inesperat";
                 break;
         }
-        $ret->addInfoProcessCommand($responseCode, $info);
+        $ret->addCodeTypeResponse($responseCode, $info);
     }
 
     /**

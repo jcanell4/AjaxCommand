@@ -10,7 +10,6 @@ require_once(DOKU_INC.'inc/JSON.php');
 interface JsonGenerator{
     const HTML_TYPE=0;
     const TITLE_TYPE=1;
-    const INFO_RESPONSE_CODE=11;
     const INFO_TYPE=2;
     const COMMAND_TYPE=3;
     const ERROR_TYPE=4;
@@ -20,6 +19,10 @@ interface JsonGenerator{
     const META_INFO=8;
     const REMOVE_CONTENT_TAB=9; 
     const REMOVE_ALL_CONTENT_TAB=10; 
+    const CODE_TYPE_RESPONSE=11;
+    const SIMPLE_TYPE_RESPONSE=12;
+    const ARRAY_TYPE_RESPONSE=13;
+    const OBJECT_TYPE_RESPONSE=14;
     const PROCESS_FUNCTION="process_function";
     const PROCESS_DOM_FROM_FUNCTION="process_dom_from_function"; //domId afectat + AMD (true/flase) + nom funcio/modul on es troba la funció + extra prams
     const CHANGE_DOM_STYLE="change_dom_style"; //domId afectat + propietat de l'estil a modificar + valor 
@@ -53,7 +56,7 @@ class JSonGeneratorImpl implements JsonGenerator{
         //$arrayTypes = JSonGenerator::TYPES;
         $arrayTypes = array("html", "title", "info", "command", "error"
                             ,"login", "sectok", "data", "metainfo", "remove"
-                            ,"removeall", "resp_code");
+                            ,"removeall", "code", "simple_data", "array", "object");
         $data=array(
             "type" => $arrayTypes[$this->type],
             "value" => $this->value,

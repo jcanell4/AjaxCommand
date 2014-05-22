@@ -199,15 +199,27 @@ class AjaxCmdResponseGenerator {
         
     }
     
-    public function addInfoProcessCommand($responseCode, $info){
+    public function addCodeTypeResponse($responseCode, $return=""){
         $this->response->add(
             new JSonGeneratorImpl(
-                JSonGenerator::INFO_RESPONSE_CODE, 
+                JSonGenerator::CODE_TYPE_RESPONSE,
                 array(
                     "code" => $responseCode,
-                    "info" => $info,
+                    "return" => $response,
                 )));
         
+    }
+
+    public function addSimpleTypeResponse($return){
+        $this->add(JSonGenerator::SIMPLE_TYPE_RESPONSE, $return);
+    }
+    
+    public function addArrayTypeResponse($return){
+        $this->add(JSonGenerator::ARRAY_TYPE_RESPONSE, $return);
+    }
+
+    public function addObjectTypeResponse($return){
+        $this->add(JSonGenerator::ARRAY_TYPE_RESPONSE, $return);
     }
     
     public function addMetadata($docId, $meta){
