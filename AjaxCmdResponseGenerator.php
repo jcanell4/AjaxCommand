@@ -199,13 +199,13 @@ class AjaxCmdResponseGenerator {
         
     }
     
-    public function addCodeTypeResponse($responseCode, $return=""){
+    public function addCodeTypeResponse($responseCode, $info=""){
         $this->response->add(
             new JSonGeneratorImpl(
                 JSonGenerator::CODE_TYPE_RESPONSE,
                 array(
                     "code" => $responseCode,
-                    "return" => $response,
+                    "info" => $info,
                 )));
         
     }
