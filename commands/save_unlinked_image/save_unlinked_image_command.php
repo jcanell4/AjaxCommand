@@ -14,29 +14,47 @@ if (!defined('DOKU_COMMAND'))
 require_once (DOKU_COMMAND . 'AjaxCmdResponseGenerator.php');
 require_once(DOKU_COMMAND . 'abstract_command_class.php');
 
+if (!defined('PROCESSING_IMAGE_REPOSITORY'))
+    define('PROCESSING_IMAGE_REPOSITORY', $_SERVER["DOCUMENT_ROOT"] . '/dokuwiki/data/media/repository/pde/');
+
+define('CODE_SAVE_FILE_INCORRECT', -1);
+define('CODE_SAVE_FILE_CORRECT', 1);
+define('CODE_FILENAME_EXISTS', -2);
+define('CODE_FILENAME_NOT_EXISTS', 2);
+define('CODE_COMMAND_UNDEFINED', -10);
+
+//Comandas
+define('EXISTS_IMAGE_NAME_PARAM', 'existsImageName');
+define('SAVE_IMAGE_PARAM', 'saveImage');
+
+//Parametres del fitxer
+define('FILE_PARAM', 'file');
+define('FILENAME_PARAM', 'name');
+define('FILE_TYPE_PARAM', 'type');
+define('FILE_TYPE', 'image/png');
+define('ERROR_PARAM', 'error');
+define('FILE_CONTENT_PARAM', 'tmp_name');
+
 class save_unlinked_image_command extends abstract_command_class {
 
     public function __construct() {
         parent::__construct();
-        $this->authenticatedUsersOnly = true;
+        $this->authenticatedUsersOnly = false;
     }
 
     protected function process() {
-        $response = "-1";
+        //$response = $this->params;
+        $response = CODE_COMMAND_UNDEFINED;
         if (array_key_exists("do", $this->params)) {
             $do = $this->params["do"];
-            print "$do \n";
             switch ($do) {
-                case "existImageName":
-                    print "existImageName\n";
+                case EXISTS_IMAGE_NAME_PARAM:
                     $response = $this->nameExists();
                     break;
-                case "saveImage":
-                    print "saveImage\n";
+                case SAVE_IMAGE_PARAM:
                     $response = $this->saveImage();
                     break;
                 default:
-                    $response = "-1"; //do=X no esperat
                     break;
             }
         }
@@ -53,27 +71,27 @@ class save_unlinked_image_command extends abstract_command_class {
 
     protected function getDefaultResponse($response, &$ret) {
         $responseCode = $response;
-        $info = "";
-        switch ($responseCode) {
-            case -3:
-                $info = "No s'ha pogut dessar el fitxer";
-                break;
-            case -2:
-                $info = "El nom del fitxer ja existeix";
-                break;
-            case -1:
-                $info = "Comanda no definida";
-                break;
-            case 0:
-                $info = "Nom del fitxer disponible";
-                break;
-            case 1:
-                $info = "Fitxer dessat correctament";
-                break;
-            default:
-                $info = "Error inesperat";
-                break;
-        }
+        $info = "Info de proba";
+//        switch ($responseCode) {
+//            case CODE_SAVE_FILE_INCORRECT:
+//                $info = $this->getLang('save_file_incorrect');
+//                break;
+//            case CODE_SAVE_FILE_CORRECT:
+//                $info = $this->getLang('save_file_correct');
+//                break;
+//            case CODE_FILENAME_EXISTS:
+//                $info = $this->getLang('filename_exists');
+//                break;
+//            case CODE_FILENAME_NOT_EXISTS:
+//                $info = $this->getLang('filename_not_exists');
+//                break;
+//            case CODE_COMMAND_UNDEFINED:
+//                $info = $this->getLang('command_undefined');
+//                break;
+//            default:
+//                $info = $this->getLang('unexpected_error');
+//                break;
+//        }
         $ret->addCodeTypeResponse($responseCode, $info);
     }
 
@@ -83,16 +101,16 @@ class save_unlinked_image_command extends abstract_command_class {
      */
     private function nameExists() {
         $response = "";
-        $imageDir = "data/media/repository/pde"; //TODO
         if (array_key_exists("imageName", $this->params)) {
             $imageName = $this->params["imageName"];
-            if (file_exists($_SERVER['DOCUMENT_ROOT'] . $imageDir . $imageName)) {
-                $response = "-2";
+            $imagePath = PROCESSING_IMAGE_REPOSITORY . $nameImage;
+            if (file_exists($imagePath)) {
+                $response = CODE_FILENAME_EXISTS;
             } else {
-                $response = "0";
+                $response = CODE_FILENAME_NOT_EXISTS;
             }
         } else {
-            $response = "-1";
+            $response = CODE_COMMAND_UNDEFINED;
         }
         return $response;
     }
@@ -102,18 +120,16 @@ class save_unlinked_image_command extends abstract_command_class {
      * @return string
      */
     private function saveImage() {
-        $response = "-3";
-        if (array_key_exists("file", $this->params)) {
-            $value = $this->params;
-            print "fitxer trobat\n";
-            if ($value["error"] == 0 && $value["type"] == "image/png" && is_uploaded_file($value["tmp_name"])) {
-                $nameImage = $value["filename"];
-                $contentImage = file_get_contents($value["tmp_name"]);
+        $response = CODE_SAVE_FILE_INCORRECT;
+        if (array_key_exists(FILE_PARAM, $this->params)) {
+            $file = $this->params[FILE_PARAM];
+            if ($file[ERROR_PARAM] == 0 && $file[FILE_TYPE_PARAM] == FILE_TYPE && is_uploaded_file($file[FILE_CONTENT_PARAM])) {
+                $contentImage = file_get_contents($file[FILE_CONTENT_PARAM]);
                 if ($contentImage) {
-                    $dirImages = "data/media/repository/pde";
-                    if (file_put_contents($dirImages + $nameImage, $contentImage)) {
-                        print "He guardat el fitxer \n";
-                        $response = "1";
+                    $nameImage = $file[FILENAME_PARAM];
+                    $imagePath = PROCESSING_IMAGE_REPOSITORY . $nameImage;
+                    if (file_put_contents($imagePath, $contentImage)) {
+                        $response = CODE_SAVE_FILE_CORRECT;
                     }
                 }
             }

@@ -14,25 +14,26 @@ if (!defined('DOKU_COMMAND'))
 require_once (DOKU_COMMAND . 'AjaxCmdResponseGenerator.php');
 require_once(DOKU_COMMAND . 'abstract_command_class.php');
 
+if (!defined('PROCESSING_XML_FILE'))
+    define('PROCESSING_XML_FILE',$_SERVER["DOCUMENT_ROOT"].'/dokuwiki/lib/_java/pde/xml/algorismes.xml');
+
 class get_pde_classes_info_command extends abstract_command_class {
 
     public function __construct() {
         parent::__construct();
-        $this->authenticatedUsersOnly = true;
+        $this->authenticatedUsersOnly = false;
     }
 
     protected function process() {
-        $response = "";
-        //TODO, agafar el fitxer xml i transformarlo en JSON.
-        //Falta possar la ruta.
-        $rutaXml= "lib/_java/pde/xml/";
-        $xml = "algorismes.xml";
-        if (file_exists($_SERVER["DOCUMENT_ROOT"].$rutaXml.$xml)) {
-            $sxml = simplexml_load_file($_SERVER["DOCUMENT_ROOT"].$rutaXml.$xml);
-            $response = json_encode($sxml);
-        } else {
-            exit('Failed to open test.xml.');
-        }
+        $response = array();
+        $response["code"] = -1;
+        if (file_exists(PROCESSING_XML_FILE)) {
+            $sxml = simplexml_load_file(PROCESSING_XML_FILE);
+            if ($sxml) {
+                $response["algorismes"] = $sxml;
+                $response["code"] = 0;
+            }
+        } 
         return $response;
     }
 
@@ -45,7 +46,19 @@ class get_pde_classes_info_command extends abstract_command_class {
     }
 
     protected function getDefaultResponse($response, &$ret) {
-        $ret->addInfoDta($response);
+        $response["info"] = "prueba";
+//        switch ($response["code"]) {
+//            case -1:
+//                $response["info"] = $this->getLang('xml_unloaded');
+//                break;
+//            case 0:
+//                $response["info"] = $this->getLang('xml_loaded');
+//                break;
+//            default:
+//                $info = $this->getLang('unexpected_error');
+//                break;
+//        }
+        $ret->addArrayTypeResponse($response);
     }
 }
 
