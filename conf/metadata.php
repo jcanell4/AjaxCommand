@@ -8,3 +8,5 @@
 
 $meta['debugLvl']                 = array('multichoice', '_choices' => array(0,1,2,3));
 $meta['logFile']                  = array('string');
+$meta['processingImageRepository'] = array('string');
+$meta['processingXmlFile'] = array('string');

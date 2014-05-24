@@ -9,8 +9,10 @@ if(!defined('DOKU_INC')) die();
 if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN',DOKU_INC.'lib/plugins/');
 require_once(DOKU_PLUGIN.'ajaxcommand/DokuModelAdapter.php');
 require_once(DOKU_PLUGIN.'ajaxcommand/AbstractResponseHandler.php');
+require_once(DOKU_INC.'inc/plugin.php');
 
-abstract class abstract_command_class {
+
+abstract class abstract_command_class extends DokuWiki_Plugin{
     const T_BOOLEAN = "boolean";
     const T_INTEGER = "integer";
     const T_DOUBLE = "double";
@@ -20,6 +22,12 @@ abstract class abstract_command_class {
     const T_OBJECT = "object";
     const T_FUNCTION = "function";
     const T_METHOD = "method";
+    
+    protected static $PLUGUIM_TYPE='command';
+    protected static $FILENAME_PARAM='name';
+    protected static $FILE_TYPE_PARAM='type';
+    protected static $ERROR_PARAM='error';
+    protected static $FILE_CONTENT_PARAM='tmp_name';
 
     protected $responseHandler=NULL;
 
@@ -125,6 +133,46 @@ abstract class abstract_command_class {
             $found = in_array($permission[$i], $this->permissionFor);
         }
         return $found;
+    }
+    
+    public function getPluginType() {
+        return self::$PLUGUIM_TYPE;
+    }
+    
+    public function getPluginName() {
+        $dirPlugin = realpath($this->getClassDirName().'/../..');
+        if($dirPlugin){
+            $dir = substr($dirPlugin , -11);
+            if($dir && $dir==="ajaxcommand"){           
+                $ret = "ajaxcommand";
+            }else{
+                $ret = parent::getPluginName();
+            }
+        }else{
+            $ret = parent::getPluginName();
+        }
+        return $ret;
+    }
+    
+    public function getPluginComponent() {
+        $dirs = split("/", $this->getClassDirName());
+        $length = sizeof($dirs);
+        if($length>2){
+            $dir = substr($dirs[$length-3], -11);
+            if($dir && $dir==="ajaxcommand"){
+                $ret = $dirs[$length-1];
+            }else{
+                $ret = parent::getPluginName();
+            }
+        }else{
+            $ret = parent::getPluginName();
+        }
+        return $ret;
+    }    
+    
+    private function getClassDirName(){
+        $thisClass = new ReflectionClass($this);   
+        return dirname($thisClass->getFileName());
     }
 
     protected abstract function process();

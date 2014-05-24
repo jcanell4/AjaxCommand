@@ -8,27 +8,31 @@
 if (!defined('DOKU_INC'))
     die();
 if (!defined('DOKU_PLUGIN'))
-    define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
+    define('DOKU_PLUGIN', DOKU_INC.'lib/plugins/');
 if (!defined('DOKU_COMMAND'))
-    define('DOKU_COMMAND', DOKU_PLUGIN . "ajaxcommand/");
-require_once (DOKU_COMMAND . 'AjaxCmdResponseGenerator.php');
-require_once(DOKU_COMMAND . 'abstract_command_class.php');
+    define('DOKU_COMMAND', DOKU_PLUGIN."ajaxcommand/");
+require_once (DOKU_COMMAND.'AjaxCmdResponseGenerator.php');
+require_once(DOKU_COMMAND.'abstract_command_class.php');
 
-if (!defined('PROCESSING_XML_FILE'))
-    define('PROCESSING_XML_FILE',$_SERVER["DOCUMENT_ROOT"].'/dokuwiki/lib/_java/pde/xml/algorismes.xml');
+//if (!defined('PROCESSING_XML_FILE'))
+//    define('PROCESSING_XML_FILE',DOKU_INC.'lib/_java/pde/xml/algorismes.xml');
 
 class get_pde_classes_info_command extends abstract_command_class {
 
     public function __construct() {
         parent::__construct();
-        $this->authenticatedUsersOnly = false;
+        if(@file_exists(DOKU_INC.'debug')){
+            $this->authenticatedUsersOnly = false;
+        }else{
+            $this->authenticatedUsersOnly = true;
+        }
     }
 
     protected function process() {
         $response = array();
         $response["code"] = -1;
-        if (file_exists(PROCESSING_XML_FILE)) {
-            $sxml = simplexml_load_file(PROCESSING_XML_FILE);
+        if (file_exists($this->getXmlFile())) {
+            $sxml = simplexml_load_file($this->getXmlFile());
             if ($sxml) {
                 $response["algorismes"] = $sxml;
                 $response["code"] = 0;
@@ -58,7 +62,11 @@ class get_pde_classes_info_command extends abstract_command_class {
 //                $info = $this->getLang('unexpected_error');
 //                break;
 //        }
-        $ret->addArrayTypeResponse($response);
+        $ret->addObjectTypeResponse($response);
+    }
+    
+    private function getXmlFile(){
+        return DOKU_INC.$this->getConf("processingXmlFile");
     }
 }
 
