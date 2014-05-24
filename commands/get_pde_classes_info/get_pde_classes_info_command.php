@@ -41,15 +41,7 @@ class get_pde_classes_info_command extends abstract_command_class {
         return $response;
     }
 
-    protected function preprocess() {
-        
-    }
-
-    protected function startCommand() {
-        
-    }
-
-    protected function getDefaultResponse($response, &$ret) {
+   protected function getDefaultResponse($response, &$ret) {
         $response["info"] = "prueba";
 //        switch ($response["code"]) {
 //            case -1:

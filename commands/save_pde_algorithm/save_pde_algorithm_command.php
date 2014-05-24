@@ -58,14 +58,6 @@ class save_unlinked_image_command extends abstract_command_class {
         return $response;
     }
 
-    protected function preprocess() {
-        
-    }
-
-    protected function startCommand() {
-        
-    }
-
     protected function getDefaultResponse($response, &$ret) {
         $responseCode = $response;
         $info = "Info de proba";
