@@ -3,7 +3,7 @@
 /**
  * Description 
  *
- * @author Daniel Criado Casas
+ * @author Daniel Criado Casas<dani.criado.casas@gmail.com>
  */
 if (!defined('DOKU_INC'))
     die();
@@ -14,129 +14,235 @@ if (!defined('DOKU_COMMAND'))
 require_once (DOKU_COMMAND . 'AjaxCmdResponseGenerator.php');
 require_once(DOKU_COMMAND . 'abstract_command_class.php');
 
-class save_unlinked_image_command extends abstract_command_class {
-    private static $CODE_SAVE_FILE_INCORRECT=-1;
-    private static $CODE_SAVE_FILE_CORRECT=1;
-    private static $CODE_FILENAME_EXISTS=-2;
-    private static $CODE_FILENAME_NOT_EXISTS=2;
-    private static $CODE_COMMAND_UNDEFINED=-10;
+class save_pde_algorithm_command extends abstract_command_class {
+    /*     * Codi d'informació per quan un fitxer no s'ha pogut dessar correctament.
+     * @return integer Retorna un -1
+     */
 
-    //Comandas
-    private static $EXISTS_IMAGE_NAME_PARAM='existsImageName';
-    private static $SAVE_IMAGE_PARAM='saveImage';
-    private static $IMAGE_NAME_PARAM='imageName';
-
+//    private static $SAVE_FILE_INCORRECT_CODE = -1;
+//    
+//    /**Codi d'informació per quan un fitxer s'ha dessat correctament.
+//     * @return integer Retorna un 1
+//     */
+//    private static $SAVE_FILE_CORRECT_CODE = 1;
+//    
+//    /**Codi d'informació per quan un fitxer ja existeix.
+//     * @return integer Retorna un -2
+//     */
+//    private static $FILENAME_EXISTS_CODE = -2;
+//    
+//    /**Codi d'informació per quan un fitxer no existeix.
+//     * @return integer Retorna un 2
+//     */
+//    private static $FILENAME_NOT_EXISTS_CODE = 2;
+//    
+//    /**Codi d'informació per quan una comanda no estava definida.
+//     * @return integer Retorna un -10
+//     */
+//    private static $UNDEFINED_COMMAND_CODE = -10;
+//    
+//    //Comandas
+//    private static $EXISTS_IMAGE_NAME_PARAM = 'existsImageName';
+//    private static $SAVE_IMAGE_PARAM = 'saveImage';
+//    private static $IMAGE_NAME_PARAM = 'imageName';
     //Parametres del fitxer
-    private static $FILE_PARAM='file';
-    private static $FILE_TYPE='image/png';
+    private static $FILE_PARAM = 'uploadedfile';
+    private static $PDE_MIME_TYPE = 'text/plain';
+    private static $PDE_EXTENSION = '.pde';
 
     public function __construct() {
         parent::__construct();
-        if(@file_exists(DOKU_INC.'debug')){
+        if (@file_exists(DOKU_INC . 'debug')) {
             $this->authenticatedUsersOnly = false;
-        }else{
+        } else {
             $this->authenticatedUsersOnly = true;
         }
     }
 
     protected function process() {
-        //$response = $this->params;
-        $response = self::$CODE_COMMAND_UNDEFINED;
-        if (array_key_exists("do", $this->params)) {
-            $do = $this->params["do"];
-            switch ($do) {
-                case self::$EXISTS_IMAGE_NAME_PARAM:
-                    $response = $this->nameExists();
-                    break;
-                case self::$SAVE_IMAGE_PARAM:
-                    $response = $this->saveImage();
-                    break;
-                default:
-                    break;
-            }
+        //Validar fitxer, https://dojotoolkit.org/reference-guide/1.9/dojox/form/Uploader.html#missing-features
+
+        if (array_key_exists(self::$FILE_PARAM, $this->params)) {
+            $file = $this->params[self::$FILE_PARAM];
+            $filePath = $file[self::$FILE_PATH_PARAM];
+            $fileName = $file[self::$FILENAME_PARAM];
+            $repositoryPath = $this->getPdeRepositoryDir();
+            $pdePath = $repositoryPath . $fileName;
+            if ($this->isPdeFile($file)) {
+                if (!$this->existsPdeFile($pdePath)) {
+                    if ($this->movePdeToRepository($filePath, $pdePath)) {
+                        if ($this->generateJavaClass($pdePath)) {
+                            $this->addPdeAlgorithm();
+                        } else {
+                            $this->removePdeFromRepository($pdePath);
+                        }
+                    }
+                }
+            }    
         }
+
         return $response;
     }
 
+
     protected function getDefaultResponse($response, &$ret) {
         $responseCode = $response;
-        $info = "Info de proba";
+        $info = "";
 //        switch ($responseCode) {
-//            case self::$CODE_SAVE_FILE_INCORRECT:
-//                $info = $this->getLang('save_file_incorrect');
+//            case self::$SAVE_FILE_INCORRECT_CODE:
+//                $info = $this->getLang('saveFileIncorrect');
 //                break;
-//            case self::$CODE_SAVE_FILE_CORRECT:
-//                $info = $this->getLang('save_file_correct');
+//            case self::$SAVE_FILE_CORRECT_CODE:
+//                $info = $this->getLang('saveFileCorrect');
 //                break;
-//            case self::$CODE_FILENAME_EXISTS:
-//                $info = $this->getLang('filename_exists');
+//            case self::$FILENAME_EXISTS_CODE:
+//                $info = $this->getLang('filenameExists');
 //                break;
-//            case self::$CODE_FILENAME_NOT_EXISTS:
-//                $info = $this->getLang('filename_not_exists');
+//            case self::$FILENAME_NOT_EXISTS_CODE:
+//                $info = $this->getLang('filenameNotExists');
 //                break;
-//            case self::$CODE_COMMAND_UNDEFINED:
-//                $info = $this->getLang('command_undefined');
+//            case self::$UNDEFINED_COMMAND_CODE:
+//                $info = $this->getLang('undefinedCommand');
 //                break;
 //            default:
-//                $info = $this->getLang('unexpected_error');
+//                $info = $this->getLang('unexpectedError');
 //                break;
 //        }
         $ret->addCodeTypeResponse($responseCode, $info);
     }
 
     /**
-     * 
-     * @return string
+     * Funcio trobada a:
+     * http://stackoverflow.com/questions/834303/startswith-and-endswith-functions-in-php
+     * @param type $haystack
+     * @param type $needle
+     * @return boolean True if ends with $needle, False otherwise
      */
-    private function nameExists() {
-        $response = "";
-        if (array_key_exists(self::$IMAGE_NAME_PARAM, $this->params)) {
-            $imageName = $this->params[self::$IMAGE_NAME_PARAM];
-            $imagePath = $this->getRepositoryDir() . $nameImage;
-            if (file_exists($imagePath)) {
-                $response = self::$CODE_FILENAME_EXISTS;
-            } else {
-                $response = self::$CODE_FILENAME_NOT_EXISTS;
-            }
-        } else {
-            $response = self::$CODE_COMMAND_UNDEFINED;
-        }
-        return $response;
+    private function endsWith($haystack, $needle) {
+        return $needle === "" || substr($haystack, -strlen($needle)) === $needle;
     }
 
     /**
-     * 
-     * @return string
+     * Ens diu si el fitxer carregat per post es un fitxer .pde o no.
+     * @return boolean True si el fitxer te extensió .pde, False altrament.
      */
-    private function saveImage() {
-        $response = self::$CODE_SAVE_FILE_INCORRECT;
-        if (array_key_exists(self::$FILE_PARAM, $this->params)) {
-            $file = $this->params[self::$FILE_PARAM];
-            if ($file[self::$ERROR_PARAM] == 0 
-                    && $file[self::$FILE_TYPE_PARAM] == self::$FILE_TYPE 
-                    && is_uploaded_file($file[self::$FILE_CONTENT_PARAM])) {
-                $nameImage = $file[self::$FILENAME_PARAM];
-                $imagePath = $this->getRepositoryDir() . $nameImage;
-                if(move_uploaded_file($file[self::$FILE_CONTENT_PARAM],$imagePath)){
-                    $response = self::$CODE_SAVE_FILE_CORRECT;
-                }
-//                $contentImage = file_get_contents($file[self::$FILE_CONTENT_PARAM]);
-//                if ($contentImage) {
-//                    $nameImage = $file[self::$FILENAME_PARAM];
-//                    $imagePath = $this->getRepositoryDir() . $nameImage;
-//                    if (file_put_contents($imagePath, $contentImage)) {
-//                        $response = self::$CODE_SAVE_FILE_CORRECT;
-//                    }
-//                }
-            }
+    private function isPdeFile($file) {
+        $pdeFile = false;
+        if ($file[self::$ERROR_PARAM] == UPLOAD_ERR_OK 
+                && $file[self::$FILE_TYPE_PARAM] == self::$PDE_MIME_TYPE 
+                && $this->endsWith($file[self::$FILENAME_PARAM], ".pde")
+                &&is_uploaded_file($file[self::$FILE_PATH_PARAM])) {
+            $pdeFile = true;
         }
-        return $response;
+        return $pdeFile;
     }
-    
-    private function getRepositoryDir(){
+
+    /**
+     * Ens diu si existeix el fitxer .pde en el repository.
+     * @return boolean True si existeix, False altrament
+     */
+    private function existsPdeFile() {
+        //TODO
+    }
+
+    /**
+     * Mou el fitxer temporal carregat al servidor al repositori de fitxers PDE.
+     * @return True si s'ha pogut moure, False altrament.
+     * Potser hauria de retornar 0 si ha anat be, i un negatiu per indicar qualsevol altre cosa.
+     */
+    private function movePdeToRepository($filePath, $pdePath) {
+        $repositoryPath = $this->getPdeRepositoryDir();
+        $pdePath = $repositoryPath . $fileName;
+        return move_uploaded_file($filePath, $pdePath);
+    }
+
+    /* Elimina un fitxer pde del repository
+     * 
+     * @return type
+     */
+
+    private function removePdeFromRepository($pdePath) {
+        return unlink($pdePath);
+    }
+
+    /**
+     * Genera i compila l'algorisme Pde.
+     */
+    private function generateJavaClass($pdePath) {
+        
+    }
+
+    /**
+     * Genera el fitxer .java amb el fitxer .pde
+     * @param type $pdePath
+     */
+    private function generateSource($pdePath) {
+        $javaPath = "path";
+        $stringFile = "package ioc.wiki.processingmanager;\n";
+        $stringFile .= "public class " . $className . " extends ImageGenerator{";
+        $contentPde = file_get_contents($pdePath);
+        $stringFile .= $contentPde;
+        $stringFile .= "}";
+    }
+
+    /**
+     * Genera el fitxer .class compilant el fitxer .java
+     * @param type $javaPath
+     */
+    private function compileSource($javaPath) {
+        $pathClasses = $this->getClassesRepositoryDir();
+        $command = "javac -d " . $pathClasses . " " . $javaPath;
+        $response = exec($command);
+        //Analitzar respostes.
+        //Lo més facil sera analitzar la resposta bona, i si no es aquesta
+        //sabem que ha anat malament.
+    }
+
+    private function addPdeAlgorithm() {
+        $xmlFile = $this->getXmlFile();
+        $xml = simplexml_load_file($xmlFile);
+        $algorisme = $xml->addChild('algorisme');
+        $algorisme->addChild('id', $id);
+        $algorisme->addChild('nom', $nom);
+        $algorisme->addChild('classe', $classe);
+        $algorisme->addChild('descripcio', $descripcio);
+        $xml->asXML($xmlFile);
+    }
+
+    private function getXmlFile() {
+        return DOKU_INC . $this->getConf("processingXmlFile");
+    }
+
+    /**
+     * Consulta el directori definit per les imatges de processing.
+     * @global type $conf
+     * @return type Retorna el directori definit per les imatges de processing.
+     */
+    private function getPdeRepositoryDir() {
         global $conf;
-        return $conf['mediadir'].$this->getConf('processingImageRepository');
+        return DOKU_INC . $this->getConf('processingPdeRepository');
     }
+
+    /**
+     * Consulta el directori definit per les imatges de processing.
+     * @global type $conf
+     * @return type Retorna el directori definit per les imatges de processing.
+     */
+    private function getClassesRepositoryDir() {
+        global $conf;
+        return DOKU_INC . $this->getConf('processingClassesRepository');
+    }
+
+    /**
+     * Consulta el directori definit per les imatges de processing.
+     * @global type $conf
+     * @return type Retorna el directori definit per les imatges de processing.
+     */
+    private function getSourceRepositoryDir() {
+        global $conf;
+        return DOKU_INC . $this->getConf('processingSourceRepository');
+    }
+
 }
 
 ?>

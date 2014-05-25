@@ -14,11 +14,19 @@ if (!defined('DOKU_COMMAND'))
 require_once (DOKU_COMMAND.'AjaxCmdResponseGenerator.php');
 require_once(DOKU_COMMAND.'abstract_command_class.php');
 
-//if (!defined('PROCESSING_XML_FILE'))
-//    define('PROCESSING_XML_FILE',DOKU_INC.'lib/_java/pde/xml/algorismes.xml');
-
 class get_pde_classes_info_command extends abstract_command_class {
 
+    
+    /**Codi d'informació per quan un fitxer xml no s'ha pogut carregar correctament.
+     * @return integer Retorna un -1
+     */
+    private static $UNLOADED_XML_CODE = -1;
+    
+    /**Codi d'informació per quan un fitxer xml s'ha pogut carregar correctament.
+     * @return integer Retorna un 0
+     */
+    private static $LOADED_XML_CODE = 0;
+    
     public function __construct() {
         parent::__construct();
         if(@file_exists(DOKU_INC.'debug')){
@@ -30,30 +38,30 @@ class get_pde_classes_info_command extends abstract_command_class {
 
     protected function process() {
         $response = array();
-        $response["code"] = -1;
+        $response["code"] = self::$UNLOADED_XML_CODE;
         if (file_exists($this->getXmlFile())) {
             $sxml = simplexml_load_file($this->getXmlFile());
             if ($sxml) {
                 $response["algorismes"] = $sxml;
-                $response["code"] = 0;
+                $response["code"] = self::$LOADED_XML_CODE;
             }
         } 
         return $response;
     }
 
-   protected function getDefaultResponse($response, &$ret) {
-        $response["info"] = "prueba";
-//        switch ($response["code"]) {
-//            case -1:
-//                $response["info"] = $this->getLang('xml_unloaded');
-//                break;
-//            case 0:
-//                $response["info"] = $this->getLang('xml_loaded');
-//                break;
-//            default:
-//                $info = $this->getLang('unexpected_error');
-//                break;
-//        }
+    protected function getDefaultResponse($response, &$ret) {
+        $response["info"] = "";
+        switch ($response["code"]) {
+            case self::$UNLOADED_XML_CODE:
+                $response["info"] = $this->getLang('unloadedXml');
+                break;
+            case self::$LOADED_XML_CODE:
+                $response["info"] = $this->getLang('loadedXml');
+                break;
+            default:
+                $response["info"] = $this->getLang('unexpectedError');
+                break;
+        }
         $ret->addObjectTypeResponse($response);
     }
     
