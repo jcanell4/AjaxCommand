@@ -132,10 +132,10 @@ class save_unlinked_image_command extends abstract_command_class {
             $file = $this->params[self::$FILE_PARAM];
             if ($file[self::$ERROR_PARAM] == UPLOAD_ERR_OK 
                     && $file[self::$FILE_TYPE_PARAM] == self::$PNG_MIME_TYPE 
-                    && is_uploaded_file($file[self::$FILE_PATH_PARAM])) {
+                    && is_uploaded_file($file[self::$FILE_CONTENT_PARAM])) {
                 $nameImage = $file[self::$FILENAME_PARAM];
                 $imagePath = $this->getImageRepositoryDir() . $nameImage;
-                $filePath = $file[self::$FILE_PATH_PARAM];//path del fitxer temporal
+                $filePath = $file[self::$FILE_CONTENT_PARAM];//path del fitxer temporal
                 //Decodifica el fitxer
                 $contentFile = base64_decode(file_get_contents($filePath));
                 file_put_contents($filePath, $contentFile);
