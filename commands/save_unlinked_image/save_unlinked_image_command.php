@@ -112,7 +112,7 @@ class save_unlinked_image_command extends abstract_command_class {
         $response = self::$UNDEFINED_COMMAND_CODE;
         if (array_key_exists(self::$IMAGE_NAME_PARAM, $this->params)) {
             $imageName = $this->params[self::$IMAGE_NAME_PARAM];
-            $imagePath = $this->getImageRepositoryDir() . $nameImage;
+            $imagePath = $this->getImageRepositoryDir() . $imageName;
             if (file_exists($imagePath)) {
                 $response = self::$FILENAME_EXISTS_CODE;
             } else {
