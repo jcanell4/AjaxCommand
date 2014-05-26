@@ -45,10 +45,13 @@ class save_pde_algorithm_command extends abstract_command_class {
 //    private static $EXISTS_IMAGE_NAME_PARAM = 'existsImageName';
 //    private static $SAVE_IMAGE_PARAM = 'saveImage';
 //    private static $IMAGE_NAME_PARAM = 'imageName';
+    private static $ID_PARAM = 'id';
     //Parametres del fitxer
     private static $FILE_PARAM = 'uploadedfile';
-    private static $PDE_MIME_TYPE = 'text/plain';
+//    private static $PDE_MIME_TYPE = 'text/plain';
+    private static $PDE_MIME_TYPE = 'application/octet-stream';
     private static $PDE_EXTENSION = '.pde';
+    private static $JAVA_EXTENSION = '.java';
 
     public function __construct() {
         parent::__construct();
@@ -64,50 +67,30 @@ class save_pde_algorithm_command extends abstract_command_class {
 
         if (array_key_exists(self::$FILE_PARAM, $this->params)) {
             $file = $this->params[self::$FILE_PARAM];
-            $filePath = $file[self::$FILE_PATH_PARAM];
+            $filePath = $file[self::$FILE_CONTENT_PARAM];
             $fileName = $file[self::$FILENAME_PARAM];
             $repositoryPath = $this->getPdeRepositoryDir();
             $pdePath = $repositoryPath . $fileName;
             if ($this->isPdeFile($file)) {
-                if (!$this->existsPdeFile($pdePath)) {
+                if (!file_exists($pdePath)) {
                     if ($this->movePdeToRepository($filePath, $pdePath)) {
-                        if ($this->generateJavaClass($pdePath)) {
-                            $this->addPdeAlgorithm();
+                        $className = ucfirst($this->params[self::$ID_PARAM]);
+                        if ($this->generateJavaClass($className, $pdePath)) {
+                            $this->addPdeAlgorithm($className);
                         } else {
                             $this->removePdeFromRepository($pdePath);
                         }
                     }
                 }
-            }    
+            }
         }
 
         return $response;
     }
 
-
     protected function getDefaultResponse($response, &$ret) {
         $responseCode = $response;
         $info = "";
-//        switch ($responseCode) {
-//            case self::$SAVE_FILE_INCORRECT_CODE:
-//                $info = $this->getLang('saveFileIncorrect');
-//                break;
-//            case self::$SAVE_FILE_CORRECT_CODE:
-//                $info = $this->getLang('saveFileCorrect');
-//                break;
-//            case self::$FILENAME_EXISTS_CODE:
-//                $info = $this->getLang('filenameExists');
-//                break;
-//            case self::$FILENAME_NOT_EXISTS_CODE:
-//                $info = $this->getLang('filenameNotExists');
-//                break;
-//            case self::$UNDEFINED_COMMAND_CODE:
-//                $info = $this->getLang('undefinedCommand');
-//                break;
-//            default:
-//                $info = $this->getLang('unexpectedError');
-//                break;
-//        }
         $ret->addCodeTypeResponse($responseCode, $info);
     }
 
@@ -128,21 +111,10 @@ class save_pde_algorithm_command extends abstract_command_class {
      */
     private function isPdeFile($file) {
         $pdeFile = false;
-        if ($file[self::$ERROR_PARAM] == UPLOAD_ERR_OK 
-                && $file[self::$FILE_TYPE_PARAM] == self::$PDE_MIME_TYPE 
-                && $this->endsWith($file[self::$FILENAME_PARAM], ".pde")
-                &&is_uploaded_file($file[self::$FILE_PATH_PARAM])) {
+        if ($file[self::$ERROR_PARAM] == UPLOAD_ERR_OK && $file[self::$FILE_TYPE_PARAM] == self::$PDE_MIME_TYPE && $this->endsWith($file[self::$FILENAME_PARAM], self::$PDE_EXTENSION) && is_uploaded_file($file[self::$FILE_CONTENT_PARAM])) {
             $pdeFile = true;
         }
         return $pdeFile;
-    }
-
-    /**
-     * Ens diu si existeix el fitxer .pde en el repository.
-     * @return boolean True si existeix, False altrament
-     */
-    private function existsPdeFile() {
-        //TODO
     }
 
     /**
@@ -151,8 +123,6 @@ class save_pde_algorithm_command extends abstract_command_class {
      * Potser hauria de retornar 0 si ha anat be, i un negatiu per indicar qualsevol altre cosa.
      */
     private function movePdeToRepository($filePath, $pdePath) {
-        $repositoryPath = $this->getPdeRepositoryDir();
-        $pdePath = $repositoryPath . $fileName;
         return move_uploaded_file($filePath, $pdePath);
     }
 
@@ -168,21 +138,26 @@ class save_pde_algorithm_command extends abstract_command_class {
     /**
      * Genera i compila l'algorisme Pde.
      */
-    private function generateJavaClass($pdePath) {
-        
+    private function generateJavaClass($className, $pdePath) {
+        $javaPath = $this->getSrcRepositoryDir() . $this->getConf('processingPackage') . $className . self::$JAVA_EXTENSION;
+        $generated = $this->generateSource($className, $javaPath, $pdePath);
+        if ($generated) {
+            $generated = $this->compileSource($javaPath);
+        }
+        return $generated;
     }
 
     /**
      * Genera el fitxer .java amb el fitxer .pde
      * @param type $pdePath
      */
-    private function generateSource($pdePath) {
-        $javaPath = "path";
-        $stringFile = "package ioc.wiki.processingmanager;\n";
-        $stringFile .= "public class " . $className . " extends ImageGenerator{";
+    private function generateSource($className, $javaPath, $pdePath) {
+        $data = "package ioc.wiki.processingmanager;\n";
+        $data .= "public class " . $className . " extends ImageGenerator {\n";
         $contentPde = file_get_contents($pdePath);
-        $stringFile .= $contentPde;
-        $stringFile .= "}";
+        $data .= $contentPde;
+        $data .= "}";
+        return file_put_contents($javaPath, $data) > 0;
     }
 
     /**
@@ -191,14 +166,21 @@ class save_pde_algorithm_command extends abstract_command_class {
      */
     private function compileSource($javaPath) {
         $pathClasses = $this->getClassesRepositoryDir();
-        $command = "javac -d " . $pathClasses . " " . $javaPath;
-        $response = exec($command);
-        //Analitzar respostes.
-        //Lo més facil sera analitzar la resposta bona, i si no es aquesta
-        //sabem que ha anat malament.
+        $pathLibs = $this->getJavaLibDir();
+        //Comanda que funciona
+        //javac -classpath ../../../../classes/:../../../../../lib/core.jar IdDani.java
+        $command = "javac -d " . $pathClasses ." -classpath " . $pathClasses . ":" . $pathLibs . "core.jar " . $javaPath;
+        exec($command, $output, $returnVar);
+        return $returnVar == 0;
+
     }
 
-    private function addPdeAlgorithm() {
+    private function addPdeAlgorithm($className) {
+        $id = $this->params["id"];
+        $nom = $this->params["nom"];
+        $classe = str_replace('/','.',$this->getConf('processingPackage')).$className;
+        $descripcio = $this->params["descripcio"];
+        
         $xmlFile = $this->getXmlFile();
         $xml = simplexml_load_file($xmlFile);
         $algorisme = $xml->addChild('algorisme');
@@ -238,9 +220,14 @@ class save_pde_algorithm_command extends abstract_command_class {
      * @global type $conf
      * @return type Retorna el directori definit per les imatges de processing.
      */
-    private function getSourceRepositoryDir() {
+    private function getSrcRepositoryDir() {
         global $conf;
-        return DOKU_INC . $this->getConf('processingSourceRepository');
+        return DOKU_INC . $this->getConf('processingSrcRepository');
+    }
+
+    private function getJavaLibDir() {
+        global $conf;
+        return DOKU_INC . $this->getConf('javaLib');
     }
 
 }
