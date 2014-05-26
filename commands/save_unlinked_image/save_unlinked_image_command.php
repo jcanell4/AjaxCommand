@@ -58,6 +58,15 @@ class save_unlinked_image_command extends abstract_command_class {
         } else {
             $this->authenticatedUsersOnly = true;
         }
+        $this->types[self::$COMMAND_PARAM] = self::T_STRING;
+        $this->types[self::$EXISTS_IMAGE_NAME_PARAM] = self::T_STRING;
+        $this->types[self::$SAVE_IMAGE_PARAM] = self::T_STRING;
+        $this->types[self::$IMAGE_NAME_PARAM] = self::T_STRING;
+        $this->types[self::$FILE_PARAM] = self::T_FILE;
+
+        $defaultValues=array(self::$COMMAND_PARAM 
+                                        => self::$EXISTS_IMAGE_NAME_PARAM);
+        $this->setParameters($defaultValues);            
     }
 
     protected function process() {
