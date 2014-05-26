@@ -150,6 +150,7 @@ class save_unlinked_image_command extends abstract_command_class {
                 file_put_contents($filePath, $contentFile);
                 if (file_exists($imagePath)) {//El nom de fitxer ja existeix
                     unlink($pathFile); //Elimina el fitxer temporal
+                    $response = self::$FILENAME_EXISTS_CODE;
                 } else {
                     if (move_uploaded_file($filePath, $imagePath)) {
                         $response = self::$SAVE_FILE_CORRECT_CODE;
