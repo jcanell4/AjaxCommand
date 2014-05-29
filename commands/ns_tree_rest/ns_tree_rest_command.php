@@ -34,10 +34,10 @@ class ns_tree_rest_command extends abstract_rest_command_class{
     }
 
     public function processGet($extra_url_params) {
-        global $conf;
-        $sortOptions=array(0 => 'name', 'date');
-        $tree = array();
-        $tree_json=  array();
+//        global $conf;
+//        $sortOptions=array(0 => 'name', 'date');
+//        $tree = array();
+//        $tree_json=  array();
         $strData;
         $json = new JSON();
         
@@ -45,38 +45,40 @@ class ns_tree_rest_command extends abstract_rest_command_class{
             $this->params['currentnode'] = $extra_url_params[CURRENT_NODE_NS_TREE_PARAM];
         }
         
+        $tree = $this->modelWrapper->getNsTree($this->params['currentnode'], 
+                                                    $this->params['sortBy']);
         
-        if($this->params['currentnode']=="_"){
-            return $json->enc(array('id' => "", 'name' => "", 'type' => 'd'));
-            
-        }
-        if($this->params['currentnode']){
-            $node = $this->params['currentnode'];
-            $aname = split(":", $this->params['currentnode']);
-            $level = count($aname);
-            $name = $aname[$level-1];
-        }else{
-            $node = '';
-            $name = '';
-            $level=0;
-        }
-        $sort=$sortOptions[$this->params['sortBy']];
-        $base=$conf['datadir'];
-        
-        $opts = array('ns' => $node);
-        $dir = str_replace(':', '/', $node);
-        search($tree, $base, 'search_index', 
-                    $opts, $dir, 1);
-        foreach(array_keys($tree) as $item){
-            $tree_json[$item]['id'] = $tree[$item]['id'] ;
-            $aname = split(":", $tree[$item]['id']);
-            $tree_json[$item]['name'] = $aname[$level];
-            $tree_json[$item]['type'] = $tree[$item]['type'];
-        }
-        
-        $strData = $json->enc(array('id' => $node, 'name' => $node, 
-                                'type' => 'd', 'children' => $tree_json));
-//        $strData = $json->enc($tree);
+//        if($this->params['currentnode']=="_"){
+//            return $json->enc(array('id' => "", 'name' => "", 'type' => 'd'));
+//            
+//        }
+//        if($this->params['currentnode']){
+//            $node = $this->params['currentnode'];
+//            $aname = split(":", $this->params['currentnode']);
+//            $level = count($aname);
+//            $name = $aname[$level-1];
+//        }else{
+//            $node = '';
+//            $name = '';
+//            $level=0;
+//        }
+//        $sort=$sortOptions[$this->params['sortBy']];
+//        $base=$conf['datadir'];
+//        
+//        $opts = array('ns' => $node);
+//        $dir = str_replace(':', '/', $node);
+//        search($tree, $base, 'search_index', 
+//                    $opts, $dir, 1);
+//        foreach(array_keys($tree) as $item){
+//            $tree_json[$item]['id'] = $tree[$item]['id'] ;
+//            $aname = split(":", $tree[$item]['id']);
+//            $tree_json[$item]['name'] = $aname[$level];
+//            $tree_json[$item]['type'] = $tree[$item]['type'];
+//        }
+//        
+//        $strData = $json->enc(array('id' => $node, 'name' => $node, 
+//                                'type' => 'd', 'children' => $tree_json));
+        $strData = $json->enc($tree);
         return $strData;      
         
     }
