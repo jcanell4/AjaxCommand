@@ -33,7 +33,7 @@ class ns_tree_rest_command extends abstract_rest_command_class{
         $this->setParameters($defaultValues);
     }
 
-    public function processGet($extra_url_params) {
+    public function processGet(/*$extra_url_params*/) {
         global $conf;
         $sortOptions=array(0 => 'name', 'date');
         $tree = array();
@@ -41,9 +41,9 @@ class ns_tree_rest_command extends abstract_rest_command_class{
         $strData;
         $json = new JSON();
         
-        if(!is_null($extra_url_params)){
+        /*if(!is_null($extra_url_params)){
             $this->params['currentnode'] = $extra_url_params[CURRENT_NODE_NS_TREE_PARAM];
-        }
+        }*/
         
         
         if($this->params['currentnode']=="_"){

@@ -118,6 +118,48 @@ class DokuModelAdapter implements WikiIocModel{
     public function isDenied(){
         return $this->params['do']==DW_ACT_DENIED;
     }
+    
+    public function getNsTree($currentnode, $sortBy){
+        global $conf;
+        $sortOptions=array(0 => 'name', 'date');
+        $tree = array();
+        $tree_json=  array();
+        $strData;
+        $json = new JSON();
+        
+        if($currentnode=="_"){
+            return $json->enc(array('id' => "", 'name' => "", 'type' => 'd'));
+            
+        }
+        if($currentnode){
+            $node = $currentnode;
+            $aname = split(":", $currentnode);
+            $level = count($aname);
+            $name = $aname[$level-1];
+        }else{
+            $node = '';
+            $name = '';
+            $level=0;
+        }
+        $sort=$sortOptions[$sortBy];
+        $base=$conf['datadir'];
+        
+        $opts = array('ns' => $node);
+        $dir = str_replace(':', '/', $node);
+        search($tree, $base, 'search_index', 
+                    $opts, $dir, 1);
+        foreach(array_keys($tree) as $item){
+            $tree_json[$item]['id'] = $tree[$item]['id'] ;
+            $aname = split(":", $tree[$item]['id']);
+            $tree_json[$item]['name'] = $aname[$level];
+            $tree_json[$item]['type'] = $tree[$item]['type'];
+        }
+        
+        $strData = $json->enc(array('id' => $node, 'name' => $node, 
+                                'type' => 'd', 'children' => $tree_json));
+//        $strData = $json->enc($tree);
+        return $strData;              
+    }
 
     /**
      * Inicia tractament d'una pàgina de la dokuwiki

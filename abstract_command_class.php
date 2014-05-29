@@ -24,7 +24,7 @@ abstract class abstract_command_class extends DokuWiki_Plugin{
     const T_METHOD = "method";
     const T_FILE = "file";
     
-    protected static $PLUGUIM_TYPE='command';
+    protected static $PLUGUIN_TYPE='command';
     protected static $FILENAME_PARAM='name';
     protected static $FILE_TYPE_PARAM='type';
     protected static $ERROR_PARAM='error';
@@ -137,7 +137,7 @@ abstract class abstract_command_class extends DokuWiki_Plugin{
     }
     
     public function getPluginType() {
-        return self::$PLUGUIM_TYPE;
+        return self::$PLUGUIN_TYPE;
     }
     
     public function getPluginName() {
