@@ -44,24 +44,24 @@ abstract class abstract_rest_command_class extends abstract_command_class {
        return $this->bestContentType()!=='none';
      }
 
-    public function dispatchRequest($method/*, $extra_url_params=NULL, $permission=NULL*/) {
-        /*if($this->isAuthorized($permission)){*/
+    public function dispatchRequest($method, $extra_url_params=NULL, $permission=NULL) {
+        if($this->isAuthorized($permission)){
             if($this->isContentTypeSupported()){
                 switch($method) {
                   case 'GET':
-                    $ret = $this->processGet(/*$extra_url_params*/);
+                    $ret = $this->processGet($extra_url_params);
                     break;
                   case 'HEAD':
-                    $ret = $this->processHead(/*$extra_url_params*/);
+                    $ret = $this->processHead($extra_url_params);
                     break;
                   case 'POST':
-                    $ret = $this->processPost(/*$extra_url_params*/);
+                    $ret = $this->processPost($extra_url_params);
                     break;
                   case 'PUT':
-                    $ret = $this->processPut(/*$extra_url_params*/);
+                    $ret = $this->processPut($extra_url_params);
                     break;
                   case 'DELETE':
-                    $ret = $this->processDelete(/*$extra_url_params*/);
+                    $ret = $this->processDelete($extra_url_params);
                     break;
                   default:
                     /* 501 (Not Implemented) for any unknown methods */
@@ -75,10 +75,10 @@ abstract class abstract_rest_command_class extends abstract_command_class {
                 $this->error=true;
                 $this->errorMessage="Error: Content type is not accepted"; /*TODO internacionalitzaió (convertir missatges en variable) */
             }
-        /*}else{
+        }else{
             $this->error=true;
             $this->errorMessage="permission denied";
-        }*/
+        }
         if($this->error && $this->throwsException){
             throw new Exception($this->errorMessage);
         }
@@ -90,23 +90,23 @@ abstract class abstract_rest_command_class extends abstract_command_class {
       header('Allow: ' . implode($this->supportedMethods), true, 405);
     }
 
-    public function processGet(/*$extra_url_params*/) {
+    public function processGet($extra_url_params) {
       $this->methodNotAllowedResponse();
     }
 
-    public function processHead(/*$extra_url_params*/) {
+    public function processHead($extra_url_params) {
       $this->methodNotAllowedResponse();
     }
 
-    public function processPost(/*$extra_url_params*/) {
+    public function processPost($extra_url_params) {
       $this->methodNotAllowedResponse();
     }
 
-    public function processPut(/*$extra_url_params*/) {
+    public function processPut($extra_url_params) {
       $this->methodNotAllowedResponse();
     }
 
-    public function processDelete(/*$extra_url_params*/) {
+    public function processDelete($extra_url_params) {
       $this->methodNotAllowedResponse();
     }
     
