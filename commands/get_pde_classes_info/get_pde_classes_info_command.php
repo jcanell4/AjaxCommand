@@ -39,9 +39,11 @@ class get_pde_classes_info_command extends abstract_command_class {
     protected function process() {
         $response = array();
         $response["code"] = self::$UNLOADED_XML_CODE;
+        $response["n_algorismes"] = self::$UNLOADED_XML_CODE;
         if (file_exists($this->getXmlFile())) {
             $sxml = simplexml_load_file($this->getXmlFile());
             if ($sxml) {
+                $response["n_algorismes"] = $sxml->count();
                 $response["algorismes"] = $sxml;
                 $response["code"] = self::$LOADED_XML_CODE;
             }
