@@ -26,27 +26,40 @@ class save_pde_algorithm_command extends abstract_command_class {
 //     */
 //    private static $SAVE_FILE_CORRECT_CODE = 1;
 //    
-//    /**Codi d'informació per quan un fitxer ja existeix.
-//     * @return integer Retorna un -2
-//     */
-//    private static $FILENAME_EXISTS_CODE = -2;
+    
+    /**Codi d'informació per quan un algorisme ja existeix.
+     * @return integer Retorna un -2
+     */
+    private static $ALGORITHM_EXISTS_CODE = -2;
+    
+    /**Codi d'informació per quan un algorisme no existeix.
+     * @return integer Retorna un 2
+     */
+    private static $ALGORITHM_NOT_EXISTS_CODE = 2;
+    
+    /*     * Codi d'informació per quan un fitxer d'algorisme no ha estat carregat.
+     * @return integer Retorna un -8
+     */
+    private static $UNLOADED_ALGORITHM_CODE = -8;
+    
+    /*     * Codi d'informació per quan una comanda no estava definida.
+     * @return integer Retorna un -9
+     */
+    private static $UNDEFINED_ALGORITHM_NAME_CODE = -9;
+    
+    /*     * Codi d'informació per quan una comanda no estava definida.
+     * @return integer Retorna un -10
+     */
+    private static $UNDEFINED_COMMAND_CODE = -10;
 //    
-//    /**Codi d'informació per quan un fitxer no existeix.
-//     * @return integer Retorna un 2
-//     */
-//    private static $FILENAME_NOT_EXISTS_CODE = 2;
-//    
-//    /**Codi d'informació per quan una comanda no estava definida.
-//     * @return integer Retorna un -10
-//     */
-//    private static $UNDEFINED_COMMAND_CODE = -10;
-//    
-//    //Comandas
-//    private static $EXISTS_IMAGE_NAME_PARAM = 'existsImageName';
-//    private static $SAVE_IMAGE_PARAM = 'saveImage';
-//    private static $IMAGE_NAME_PARAM = 'imageName';
-    private static $ID_PARAM = 'id';
+    //Comandas
+    private static $COMMAND_PARAM = "do";
+    private static $EXISTS_ALGORITHM_PARAM = 'existsAlgorithm';
+    private static $MODIFY_ALGORITHM_PARAM = 'modifyAlgorithm';
+    private static $APPEND_ALGORITHM_PARAM = 'appendAlgorithm';
+    private static $ALGORITHM_NAME_PARAM = 'algorithmName';
     //Parametres del fitxer
+    private static $ID_PARAM = 'id';
     private static $FILE_PARAM = 'uploadedfile';
 //    private static $PDE_MIME_TYPE = 'text/plain';
     private static $PDE_MIME_TYPE = 'application/octet-stream';
@@ -63,35 +76,96 @@ class save_pde_algorithm_command extends abstract_command_class {
     }
 
     protected function process() {
-        //Validar fitxer, https://dojotoolkit.org/reference-guide/1.9/dojox/form/Uploader.html#missing-features
-
-        if (array_key_exists(self::$FILE_PARAM, $this->params)) {
-            $file = $this->params[self::$FILE_PARAM];
-            $filePath = $file[self::$FILE_CONTENT_PARAM];
-            $fileName = $file[self::$FILENAME_PARAM];
-            $repositoryPath = $this->getPdeRepositoryDir();
-            $pdePath = $repositoryPath . $fileName;
-            if ($this->isPdeFile($file)) {
-                if (!file_exists($pdePath)) {
-                    if ($this->movePdeToRepository($filePath, $pdePath)) {
-                        $className = ucfirst($this->params[self::$ID_PARAM]);
-                        if ($this->generateJavaClass($className, $pdePath)) {
-                            $this->addPdeAlgorithm($className);
-                        } else {
-                            $this->removePdeFromRepository($pdePath);
-                        }
-                    }
-                }
+        $response = self::$UNDEFINED_COMMAND_CODE;
+        if (array_key_exists(self::$COMMAND_PARAM, $this->params)) {
+            $do = $this->params[self::$COMMAND_PARAM];
+            switch ($do) {
+                case self::$EXISTS_ALGORITHM_PARAM:
+                    $response = $this->existsAlgorithm();
+                    break;
+                case self::$MODIFY_ALGORITHM_PARAM:
+                    $response = $this->modifyAlgorithm();
+                    break;
+                case self::$APPEND_ALGORITHM_PARAM:
+                    $response = $this->appendAlgorithm();
+                    break;
+                default:
+                    echo $do;
+                    break;
             }
         }
-
         return $response;
     }
 
     protected function getDefaultResponse($response, &$ret) {
         $responseCode = $response;
         $info = "";
+        switch ($responseCode) {
+            case self::$ALGORITHM_EXISTS_CODE:
+                $info = $this->getLang('algorithmExists');
+                break;
+            case self::$ALGORITHM_NOT_EXISTS_CODE:
+                $info = $this->getLang('algorithmNotExists');
+                break;
+            case self::$UNLOADED_ALGORITHM_CODE:
+                $info = $this->getLang('unloadedAlgorithm');
+                break;
+            case self::$UNDEFINED_COMMAND_CODE:
+                $info = $this->getLang('undefinedCommand');
+                break;
+            default:
+                $info = $this->getLang('unexpectedError');
+                break;
+        }
         $ret->addCodeTypeResponse($responseCode, $info);
+    }
+
+    private function existsAlgorithm() {
+        $response = self::$UNDEFINED_ALGORITHM_NAME_CODE;
+        if(array_key_exists(self::$ALGORITHM_NAME_PARAM, $this->params)){
+            $algorithmName = $this->params[self::$ALGORITHM_NAME_PARAM];//fitxer pde
+            $repositoryPdePath = $this->getPdeRepositoryDir();
+            $pdePath = $repositoryPdePath.$algorithmName;
+            if (file_exists($pdePath)){
+                $response = self::$ALGORITHM_EXISTS_CODE;
+            }else{
+                $response = self::$ALGORITHM_NOT_EXISTS_CODE;
+            }
+        }
+        return $response;
+    }
+
+    private function modifyAlgorithm() {
+        $response = "";
+        
+        return $response;
+    }
+
+    private function appendAlgorithm() {
+        $response = self::$UNLOADED_ALGORITHM_CODE;
+        //Validar fitxer perque sigui .pde, https://dojotoolkit.org/reference-guide/1.9/dojox/form/Uploader.html#missing-features
+        if (array_key_exists(self::$FILE_PARAM, $this->params)) {
+            $file = $this->params[self::$FILE_PARAM];
+            $filePath = $file[self::$FILE_CONTENT_PARAM];
+            $fileName = $file[self::$FILENAME_PARAM];
+            $repositoryPdePath = $this->getPdeRepositoryDir();
+            $pdePath = $repositoryPdePath . $fileName;
+            if ($this->isPdeFile($file)) {
+                if (!file_exists($pdePath)) {
+                    if ($this->movePdeToRepository($filePath, $pdePath)) {
+                        $className = ucfirst(substr($fileName, 0, -4));//Li treu la extensio .pde
+                        if ($this->generateJavaClass($className, $pdePath)) {
+                            $this->addPdeAlgorithm($className);
+                        } else {
+                            $this->removePdeFromRepository($pdePath);
+                        }
+                    }
+                }else{
+                    $response = self::$ALGORITHM_EXISTS_CODE;
+                }
+            }
+        }
+        return $response;
     }
 
     /**
@@ -169,18 +243,17 @@ class save_pde_algorithm_command extends abstract_command_class {
         $pathLibs = $this->getJavaLibDir();
         //Comanda que funciona
         //javac -classpath ../../../../classes/:../../../../../lib/core.jar IdDani.java
-        $command = "javac -d " . $pathClasses ." -classpath " . $pathClasses . ":" . $pathLibs . "core.jar " . $javaPath;
+        $command = "javac -d " . $pathClasses . " -classpath " . $pathClasses . ":" . $pathLibs . "core.jar " . $javaPath;
         exec($command, $output, $returnVar);
         return $returnVar == 0;
-
     }
 
     private function addPdeAlgorithm($className) {
-        $id = $this->params["id"];
+        $id = $className;
         $nom = $this->params["nom"];
-        $classe = str_replace('/','.',$this->getConf('processingPackage')).$className;
+        $classe = str_replace('/', '.', $this->getConf('processingPackage')) . $className;
         $descripcio = $this->params["descripcio"];
-        
+
         $xmlFile = $this->getXmlFile();
         $xml = simplexml_load_file($xmlFile);
         $algorisme = $xml->addChild('algorisme');
@@ -189,6 +262,19 @@ class save_pde_algorithm_command extends abstract_command_class {
         $algorisme->addChild('classe', $classe);
         $algorisme->addChild('descripcio', $descripcio);
         $xml->asXML($xmlFile);
+    }
+    
+    private function removePdeAlgorithm($className) {
+        $xmlFile = $this->getXmlFile();
+        $xml = simplexml_load_file($xmlFile);
+        $algorithm = $xml->xpath("*[id=".$className."]");
+        unset($algorithm[0]);
+//        $dom=dom_import_simplexml($algorithm[0]);
+//        $dom->parentNode->removeChild($dom);
+    }
+    
+    private function modifyPdeAlgorithm($className) {
+        
     }
 
     private function getXmlFile() {
