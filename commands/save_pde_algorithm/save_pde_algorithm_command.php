@@ -153,7 +153,7 @@ class save_pde_algorithm_command extends abstract_command_class {
             if ($this->isPdeFile($file)) {
                 if (!file_exists($pdePath)) {
                     if ($this->movePdeToRepository($filePath, $pdePath)) {
-                        $className = ucfirst(substr($fileName, 0, -4));//Li treu la extensio .pde
+                        $className = ucfirst(substr($fileName, 0, -4));//Li treu la extensio .pde i capitalitza el string
                         if ($this->generateJavaClass($className, $pdePath)) {
                             $this->addPdeAlgorithm($className);
                         } else {
