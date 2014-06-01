@@ -22,12 +22,14 @@ class ns_tree_rest_command extends abstract_rest_command_class{
         $this->supportedMethods=array("GET");
         $this->types['currentnode'] = abstract_command_class::T_OBJECT;
         $this->types['sortBy'] = abstract_command_class::T_INTEGER;
+        $this->types['onlyDirs'] = abstract_command_class::T_BOOLEAN;
         //$this->types['explore'] = abstract_command_class::T_INTEGER;
         //$this->types['open'] = abstract_command_class::T_INTEGER;
         //$this->types['refreshAll'] = abstract_command_class::T_BOOLEAN;
 
         $defaultValues = array(
                             'sortBy' => 0
+                          , 'onlyDirs' => FALSE
                 );
 
         $this->setParameters($defaultValues);
@@ -42,44 +44,13 @@ class ns_tree_rest_command extends abstract_rest_command_class{
         $json = new JSON();
         
         if(!is_null($extra_url_params)){
-            $this->params['currentnode'] = $this->getCurrentNode($extra_url_params);
-            $this->params['onlyDirs'] = $this->getOnlyDirs($extra_url_params);
+            $this->setParamValuesFromUrl($extra_url_params);
         }
         
         $tree = $this->modelWrapper->getNsTree($this->params['currentnode'] 
                                                     , $this->params['sortBy']
                                                     , $this->params['onlyDirs']);
         
-//        if($this->params['currentnode']=="_"){
-//            return $json->enc(array('id' => "", 'name' => "", 'type' => 'd'));
-//            
-//        }
-//        if($this->params['currentnode']){
-//            $node = $this->params['currentnode'];
-//            $aname = split(":", $this->params['currentnode']);
-//            $level = count($aname);
-//            $name = $aname[$level-1];
-//        }else{
-//            $node = '';
-//            $name = '';
-//            $level=0;
-//        }
-//        $sort=$sortOptions[$this->params['sortBy']];
-//        $base=$conf['datadir'];
-//        
-//        $opts = array('ns' => $node);
-//        $dir = str_replace(':', '/', $node);
-//        search($tree, $base, 'search_index', 
-//                    $opts, $dir, 1);
-//        foreach(array_keys($tree) as $item){
-//            $tree_json[$item]['id'] = $tree[$item]['id'] ;
-//            $aname = split(":", $tree[$item]['id']);
-//            $tree_json[$item]['name'] = $aname[$level];
-//            $tree_json[$item]['type'] = $tree[$item]['type'];
-//        }
-//        
-//        $strData = $json->enc(array('id' => $node, 'name' => $node, 
-//                                'type' => 'd', 'children' => $tree_json));
         $strData = $json->enc($tree);
         return $strData;      
         
@@ -90,15 +61,32 @@ class ns_tree_rest_command extends abstract_rest_command_class{
 //    
 //    protected function preprocess(){        
 //    }
-    private function getCurrentNode($extra_url_params){
-        $id = count($extra_url_params)-1;
-        return $extra_url_params[$id];
+
+    private function setParamValuesFromUrl($extra_url_params){
+            $this->setCurrentNode($extra_url_params);
+            $this->setOnlyDirs($extra_url_params);
+            $this->setSortBy($extra_url_params);        
     }
 
-    private function getOnlyDirs($extra_url_params){
-        $ret;
-        $ret = (count($extra_url_params)>2) || $extra_url_params[3]=='d';
-        return $ret;
+
+    private function setCurrentNode($extra_url_params){
+        $id = count($extra_url_params)-1;
+        $this->params['currentnode'] = $extra_url_params[$id];
+    }
+
+    private function setSortBy($extra_url_params){
+        if(count($extra_url_params)>3){ 
+            $this->params['sortBy'] = $extra_url_params[2];
+        }
+    }
+
+    private function setOnlyDirs($extra_url_params){
+        if(count($extra_url_params)>2){ 
+            $ret = ($extra_url_params[1]!='f' 
+                            && $extra_url_params[1]!='false');
+            $this->params['onlyDirs'] = $ret;
+        }
+        
     }
 }
 
