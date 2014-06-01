@@ -2,7 +2,7 @@
 if(!defined('DOKU_INC')) die();
 if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN',DOKU_INC.'lib/plugins/');
 if(!defined('DOKU_COMMAND')) define('DOKU_COMMAND',DOKU_PLUGIN."ajaxcommand/");
-if(!defined('CURRENT_NODE_NS_TREE_PARAM')) define('CURRENT_NODE_NS_TREE_PARAM', 1);
+//if(!defined('CURRENT_NODE_NS_TREE_PARAM')) define('CURRENT_NODE_NS_TREE_PARAM', 1);
 require_once(DOKU_INC.'inc/search.php');
 require_once(DOKU_INC.'inc/pageutils.php');
 require_once(DOKU_INC.'inc/JSON.php');
@@ -42,11 +42,13 @@ class ns_tree_rest_command extends abstract_rest_command_class{
         $json = new JSON();
         
         if(!is_null($extra_url_params)){
-            $this->params['currentnode'] = $extra_url_params[CURRENT_NODE_NS_TREE_PARAM];
+            $this->params['currentnode'] = $this->getCurrentNode($extra_url_params);
+            $this->params['onlyDirs'] = $this->getOnlyDirs($extra_url_params);
         }
         
-        $tree = $this->modelWrapper->getNsTree($this->params['currentnode'], 
-                                                    $this->params['sortBy']);
+        $tree = $this->modelWrapper->getNsTree($this->params['currentnode'] 
+                                                    , $this->params['sortBy']
+                                                    , $this->params['onlyDirs']);
         
 //        if($this->params['currentnode']=="_"){
 //            return $json->enc(array('id' => "", 'name' => "", 'type' => 'd'));
@@ -88,6 +90,16 @@ class ns_tree_rest_command extends abstract_rest_command_class{
 //    
 //    protected function preprocess(){        
 //    }
+    private function getCurrentNode($extra_url_params){
+        $id = count($extra_url_params)-1;
+        return $extra_url_params[$id];
+    }
+
+    private function getOnlyDirs($extra_url_params){
+        $ret;
+        $ret = (count($extra_url_params)>2) || $extra_url_params[3]=='d';
+        return $ret;
+    }
 }
 
 ?>

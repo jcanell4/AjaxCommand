@@ -119,7 +119,7 @@ class DokuModelAdapter implements WikiIocModel{
         return $this->params['do']==DW_ACT_DENIED;
     }
     
-    public function getNsTree($currentnode, $sortBy){
+    public function getNsTree($currentnode, $sortBy, $onlyDirs=FALSE){
         global $conf;
         $sortOptions=array(0 => 'name', 'date');
         $nodeData = array();
@@ -147,10 +147,12 @@ class DokuModelAdapter implements WikiIocModel{
         search($nodeData, $base, 'search_index', 
                     $opts, $dir, 1);
         foreach(array_keys($nodeData) as $item){
-            $children[$item]['id'] = $nodeData[$item]['id'] ;
-            $aname = split(":", $nodeData[$item]['id']);
-            $children[$item]['name'] = $aname[$level];
-            $children[$item]['type'] = $nodeData[$item]['type'];
+            if($onlyDirs && $nodeData[$item]['type']=='d' || !$onlyDirs){
+                $children[$item]['id'] = $nodeData[$item]['id'] ;
+                $aname = split(":", $nodeData[$item]['id']);
+                $children[$item]['name'] = $aname[$level];
+                $children[$item]['type'] = $nodeData[$item]['type'];
+            }
         }
         
         $tree = array('id' => $node, 'name' => $node, 
