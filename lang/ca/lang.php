@@ -21,3 +21,8 @@ $land['unloadedXml']            = 'No s\'ha pogut carregar el llistat dels algor
 $lang['algorithmExists']        = 'Aquest nom de fitxer de l\'algorisme ja existeix';
 $lang['algorithmNotExists']     = 'Aquest nom de fitxer de l\'algorisme encara no existeix';
 $lang['unloaderAlgorithm']      = 'No s\'ha carregat el fitxer de l\'algorisme';
+
+//copy_image_to_project
+$lang['copyImagesIncorrect']    = 'No s\'han copiat correctament totes les imatges';
+$lang['copyImagesCorrect']      = 'S\'han copiat correctament totes les imatges';
+$lang['undefinedProject']       = 'El directori del projecte no ha estat definit';
