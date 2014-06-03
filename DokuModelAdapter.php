@@ -13,6 +13,10 @@
 if(!defined('DOKU_INC')) die();
 //require common
 require_once DOKU_INC.'inc/actions.php';
+require_once DOKU_INC.'inc/pageutils.php';
+require_once DOKU_INC.'inc/media.php';
+require_once DOKU_INC.'inc/auth.php';
+require_once DOKU_INC.'inc/confutils.php';
 require_once(DOKU_COMMAND.'WikiIocModel.php');
 
 
@@ -119,6 +123,64 @@ class DokuModelAdapter implements WikiIocModel{
         return $this->params['do']==DW_ACT_DENIED;
     }
     
+    public function getMediaFileName($id, $rev=''){
+        return mediaFN($id, $rev);
+    }
+    
+    public function getPageFileName($id, $rev=''){
+        return wikiFN($id, $rev);
+    }
+    
+    /**
+     * 
+     * @param string $nsTarget
+     * @param string $idTarget
+     * @param string $filePathSource
+     * @param string $overWrite
+     * @return int
+     */
+    public function saveImage($nsTarget, $idTarget, $filePathSource, $overWrite=FALSE){
+        global $conf;
+        $res; //(0=OK, -1=UNAUTHORIZED, -2=OVER_WRITING_NOT_ALLOWED, 
+              //-3=OVER_WRITING_UNAUTHORIZED, -5=FAILS, -4=WRONG_PARAMS
+              //-6=BAD_CONTENT, -7=SPAM_CONTENT, -8=XSS_CONTENT)
+        $auth = auth_quickaclcheck(getNS($idTarget).":*");
+        if($auth >= AUTH_UPLOAD) { 
+            io_createNamespace("$nsTarget:xxx", 'media'); 
+            list($ext,$mime,$dl) = mimetype($idTarget);
+             $res_media = media_save(
+                array('name' => $filePathSource,
+                    'mime' => $mime,
+                    'ext'  => $ext),
+                $nsTarget.':'.$idTarget,
+                $overWrite,
+                $auth,
+                'copy'
+            );
+            if(is_array($res_media)){
+                if($res_media[1]==0){
+                    if($auth < (($conf['mediarevisions']) ? AUTH_UPLOAD : AUTH_DELETE)){
+                        $res = -3;
+                    }else{
+                        $res=-2;
+                    }
+                }else if($res_media[1]==-1){
+                    $res=-5;
+                    $res +=  media_contentcheck($filePathSource, $mime);                    
+                }
+            }else if(!$res_media){
+                $res=-4;
+            }else{
+                $res = 0;
+            }
+        }else{
+            $res=-1 ; //NO AUTORITZAT
+        }
+        
+        
+        return $res;
+    }
+    
     public function getNsTree($currentnode, $sortBy, $onlyDirs=FALSE){
         global $conf;
         $sortOptions=array(0 => 'name', 'date');
@@ -158,6 +220,11 @@ class DokuModelAdapter implements WikiIocModel{
         $tree = array('id' => $node, 'name' => $node, 
                          'type' => 'd', 'children' => $children);
         return $tree;              
+    }
+    
+    public function getGlobalMessage($id){
+        global $lang;
+        return $lang[$id];
     }
 
     /**

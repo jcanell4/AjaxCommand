@@ -26,3 +26,4 @@ $lang['unloaderAlgorithm']      = 'No s\'ha carregat el fitxer de l\'algorisme';
 $lang['copyImagesIncorrect']    = 'No s\'han copiat correctament totes les imatges';
 $lang['copyImagesCorrect']      = 'S\'han copiat correctament totes les imatges';
 $lang['undefinedProject']       = 'El directori del projecte no ha estat definit';
+$lang['unauthorized_request']   ='No es pot penjar el fitxer. Potser no teniu prou permisos?';
