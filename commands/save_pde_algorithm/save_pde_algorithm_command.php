@@ -98,7 +98,7 @@ class save_pde_algorithm_command extends abstract_command_class {
     }
 
     protected function getDefaultResponse($response, &$ret) {
-        $responseCode = $response;
+        $responseCode = $this->params;
         $info = "";
         switch ($responseCode) {
             case self::$ALGORITHM_EXISTS_CODE:
@@ -143,11 +143,14 @@ class save_pde_algorithm_command extends abstract_command_class {
 
     private function appendAlgorithm() {
         $response = self::$UNLOADED_ALGORITHM_CODE;
+        print $this->params;
         //Validar fitxer perque sigui .pde, https://dojotoolkit.org/reference-guide/1.9/dojox/form/Uploader.html#missing-features
         if (array_key_exists(self::$FILE_PARAM, $this->params)) {
+            print "dani";
             $file = $this->params[self::$FILE_PARAM];
             $filePath = $file[self::$FILE_CONTENT_PARAM];
-            $fileName = $file[self::$FILENAME_PARAM];
+//            $fileName = $file[self::$FILENAME_PARAM];
+            $fileName = $this->params[self::$ALGORITHM_NAME_PARAM];//fitxer pde
             $repositoryPdePath = $this->getPdeRepositoryDir();
             $pdePath = $repositoryPdePath . $fileName;
             if ($this->isPdeFile($file)) {
