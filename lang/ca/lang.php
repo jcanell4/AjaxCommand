@@ -20,7 +20,10 @@ $land['unloadedXml']            = 'No s\'ha pogut carregar el llistat dels algor
 //save_pde_algorithm
 $lang['algorithmExists']        = 'Aquest nom de fitxer de l\'algorisme ja existeix';
 $lang['algorithmNotExists']     = 'Aquest nom de fitxer de l\'algorisme encara no existeix';
-$lang['unloaderAlgorithm']      = 'No s\'ha carregat el fitxer de l\'algorisme';
+$lang['unloadedAlgorithm']      = 'No s\'ha carregat el fitxer de l\'algorisme';
+$lang['uncompiledAlgorithm']    = 'No s\'ha pogut compilar l\'algorisme';
+$lang['ok']                     = 'Tot ha anat correctament';
+$lang['xmlError']               = 'S\'ha trobat un error amb el XML';
 
 //copy_image_to_project
 $lang['copyImagesIncorrect']    = 'No s\'han copiat correctament totes les imatges';
