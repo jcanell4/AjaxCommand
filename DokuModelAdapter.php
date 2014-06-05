@@ -17,6 +17,7 @@ require_once DOKU_INC.'inc/pageutils.php';
 require_once DOKU_INC.'inc/media.php';
 require_once DOKU_INC.'inc/auth.php';
 require_once DOKU_INC.'inc/confutils.php';
+require_once DOKU_INC.'inc/io.php';
 require_once(DOKU_COMMAND.'WikiIocModel.php');
 
 
@@ -225,6 +226,10 @@ class DokuModelAdapter implements WikiIocModel{
     public function getGlobalMessage($id){
         global $lang;
         return $lang[$id];
+    }
+    
+    public function makeFileDir($filePath){
+        io_makeFileDir($filePath);
     }
 
     /**

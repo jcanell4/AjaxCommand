@@ -200,6 +200,7 @@ class save_pde_algorithm_command extends abstract_command_class {
             $pdePath = $repositoryPdePath . $fileName;
             if ($this->isPdeFile($file)) {
                 if (!file_exists($pdePath)) {
+                    $this->modelWrapper->makeFileDir($pdePath); //assegura que el directori existeix
                     if ($this->movePdeToRepository($filePath, $pdePath)) {
                         $className = ucfirst(substr($fileName, 0, -4)); //Li treu la extensio .pde i capitalitza el string
                         if ($this->generateJavaClass($className, $pdePath)) {
@@ -267,6 +268,7 @@ class save_pde_algorithm_command extends abstract_command_class {
      */
     private function generateJavaClass($className, $pdePath) {
         $javaPath = $this->getSrcRepositoryDir() . $this->getConf('processingPackage') . $className . self::$JAVA_EXTENSION;
+        $this->modelWrapper->makeFileDir($javaPath);
         $generated = $this->generateSource($className, $javaPath, $pdePath);
         if ($generated) {
             $generated = $this->compileSource($javaPath);
@@ -358,10 +360,18 @@ class save_pde_algorithm_command extends abstract_command_class {
                 break;
             }
         }
-        $node->parentNode->removeChild($node);
-        $deleted = $node == null;
-        $doc->saveXML();
-        return $deleted;
+        $pnode = $node->parentNode;
+        if($pnode){
+            $node = $pnode->removeChild($node);
+            $deleted = $node != null;
+            if($deleted){
+                $doc->formatOutput=TRUE;
+                $saved = $doc->save($xmlFile);
+            }
+        }else{
+            $deleted=FALSE;
+        }
+        return $deleted && $saved;
         
 //        $xml = simplexml_load_file($xmlFile);
 //        $algorithm = $xml->xpath("*[id=" . $className . "]");
@@ -371,6 +381,7 @@ class save_pde_algorithm_command extends abstract_command_class {
 //        $dom=dom_import_simplexml($algorithm[0]);
 //        $dom->parentNode->removeChild($dom);
     }
+    
     private function modifyPdeAlgorithm($className) {
         
     }
