@@ -343,15 +343,34 @@ class save_pde_algorithm_command extends abstract_command_class {
     }
 
     private function removePdeAlgorithm($className) {
+        $deleted = false;
         $xmlFile = $this->getXmlFile();
-        $xml = simplexml_load_file($xmlFile);
-        $algorithm = $xml->xpath("*[id=" . $className . "]");
-        unset($algorithm[0]);
-        return $algorithm;
+        $doc = new DOMDocument;
+        $stringXml = file_get_contents($xmlFile);
+        $stringXmlParsed = $stringXml;
+        $doc->loadXML($stringXmlParsed);
+        $valid = $doc->validate();
+        $algorismes = $doc->getElementsByTagName('algorisme');
+        $node = new DOMNode;
+        foreach ($algorismes as $algorisme) {
+            if ($algorisme->firstChild->nodeValue == $className) {
+                $node = $algorisme;
+                break;
+            }
+        }
+        $node->parentNode->removeChild($node);
+        $deleted = $node == null;
+        $doc->saveXML();
+        return $deleted;
+        
+//        $xml = simplexml_load_file($xmlFile);
+//        $algorithm = $xml->xpath("*[id=" . $className . "]");
+//        unset($xml[1]);
+//        $xml->asXML($xmlFile);
+//        return $algorithm[0] == null;
 //        $dom=dom_import_simplexml($algorithm[0]);
 //        $dom->parentNode->removeChild($dom);
     }
-
     private function modifyPdeAlgorithm($className) {
         
     }
