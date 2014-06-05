@@ -372,14 +372,6 @@ class save_pde_algorithm_command extends abstract_command_class {
             $deleted=FALSE;
         }
         return $deleted && $saved;
-        
-//        $xml = simplexml_load_file($xmlFile);
-//        $algorithm = $xml->xpath("*[id=" . $className . "]");
-//        unset($xml[1]);
-//        $xml->asXML($xmlFile);
-//        return $algorithm[0] == null;
-//        $dom=dom_import_simplexml($algorithm[0]);
-//        $dom->parentNode->removeChild($dom);
     }
     
     private function modifyPdeAlgorithm($className) {
