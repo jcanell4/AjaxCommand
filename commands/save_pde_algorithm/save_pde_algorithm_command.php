@@ -15,29 +15,18 @@ require_once (DOKU_COMMAND . 'AjaxCmdResponseGenerator.php');
 require_once(DOKU_COMMAND . 'abstract_command_class.php');
 
 class save_pde_algorithm_command extends abstract_command_class {
-    /*     * Codi d'informació per quan un fitxer no s'ha pogut dessar correctament.
-     * @return integer Retorna un -1
-     */
-
-//    private static $SAVE_FILE_INCORRECT_CODE = -1;
-//    
-//    /**Codi d'informació per quan un fitxer s'ha dessat correctament.
-//     * @return integer Retorna un 1
-//     */
-//    private static $SAVE_FILE_CORRECT_CODE = 1;
-//    
     /* Codi d'informació per quan ha anat tot correctament.
      * @return integer Retorna un 0
      */
     private static $OK_CODE = 0;
 
 
-    /*     * Codi d'informació per quan un algorisme ja existeix.
+    /* Codi d'informació per quan un algorisme ja existeix.
      * @return integer Retorna un -2
      */
     private static $ALGORITHM_EXISTS_CODE = -2;
 
-    /*     * Codi d'informació per quan un algorisme no existeix.
+    /* Codi d'informació per quan un algorisme no existeix.
      * @return integer Retorna un 2
      */
     private static $ALGORITHM_NOT_EXISTS_CODE = 2;
@@ -52,17 +41,17 @@ class save_pde_algorithm_command extends abstract_command_class {
      */
     private static $UNCOMPILED_ALGORITHM_CODE = -7;
 
-    /*     * Codi d'informació per quan un fitxer d'algorisme no ha estat carregat.
+    /* Codi d'informació per quan un fitxer d'algorisme no ha estat carregat.
      * @return integer Retorna un -8
      */
     private static $UNLOADED_ALGORITHM_CODE = -8;
 
-    /*     * Codi d'informació per quan una comanda no estava definida.
+    /* Codi d'informació per quan una comanda no estava definida.
      * @return integer Retorna un -9
      */
     private static $UNDEFINED_ALGORITHM_NAME_CODE = -9;
 
-    /*     * Codi d'informació per quan una comanda no estava definida.
+    /* Codi d'informació per quan una comanda no estava definida.
      * @return integer Retorna un -10
      */
     private static $UNDEFINED_COMMAND_CODE = -10;
@@ -74,9 +63,7 @@ class save_pde_algorithm_command extends abstract_command_class {
     private static $APPEND_ALGORITHM_PARAM = 'appendAlgorithm';
     private static $ALGORITHM_NAME_PARAM = 'algorithmName';
     //Parametres del fitxer
-    private static $ID_PARAM = 'id';
     private static $FILE_PARAM = 'uploadedfile';
-//    private static $PDE_MIME_TYPE = 'text/plain';
     private static $PDE_MIME_TYPE = 'application/octet-stream';
     private static $PDE_EXTENSION = '.pde';
     private static $JAVA_EXTENSION = '.java';
@@ -329,6 +316,9 @@ class save_pde_algorithm_command extends abstract_command_class {
         $id = $className;
         $nom = $this->params["nom"];
         $classe = str_replace('/', '.', $this->getConf('processingPackage')) . $className;
+        if ($nom == null | $nom == ""){//Si el nom es buit, posar-li el nom de la classe
+            $nom = $className;
+        }
         $descripcio = $this->params["descripcio"];
 
         $xmlFile = $this->getXmlFile();
