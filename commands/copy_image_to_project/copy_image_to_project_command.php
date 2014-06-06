@@ -96,9 +96,11 @@ class copy_image_to_project_command extends abstract_command_class {
             foreach ($this->params as $key => $value) {
                 if (strpos($key, "checkbox") === 0) {//el parametre es un checkbox d'una imatge
                     //QUE PASA SI JA EXISTEIX LA IMATGE?  [TO DO]
+                    //sempre la guardarem amb el mateix nom: coverImage.[extensio_original]
+                    $ext = strrchr($value, ".");
                     $response = $this->modelWrapper->saveImage(
                             $this->params[self::$PROJECT_PATH_PARAM], // projectPath?
-                            $value, 
+                            "coverImage".$ext, 
                             $imagesPath.$value, 
                             TRUE);
                     if ($response!=self::$OK) {
