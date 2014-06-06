@@ -90,16 +90,14 @@ class copy_image_to_project_command extends abstract_command_class {
     protected function process() {
         $response = self::$UNDEFINED_PROJECT_CODE;
         if (array_key_exists(self::$PROJECT_PATH_PARAM, $this->params)) {
-            
-            
             //El path del projecte ve separat per ':' en comptes de '/'
-            $projectPath = str_replace(':', '/', $this->param[self::$PROJECT_PATH_PARAM]).'/';
+            $projectPath = str_replace(':', '/', $this->params[self::$PROJECT_PATH_PARAM]).'/';
             $imagesPath = $this->getImageRepositoryDir();
             foreach ($this->params as $key => $value) {
                 if (strpos($key, "checkbox") === 0) {//el parametre es un checkbox d'una imatge
                     //QUE PASA SI JA EXISTEIX LA IMATGE?  [TO DO]
                     $response = $this->modelWrapper->saveImage(
-                            $this->param[self::$PROJECT_PATH_PARAM], // projectPath?
+                            $this->params[self::$PROJECT_PATH_PARAM], // projectPath?
                             $value, 
                             $imagesPath.$value, 
                             TRUE);
