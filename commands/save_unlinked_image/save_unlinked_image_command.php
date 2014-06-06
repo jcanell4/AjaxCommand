@@ -143,7 +143,8 @@ class save_unlinked_image_command extends abstract_command_class {
                     && $file[self::$FILE_TYPE_PARAM] == self::$PNG_MIME_TYPE 
                     && is_uploaded_file($file[self::$FILE_CONTENT_PARAM])) {
                 $nameImage = $file[self::$FILENAME_PARAM];
-                $imagePath = $this->getImageRepositoryDir() . $nameImage;
+                //$imagePath = $this->getImageRepositoryDir() . $nameImage;
+                $nsImage = str_replace("/", ":", $this->getImageRepositoryDir());
                 $filePath = $file[self::$FILE_CONTENT_PARAM];//path del fitxer temporal
                 //Decodifica el fitxer
                 $contentFile = base64_decode(file_get_contents($filePath));
@@ -152,7 +153,8 @@ class save_unlinked_image_command extends abstract_command_class {
                     unlink($pathFile); //Elimina el fitxer temporal
                     $response = self::$FILENAME_EXISTS_CODE;
                 } else {
-                    if (move_uploaded_file($filePath, $imagePath)) {
+                    if ($this->modelWrapper->uploadImage($nsImage, $nameImage, $filePath)==0) {
+//                    if (move_uploaded_file($filePath, $imagePath)==0) {
                         $response = self::$SAVE_FILE_CORRECT_CODE;
                     }
                 }

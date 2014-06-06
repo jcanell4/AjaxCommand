@@ -140,7 +140,26 @@ class DokuModelAdapter implements WikiIocModel{
      * @param string $overWrite
      * @return int
      */
+    public function uploadImage($nsTarget, $idTarget, $filePathSource, $overWrite=FALSE){
+        return $this->_saveImage($nsTarget, $idTarget, $filePathSource
+                                                , $overWrite, "move_uploaded_file");        
+    }
+    
+    /**
+     * 
+     * @param string $nsTarget
+     * @param string $idTarget
+     * @param string $filePathSource
+     * @param string $overWrite
+     * @return int
+     */
     public function saveImage($nsTarget, $idTarget, $filePathSource, $overWrite=FALSE){
+        return $this->_saveImage($nsTarget, $idTarget, $filePathSource
+                                                , $overWrite, "copy");
+    }
+    
+    private function _saveImage($nsTarget, $idTarget, $filePathSource, $overWrite
+                                                                    , $copyFunction){
         global $conf;
         $res; //(0=OK, -1=UNAUTHORIZED, -2=OVER_WRITING_NOT_ALLOWED, 
               //-3=OVER_WRITING_UNAUTHORIZED, -5=FAILS, -4=WRONG_PARAMS
@@ -156,7 +175,7 @@ class DokuModelAdapter implements WikiIocModel{
                 $nsTarget.':'.$idTarget,
                 $overWrite,
                 $auth,
-                'copy'
+                $copyFunction
             );
             if(is_array($res_media)){
                 if($res_media[1]==0){
