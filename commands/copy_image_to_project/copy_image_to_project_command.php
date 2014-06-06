@@ -96,17 +96,21 @@ class copy_image_to_project_command extends abstract_command_class {
             $projectPath = str_replace(':', '/', $this->param[self::$PROJECT_PATH_PARAM]).'/';
             $imagesPath = $this->getImageRepositoryDir();
             foreach ($this->params as $key => $value) {
-                if (strpos($key, "checkbox") == 0) {//el parametre es un checkbox d'una imatge
+                if (strpos($key, "checkbox") === 0) {//el parametre es un checkbox d'una imatge
                     //QUE PASA SI JA EXISTEIX LA IMATGE?  [TO DO]
                     $response = $this->modelWrapper->saveImage(
-                            $this->param[self::$PROJECT_PATH_PARAM], 
+                            $this->param[self::$PROJECT_PATH_PARAM], // projectPath?
                             $value, 
                             $imagesPath.$value, 
                             TRUE);
+                    if ($response!=self::$OK) {
+                        break;
+                    }
                 }
-                if ($response!=self::$UNDEFINED_PROJECT_CODE) {
-                    break;
-                }
+//                if ($response!=self::$UNDEFINED_PROJECT_CODE) {
+//                    break;
+//                }
+                
             }
         }
         return $response;
@@ -159,52 +163,6 @@ class copy_image_to_project_command extends abstract_command_class {
         }
         $ret->addCodeTypeResponse($responseCode, $info);
     }
-
-//    /**
-//     * Comprova si existeix el nom de la imatge.
-//     * @return integer Retorna el integer en referència al tipus de informació
-//     */
-//    private function nameExists() {
-//        $response = self::$UNDEFINED_COMMAND_CODE;
-//        if (array_key_exists(self::$IMAGE_NAME_PARAM, $this->params)) {
-//            $imageName = $this->params[self::$IMAGE_NAME_PARAM];
-//            $imagePath = $this->getImageRepositoryDir() . $imageName;
-//            if (file_exists($imagePath)) {
-//                $response = self::$FILENAME_EXISTS_CODE;
-//            } else {
-//                $response = self::$FILENAME_NOT_EXISTS_CODE;
-//            }
-//        }
-//        return $response;
-//    }
-//
-//    /**
-//     * Desa la imatge en el directori correcte.
-//     * @return integer Retorna el integer en referència al tipus de informació
-//     */
-//    private function saveImage() {
-//        $response = self::$SAVE_FILE_INCORRECT_CODE;
-//        if (array_key_exists(self::$FILE_PARAM, $this->params)) {
-//            $file = $this->params[self::$FILE_PARAM];
-//            if ($file[self::$ERROR_PARAM] == UPLOAD_ERR_OK && $file[self::$FILE_TYPE_PARAM] == self::$PNG_MIME_TYPE && is_uploaded_file($file[self::$FILE_CONTENT_PARAM])) {
-//                $nameImage = $file[self::$FILENAME_PARAM];
-//                $imagePath = $this->getImageRepositoryDir() . $nameImage;
-//                $filePath = $file[self::$FILE_CONTENT_PARAM]; //path del fitxer temporal
-//                //Decodifica el fitxer
-//                $contentFile = base64_decode(file_get_contents($filePath));
-//                file_put_contents($filePath, $contentFile);
-//                if (file_exists($imagePath)) {//El nom de fitxer ja existeix
-//                    unlink($pathFile); //Elimina el fitxer temporal
-//                    $response = self::$FILENAME_EXISTS_CODE;
-//                } else {
-//                    if (move_uploaded_file($filePath, $imagePath)) {
-//                        $response = self::$SAVE_FILE_CORRECT_CODE;
-//                    }
-//                }
-//            }
-//        }
-//        return $response;
-//    }
 
     /**
      * Consulta el directori definit per les imatges de processing.
