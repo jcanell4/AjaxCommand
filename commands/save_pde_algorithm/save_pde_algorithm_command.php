@@ -379,7 +379,8 @@ class save_pde_algorithm_command extends abstract_command_class {
      */
     private function getPdeRepositoryDir() {
         global $conf;
-        return DOKU_INC . $this->getConf('processingPdeRepository');
+        return "../../../lib/_java/pde/algorismes/";
+//        return DOKU_INC . $this->getConf('processingPdeRepository');
     }
 
     /**
@@ -389,7 +390,8 @@ class save_pde_algorithm_command extends abstract_command_class {
      */
     private function getClassesRepositoryDir() {
         global $conf;
-        return DOKU_INC . $this->getConf('processingClassesRepository');
+        return "../../../lib/_java/pde/classes/";
+//        return DOKU_INC . $this->getConf('processingClassesRepository');
     }
 
     /**
@@ -399,12 +401,14 @@ class save_pde_algorithm_command extends abstract_command_class {
      */
     private function getSrcRepositoryDir() {
         global $conf;
-        return DOKU_INC . $this->getConf('processingSrcRepository');
+        return "../../../lib/_java/pde/src/";
+//        return DOKU_INC . $this->getConf('processingSrcRepository');
     }
 
     private function getJavaLibDir() {
         global $conf;
-        return DOKU_INC . $this->getConf('javaLib');
+        return "../../../lib/_java/lib/";
+//        return DOKU_INC . $this->getConf('javaLib');
     }
 
 }

@@ -43,7 +43,7 @@ class save_unlinked_image_command extends abstract_command_class {
     
     //Comandas
     private static $COMMAND_PARAM = "do";
-    private static $EXISTS_IMAGE_NAME_PARAM = 'existsImageName';
+    private static $EXISTS_IMAGE_NAME_PARAM = 'existsImage';
     private static $SAVE_IMAGE_PARAM = 'saveImage';
     private static $IMAGE_NAME_PARAM = 'imageName';
     
@@ -144,7 +144,7 @@ class save_unlinked_image_command extends abstract_command_class {
                     && is_uploaded_file($file[self::$FILE_CONTENT_PARAM])) {
                 $nameImage = $file[self::$FILENAME_PARAM];
                 //$imagePath = $this->getImageRepositoryDir() . $nameImage;
-                $nsImage = str_replace("/", ":", $this->getImageRepositoryDir());
+                $nsImage = str_replace("/", ":", $this->getConf('processingImageRepository'));
                 $filePath = $file[self::$FILE_CONTENT_PARAM];//path del fitxer temporal
                 //Decodifica el fitxer
                 $contentFile = base64_decode(file_get_contents($filePath));
@@ -170,9 +170,9 @@ class save_unlinked_image_command extends abstract_command_class {
      */
     private function getImageRepositoryDir() {
         global $conf;
-        return $conf['mediadir'] . $this->getConf('processingImageRepository');
+        return $conf['mediadir'] . "/". $this->getConf('processingImageRepository');
     }
-
+    
 }
 
 ?>

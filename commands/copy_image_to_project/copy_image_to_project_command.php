@@ -35,7 +35,6 @@ class copy_image_to_project_command extends abstract_command_class {
      */
     private static $BAD_CONTENT = -6;
 
-    /**Codi d'informació per quan no s'han pogut copiar totes les imatges.
     /**Codi d'informació degut a que els paràmetres han agafat valors incorrectes.
      * @return integer Retorna un -5
      */
@@ -70,10 +69,10 @@ class copy_image_to_project_command extends abstract_command_class {
      * @return integer Retorna un -10
      */
     private static $UNDEFINED_PROJECT_CODE = -10;
-//    
- 
-    private static $PROJECT_PATH_PARAM = "projectPath";
 
+    private static $PROJECT_PATH_PARAM = "projectPath";
+    private static $CHECK_IMAGE_PARAM = "checkImage";
+    private static $IMAGE_NAME_PARAM = "imageName";
 
 
     public function __construct() {
@@ -90,28 +89,30 @@ class copy_image_to_project_command extends abstract_command_class {
     protected function process() {
         $response = self::$UNDEFINED_PROJECT_CODE;
         if (array_key_exists(self::$PROJECT_PATH_PARAM, $this->params)) {
-            //El path del projecte ve separat per ':' en comptes de '/'
-            $projectPath = str_replace(':', '/', $this->params[self::$PROJECT_PATH_PARAM]).'/';
             $imagesPath = $this->getImageRepositoryDir();
-            foreach ($this->params as $key => $value) {
-                if (strpos($key, "checkbox") === 0) {//el parametre es un checkbox d'una imatge
-                    //QUE PASA SI JA EXISTEIX LA IMATGE?  [TO DO]
-                    //sempre la guardarem amb el mateix nom: coverImage.[extensio_original]
-                    $ext = strrchr($value, ".");
-                    $response = $this->modelWrapper->saveImage(
-                            $this->params[self::$PROJECT_PATH_PARAM], // projectPath?
-                            "coverImage".$ext, 
-                            $imagesPath.$value, 
+            $filename = $this->params[self::$CHECK_IMAGE_PARAM];
+            $imageName = $this->params[self::$IMAGE_NAME_PARAM];
+            $ext = strrchr($filename, ".");
+            $response = $this->modelWrapper->saveImage(
+                            $this->params[self::$PROJECT_PATH_PARAM],
+                            $imageName.$ext, 
+                            $imagesPath.$filename, 
                             TRUE);
-                    if ($response!=self::$OK) {
-                        break;
-                    }
-                }
-//                if ($response!=self::$UNDEFINED_PROJECT_CODE) {
-//                    break;
+//            foreach ($this->params as $key => $value) {
+//                if (strpos($key, "checkbox") === 0) {//el parametre es un checkbox d'una imatge
+//                    //QUE PASA SI JA EXISTEIX LA IMATGE?  [TO DO]
+//                    //sempre la guardarem amb el mateix nom: coverImage.[extensio_original]
+//                    $ext = strrchr($value, ".");
+//                    $response = $this->modelWrapper->saveImage(
+//                            $this->params[self::$PROJECT_PATH_PARAM],
+//                            "coverImage".$ext, 
+//                            $imagesPath.$value, 
+//                            TRUE);
+//                    if ($response!=self::$OK) {
+//                        break;
+//                    }
 //                }
-                
-            }
+//            }
         }
         return $response;
     }
