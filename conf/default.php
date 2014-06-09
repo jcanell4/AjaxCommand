@@ -14,3 +14,13 @@ $conf['processingClassesRepository']    = 'lib/_java/pde/classes/'; //repository
 $conf['processingSrcRepository']        = 'lib/_java/pde/src/'; //repository for pde src
 $conf['processingPackage']              = 'ioc/wiki/processingmanager/'; //processing package
 $conf['javaLib']                        = 'lib/_java/lib/'; //java libraries
+$conf['javaLibs']                       = 'ImageGenerator.jar,'
+                                            . 'core.jar,'
+                                            . 'gluegen-rt-natives-linux-i586.jar,'
+                                            . 'gluegen-rt.jar,'
+                                            . 'itext.jar,'
+                                            . 'jogl-all-natives-linux-i586.jar,'
+                                            . 'jogl-all.jar,'
+                                            . 'pdf.jar,'
+                                            . 'commons-codec-1.9.jar,'
+                                            . 'javax.json-1.0.2.jar'; //java libraries
