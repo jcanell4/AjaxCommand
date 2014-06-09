@@ -73,6 +73,7 @@ class copy_image_to_project_command extends abstract_command_class {
     private static $PROJECT_PATH_PARAM = "projectPath";
     private static $CHECK_IMAGE_PARAM = "checkImage";
     private static $IMAGE_NAME_PARAM = "imageName";
+    private static $DOT = ".";
 
 
     public function __construct() {
@@ -92,27 +93,12 @@ class copy_image_to_project_command extends abstract_command_class {
             $imagesPath = $this->getImageRepositoryDir();
             $filename = $this->params[self::$CHECK_IMAGE_PARAM];
             $imageName = $this->params[self::$IMAGE_NAME_PARAM];
-            $ext = strrchr($filename, ".");
+            $ext = strrchr($filename, self::$DOT);
             $response = $this->modelWrapper->saveImage(
                             $this->params[self::$PROJECT_PATH_PARAM],
                             $imageName.$ext, 
                             $imagesPath.$filename, 
                             TRUE);
-//            foreach ($this->params as $key => $value) {
-//                if (strpos($key, "checkbox") === 0) {//el parametre es un checkbox d'una imatge
-//                    //QUE PASA SI JA EXISTEIX LA IMATGE?  [TO DO]
-//                    //sempre la guardarem amb el mateix nom: coverImage.[extensio_original]
-//                    $ext = strrchr($value, ".");
-//                    $response = $this->modelWrapper->saveImage(
-//                            $this->params[self::$PROJECT_PATH_PARAM],
-//                            "coverImage".$ext, 
-//                            $imagesPath.$value, 
-//                            TRUE);
-//                    if ($response!=self::$OK) {
-//                        break;
-//                    }
-//                }
-//            }
         }
         return $response;
     }
@@ -174,7 +160,6 @@ class copy_image_to_project_command extends abstract_command_class {
         global $conf;
         return $conf['mediadir'] . $this->getConf('processingImageRepository');
     }
-
 }
 
 ?>

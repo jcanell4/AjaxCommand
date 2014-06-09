@@ -115,7 +115,7 @@ class save_unlinked_image_command extends abstract_command_class {
 
     /**
      * Comprova si existeix el nom de la imatge.
-     * @return integer Retorna el integer en referència al tipus de informació
+     * @return int response code information
      */
     private function nameExists() {
         $response = self::$UNDEFINED_COMMAND_CODE;
@@ -133,7 +133,7 @@ class save_unlinked_image_command extends abstract_command_class {
 
     /**
      * Desa la imatge en el directori correcte.
-     * @return integer Retorna el integer en referència al tipus de informació
+     * @return int response code information
      */
     private function saveImage() {
         $response = self::$SAVE_FILE_INCORRECT_CODE;

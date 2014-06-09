@@ -67,6 +67,10 @@ class get_pde_classes_info_command extends abstract_command_class {
         $ret->addObjectTypeResponse($response);
     }
     
+    /**
+     * Retorna el path al fitxer XML d'algorismes
+     * @return String path al fitxer XML d'algorismes
+     */
     private function getXmlFile(){
         return DOKU_INC.$this->getConf("processingXmlFile");
     }
