@@ -36,12 +36,12 @@ class copy_image_to_project_command extends abstract_command_class {
     private static $BAD_CONTENT = -6;
 
     /**Codi d'informació degut a que els paràmetres han agafat valors incorrectes.
-     * @return integer Retorna un -5
+     * @return integer Retorna un -4
      */
     private static $WRONG_PARAMS = -4;
 
     /**Codi d'informació per quan no s'han pogut copiar totes les imatges.
-     * @return integer Retorna un -4
+     * @return integer Retorna un -5
      */
     private static $COPY_FAILS = -5;
 
