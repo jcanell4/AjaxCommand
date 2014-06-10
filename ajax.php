@@ -118,6 +118,7 @@ function callCommand($str_command, $arr_parameters){
     $ret = $command->run($INFO['userinfo']['grps']);
     
     if($command->error){
+        header($command->errorMessage, true, $command->error);
         $ret=$command->errorMessage;
     }
     return $ret;

@@ -89,11 +89,11 @@ abstract class abstract_command_class extends DokuWiki_Plugin{
             
             
             if($this->modelWrapper->isDenied()){
-                $this->error=true;
+                $this->error=403;
                 $this->errorMessage="permission denied"; /*TODO internacionalització */
             }
         }else{
-            $this->error=true;
+            $this->error=403;
             $this->errorMessage="permission denied"; /*TODO internacionalització */
         }
         if($this->error && $this->throwsException){

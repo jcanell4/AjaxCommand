@@ -78,6 +78,7 @@ class save_pde_algorithm_command extends abstract_command_class {
     private static $DOT = ".";
     private static $SLASH = "/";
     private static $TWO_DOTS = ":";
+    private $xmlFileCreted = false;
 
     public function __construct() {
         parent::__construct();
@@ -86,6 +87,7 @@ class save_pde_algorithm_command extends abstract_command_class {
         } else {
             $this->authenticatedUsersOnly = true;
         }
+        $this->xmlFileCreted = @file_exists(DOKU_INC . $this->getConf("processingXmlFile"));
     }
 
     protected function process() {
@@ -321,13 +323,17 @@ class save_pde_algorithm_command extends abstract_command_class {
         if ($nom == null | $nom == "") {//Si el nom es buit, posar-li el nom de la classe
             $nom = $className;
         }
-        $descripcio = $this->params[self::$DESCRIPCIO_PARAM];
+        if($this->params[self::$DESCRIPCIO_PARAM]){
+            $descripcio = $this->params[self::$DESCRIPCIO_PARAM];
+        }else{
+            $descripcio=" \n";
+        }
 
         $xmlFile = $this->getXmlFile();
         $xml = simplexml_load_file($xmlFile);
         if ($xml) {
             $algorisme = $xml->addChild(self::$ALGORISME_PARAM);
-            $algorisme->addChild(self::$ID_PARAM, $id);
+            $algorisme->addAttribute(self::$ID_PARAM, $id);
             $algorisme->addChild(self::$NOM_PARAM, $nom);
             $algorisme->addChild(self::$CLASSE_PARAM, $classe);
             $algorisme->addChild(self::$DESCRIPCIO_PARAM, $descripcio);
@@ -349,16 +355,11 @@ class save_pde_algorithm_command extends abstract_command_class {
         $stringXmlParsed = $stringXml;
         $doc->loadXML($stringXmlParsed);
         $valid = $doc->validate();
-        $algorismes = $doc->getElementsByTagName(self::$ALGORISME_PARAM);
-        $node = new DOMNode;
-        foreach ($algorismes as $algorisme) {
-            if ($algorisme->firstChild->nodeValue == $className) {
-                $node = $algorisme;
-                break;
-            }
+        if($valid){
+            $node = $doc->getElementById($className);
         }
-        $pnode = $node->parentNode;
-        if ($pnode) {
+        if ($valid && $node) {
+            $pnode = $node->parentNode;
             $node = $pnode->removeChild($node);
             $deleted = $node != null;
             if ($deleted) {
@@ -395,6 +396,9 @@ class save_pde_algorithm_command extends abstract_command_class {
      * @return string Path to XML file.
      */
     private function getXmlFile() {
+        if(!$this->xmlFileCreted){
+            $this->createXmlDataFile();
+        }
         return DOKU_INC . $this->getConf("processingXmlFile");
     }
 
@@ -442,7 +446,19 @@ class save_pde_algorithm_command extends abstract_command_class {
 //        return "../../../lib/_java/";
         return DOKU_INC . $this->getConf('javaDir');
     }
-
+    
+    private function createXmlDataFile(){
+        file_put_contents ($this->getXmlFile(), 
+                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+                ."<!DOCTYPE algorismes [\n"
+                ."<!ELEMENT algorismes (algorisme)*>\n"
+                ."<!ELEMENT algorisme (nom , classe , descripcio)>\n"
+                ."<!ATTLIST algorisme id ID #REQUIRED>\n"
+                ."<!ELEMENT nom (#PCDATA)>\n"
+                ."<!ELEMENT classe (#PCDATA)>\n"
+                ."<!ELEMENT descripcio (#PCDATA)>\n"
+                ."]>\n"
+                ."<algorismes>\n"
+                ."</algorismes>\n");
+    }
 }
-
-?>
