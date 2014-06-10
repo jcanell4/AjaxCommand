@@ -158,7 +158,7 @@ class copy_image_to_project_command extends abstract_command_class {
      */
     private function getImageRepositoryDir() {
         global $conf;
-        return $conf['mediadir'] . $this->getConf('processingImageRepository');
+        return $conf['mediadir']. '/' . $this->getConf('processingImageRepository');
     }
 }
 

@@ -13,7 +13,8 @@ $conf['processingPdeRepository']        = 'lib/_java/pde/algorismes/'; //reposit
 $conf['processingClassesRepository']    = 'lib/_java/pde/classes/'; //repository for pde classes
 $conf['processingSrcRepository']        = 'lib/_java/pde/src/'; //repository for pde src
 $conf['processingPackage']              = 'ioc/wiki/processingmanager/'; //processing package
-$conf['javaLib']                        = 'lib/_java/lib/'; //java libraries
+$conf['javaLibDir']                     = 'lib/_java/lib/'; //java libraries
+$conf['javaDir']                        = 'lib/_java/'; //java libraries
 $conf['javaLibs']                       = 'ImageGenerator.jar,'
                                             . 'core.jar,'
                                             . 'gluegen-rt-natives-linux-i586.jar,'

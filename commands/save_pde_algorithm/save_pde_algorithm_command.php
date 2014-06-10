@@ -269,32 +269,21 @@ class save_pde_algorithm_command extends abstract_command_class {
      * @return bool True on success, False otherwise 
      */
     private function generateJavaClass($className, $pdePath) {
-        $javaPath = $this->getSrcRepositoryDir() . $this->getConf('processingPackage') . $className . self::$JAVA_EXTENSION;
-        $this->modelWrapper->makeFileDir($javaPath);
-        $generated = $this->generateSource($className, $javaPath, $pdePath);
+        $command = "java -cp ".$this->getJavaDir()
+                ."ParsePdeAlgorithm.jar ioc.parsepdealgorithm.PdeToIocImageGenerator"
+                ." -pkg=ioc.wiki.processingmanager -cn=".$className
+                ." -pde=".$pdePath." -outd=".$this->getSrcRepositoryDir();
+
+        exec($command, $output, $returnVar);
+        $generated = $returnVar==0;
         if ($generated) {
+            $javaPath = $this->getSrcRepositoryDir() . $this->getConf('processingPackage') . $className . self::$JAVA_EXTENSION;
             $generated = $this->compileSource($javaPath);
         }
         if (!$generated) {
             unlink($javaPath); //Eliminar source en cas de fallada de compilació
         }
         return $generated;
-    }
-
-    /**
-     * Genera el fitxer .java amb el fitxer .pde
-     * @param type $className Nom de la classe Java
-     * @param type $javaPath path del fitxer Java a generar
-     * @param type $pdePath path del fitxer Pde
-     * @return bool True on success, False otherwise
-     */
-    private function generateSource($className, $javaPath, $pdePath) {
-        $data = "package ioc.wiki.processingmanager;\n";
-        $data .= "public class " . $className . " extends ImageGenerator {\n";
-        $contentPde = file_get_contents($pdePath);
-        $data .= $contentPde;
-        $data .= "}";
-        return file_put_contents($javaPath, $data) > 0;
     }
 
     /**
@@ -416,8 +405,8 @@ class save_pde_algorithm_command extends abstract_command_class {
      */
     private function getPdeRepositoryDir() {
         global $conf;
-        return "../../../lib/_java/pde/algorismes/";
-//        return DOKU_INC . $this->getConf('processingPdeRepository');
+//        return "../../../lib/_java/pde/algorismes/";
+        return DOKU_INC . $this->getConf('processingPdeRepository');
     }
 
     /**
@@ -427,8 +416,8 @@ class save_pde_algorithm_command extends abstract_command_class {
      */
     private function getClassesRepositoryDir() {
         global $conf;
-        return "../../../lib/_java/pde/classes/";
-//        return DOKU_INC . $this->getConf('processingClassesRepository');
+//        return "../../../lib/_java/pde/classes/";
+        return DOKU_INC . $this->getConf('processingClassesRepository');
     }
 
     /**
@@ -438,14 +427,20 @@ class save_pde_algorithm_command extends abstract_command_class {
      */
     private function getSrcRepositoryDir() {
         global $conf;
-        return "../../../lib/_java/pde/src/";
-//        return DOKU_INC . $this->getConf('processingSrcRepository');
+//        return "../../../lib/_java/pde/src/";
+        return DOKU_INC . $this->getConf('processingSrcRepository');
     }
 
     private function getJavaLibDir() {
         global $conf;
-        return "../../../lib/_java/lib/";
-//        return DOKU_INC . $this->getConf('javaLib');
+//        return "../../../lib/_java/lib/";
+        return DOKU_INC . $this->getConf('javaLibDir');
+    }
+
+    private function getJavaDir() {
+        global $conf;
+//        return "../../../lib/_java/";
+        return DOKU_INC . $this->getConf('javaDir');
     }
 
 }
