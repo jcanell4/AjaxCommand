@@ -145,23 +145,30 @@ class save_pde_algorithm_command extends abstract_command_class {
 
     /**
      * Informa sobre si un algorisme ja existeix.
-     * @return type
+     * @return int response code information
      */
     private function existsAlgorithm() {
         $response = self::$UNDEFINED_ALGORITHM_NAME_CODE;
         if (array_key_exists(self::$ALGORITHM_NAME_PARAM, $this->params)) {
-            $algorithmName = $this->params[self::$ALGORITHM_NAME_PARAM]; //fitxer pde
-            $repositoryPdePath = $this->getPdeRepositoryDir();
-            $pdePath = $repositoryPdePath . $algorithmName;
-            if (file_exists($pdePath)) {
+            $fileName= $this->params[self::$ALGORITHM_NAME_PARAM]; //fitxer pde
+            $className = ucfirst(substr($fileName, 0, -4)); //Li treu la extensio .pde i capitalitza el string
+            $xmlFile = $this->getXmlFile();
+            $doc = new DOMDocument;
+            $stringXml = file_get_contents($xmlFile);
+            $doc->loadXML($stringXml);
+            $valid = $doc->validate();
+            if ($valid) {
+                $node = $doc->getElementById($className);
+            }
+            if ($valid && $node) {
                 $response = self::$ALGORITHM_EXISTS_CODE;
-            } else {
+            }else {
                 $response = self::$ALGORITHM_NOT_EXISTS_CODE;
             }
         }
         return $response;
     }
-    
+
     /**
      * Modifica un algorisme ja existent.
      * @return int response code information
@@ -271,13 +278,13 @@ class save_pde_algorithm_command extends abstract_command_class {
      * @return bool True on success, False otherwise 
      */
     private function generateJavaClass($className, $pdePath) {
-        $command = "java -cp ".$this->getJavaDir()
-                ."ParsePdeAlgorithm.jar ioc.parsepdealgorithm.PdeToIocImageGenerator"
-                ." -pkg=ioc.wiki.processingmanager -cn=".$className
-                ." -pde=".$pdePath." -outd=".$this->getSrcRepositoryDir();
+        $command = "java -cp " . $this->getJavaDir()
+                . "ParsePdeAlgorithm.jar ioc.parsepdealgorithm.PdeToIocImageGenerator"
+                . " -pkg=ioc.wiki.processingmanager -cn=" . $className
+                . " -pde=" . $pdePath . " -outd=" . $this->getSrcRepositoryDir();
 
         exec($command, $output, $returnVar);
-        $generated = $returnVar==0;
+        $generated = $returnVar == 0;
         if ($generated) {
             $javaPath = $this->getSrcRepositoryDir() . $this->getConf('processingPackage') . $className . self::$JAVA_EXTENSION;
             $generated = $this->compileSource($javaPath);
@@ -323,10 +330,10 @@ class save_pde_algorithm_command extends abstract_command_class {
         if ($nom == null | $nom == "") {//Si el nom es buit, posar-li el nom de la classe
             $nom = $className;
         }
-        if($this->params[self::$DESCRIPCIO_PARAM]){
+        if ($this->params[self::$DESCRIPCIO_PARAM]) {
             $descripcio = $this->params[self::$DESCRIPCIO_PARAM];
-        }else{
-            $descripcio=" \n";
+        } else {
+            $descripcio = " \n";
         }
 
         $xmlFile = $this->getXmlFile();
@@ -352,10 +359,9 @@ class save_pde_algorithm_command extends abstract_command_class {
         $xmlFile = $this->getXmlFile();
         $doc = new DOMDocument;
         $stringXml = file_get_contents($xmlFile);
-        $stringXmlParsed = $stringXml;
-        $doc->loadXML($stringXmlParsed);
+        $doc->loadXML($stringXml);
         $valid = $doc->validate();
-        if($valid){
+        if ($valid) {
             $node = $doc->getElementById($className);
         }
         if ($valid && $node) {
@@ -393,10 +399,10 @@ class save_pde_algorithm_command extends abstract_command_class {
 
     /**
      * Retorna el path del fitxer XML d'algorismes.
-     * @return string Path to XML file.
+     * @return String Path to XML file.
      */
     private function getXmlFile() {
-        if(!$this->xmlFileCreted){
+        if (!$this->xmlFileCreted) {
             $this->createXmlDataFile();
         }
         return DOKU_INC . $this->getConf("processingXmlFile");
@@ -446,19 +452,19 @@ class save_pde_algorithm_command extends abstract_command_class {
 //        return "../../../lib/_java/";
         return DOKU_INC . $this->getConf('javaDir');
     }
-    
-    private function createXmlDataFile(){
-        file_put_contents ($this->getXmlFile(), 
-                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-                ."<!DOCTYPE algorismes [\n"
-                ."<!ELEMENT algorismes (algorisme)*>\n"
-                ."<!ELEMENT algorisme (nom , classe , descripcio)>\n"
-                ."<!ATTLIST algorisme id ID #REQUIRED>\n"
-                ."<!ELEMENT nom (#PCDATA)>\n"
-                ."<!ELEMENT classe (#PCDATA)>\n"
-                ."<!ELEMENT descripcio (#PCDATA)>\n"
-                ."]>\n"
-                ."<algorismes>\n"
-                ."</algorismes>\n");
+
+    private function createXmlDataFile() {
+        file_put_contents($this->getXmlFile(), "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+                . "<!DOCTYPE algorismes [\n"
+                . "<!ELEMENT algorismes (algorisme)*>\n"
+                . "<!ELEMENT algorisme (nom , classe , descripcio)>\n"
+                . "<!ATTLIST algorisme id ID #REQUIRED>\n"
+                . "<!ELEMENT nom (#PCDATA)>\n"
+                . "<!ELEMENT classe (#PCDATA)>\n"
+                . "<!ELEMENT descripcio (#PCDATA)>\n"
+                . "]>\n"
+                . "<algorismes>\n"
+                . "</algorismes>\n");
     }
+
 }
