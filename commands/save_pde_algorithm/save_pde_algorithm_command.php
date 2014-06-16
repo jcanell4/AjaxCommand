@@ -335,20 +335,56 @@ class save_pde_algorithm_command extends abstract_command_class {
         } else {
             $descripcio = " \n";
         }
-
         $xmlFile = $this->getXmlFile();
-        $xml = simplexml_load_file($xmlFile);
-        if ($xml) {
-            $algorisme = $xml->addChild(self::$ALGORISME_PARAM);
-            $algorisme->addAttribute(self::$ID_PARAM, $id);
-            $algorisme->addChild(self::$NOM_PARAM, $nom);
-            $algorisme->addChild(self::$CLASSE_PARAM, $classe);
-            $algorisme->addChild(self::$DESCRIPCIO_PARAM, $descripcio);
-            $response = $xml->asXML($xmlFile);
+        
+        //$domDoc = new DOMDocument();
+        $domDoc = DOMDocument::load($xmlFile);
+        if($domDoc){
+            $domDoc->preserveWhiteSpace = true;  
+            $algorismesNod = $domDoc->documentElement;
+            $algorismeNod = $domDoc->createElement(self::$ALGORISME_PARAM);
+            $idAtt =$domDoc->createAttribute(self::$ID_PARAM);
+            $idAtt->value=$id;
+            $algorismeNod->appendChild($idAtt);
+            $algorismeNod->appendChild($domDoc->createTextNode("\n"));
+            
+            $nomNod = $domDoc->createElement(self::$NOM_PARAM);
+            $nomNod->appendChild($domDoc->createCDATASection($nom));
+            $algorismeNod->appendChild($nomNod);
+            $algorismeNod->appendChild($domDoc->createTextNode("\n"));
+            
+            $clNod = $domDoc->createElement(self::$CLASSE_PARAM);
+            $clNod->appendChild($domDoc->createTextNode($classe));
+            $algorismeNod->appendChild($clNod);
+            $algorismeNod->appendChild($domDoc->createTextNode("\n"));
+
+            $desNod = $domDoc->createElement(self::$DESCRIPCIO_PARAM);
+            $desNod ->appendChild($domDoc->createCDATASection($descripcio));
+            $algorismeNod->appendChild($desNod);
+            $algorismeNod->appendChild($domDoc->createTextNode("\n"));
+            
+            $algorismesNod->appendChild($algorismeNod);
+            $algorismesNod->appendChild($domDoc->createTextNode("\n"));
+            
+            $response = $domDoc->save($xmlFile);
         }
+        
+
+        
+//        $xml = simplexml_load_file($xmlFile);
+//        if ($xml) {
+//            $algorisme = $xml->addChild(self::$ALGORISME_PARAM);
+//            $algorisme->addAttribute(self::$ID_PARAM, $id);
+//            //$algorisme->addChild(self::$NOM_PARAM, utf8_encode(htmlentities(htmlentities($nom))));
+//            $algorisme->addChild(self::$NOM_PARAM, "//<![CDATA[".$nom."//]]>");
+//            $algorisme->addChild(self::$CLASSE_PARAM, $classe);
+//            //$algorisme->addChild(self::$DESCRIPCIO_PARAM, utf8_encode(htmlentities(htmlentities($descripcio))));
+//            $algorisme->addChild(self::$DESCRIPCIO_PARAM, "//<![CDATA[".$descripcio."//]]>");
+//            $response = $xml->asXML($xmlFile);
+//        }
         return $response;
     }
-
+    
     /**
      * Eliminar un algorisme del fitxer XML
      * @param String $className identificador de l'algorisme.
@@ -456,7 +492,7 @@ class save_pde_algorithm_command extends abstract_command_class {
     private function createXmlDataFile() {
         file_put_contents($this->getXmlFile(), "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
                 . "<!DOCTYPE algorismes [\n"
-                . "<!ELEMENT algorismes (algorisme)*>\n"
+                . "<!ELEMENT algorismes (algorisme*)>\n"
                 . "<!ELEMENT algorisme (nom , classe , descripcio)>\n"
                 . "<!ATTLIST algorisme id ID #REQUIRED>\n"
                 . "<!ELEMENT nom (#PCDATA)>\n"

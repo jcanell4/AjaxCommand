@@ -14,6 +14,7 @@ if(!defined('DOKU_INC')) die();
 //require common
 require_once DOKU_INC.'inc/actions.php';
 require_once DOKU_INC.'inc/pageutils.php';
+require_once DOKU_INC.'inc/common.php';
 require_once DOKU_INC.'inc/media.php';
 require_once DOKU_INC.'inc/auth.php';
 require_once DOKU_INC.'inc/confutils.php';
@@ -128,8 +129,52 @@ class DokuModelAdapter implements WikiIocModel{
         return mediaFN($id, $rev);
     }
     
+    public function getIdWithoutNs($id){
+        return noNS($id);
+    }
+    
+    public function getMediaList($ns){
+        $dir = $this->getMediaFileName($ns);
+        $arrayDir = scandir($dir);
+        if ($arrayDir) {
+            unset($arrayDir[0]);
+            unset($arrayDir[1]);
+            $arrayDir = array_values($arrayDir);
+        }else{
+            $arrayDir=array();
+        }        
+        return $arrayDir;
+    }
+    
+    public function imagePathToId($path){
+         global $conf;
+        if($this->starsWith($path, "/")){ //absolute path
+            $path = str_replace($conf['mediadir'], "", $path);
+        }
+        $id = str_replace('/',':',$path);
+    }
+    
     public function getPageFileName($id, $rev=''){
         return wikiFN($id, $rev);
+    }
+    
+    public function getMediaUrl($id, $rev=false, $meta=false){
+        $size = media_image_preview_size($image, $rev, $meta);
+        if ($size) {
+            $more = array();
+            if ($rev) {
+                $more['rev'] = $rev;
+            } else {
+                $t = @filemtime(mediaFN($image));
+                $more['t'] = $t;
+            }
+            $more['w'] = $size[0];
+            $more['h'] = $size[1];
+            $src = ml($image, $more);
+        }else{
+            $src = ml($image,"",true);
+        }
+        return $src;
     }
     
     /**
@@ -156,6 +201,14 @@ class DokuModelAdapter implements WikiIocModel{
     public function saveImage($nsTarget, $idTarget, $filePathSource, $overWrite=FALSE){
         return $this->_saveImage($nsTarget, $idTarget, $filePathSource
                                                 , $overWrite, "copy");
+    }
+    
+    private function starsWith($haystack, $needle){
+         return $needle === "" || strpos($haystack, $needle) === 0;
+    }
+    
+    private function endsWith($haystack, $needle){
+         return $needle === "" || substr($haystack, -strlen($needle)) === $needle;
     }
     
     private function _saveImage($nsTarget, $idTarget, $filePathSource, $overWrite
