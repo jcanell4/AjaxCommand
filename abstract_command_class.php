@@ -171,6 +171,14 @@ abstract class abstract_command_class extends DokuWiki_Plugin{
         return $ret;
     }    
     
+    public function getModelWrapper(){
+        return $this->modelWrapper;
+    }
+    
+    public function setModelWrapper($mw){
+        $this->modelWrapper=$mw;
+    }
+    
     private function getClassDirName(){
         $thisClass = new ReflectionClass($this);   
         return dirname($thisClass->getFileName());

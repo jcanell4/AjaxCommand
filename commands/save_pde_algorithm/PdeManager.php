@@ -92,7 +92,7 @@ class PdeManager {
             $repositoryPdePath = $this->getPdeRepositoryDir();
             $pdePath = $repositoryPdePath . $fileName;
             if ($this->isPdeFile($file)) {
-                //$this->command->modelWrapper->makeFileDir($pdePath); //assegura que el directori existeix
+                $this->command->getModelWrapper()->makeFileDir($pdePath); //assegura que el directori existeix
                 if ($this->movePdeToRepository($filePath, $pdePath)) {
                     $className = ucfirst(substr($fileName, 0, -4)); //Li treu la extensio .pde i capitalitza el string
                     if ($this->javaManager->generateJavaClass($className, $pdePath)) {
