@@ -1,49 +1,74 @@
 <?php
-/**
- * @author     Josep Cañellas <jcanell4@ioc.cat>
- */
-
 // must be run within Dokuwiki
-if (!defined('DOKU_INC')) die();
+if(!defined('DOKU_INC')) die();
+if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
+require_once(DOKU_PLUGIN . 'action.php');
 
-if (!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN',DOKU_INC.'lib/plugins/');
-require_once(DOKU_PLUGIN.'action.php');
-
+/**
+ * Class action_plugin_ajaxcommand
+ *
+ * @author Josep Cañellas <jcanell4@ioc.cat>
+ */
 class action_plugin_ajaxcommand extends DokuWiki_Action_Plugin {
+
+    /**
+     * Aquest mètode registra els handlers del plugin als events de la DokuWiki.
+     *
+     * @param Doku_Event_Handler $controller controlador d'events de la DokuWiki
+     */
     function register(&$controller) {
-        $controller->register_hook('AJAX_CALL_UNKNOWN', 'BEFORE', $this,
-                                   'runAjaxCall');
-        $controller->register_hook('WIOC_PROCESS_RESPONSE_edit', 'AFTER', $this,
-                                   'processCmd');
+        $controller->register_hook(
+                   'AJAX_CALL_UNKNOWN', 'BEFORE', $this,
+                   'runAjaxCall'
+        );
+        $controller->register_hook(
+                   'WIOC_PROCESS_RESPONSE_edit', 'AFTER', $this,
+                   'processCmd'
+        );
     }
 
+    /**
+     * @param Doku_Event $event
+     * @param mixed      $param
+     */
     function processCmd(&$event, $param) {
-        if($event->data!=null){
-            $event->data["ajaxCmdesponseGenerator"]->addProcessFunction(true, 
-                            "ioc/dokuwiki/processAceEditor",
-                            array(
-                                "key"=>"edit_ace",
-                                "buttonId" => $event->data["tplComponents"]->getConfig("saveButton"),
-                                "textAreaId" => 'wiki__text',
-                            ));
+        if($event->data != NULL) {
+            $event->data["ajaxCmdesponseGenerator"]->addProcessFunction(
+                                                   TRUE,
+                                                   "ioc/dokuwiki/processAceEditor",
+                                                   array(
+                                                       "key"        => "edit_ace",
+                                                       "buttonId"   => $event->data["tplComponents"]->getConfig("saveButton"),
+                                                       "textAreaId" => 'wiki__text',
+                                                   )
+            );
         }
     }
-    
+
+    /**
+     * @param Doku_Event $event
+     * @param mixed      $param
+     */
     function runAjaxCall(&$event, $param) {
         global $INFO;
-        
+
         $call = $event->data['command'];
         $event->preventDefault();
-        if(!auth_isadmin()){
+
+        if(!auth_isadmin()) {
             print ('fobiben! for admins only  ');
-        }else{
+
+        } else {
             print 'Ok! You are an admin ';
+
         }
-        if(!checkSecurityToken()){
+
+        if(!checkSecurityToken()) {
             print ('CRSF Attack' . 'fora: ' . $_SERVER['REMOTE_USER']);
-        }else{
-        
-            print "Hola usuari: " .  $_SERVER['REMOTE_USER'] .". Vols executar: ". $call;        
+
+        } else {
+
+            print "Hola usuari: " . $_SERVER['REMOTE_USER'] . ". Vols executar: " . $call;
         }
     }
 }

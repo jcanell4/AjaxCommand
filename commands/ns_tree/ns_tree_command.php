@@ -119,5 +119,3 @@ class ns_tree_command extends abstract_command_class {
         
     }
 }
-
-?>
