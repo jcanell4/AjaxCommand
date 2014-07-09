@@ -1,125 +1,195 @@
 <?php
-
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- * Description of rest_service
- *
- * @author josep
- */
-
-require_once(dirname(__FILE__).'/abstract_command_class.php');
+require_once(dirname(__FILE__) . '/abstract_command_class.php');
 //require_once 'HTTP.php';
 
+/**
+ * Class abstract_rest_command_class
+ *
+ * @author Josep Cañellas <jcanell4@ioc.cat>
+ */
 abstract class abstract_rest_command_class extends abstract_command_class {
     protected $supportedContentTypes;
     protected $supportedMethods;
-    protected $defaultContentType='none';
-  
+    protected $defaultContentType = 'none';
+
+    /**
+     * Constructor que fa servir els paràmetres rebuts per GET com a valors per defecte.
+     */
     public function __construct() {
         parent::__construct();
         $this->types['method'] = abstract_command_class::T_STRING;
-        $defaultValues = array('GET');
+        $defaultValues         = array('GET');
         $this->setParameters($defaultValues);
     }
 
-    protected function setSupportedFormats(/*array*/ $supportedFormats) {
-      $this->$supportedFormats = $supportedFormats;
+    /**
+     * TODO[Xavi] No es fa servir?
+     *
+     * @param String[] $supportedFormats
+     */
+    protected function setSupportedFormats($supportedFormats) {
+        $this->$supportedFormats = $supportedFormats;
     }
 
-    protected function setSupportedMethods(/*array*/ $supportedMethods) {
-      $this->supportedMethods = $supportedMethods;
+    /**
+     * Estableix com a mètodes suportats els mètodes passats com argument. El valors d'aquest array poden ser GET, POST, etc.
+     *
+     * @param String[] $supportedMethods
+     */
+    protected function setSupportedMethods($supportedMethods) {
+        $this->supportedMethods = $supportedMethods;
     }
 
-    public function bestContentType(){  
-        $t=array();
+    /**
+     * @return string
+     */
+    public function bestContentType() {
+        $t = array();
         //$best = http_negotiate_content_type($this->supportedContentTypes, $t);
-        return ((empty($t))?$this->defaultContentType:$best);
+        return ((empty($t)) ? $this->defaultContentType : $best); // TODO[Xavi] això s'ha d'eliminar o modificar la declaració?
     }
-    
-    public function isContentTypeSupported(){
-       return $this->bestContentType()!=='none';
-     }
 
-    public function dispatchRequest($method, $extra_url_params=NULL, $permission=NULL) {
-        if($this->isAuthorized($permission)){
-            if($this->isContentTypeSupported()){
+    /**
+     * Retorna cert si bestContentType (que retorna el valor de $this->defaultContentType) no es 'none' (el valor per
+     * defecte).
+     *
+     * @return bool true si defaultContentType es diferent a 'none'.
+     */
+    public function isContentTypeSupported() {
+        return $this->bestContentType() !== 'none';
+    }
+
+    /**
+     * Si la petició te els permissos necessaris i el tipus de contingut es suportat es retorna eo resultat de processar
+     * la petició.
+     *
+     * @param string        $method           mètode a través del qual s'ha rebut la petició
+     * @param null|string[] $extra_url_params hash amb els paràmetres de la petició
+     * @param string[]|null $permission       hash amb els permisos del usuari
+     *
+     * @return null|void
+     * @throws Exception si es detaman un mètode no implementat.
+     */
+    public function dispatchRequest($method, $extra_url_params = NULL, $permission = NULL) {
+        $ret = NULL;
+
+        if($this->isAuthorized($permission)) {
+            if($this->isContentTypeSupported()) {
                 switch($method) {
-                  case 'GET':
-                    $ret = $this->processGet($extra_url_params);
-                    break;
-                  case 'HEAD':
-                    $ret = $this->processHead($extra_url_params);
-                    break;
-                  case 'POST':
-                    $ret = $this->processPost($extra_url_params);
-                    break;
-                  case 'PUT':
-                    $ret = $this->processPut($extra_url_params);
-                    break;
-                  case 'DELETE':
-                    $ret = $this->processDelete($extra_url_params);
-                    break;
-                  default:
-                    /* 501 (Not Implemented) for any unknown methods */
-                    header('Allow: ' . implode($this->supportedMethods), true, 501);
-                    $this->error=true;
-                    $this->errorMessage="Error: ".$method." does not implemented"; /*TODO internacionalitzaió (convertir missatges en variable) */
+                    case 'GET':
+                        $ret = $this->processGet($extra_url_params);
+                        break;
+                    case 'HEAD':
+                        $ret = $this->processHead($extra_url_params);
+                        break;
+                    case 'POST':
+                        $ret = $this->processPost($extra_url_params);
+                        break;
+                    case 'PUT':
+                        $ret = $this->processPut($extra_url_params);
+                        break;
+                    case 'DELETE':
+                        $ret = $this->processDelete($extra_url_params);
+                        break;
+                    default:
+                        /* 501 (Not Implemented) for any unknown methods */
+                        header('Allow: ' . implode($this->supportedMethods), TRUE, 501);
+                        $this->error        = TRUE;
+                        $this->errorMessage = "Error: " . $method . " does not implemented"; /*TODO internacionalitzaió (convertir missatges en variable) */
                 }
-            }else{
+            } else {
                 /* 406 Not Acceptable */
-                header('406 Not Acceptable');  
-                $this->error=true;
-                $this->errorMessage="Error: Content type is not accepted"; /*TODO internacionalitzaió (convertir missatges en variable) */
+                header('406 Not Acceptable');
+                $this->error        = TRUE;
+                $this->errorMessage = "Error: Content type is not accepted"; /*TODO internacionalitzaió (convertir missatges en variable) */
             }
-        }else{
-            $this->error=true;
-            $this->errorMessage="permission denied";
+        } else {
+            $this->error        = TRUE;
+            $this->errorMessage = "permission denied";
         }
-        if($this->error && $this->throwsException){
+        if($this->error && $this->throwsException) {
             throw new Exception($this->errorMessage);
         }
         return $ret;
     }
 
+    /**
+     * Configura la capçalera amb l'error 405 (MethodNotAllowedResponse)
+     */
     protected function methodNotAllowedResponse() {
-      /* 405 (Method Not Allowed) */
-      header('Allow: ' . implode($this->supportedMethods), true, 405);
+        /* 405 (Method Not Allowed) */
+        header('Allow: ' . implode($this->supportedMethods), TRUE, 405);
+        return NULL;
     }
 
+    /**
+     * @param $extra_url_params
+     *
+     * @return null
+     */
     public function processGet($extra_url_params) {
-      $this->methodNotAllowedResponse();
+        return $this->methodNotAllowedResponse();
     }
 
+    /**
+     * @param $extra_url_params
+     *
+     * @return null
+     */
     public function processHead($extra_url_params) {
-      $this->methodNotAllowedResponse();
+        return $this->methodNotAllowedResponse();
     }
 
+    /**
+     * @param $extra_url_params
+     *
+     * @return null
+     */
     public function processPost($extra_url_params) {
-      $this->methodNotAllowedResponse();
+        return $this->methodNotAllowedResponse();
     }
 
+    /**
+     * @param $extra_url_params
+     *
+     * @return null
+     */
     public function processPut($extra_url_params) {
-      $this->methodNotAllowedResponse();
+        return $this->methodNotAllowedResponse();
     }
 
+    /**
+     * @param $extra_url_params
+     *
+     * @return null
+     */
     public function processDelete($extra_url_params) {
-      $this->methodNotAllowedResponse();
+        return $this->methodNotAllowedResponse();
     }
-    
+
+    /**
+     * Envia la petició perquè es processi segons el mètode empreat.
+     *
+     * @return void
+     */
     protected function process() {
+        // TODO[Xavi] s'hauria de fer-se return d'això?
         $this->dispatchRequest($this->params['method']);
-    }    
-    
+    }
+
+    /**
+     * @param mixed                    $response
+     * @param AjaxCmdResponseGenerator $responseGenerator
+     *
+     * @return void
+     */
     protected function getDefaultResponse($response, &$responseGenerator) {
     }
 
-    protected function getResponse(){
+    /**
+     * @return string resultat de processar la resposta
+     */
+    protected function getResponse() {
         return $this->process();
-    }    
+    }
 }
-
-?>
