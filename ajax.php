@@ -82,8 +82,8 @@ function isUserAuthenticated() {
  * Si existeix una classe command amb el nom passat com argument el carrega i retorna true, en cas contrari retorna
  * false.
  *
- * El fitxer que conté la classe ha d'estar dins d'una carpeta amb el nom del command, i el nom del fitxer estarà compost
- * pel nom del command afegint '_command.php'
+ * El fitxer que conté la classe ha d'estar dins d'una carpeta amb el nom del command, i el nom del fitxer estarà
+ * compost pel nom del command afegint '_command.php'
  *
  * @param string $command command a carregar
  *

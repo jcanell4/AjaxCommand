@@ -234,7 +234,7 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
      * @return string
      */
     public function getPluginComponent() {
-        // TODO[Xavi] split està @deprecated, substituir per explode()
+        //TODO[Xavi] split està @deprecated, substituir per explode()
         $dirs   = split("/", $this->getClassDirName());
         $length = sizeof($dirs);
         if($length > 2) {

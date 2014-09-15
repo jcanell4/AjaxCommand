@@ -179,9 +179,9 @@ class DokuModelAdapter implements WikiIocModel {
     }
 
     /**
-     * @param      $id
-     * @param bool $rev
-     * @param bool $meta
+     * @param string $id
+     * @param bool   $rev
+     * @param bool   $meta
      *
      * @return string
      */

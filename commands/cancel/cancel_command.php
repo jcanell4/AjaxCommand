@@ -1,20 +1,22 @@
 <?php
-/**
- * Description of cancel_command
- *
- * @author Josep Cañellas
- */
-
 if(!defined('DOKU_INC')) die();
-if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN',DOKU_INC.'lib/plugins/');
-if(!defined('DOKU_COMMAND')) define('DOKU_COMMAND',DOKU_PLUGIN."ajaxcommand/");
-require_once (DOKU_COMMAND.'AjaxCmdResponseGenerator.php');
-require_once (DOKU_COMMAND.'JsonGenerator.php');
-require_once(DOKU_COMMAND.'abstract_command_class.php');
+if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
+if(!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_PLUGIN . "ajaxcommand/");
+require_once(DOKU_COMMAND . 'AjaxCmdResponseGenerator.php');
+require_once(DOKU_COMMAND . 'JsonGenerator.php');
+require_once(DOKU_COMMAND . 'abstract_command_class.php');
 //require_once (DOKU_COMMAND.'DokuModelWrapper.php');
 
-class cancel_command extends abstract_command_class{
+/**
+ * Class cancel_command
+ *
+ * @author Josep Cañellas <jcanell4@ioc.cat>
+ */
+class cancel_command extends abstract_command_class {
 
+    /**
+     * Constructor per defecte que estableix el tipus id.
+     */
     public function __construct() {
         parent::__construct();
         $this->types['id'] = abstract_command_class::T_STRING;
@@ -27,19 +29,33 @@ class cancel_command extends abstract_command_class{
 //        $this->setParameters($defaultValues);        
     }
 
+    /**
+     * Cancela la edició
+     *
+     * @return string[]
+     */
     protected function process() {
         $contentData = $this->modelWrapper->cancelEdition(
-                $this->params['id'],
-                $this->params['rev']
+                                          $this->params['id'],
+                                          $this->params['rev']
         );
         return $contentData;
- 
+
     }
-    
+
+    /**
+     * Afegeix una resposta de tipus HTML_TYPE al generador de respostes passat com argument.
+     *
+     * @param mixed                    $response // TODO[Xavi] No es fa servir per a res?
+     * @param AjaxCmdResponseGenerator $ret      objecte al que s'afegirà la resposta
+     *
+     * @return void
+     */
     protected function getDefaultResponse($response, &$ret) {
-        $ret->addHtmlDoc($contentData["id"], $contentData["ns"],
-                    $contentData["title"], $contentData["content"]);
+        //TODO[Xavi] $contentData no te cap valor?
+        $ret->addHtmlDoc(
+            $contentData["id"], $contentData["ns"],
+            $contentData["title"], $contentData["content"]
+        );
     }
 }
-
-?>
