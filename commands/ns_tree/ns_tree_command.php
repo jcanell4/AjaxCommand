@@ -9,7 +9,7 @@ require_once(DOKU_COMMAND . 'abstract_command_class.php');
 
 /**
  * Class ns_tree_command
- * TODO[Xavi] Error falta per implementar el mètode getDefaultResponse()
+ * TODO[Xavi] Error, falta per implementar el mètode getDefaultResponse()
  *
  * @author Josep Cañellas <jcanell4@ioc.cat>
  */

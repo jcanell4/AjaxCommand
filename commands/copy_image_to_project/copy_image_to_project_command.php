@@ -91,6 +91,10 @@ class copy_image_to_project_command extends abstract_command_class {
     private static $IMAGE_NAME_PARAM = "imageName";
     private static $DOT = ".";
 
+    /**
+     * El constructor estableix que no es necessari estar autenticat si existeix el fitxer debug, o que cal estar-ho
+     * en cas contrari.
+     */
     public function __construct() {
         parent::__construct();
         if(@file_exists(DOKU_INC . 'debug')) {
@@ -102,6 +106,11 @@ class copy_image_to_project_command extends abstract_command_class {
         $this->setParameters($defaultValues);
     }
 
+    /**
+     * Guarda la imatge i retorna el codi obtingut.
+     *
+     * @return int codi del resultat obtingut al intentar guardar la imatge
+     */
     protected function process() {
         $response = self::$UNDEFINED_PROJECT_CODE;
         if(array_key_exists(self::$PROJECT_PATH_PARAM, $this->params)) {
@@ -119,6 +128,14 @@ class copy_image_to_project_command extends abstract_command_class {
         return $response;
     }
 
+    /**
+     * Afegeix una resposta de tipus CODE_TYPE_RESPONSE al generador de respostes passat com argument.
+     *
+     * @param integer                  $response
+     * @param AjaxCmdResponseGenerator $ret objecte al que s'afegirà la resposta
+     *
+     * @return void
+     */
     protected function getDefaultResponse($response, &$ret) {
         //$lang['uploadwrong']
         //$lang['uploadexist']

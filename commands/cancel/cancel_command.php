@@ -30,9 +30,9 @@ class cancel_command extends abstract_command_class {
     }
 
     /**
-     * Cancela la edició
+     * Cancela la edició.
      *
-     * @return string[]
+     * @return string[] array associatiu amb la resposta formatada (id, ns, tittle i content)
      */
     protected function process() {
         $contentData = $this->modelWrapper->cancelEdition(

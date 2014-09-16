@@ -13,8 +13,13 @@ require_once(DOKU_COMMAND . 'abstract_command_class.php');
  */
 class login_command extends abstract_command_class {
 
+    /**
+     * El constructor extableix que no es necessari estar autenticat, el tipus, els valors per defecte i els estableix
+     * com a paràmetres.
+     *
+     * El valor per defecte es el paràmetre 'do' amb valor 'login'.
+     */
     public function __construct() {
-
         parent::__construct();
         $this->authenticatedUsersOnly = FALSE;
         $this->types['do']            = abstract_command_class::T_STRING;
@@ -53,6 +58,15 @@ class login_command extends abstract_command_class {
         return $response;
     }
 
+    /**
+     * Afegeix una resposta de tipus LOGIN_INFO al generador de respostes a partir de la informació passada com argument.
+     *
+     * @param array                    $response          array associatiu amb els valors de 'loginRequest' i
+     *                                                    'loginResult'
+     * @param AjaxCmdResponseGenerator $responseGenerator objecte al que s'afegirà la resposta
+     *
+     * @return void
+     */
     protected function getDefaultResponse($response, &$responseGenerator) {
         $responseGenerator->addLoginInfo(
                           $response["loginRequest"],

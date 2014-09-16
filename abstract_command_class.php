@@ -46,7 +46,7 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
     var $throwsException = FALSE;
 
     /**
-     * Constructor en el que s'assgina un nou DokuModelAdapter a la classe
+     * Constructor en el que s'assigna un nou DokuModelAdapter a la classe
      */
     public function __construct() {
         $this->modelWrapper = new DokuModelAdapter();
@@ -170,7 +170,9 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
     protected abstract function getDefaultResponse($response, &$responseGenerator);
 
     /**
-     * @return bool
+     * Retorna l'estat d'autenticació del usuari
+     *
+     * @return bool cert si està autenticat i fals en cas contrari.
      */
     protected function isUserAuthenticated() {
         global $_SERVER;
@@ -202,6 +204,8 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
     }
 
     /**
+     * Retorna el tipus de plugin.
+     *
      * @return string
      */
     public function getPluginType() {
@@ -209,7 +213,7 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
     }
 
     /**
-     * Retorna el nom del plugin
+     * Retorna el nom del plugin.
      *
      * @return string
      */
@@ -229,7 +233,7 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
     }
 
     /**
-     * Retorna el nom del component
+     * Retorna el nom del component.
      *
      * @return string
      */
@@ -248,37 +252,40 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
             $ret = parent::getPluginName();
         }
         return $ret;
-    }    
-    
+    }
+
     /**
-     * 
-     * @return ModelWrapper
+     * Retorna l'adaptador a emprear.
+     *
+     * @return DokuModelAdapter
      */
-    public function getModelWrapper(){
+    public function getModelWrapper() {
         return $this->modelWrapper;
     }
+
     /**
-     * 
-     * @param ModelWrapper 
+     * Estableix l'adaptador a emprear.
+     *
+     * @param DokuModelAdapter
      */
-    public function setModelWrapper($mw){
-        $this->modelWrapper=$mw;
+    public function setModelWrapper($mw) {
+        $this->modelWrapper = $mw;
     }
-    
+
     /**
      * Retorna el nom del directori on es troba la classe.
      *
      * @return string
      */
-    private function getClassDirName(){
-        $thisClass = new ReflectionClass($this);   
+    private function getClassDirName() {
+        $thisClass = new ReflectionClass($this);
         return dirname($thisClass->getFileName());
     }
 
     /**
      * Processa el command.
      *
-     * @return mixed
+     * @return mixed varia segons la implementació del command
      */
     protected abstract function process();
 }
