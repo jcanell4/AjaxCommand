@@ -118,8 +118,8 @@ class DokuModelAdapter implements WikiIocModel {
         return $this->getFormatedPageResponse();
     }
 
-    public function getCodePage($pdo, $pid, $prev = NULL, $prange = NULL) {
-        $this->startPageProcess($pdo, $pid, $prev, $prange);
+    public function getCodePage($pid, $prev = NULL, $prange = NULL) {
+        $this->startPageProcess(DW_ACT_EDIT, $pid, $prev, $prange);
         $this->doEditPagePreProcess();
         return $this->getCodePageResponse();
     }

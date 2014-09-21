@@ -8,7 +8,7 @@
 interface WikiIocModel {
     public function getHtmlPage($pid, $prev = NULL);
 
-    public function getCodePage($pdo, $pid, $prev = NULL, $prange = NULL);
+    public function getCodePage($pid, $prev = NULL, $prange = NULL);
 
     public function cancelEdition($pid, $prev = NULL);
 
