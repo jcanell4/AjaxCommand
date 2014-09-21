@@ -21,12 +21,10 @@ class page_command extends abstract_command_class {
     public function __construct() {
         parent::__construct();
         $this->types['id'] = abstract_command_class::T_STRING;
-//        $this->types['idx'] = abstract_command_class::T_STRING;
         $this->types['rev'] = abstract_command_class::T_STRING;
 
         $defaultValues = array(
             'id' => 'start',
-            //            'do' => 'show',
         );
         $this->setParameters($defaultValues);
     }
