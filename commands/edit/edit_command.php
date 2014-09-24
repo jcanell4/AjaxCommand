@@ -19,17 +19,9 @@ class edit_command extends abstract_command_class {
     public function __construct() {
         parent::__construct();
         $this->types['id'] = abstract_command_class::T_STRING;
-        $this->types['do']    = abstract_command_class::T_STRING;
         $this->types['rev']   = abstract_command_class::T_STRING;
         $this->types['range'] = abstract_command_class::T_STRING;
-        $this->types['date']  = abstract_command_class::T_STRING;
-
-        $defaultValues = array(
-            'id' => 'index',
-            'do' => 'edit',
-        );
-
-        $this->setParameters($defaultValues);
+        $this->types['summary']  = abstract_command_class::T_STRING;
     }
 
     /**
@@ -41,7 +33,8 @@ class edit_command extends abstract_command_class {
         $contentData = $this->modelWrapper->getCodePage(
                                           $this->params['id'],
                                           $this->params['rev'],
-                                          $this->params['range']
+                                          $this->params['range'],
+                                          $this->types['summary']
         );
         return $contentData;
     }

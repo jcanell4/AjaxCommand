@@ -118,8 +118,8 @@ class DokuModelAdapter implements WikiIocModel {
         return $this->getFormatedPageResponse();
     }
 
-    public function getCodePage($pid, $prev = NULL, $prange = NULL) {
-        $this->startPageProcess(DW_ACT_EDIT, $pid, $prev, $prange);
+    public function getCodePage($pid, $prev = NULL, $prange = NULL, $psum=NULL) {
+        $this->startPageProcess(DW_ACT_EDIT, $pid, $prev, $prange, $psum);
         $this->doEditPagePreProcess();
         return $this->getCodePageResponse();
     }
@@ -133,8 +133,8 @@ class DokuModelAdapter implements WikiIocModel {
     public function saveEdition($pid, $prev = NULL, $prange = NULL,
         $pdate = NULL, $ppre = NULL, $ptext = NULL, $psuf = NULL, $psum = NULL) {
         $this->startPageProcess(
-             DW_ACT_SAVE, $pid, $prev, $prange, $pdate,
-             $ppre, $ptext, $psuf, $psum
+             DW_ACT_SAVE, $pid, $prev, $prange, $psum, $pdate,
+             $ppre, $ptext, $psuf
         );
         $this->doSavePreProcess();
         $this->doEditPagePreProcess();
@@ -384,7 +384,7 @@ class DokuModelAdapter implements WikiIocModel {
      * Inicia tractament d'una pàgina de la dokuwiki
      */
     private function startPageProcess($pdo, $pid = NULL, $prev = NULL, $prange = NULL,
-        $pdate = NULL, $ppre = NULL, $ptext = NULL, $psuf = NULL, $psum = NULL) {
+         $psum = NULL, $pdate = NULL, $ppre = NULL, $ptext = NULL, $psuf = NULL) {
         global $ID;
         global $ACT;
         global $REV;

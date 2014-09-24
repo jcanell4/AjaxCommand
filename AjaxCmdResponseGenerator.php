@@ -341,7 +341,7 @@ class AjaxCmdResponseGenerator {
      * @param object $return
      */
     public function addObjectTypeResponse($return) {
-        $this->add(JSonGenerator::ARRAY_TYPE_RESPONSE, $return);
+        $this->add(JSonGenerator::OBJECT_TYPE_RESPONSE, $return);
     }
 
     /**
