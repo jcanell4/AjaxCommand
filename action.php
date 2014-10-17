@@ -30,10 +30,12 @@ class action_plugin_ajaxcommand extends DokuWiki_Action_Plugin {
     /**
      * @param Doku_Event $event
      * @param mixed      $param
+     * [TODO] This method should be located in the plugin aceeditor, 
+     * but for now, we keep the method here, to  don't modify the plugin aceeditor.
      */
     function processCmd(&$event, $param) {
         if($event->data != NULL) {
-            $event->data["ajaxCmdesponseGenerator"]->addProcessFunction(
+            $event->data["ajaxCmdResponseGenerator"]->addProcessFunction(
                                                    TRUE,
                                                    "ioc/dokuwiki/processAceEditor",
                                                    array(
