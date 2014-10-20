@@ -24,6 +24,28 @@ class AjaxCmdResponseGenerator {
     public function addResponse($response) {
         $this->response->add($response);
     }
+    
+    /**
+     * Afegeix una resposta amb tipus ERROR_TYPE al generador de respostes.
+     *
+     * @param string $message missatge a afegir al generador de respostes
+     */
+    public function addError($message) {
+        $this->response->add(
+                  new JSonGeneratorImpl(JSonGenerator::ERROR_TYPE, $message)
+        );
+    }
+
+    /**
+     * Afegeix una resposta amb tipus ERROR_TYPE al generador de respostes.
+     *
+     * @param string $message missatge a afegir al generador de respostes
+     */
+    public function addAlert($message) {
+        $this->response->add(
+                  new JSonGeneratorImpl(JSonGenerator::ALERT_TYPE, $message)
+        );
+    }
 
     /**
      * Afegeix una resposta amb tipus TITTLE_TYPE al generador de respostes.

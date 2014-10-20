@@ -160,8 +160,13 @@ function callCommand($str_command, $arr_parameters) {
     $ret = $command->run($INFO['userinfo']['grps']);
 
     if($command->error) {
-        header($command->errorMessage, TRUE, $command->error);
-        $ret = $command->errorMessage;
+        /**[TO DO] Controll exceptions**/
+        if(is_object($command->error)){
+            $ret = $command->errorMessage->getMessage();
+        }else{
+            header($command->errorMessage, TRUE, $command->error);
+            $ret = $command->errorMessage;
+        }
     }
     return $ret;
 }

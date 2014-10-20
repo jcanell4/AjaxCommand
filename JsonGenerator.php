@@ -25,6 +25,7 @@ interface JsonGenerator {
     const SIMPLE_TYPE_RESPONSE   = 12;
     const ARRAY_TYPE_RESPONSE    = 13;
     const OBJECT_TYPE_RESPONSE   = 14;
+    const ALERT_TYPE             = 15;
 
     // Aquestes constants es fan servir com a subtipus
     const PROCESS_FUNCTION = "process_function";
@@ -108,6 +109,7 @@ class JSonGeneratorImpl implements JsonGenerator {
             "html", "title", "info", "command", "error"
             , "login", "sectok", "data", "metainfo", "remove"
             , "removeall", "code", "simple_data", "array", "object"
+            , "alert"
         );
         $data       = array(
             "type"  => $arrayTypes[$this->type],

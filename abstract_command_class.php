@@ -31,6 +31,7 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
     protected static $FILE_CONTENT_PARAM = 'tmp_name';
 
     protected $responseHandler = NULL;
+    protected $errorHandler = NULL;
 
     protected $params = array();
     protected $types = array();
@@ -64,6 +65,20 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
      */
     public function getResponseHandler() {
         return $this->responseHandler;
+    }
+
+    /**
+     * @param AbstractResponseHandler $respHand
+     */
+    public function setErrorHandler($errorHand) {
+        $this->errorHandler = $errorHand;
+    }
+
+    /**
+     * @return AbstractResponseHandler
+     */
+    public function getErrorHandler() {
+        return $this->errorHandler;
     }
 
     /**
@@ -146,17 +161,23 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
      */
     protected function getResponse() {
         $ret      = new AjaxCmdResponseGenerator();
-        $response = $this->process();
+        try{
+            $response = $this->process();
 
-        if($this->getResponseHandler()) {
-            $this->getResponseHandler()->processResponse($this->params, $response, $ret);
-
-        } else {
-            $this->getDefaultResponse($response, $ret);
+            if($this->getResponseHandler()) {
+                $this->getResponseHandler()->processResponse($this->params, $response, $ret);
+            } else {
+                $this->getDefaultResponse($response, $ret);
+            }
+        }  catch (Exceptin $e){
+            if($this->getErrorHandler()) {
+                $this->getErrorHandler()->processResponse($this->params, $e, $ret);
+            } else {
+                $this->getDefaultErrorResponse($this->params, $e, $ret);
+            }            
         }
 
         return $ret->getResponse();
-
     }
 
     /**
@@ -168,6 +189,20 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
      * @return mixed
      */
     protected abstract function getDefaultResponse($response, &$responseGenerator);
+
+    /**
+     * Retorna la resposta per defecte quan el process llença una excepció.
+     * Aquest mètode s'executarà només en cas que la comanda no disposi de cap 
+     * objecte errorHandler (de tipus ResponseHandler).
+     *
+     * @param Exception                    $response
+     * @param AjaxCmdResponseGenerator $responseGenerator
+     *
+     * @return mixed
+     */
+    protected function getDefaultErrorResponse($params, $e, &$resp){
+        $ret->addError($e->getMessage());
+    }
 
     /**
      * Retorna l'estat d'autenticació del usuari
