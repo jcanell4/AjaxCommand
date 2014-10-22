@@ -169,7 +169,7 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
             } else {
                 $this->getDefaultResponse($response, $ret);
             }
-        }  catch (Exceptin $e){
+        }  catch (Exception $e){
             if($this->getErrorHandler()) {
                 $this->getErrorHandler()->processResponse($this->params, $e, $ret);
             } else {
@@ -200,7 +200,7 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
      *
      * @return mixed
      */
-    protected function getDefaultErrorResponse($params, $e, &$resp){
+    protected function getDefaultErrorResponse($params, $e, &$ret){
         $ret->addError($e->getMessage());
     }
 

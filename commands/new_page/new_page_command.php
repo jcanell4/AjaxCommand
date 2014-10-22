@@ -2,11 +2,9 @@
 if(!defined('DOKU_INC')) die();
 if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
 if(!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_PLUGIN . "ajaxcommand/");
-if(!defined('DOKU_WIKIIOCMODEL')) define('DOKU_WIKIIOCMODEL', DOKU_PLUGIN . "wikiiocmodel/");
 require_once(DOKU_COMMAND . 'AjaxCmdResponseGenerator.php');
 require_once(DOKU_COMMAND . 'JsonGenerator.php');
 require_once(DOKU_COMMAND . 'abstract_command_class.php');
-require_once (DOKU_WIKIIOCMODEL.'DokuModelWrapper.php');
 
 /**
  * Class page_command
@@ -31,9 +29,8 @@ class new_page_command extends abstract_command_class {
      * @return array amb la informació de la pàgina formatada amb 'id', 'ns', 'tittle' i 'content'
      */
     protected function process() {
-        $contentData = $this->modelWrapper->getHtmlPage(
-                                          $this->params['id'],
-                                          $this->params['rev']
+        $contentData = $this->modelWrapper->createPage(
+                                          $this->params['id']
         );
         return $contentData;
     }

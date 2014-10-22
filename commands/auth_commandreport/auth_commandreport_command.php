@@ -26,13 +26,33 @@ class auth_commandreport_command extends abstract_command_class {
      * @return string parametres concatenats
      */
     protected function process() {
-        $response = "params: ";
-        foreach($this->params as $key => $value) {
-            $response .= $key . ": " . $value . ", ";
+        $response = (array("params" => array())); 
+        foreach ($this->params as $key => $value) {
+            if(is_array($value)){
+                if($value["error"]==0 
+                                && is_uploaded_file($value["tmp_name"])){
+                    
+                    $response["params"][$key]=array(
+                            "filename" => $value["name"],
+                            "type" => $value["type"],
+                            "content" => file_get_contents($value["tmp_name"])
+                     );
+                }else{
+                     $response["params"][$key]= "ERROR(".$value["error"].")";
+                }
+            }else{
+                  $response["params"][$key]= $value;
+            }
         }
-        $response = substr($response, 0, -2);
-
         return $response;
+//
+//        $response = "params: ";
+//        foreach($this->params as $key => $value) {
+//            $response .= $key . ": " . $value . ", ";
+//        }
+//        $response = substr($response, 0, -2);
+//
+//        return $response;
     }
 
     protected function preprocess() {
