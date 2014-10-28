@@ -30,9 +30,16 @@ class AjaxCmdResponseGenerator {
      *
      * @param string $message missatge a afegir al generador de respostes
      */
-    public function addError($message) {
+    public function addError($c, $m=NULL) {
+        if(is_string($c)){
+            $value = array("code" => 0, "message" => $c);
+        }else if(isset ($m)){
+            $value = array("code" => $c, "message" => $m);
+        }else{
+            $value = $c;
+        }
         $this->response->add(
-                  new JSonGeneratorImpl(JSonGenerator::ERROR_TYPE, $message)
+                  new JSonGeneratorImpl(JSonGenerator::ERROR_TYPE, $value)
         );
     }
 

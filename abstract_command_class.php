@@ -201,7 +201,7 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
      * @return mixed
      */
     protected function getDefaultErrorResponse($params, $e, &$ret){
-        $ret->addError($e->getMessage());
+        $ret->addError($e->getCode(), $e->getMessage());
     }
 
     /**
