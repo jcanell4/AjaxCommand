@@ -51,6 +51,7 @@ class login_command extends abstract_command_class {
 
         if($this->params['do'] === 'login') {
             $response["loginResult"] = $this->isUserAuthenticated();
+            $response["userId"]=  $this->params['u'];
         } else if($this->isUserAuthenticated()) {
             $this->_logoff();
             $response["loginResult"] = FALSE;
@@ -70,7 +71,8 @@ class login_command extends abstract_command_class {
     protected function getDefaultResponse($response, &$responseGenerator) {
         $responseGenerator->addLoginInfo(
                           $response["loginRequest"],
-                          $response["loginResult"]
+                          $response["loginResult"],
+                          $response["userId"]
         );
     }
 

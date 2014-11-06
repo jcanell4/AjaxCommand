@@ -180,11 +180,14 @@ class AjaxCmdResponseGenerator {
      * @param string $loginRequest
      * @param string $loginResult
      */
-    public function addLoginInfo($loginRequest, $loginResult) {
+    public function addLoginInfo($loginRequest, $loginResult, $userId=NULL) {
         $response = array(
             "loginRequest" => $loginRequest,
             "loginResult"  => $loginResult
         );
+        if($userId){
+            $response["userId"] = $userId;
+        }
 
         $this->response->add(
                        new JSonGeneratorImpl(
