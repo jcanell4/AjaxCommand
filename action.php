@@ -40,7 +40,7 @@ class action_plugin_ajaxcommand extends DokuWiki_Action_Plugin {
                                                    "ioc/dokuwiki/processAceEditor",
                                                    array(
                                                        "key"        => "edit_ace",
-                                                       "buttonId"   => $event->data["tplComponents"]->getConfig("saveButton"),
+                                                       "buttonId"   => $event->data["tplComponents"]->getArrIds("saveButton"),
                                                        "textAreaId" => 'wiki__text',
                                                    )
             );
