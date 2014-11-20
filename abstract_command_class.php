@@ -49,8 +49,12 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
     /**
      * Constructor en el que s'assigna un nou DokuModelAdapter a la classe
      */
-    public function __construct() {
-        $this->modelWrapper = new DokuModelAdapter();
+    public function __construct($modelWrapper=NULL) {
+        if($modelWrapper){
+            $this->modelWrapper = $modelWrapper;
+        }else{
+            $this->modelWrapper = new DokuModelAdapter();
+        }
     }
 
     /**
@@ -58,6 +62,9 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
      */
     public function setResponseHandler($respHand) {
         $this->responseHandler = $respHand;
+        if(!$respHand->getModelWrapper()){
+            $respHand->setModelWrapper($this->modelWrapper);
+        }
     }
 
     /**
