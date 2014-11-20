@@ -17,6 +17,7 @@ abstract class AbstractResponseHandler {
     const SAVE   = 'save';
 
     private $cmd;
+    private $modelWrapper;
 
     /**
      * Constructor al que se li passa el nom del Command com argument.
@@ -35,6 +36,20 @@ abstract class AbstractResponseHandler {
      */
     public function getCommandName() {
         return $this->cmd;
+    }
+
+    /**
+     * @return ModelWrapper instance
+     */
+    public function getModelWrapper() {
+        return $this->modelWrapper;
+    }
+
+    /**
+     * @return ModelWrapper instance
+     */
+    public function setModelWrapper($modelWrapper) {
+        $this->modelWrapper=$modelWrapper;
     }
 
     /**
