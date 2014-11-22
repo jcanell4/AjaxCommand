@@ -11,7 +11,7 @@ require_once(DOKU_COMMAND . 'abstract_command_class.php');
  *
  * @author Josep Cañellas <jcanell4@ioc.cat>
  */
-class new_page_command extends abstract_command_class {
+class get_image_detail_command extends abstract_command_class {
 
     /**
      * El constructor estableix els tipus de 'id' i 'rev' i el valor per defecte de 'id' com a 'start'. i l'estableix
@@ -19,18 +19,27 @@ class new_page_command extends abstract_command_class {
      */
     public function __construct() {
         parent::__construct();
+        $this->types['imageId'] = abstract_command_class::T_STRING;
+        $this->types['fromId'] = abstract_command_class::T_STRING;
         $this->types['id'] = abstract_command_class::T_STRING;
-        //$this->permissionFor=  DokuModelAdapter::ADMIN_PERMISSION;
+        $this->types['media'] = abstract_command_class::T_STRING;
     }
 
     /**
-     * Retorna la pàgina corresponent a la 'id' i 'rev'.
+     * Retorna el detall de la imatge
      *
-     * @return array amb la informació de la pàgina formatada amb 'id', 'ns', 'tittle' i 'content'
+     * @return array amb el detall de la imatge, el títol del quadre de diàleg i la ruta de la imatge
      */
     protected function process() {
-        $contentData = $this->modelWrapper->createPage(
-                                          $this->params['id']
+        if($this->params['media']){
+            $this->params['imageId']=$this->params['media'];
+        }
+        if($this->params['id']){
+            $this->params['fromId']=$this->params['media'];
+        }
+        $contentData = $this->modelWrapper->getImageDetail(
+                                          $this->params['imageId'],
+                                          $this->params['fromId']
         );
         return $contentData;
     }
@@ -44,9 +53,10 @@ class new_page_command extends abstract_command_class {
      * @return void
      */
     protected function getDefaultResponse($contentData, &$responseGenerator) {
-        $responseGenerator->addHtmlDoc(
-                          $contentData["id"], $contentData["ns"],
-                          $contentData["title"], $contentData["content"]
+        $responseGenerator->addProcessFunction(
+                true,
+                "ioc/dokuwiki/processShowingImage", 
+                $contentData
         );
     }
 }
