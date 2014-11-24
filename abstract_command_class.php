@@ -2,6 +2,7 @@
 if(!defined('DOKU_INC')) die();
 if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
 require_once(DOKU_PLUGIN . 'wikiiocmodel/DokuModelAdapter.php');
+require_once(DOKU_PLUGIN . 'wikiiocmodel/WikiIocModelExceptions.php');
 require_once(DOKU_PLUGIN . 'ajaxcommand/AbstractResponseHandler.php');
 require_once(DOKU_INC . 'inc/plugin.php');
 
@@ -176,6 +177,9 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
             } else {
                 $this->getDefaultResponse($response, $ret);
             }
+        }  catch (HttpErrorCodeException $e){
+            $this->error = $e->getCode();
+            $this->errorMessage = $e->getMessage();
         }  catch (Exception $e){
             if($this->getErrorHandler()) {
                 $this->getErrorHandler()->processResponse($this->params, $e, $ret);

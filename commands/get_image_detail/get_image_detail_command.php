@@ -35,7 +35,7 @@ class get_image_detail_command extends abstract_command_class {
             $this->params['imageId']=$this->params['media'];
         }
         if($this->params['id']){
-            $this->params['fromId']=$this->params['media'];
+            $this->params['fromId']=$this->params['id'];
         }
         $contentData = $this->modelWrapper->getImageDetail(
                                           $this->params['imageId'],
