@@ -61,9 +61,6 @@ class save_command extends abstract_command_class {
      * @return void
      */
     protected function getDefaultResponse($response, &$ret) {
-        $ret->addWikiCodeDoc(
-            $response["id"], $response["ns"],
-            $response["title"], $response["content"]
-        );
+        $ret->addInfoDta(" default ");
     }
 }
