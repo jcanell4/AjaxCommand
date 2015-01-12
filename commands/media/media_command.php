@@ -44,7 +44,7 @@ class media_command extends abstract_command_class {
         if ($this->params['id']) {
             $this->params['fromId'] = $this->params['id'];
         }
-        $contentData = $this->modelWrapper->getImageDetail(
+        $contentData = $this->modelWrapper->getMediaManager(
                 $this->params['imageId'], $this->params['fromId'], $this->params['rev']
         );
         return $contentData;
@@ -59,11 +59,18 @@ class media_command extends abstract_command_class {
      * @return void
      */
     protected function getDefaultResponse($contentData, &$responseGenerator) {
-        $responseGenerator->addHtmlDoc(
+        //addHtmlDoc($id, $ns, $title, $content)
+        /*$responseGenerator->addHtmlDoc(
                 $contentData["imageId"], $contentData["imageTitle"], 
                 $contentData["fromId"], $contentData["modifyImageLabel"], 
                 $contentData["closeDialogLabel"], $contentData["content"]
+        );*/
+        $responseGenerator->addHtmlDoc(
+                $contentData["imageId"], null, 
+                $contentData["imageTitle"],
+                $contentData["content"]
         );
+        
     }
 
 }
