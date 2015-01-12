@@ -1,7 +1,11 @@
 <?php
-if(!defined('DOKU_INC')) die();
-if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
-if(!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_PLUGIN . "ajaxcommand/");
+
+if (!defined('DOKU_INC'))
+    die();
+if (!defined('DOKU_PLUGIN'))
+    define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
+if (!defined('DOKU_COMMAND'))
+    define('DOKU_COMMAND', DOKU_PLUGIN . "ajaxcommand/");
 require_once(DOKU_COMMAND . 'AjaxCmdResponseGenerator.php');
 require_once(DOKU_COMMAND . 'JsonGenerator.php');
 require_once(DOKU_COMMAND . 'abstract_command_class.php');
@@ -11,7 +15,7 @@ require_once(DOKU_COMMAND . 'abstract_command_class.php');
  *
  * @author Josep Cañellas <jcanell4@ioc.cat>
  */
-class page_command extends abstract_command_class {
+class media_command extends abstract_command_class {
 
     /**
      * El constructor estableix els tipus de 'id' i 'rev' i el valor per defecte de 'id' com a 'start'. i l'estableix
@@ -19,13 +23,13 @@ class page_command extends abstract_command_class {
      */
     public function __construct() {
         parent::__construct();
+        $this->types['imageId'] = abstract_command_class::T_STRING;
+        $this->types['fromId'] = abstract_command_class::T_STRING;
         $this->types['id'] = abstract_command_class::T_STRING;
+        $this->types['media'] = abstract_command_class::T_STRING;
         $this->types['rev'] = abstract_command_class::T_STRING;
-
-        $defaultValues = array(
-            'id' => 'start',
-        );
-        $this->setParameters($defaultValues);
+        //getMediaManager($imageId = NULL, $fromPage = NULL, $prev = NULL)
+        //getImageDetail($imageId, $fromPage = NULL)
     }
 
     /**
@@ -34,9 +38,14 @@ class page_command extends abstract_command_class {
      * @return array amb la informació de la pàgina formatada amb 'id', 'ns', 'tittle' i 'content'
      */
     protected function process() {
-        $contentData = $this->modelWrapper->getHtmlPage(
-                                          $this->params['id'],
-                                          $this->params['rev']
+        if ($this->params['media']) {
+            $this->params['imageId'] = $this->params['media'];
+        }
+        if ($this->params['id']) {
+            $this->params['fromId'] = $this->params['id'];
+        }
+        $contentData = $this->modelWrapper->getImageDetail(
+                $this->params['imageId'], $this->params['fromId'], $this->params['rev']
         );
         return $contentData;
     }
@@ -51,8 +60,10 @@ class page_command extends abstract_command_class {
      */
     protected function getDefaultResponse($contentData, &$responseGenerator) {
         $responseGenerator->addHtmlDoc(
-                          $contentData["id"], $contentData["ns"],
-                          $contentData["title"], $contentData["content"]
+                $contentData["imageId"], $contentData["imageTitle"], 
+                $contentData["fromId"], $contentData["modifyImageLabel"], 
+                $contentData["closeDialogLabel"], $contentData["content"]
         );
     }
+
 }
