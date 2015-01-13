@@ -23,7 +23,7 @@ class media_command extends abstract_command_class {
      */
     public function __construct() {
         parent::__construct();
-        $this->types['imageId'] = abstract_command_class::T_STRING;
+        $this->types['image'] = abstract_command_class::T_STRING;
         $this->types['fromId'] = abstract_command_class::T_STRING;
         $this->types['id'] = abstract_command_class::T_STRING;
         $this->types['media'] = abstract_command_class::T_STRING;
@@ -39,13 +39,13 @@ class media_command extends abstract_command_class {
      */
     protected function process() {
         if ($this->params['media']) {
-            $this->params['imageId'] = $this->params['media'];
+            $this->params['image'] = $this->params['media'];
         }
         if ($this->params['id']) {
             $this->params['fromId'] = $this->params['id'];
         }
         $contentData = $this->modelWrapper->getMediaManager(
-                $this->params['imageId'], $this->params['fromId'], $this->params['rev']
+                $this->params['image'], $this->params['fromId'], $this->params['rev']
         );
         return $contentData;
     }
@@ -66,7 +66,7 @@ class media_command extends abstract_command_class {
                 $contentData["closeDialogLabel"], $contentData["content"]
         );*/
         $responseGenerator->addHtmlDoc(
-                $contentData["imageId"], null, 
+                $contentData["image"], null, 
                 $contentData["imageTitle"],
                 $contentData["content"]
         );
