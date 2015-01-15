@@ -42,7 +42,7 @@ interface JsonGenerator {
     /** @const CHANGE_WIDGET_PROPERTY widgetId afectat + propietat a modificar + valor */
     const CHANGE_WIDGET_PROPERTY = "change_widget_property";
 
-    const RELOAD_WIDGET_CONTENT = "reaload_widget_content"; //widgetId afectat
+    const RELOAD_WIDGET_CONTENT = "reload_widget_content"; //widgetId afectat
 
     /**
      * @const ADD_WIDGET_CHILD  widgetId afectat + widgetId del fill a afegir + tipus de widget a crear + JSON amb els
