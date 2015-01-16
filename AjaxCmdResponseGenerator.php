@@ -410,4 +410,28 @@ class AjaxCmdResponseGenerator {
     private function add($type, $data) {
         $this->response->add(new JSonGeneratorImpl($type, $data));
     }
+
+    /**
+    * Afegeix una resposta de tipus ADMIN_TAB al generador de respostes.
+    *
+    * @param string $containerId    identificador del contenidor on afegir la pestanya
+    * @param string $tabId          identificador de la pestanya
+    * @param string $title          títol de la pestanya
+    * @param string $content        contingut html amb la llista de tasques 
+    * @param string $urlBase        urlBase de la comanda on dirigir les peticions de cada tasca
+    */
+    public function addAdminTab($containerId, $tabId, $title, $content, $urlBase) {
+        $this->response->add(
+                       new JSonGeneratorImpl(
+                           JSonGenerator::ADMIN_TAB,
+                           array(
+                               "containerId" => $containerId,
+                               "tabId" => $tabId,
+                               "title" => $title,
+                               "content" => $content,
+                               "urlBase" => $urlBase
+                           ))
+        );
+    }
+
 }
