@@ -116,9 +116,20 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
     public function setParameters($params) {
         foreach($params as $key => $value) {
             if(isset($this->types[$key])
-                && gettype($value) != $this->types[$key]
-            ) {
+                        && $this->types[$key]!= self::T_FUNCTION
+                        && $this->types[$key]!= self::T_METHOD
+                        && $this->types[$key]!= self::T_FILE                    
+                        && gettype($value) != $this->types[$key]) {
                 settype($value, $this->types[$key]);
+            }else if(isset($this->types[$key])
+                        && ($this->types[$key]== self::T_FUNCTION
+                                || $this->types[$key]== self::T_METHOD
+                       )&& gettype($value) != self::T_STRING){
+                settype($value, self::T_STRING);                
+            }else if(isset($this->types[$key])
+                        && $this->types[$key]== self::T_FILE
+                        && gettype($value) != self::T_ARRAY){
+                settype($value, self::T_ARRAY);                
             }
             $this->params[$key] = $value;
         }

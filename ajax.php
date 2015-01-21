@@ -182,37 +182,20 @@ function getParams($without) {
     global $JSINFO;
     $params = array();
     foreach($_GET as $key => $value) {
-        if($key !== $without || $key !== $JSINFO['sectokParamName']) {
+        if($key !== $without && $key !== $JSINFO['sectokParamName']) {
             $params[$key] = $value;
         }
     }
     foreach($_POST as $key => $value) {
-        if($key !== $without || $key !== $JSINFO['sectokParamName']) {
+        if($key !== $without && $key !== $JSINFO['sectokParamName']) {
             $params[$key] = $value;
         }
     }
     foreach($_FILES as $key => $value) {
-        if($key !== $without || $key !== $JSINFO['sectokParamName']) {
+        if($key !== $without && $key !== $JSINFO['sectokParamName']) {
             $params[$key] = $value;
         }
     }
-    /*
-    switch ($input){
-        case 'post':
-            foreach ($_POST as $key => $value){
-                if($key!==$without || $key!==$JSINFO['sectokParamName']){
-                    $params[$key]=$value;
-                }
-            }
-        case 'get':
-        default :
-            foreach ($_GET as $key => $value){
-                if($key!==$without || $key!==$JSINFO['sectokParamName']){
-                    $params[$key]=$value;
-                }
-            }
-    }
-    */
     return $params;
 }
 

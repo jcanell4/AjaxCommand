@@ -154,7 +154,7 @@ class PdeManager {
     /** Elimina un fitxer pde del repository
      * @return bool True on succes, False otherwise
      */
-    private function addPdeFromRepository($pdePath) {
+    private function removePdeFromRepository($pdePath) {
         return unlink($pdePath);
     }
 
