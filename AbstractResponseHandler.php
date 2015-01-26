@@ -15,6 +15,7 @@ abstract class AbstractResponseHandler {
     const EDIT   = 'edit';
     const CANCEL = 'cancel';
     const SAVE   = 'save';
+    const MEDIA  = 'media';
 
     private $cmd;
     private $modelWrapper;
