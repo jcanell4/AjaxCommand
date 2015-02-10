@@ -24,7 +24,7 @@ class AjaxCmdResponseGenerator {
     public function addResponse($response) {
         $this->response->add($response);
     }
-    
+
     /**
      * Afegeix una resposta amb tipus ERROR_TYPE al generador de respostes.
      *
@@ -302,21 +302,21 @@ class AjaxCmdResponseGenerator {
 //    public function addRemoveMetaTab(/*String*/ $tabId){
 //        $this->response->add(
 //            new JSonGeneratorImpl(
-//                JSonGenerator::COMMAND_TYPE, 
+//                JSonGenerator::COMMAND_TYPE,
 //                array(
 //                    "type" => JSonGenerator::REMOVE_META_TAB,
 //                    "id" => $tabId)));
-//        
+//
 //    }
 //
 //    public function addRemoveAllMetaTab(/*String*/ $widgetId){
 //        $this->response->add(
 //            new JSonGeneratorImpl(
-//                JSonGenerator::COMMAND_TYPE, 
+//                JSonGenerator::COMMAND_TYPE,
 //                array(
 //                    "type" => JSonGenerator::REMOVE_ALL_META_TAB,
 //                    "id" => $widgetId)));
-//        
+//
 //    }
 
     /**
@@ -412,18 +412,18 @@ class AjaxCmdResponseGenerator {
     }
 
     /**
-    * Afegeix una resposta de tipus ADMIN_TAB al generador de respostes.
+    * Afegeix una resposta de tipus ADMIN_TASK al generador de respostes.
     *
     * @param string $containerId    identificador del contenidor on afegir la pestanya
     * @param string $tabId          identificador de la pestanya
     * @param string $title          títol de la pestanya
-    * @param string $content        contingut html amb la llista de tasques 
+    * @param string $content        contingut html amb la llista de tasques
     * @param string $urlBase        urlBase de la comanda on dirigir les peticions de cada tasca
     */
-    public function addAdminTab($containerId, $tabId, $title, $content, $urlBase) {
+    public function addAdminTask($containerId, $tabId, $title, $content, $urlBase) {
         $this->response->add(
                        new JSonGeneratorImpl(
-                           JSonGenerator::ADMIN_TAB,
+                           JSonGenerator::ADMIN_TASK,
                            array(
                                "containerId" => $containerId,
                                "tabId" => $tabId,
