@@ -412,7 +412,7 @@ class AjaxCmdResponseGenerator {
     }
 
     /**
-    * Afegeix una resposta de tipus ADMIN_TASK al generador de respostes.
+    * Afegeix una resposta de tipus ADMIN_TAB al generador de respostes.
     *
     * @param string $containerId    identificador del contenidor on afegir la pestanya
     * @param string $tabId          identificador de la pestanya
@@ -420,10 +420,10 @@ class AjaxCmdResponseGenerator {
     * @param string $content        contingut html amb la llista de tasques
     * @param string $urlBase        urlBase de la comanda on dirigir les peticions de cada tasca
     */
-    public function addAdminTask($containerId, $tabId, $title, $content, $urlBase) {
+    public function addAdminTab($containerId, $tabId, $title, $content, $urlBase) {
         $this->response->add(
                        new JSonGeneratorImpl(
-                           JSonGenerator::ADMIN_TASK,
+                           JSonGenerator::ADMIN_TAB,
                            array(
                                "containerId" => $containerId,
                                "tabId" => $tabId,
