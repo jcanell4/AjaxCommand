@@ -27,6 +27,7 @@ interface JsonGenerator {
     const OBJECT_TYPE_RESPONSE   = 14;
     const ALERT_TYPE             = 15;
     const ADMIN_TAB              = 16;
+    const ADMIN_TASK             = 17;
 
 
     // Aquestes constants es fan servir com a subtipus
@@ -111,7 +112,7 @@ class JSonGeneratorImpl implements JsonGenerator {
             "html", "title", "info", "command", "error"
             , "login", "sectok", "data", "metainfo", "remove"
             , "removeall", "code", "simple_data", "array", "object"
-            , "alert","admin_tab"
+            , "alert","admin_tab","admin_task"
         );
         $data       = array(
             "type"  => $arrayTypes[$this->type],
