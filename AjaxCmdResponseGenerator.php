@@ -434,4 +434,26 @@ class AjaxCmdResponseGenerator {
         );
     }
 
+    /**
+     * Afegeix una resposta de tipus ADMIN_TASK al generador de respostes.
+     *
+     * @param string $id
+     * @param string $ns
+     * @param string $title
+     * @param string $content
+     */
+    public function addAdminTask($id, $ns, $title, $content) {
+
+        $this->response->add(
+                       new JSonGeneratorImpl(
+                           JSonGenerator::ADMIN_TASK,
+                           array(
+                               'id'      => $id,
+                               'ns'      => $ns,
+                               'title'   => $title,
+                               'content' => $content
+                           ))
+        );
+    }
+
 }
