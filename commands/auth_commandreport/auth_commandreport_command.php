@@ -44,7 +44,7 @@ class auth_commandreport_command extends abstract_command_class {
                   $response["params"][$key]= $value;
             }
         }
-        return $response;
+        return '<div>'.serialize($response)."</div>";
 //
 //        $response = "params: ";
 //        foreach($this->params as $key => $value) {

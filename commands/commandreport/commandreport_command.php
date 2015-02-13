@@ -45,7 +45,7 @@ class commandreport_command extends abstract_command_class{
                   $response["params"][$key]= $value;
             }
         }
-        return $response;
+        return '<div>'.serialize($response)."</div>";
     }
 
     protected function preprocess() {}
