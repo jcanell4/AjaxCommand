@@ -42,7 +42,6 @@ class action_plugin_ajaxcommand extends DokuWiki_Action_Plugin {
             $params = array(
                 "id" => $event->data["responseData"]["id"],
                 "key" => "edit_ace",
-                /*"buttonId"   => $event->data["tplComponents"]->getArrIds("saveButton"),*/
                 "textAreaId" => 'wiki__text',
                 );
             if(defined("cfgIdConstants::SAVE_BUTTON")){
