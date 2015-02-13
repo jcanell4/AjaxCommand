@@ -27,25 +27,25 @@ class commandreport_command extends abstract_command_class{
      * @return array|mixed
      */
     protected function process() {
-        $response = (array("params" => array())); 
+        $params = (array("params" => array())); 
         foreach ($this->params as $key => $value) {
             if(is_array($value)){
                 if($value["error"]==0 
                                 && is_uploaded_file($value["tmp_name"])){
                     
-                    $response["params"][$key]=array(
+                    $params["params"][$key]=array(
                             "filename" => $value["name"],
                             "type" => $value["type"],
                             "content" => file_get_contents($value["tmp_name"])
                      );
                 }else{
-                     $response["params"][$key]= "ERROR(".$value["error"].")";
+                     $params["params"][$key]= "ERROR(".$value["error"].")";
                 }
             }else{
-                  $response["params"][$key]= $value;
+                  $params["params"][$key]= $value;
             }
         }
-        return $response;
+        return '<div>'.serialize($params)."</div>";
     }
 
     protected function preprocess() {}
