@@ -5,6 +5,10 @@ if (!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
 if (!defined('DOKU_TPL_INCDIR')) define('DOKU_TPL_INCDIR', tpl_incdir());
 require_once(DOKU_TPL_INCDIR . 'conf/cfgIdConstants.php');
 require_once(DOKU_PLUGIN . 'action.php');
+require_once(DOKU_INC . 'inc/template.php');
+if(file_exists(tpl_incdir()."conf/cfgIdConstants.php")){
+    require_once(tpl_incdir()."conf/cfgIdConstants.php");
+}
 
 /**
  * Class action_plugin_ajaxcommand
@@ -36,6 +40,7 @@ class action_plugin_ajaxcommand extends DokuWiki_Action_Plugin {
      * but for now, we keep the method here, to  don't modify the plugin aceeditor.
      */
     function processCmd(&$event, $param) {
+<<<<<<< HEAD
         if($event->data != NULL && defined("cfgIdConstants::SAVE_BUTTON")) {
             $event->data["ajaxCmdResponseGenerator"]->addProcessFunction(
                                                    TRUE,
@@ -47,6 +52,24 @@ class action_plugin_ajaxcommand extends DokuWiki_Action_Plugin {
                                                        "textAreaId" => 'wiki__text',
                                                    )
             );
+=======
+        if($event->data != NULL) {
+            $params = array(
+                "id" => $event->data["responseData"]["id"],
+                "key" => "edit_ace",
+                /*"buttonId"   => $event->data["tplComponents"]->getArrIds("saveButton"),*/
+                "textAreaId" => 'wiki__text',
+                );
+            if(defined("cfgIdConstants::SAVE_BUTTON")){
+                $params["buttonId"]=cfgIdConstants::SAVE_BUTTON;
+            }else{
+                $params["buttonId"]="saveButton";
+            }
+            $event->data["ajaxCmdResponseGenerator"]->addProcessFunction(
+                                                   TRUE,
+                                                   "ioc/dokuwiki/processAceEditor",
+                                                   $params);
+>>>>>>> d0cfaa704221af3fb1f1c5062626571b4c289e06
         }
     }
 
