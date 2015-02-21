@@ -35,23 +35,17 @@ class admin_task_command extends abstract_command_class {
   */
   protected function process() {
     $contentData = $this->modelWrapper->getAdminTask($this->params['page']);
-    //error_log("process\n" . print_r( $contentData, true ) . "\n", 3, "/var/www/php.log");
     return $contentData;
   }
 
-/**
-* Afegeix el contingut com una resposta de tipus HTML_TYPE al generador de respostes passat com argument.
-*
-* @param array                    $contentData array amb la informació de la pàgina 'id', 'tittle' i 'content'
-* @param AjaxCmdResponseGenerator $responseGenerator
-*
-* @return void
-*/
-protected function getDefaultResponse($contentData, &$responseGenerator) {
-  error_log("getDefaultResponse\n" . print_r( $contentData, true ) . "\n", 3, "/var/www/php.log");
-  /*$responseGenerator->addHtmlDoc(
-  $contentData["id"], $contentData["ns"],
-  $contentData["title"], $contentData["content"]
-);*/
-}
+  /**
+  * Afegeix el contingut com una resposta de tipus HTML_TYPE al generador de respostes passat com argument.
+  *
+  * @param array                    $contentData array amb la informació de la pàgina 'id', 'tittle' i 'content'
+  * @param AjaxCmdResponseGenerator $responseGenerator
+  *
+  * @return void
+  */
+  protected function getDefaultResponse($contentData, &$responseGenerator) {
+  }
 }
