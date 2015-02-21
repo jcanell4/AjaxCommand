@@ -61,6 +61,6 @@ class commandreport_command extends abstract_command_class{
      * @return void
      */
     protected function getDefaultResponse($response, &$ret) {
-        $ret->addInfoDta($response);        
+        $ret->addInfoDta("info", $response, null, -1, \date('d-m-Y H:i:s'));        
     }
 }

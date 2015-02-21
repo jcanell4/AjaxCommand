@@ -346,12 +346,22 @@ class AjaxCmdResponseGenerator {
      * Afegeix una resposta de tipus INFO_TYPE al generador de respostes.
      *
      * @param string $info
-     */
-    public function addInfoDta($info) {
+     */ //$type, $message, $id = null, $duration = -1)
+    public function addInfoDta($info, $message=null, $id = null, $duration = -1, $timestamp="") {
+        if($message){
+            $resp = array(
+                "id" => $id,
+                "type" => $info,
+                "message" => $message,
+                "duration" => $duration,
+                "timestamp" => $timestamp);            
+        }else{
+            $resp=$info;
+        }
         $this->response->add(
                        new JSonGeneratorImpl(
                            JSonGenerator::INFO_TYPE,
-                           $info)
+                           $resp)
         );
     }
 
