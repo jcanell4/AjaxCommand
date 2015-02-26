@@ -20,7 +20,6 @@ class admin_task_command extends abstract_command_class {
   * El valor per defecte es el paràmetre 'do' amb valor 'admin'.
   */
   public function __construct() {
-    error_log("class admin_task_command\n" . print_r( $contentData, true ) . "\n", 3, "/var/www/php.log");
     parent::__construct();
     $this->types['do'] = abstract_command_class::T_STRING;
 
@@ -37,6 +36,7 @@ class admin_task_command extends abstract_command_class {
     $contentData = $this->modelWrapper->getAdminTask($this->params['page']);
     return $contentData;
   }
+
 
   /**
   * Afegeix el contingut com una resposta de tipus HTML_TYPE al generador de respostes passat com argument.
