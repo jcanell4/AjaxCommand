@@ -414,6 +414,21 @@ class AjaxCmdResponseGenerator {
                                              ))
         );
     }
+        /**
+     * Afegeix una resposta de tipus META_MEDIA_INFO al generador de respostes.
+     *
+     * @param string   $docId
+     * @param string[] $meta hash amb les metadades
+     */
+    public function addMetaMediaData($docId, $meta) {
+        $this->response->add(
+                       new JSonGeneratorImpl(JSonGenerator::META_MEDIA_INFO,
+                                             array(
+                                                 "docId" => $docId,
+                                                 "meta"  => $meta,
+                                             ))
+        );
+    }
 
     /**
      * Retorna una cadena en format JSON amb totes les respostes codificades.
