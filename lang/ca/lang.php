@@ -30,3 +30,7 @@ $lang['copyImagesIncorrect']    = 'No s\'han copiat correctament totes les imatg
 $lang['copyImagesCorrect']      = 'S\'han copiat correctament totes les imatges';
 $lang['undefinedProject']       = 'El directori del projecte no ha estat definit';
 $lang['unauthorized_request']   = 'No es pot penjar el fitxer. Potser no teniu prou permisos?';
+
+$lang['auth_error']        = 'Error d\'autenticació';
+$lang['user_login']        = 'Usuari connectat';
+$lang['user_logout']       = 'Usuari desconnectat';
