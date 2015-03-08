@@ -1,7 +1,10 @@
 <?php
+
 if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
 if(!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_PLUGIN . "ajaxcommand/");
+
 require_once DOKU_COMMAND . 'JsonGenerator.php';
+
 
 /**
  * Class AjaxCmdResponseGenerator
@@ -455,6 +458,19 @@ class AjaxCmdResponseGenerator {
                                "urlBase" => $urlBase
                            ))
         );
+    }
+
+    /**
+     * Afegeix una resposta de tipus REVISIONS al generador de respostes.
+     *
+     * @param $id
+     * @param $revisions
+     *
+     */
+    public function addRevisionsTypeResponse($id, $revisions) {
+        $this->add(JSonGenerator::REVISIONS_TYPE, array (
+            'id' => $id,
+            'revisions' => $revisions));
     }
 
 }
