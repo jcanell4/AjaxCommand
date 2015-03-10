@@ -150,7 +150,7 @@ class AjaxCmdResponseGenerator {
                            $contentData)
         );
     }
-    
+
         /**
      * Afegeix una resposta de tipus MEDIA_TYPE al generador de respostes.
      *
@@ -354,7 +354,7 @@ class AjaxCmdResponseGenerator {
                 "type" => $info,
                 "message" => $message,
                 "duration" => $duration,
-                "timestamp" => $timestamp);            
+                "timestamp" => $timestamp);
         }else{
             $resp=$info;
         }
@@ -458,10 +458,24 @@ class AjaxCmdResponseGenerator {
                        new JSonGeneratorImpl(
                            JSonGenerator::ADMIN_TAB,
                            array(
+                               "type" => JSonGenerator::ADD_ADMIN_TAB,
                                "containerId" => $containerId,
                                "tabId" => $tabId,
                                "title" => $title,
                                "content" => $content,
+                               "urlBase" => $urlBase
+                           ))
+        );
+    }
+
+    public function addRemoveAdminTab($containerId, $tabId, $urlBase) {
+        $this->response->add(
+                       new JSonGeneratorImpl(
+                           JSonGenerator::ADMIN_TAB,
+                           array(
+                               "type" => JSonGenerator::REMOVE_ADMIN_TAB,
+                               "containerId" => $containerId,
+                               "tabId" => $tabId,
                                "urlBase" => $urlBase
                            ))
         );
