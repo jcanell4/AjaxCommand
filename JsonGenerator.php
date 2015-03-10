@@ -29,9 +29,11 @@ interface JsonGenerator {
     const ADMIN_TAB              = 16;
     const MEDIA_TYPE             = 17;
     const ADMIN_TASK             = 18;
-    
+
 
     // Aquestes constants es fan servir com a subtipus
+    const ADD_ADMIN_TAB = "add_admin_tab";
+    const REMOVE_ADMIN_TAB = "remove_admin_tab";
     const PROCESS_FUNCTION = "process_function";
 
     /**
