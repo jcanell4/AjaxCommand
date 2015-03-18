@@ -28,6 +28,7 @@ class media_command extends abstract_command_class {
         $this->types['id'] = abstract_command_class::T_STRING;
         $this->types['media'] = abstract_command_class::T_STRING;
         $this->types['rev'] = abstract_command_class::T_STRING;
+        $this->types['isupload'] = abstract_command_class::T_STRING;
         //getMediaManager($imageId = NULL, $fromPage = NULL, $prev = NULL)
         //getImageDetail($imageId, $fromPage = NULL)
     }
@@ -38,6 +39,9 @@ class media_command extends abstract_command_class {
      * @return array amb la informació de la pàgina formatada amb 'id', 'ns', 'tittle' i 'content'
      */
     protected function process() {
+        if ($this->params['isupload']) {
+            $this->modelWrapper->MediaUpload();
+        }
         if ($this->params['media']) {
             $this->params['image'] = $this->params['media'];
         }
