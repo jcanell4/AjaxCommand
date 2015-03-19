@@ -28,10 +28,12 @@ interface JsonGenerator {
     const ALERT_TYPE             = 15;
     const ADMIN_TAB              = 16;
     const MEDIA_TYPE             = 17;
-    const META_MEDIA_INFO        = 18;
+    const ADMIN_TASK             = 18;
 
 
     // Aquestes constants es fan servir com a subtipus
+    const ADD_ADMIN_TAB = "add_admin_tab";
+    const REMOVE_ADMIN_TAB = "remove_admin_tab";
     const PROCESS_FUNCTION = "process_function";
 
     /**
@@ -60,8 +62,8 @@ interface JsonGenerator {
     /** @const REMOVE_ALL_WIDGET_CHILDREN widgetId afectat */
     const REMOVE_ALL_WIDGET_CHILDREN = "remove_all_widget_children";
 
-//    const REMOVE_META_TAB="remove_meta_tab"; 
-//    const REMOVE_ALL_META_TAB="remove_all_meta_tab"; 
+//    const REMOVE_META_TAB="remove_meta_tab";
+//    const REMOVE_ALL_META_TAB="remove_all_meta_tab";
     /** @const JSINFO infomració per el javascript */
     const JSINFO = "jsinfo";
 
@@ -113,7 +115,7 @@ class JSonGeneratorImpl implements JsonGenerator {
             "html", "title", "info", "command", "error"
             , "login", "sectok", "data", "metainfo", "remove"
             , "removeall", "code", "simple_data", "array", "object"
-            , "alert","admin_tab", "media","metaMedia"
+            , "alert","admin_tab", "media","admin_task"
         );
         $data       = array(
             "type"  => $arrayTypes[$this->type],

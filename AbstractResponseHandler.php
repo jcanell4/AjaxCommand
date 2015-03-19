@@ -16,6 +16,7 @@ abstract class AbstractResponseHandler {
     const CANCEL = 'cancel';
     const SAVE   = 'save';
     const MEDIA  = 'media';
+    const ADMIN_TASK  = 'admin_task';
 
     private $cmd;
     private $modelWrapper;
