@@ -29,6 +29,7 @@ interface JsonGenerator {
     const ADMIN_TAB              = 16;
     const MEDIA_TYPE             = 17;
     const ADMIN_TASK             = 18;
+    const META_MEDIA_INFO        = 19;    
 
 
     // Aquestes constants es fan servir com a subtipus
@@ -115,7 +116,7 @@ class JSonGeneratorImpl implements JsonGenerator {
             "html", "title", "info", "command", "error"
             , "login", "sectok", "data", "metainfo", "remove"
             , "removeall", "code", "simple_data", "array", "object"
-            , "alert","admin_tab", "media","admin_task"
+            , "alert","admin_tab", "media","admin_task","metaMedia"
         );
         $data       = array(
             "type"  => $arrayTypes[$this->type],
