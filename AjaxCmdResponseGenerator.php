@@ -405,14 +405,14 @@ class AjaxCmdResponseGenerator {
     /**
      * Afegeix una resposta de tipus META_INFO al generador de respostes.
      *
-     * @param string   $docId
+     * @param string   $id
      * @param string[] $meta hash amb les metadades
      */
-    public function addMetadata($docId, $meta) {
+    public function addMetadata($id, $meta) {
         $this->response->add(
                        new JSonGeneratorImpl(JSonGenerator::META_INFO,
                                              array(
-                                                 "docId" => $docId,
+                                                 "id" => $id,
                                                  "meta"  => $meta,
                                              ))
         );
