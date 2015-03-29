@@ -73,7 +73,7 @@ class AjaxCmdResponseGenerator {
     public function addSetJsInfo($jsInfo) {
         $this->response->add(
                        new JSonGeneratorImpl(
-                           JSonGenerator::COMMAND_TYPE,
+                           JSonGenerator::JSINFO,
                            array(
                                "type"  => JSonGenerator::JSINFO,
                                "value" => $jsInfo,
@@ -502,5 +502,4 @@ class AjaxCmdResponseGenerator {
                            ))
         );
     }
-
 }
