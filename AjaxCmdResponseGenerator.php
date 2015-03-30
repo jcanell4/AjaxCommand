@@ -75,8 +75,8 @@ class AjaxCmdResponseGenerator {
                        new JSonGeneratorImpl(
                            JSonGenerator::JSINFO,
                            array(
-                               "type"  => JSonGenerator::JSINFO,
-                               "value" => $jsInfo,
+                               "isadmin"  => $jsInfo['isadmin'],
+                               "ismanager" => $jsInfo['ismanager']
                            )
                        )
         );
