@@ -74,10 +74,11 @@ class AjaxCmdResponseGenerator {
         $this->response->add(
                        new JSonGeneratorImpl(
                            JSonGenerator::JSINFO,
-                           array(
-                               "isadmin"  => $jsInfo['isadmin'],
-                               "ismanager" => $jsInfo['ismanager']
-                           )
+                           $jsInfo
+//                           array(
+//                               "isadmin"  => $jsInfo['isadmin'],
+//                               "ismanager" => $jsInfo['ismanager']
+//                           )
                        )
         );
     }
