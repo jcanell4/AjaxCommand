@@ -181,13 +181,15 @@ class AjaxCmdResponseGenerator {
      * @param string $ns
      * @param string $title
      * @param string $content
+     * @param string[] $editing - Editing params
      */
-    public function addWikiCodeDoc($id, $ns, $title, $content) {
+    public function addWikiCodeDoc($id, $ns, $title, $content, $editing) {
         $contentData = array(
             'id'      => $id,
             'ns'      => $ns,
             'title'   => $title,
-            'content' => $content
+            'content' => $content,
+	        'editing' => $editing
         );
 
         $this->response->add(
