@@ -66,7 +66,8 @@ interface JsonGenerator {
 //    const REMOVE_META_TAB="remove_meta_tab";
 //    const REMOVE_ALL_META_TAB="remove_all_meta_tab";
     /** @const JSINFO infomració per el javascript */
-    const JSINFO = "jsinfo";
+    //const JSINFO = "jsinfo";
+    const JSINFO = 19;
 
     /**
      * @return mixed hash amb el tipus i les dades a codificar.
@@ -116,7 +117,7 @@ class JSonGeneratorImpl implements JsonGenerator {
             "html", "title", "info", "command", "error"
             , "login", "sectok", "data", "metainfo", "remove"
             , "removeall", "code", "simple_data", "array", "object"
-            , "alert","admin_tab", "media","admin_task","metaMedia"
+            , "alert","admin_tab", "media","admin_task","jsinfo"
         );
         $data       = array(
             "type"  => $arrayTypes[$this->type],
