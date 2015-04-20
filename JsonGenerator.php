@@ -28,7 +28,7 @@ interface JsonGenerator {
     const ALERT_TYPE             = 15;
     const ADMIN_TAB              = 16;
     const MEDIA_TYPE             = 17;
-    const REVISIONS_TYPE         = 19;
+    const REVISIONS_TYPE         = 20;
     const ADMIN_TASK             = 18;
 
 
@@ -66,7 +66,8 @@ interface JsonGenerator {
 //    const REMOVE_META_TAB="remove_meta_tab";
 //    const REMOVE_ALL_META_TAB="remove_all_meta_tab";
     /** @const JSINFO infomració per el javascript */
-    const JSINFO = "jsinfo";
+    //const JSINFO = "jsinfo";
+    const JSINFO = 19;
 
     /**
      * @return mixed hash amb el tipus i les dades a codificar.
@@ -116,7 +117,7 @@ class JSonGeneratorImpl implements JsonGenerator {
             "html", "title", "info", "command", "error"
             , "login", "sectok", "data", "metainfo", "remove"
             , "removeall", "code", "simple_data", "array", "object"
-            , "alert","admin_tab", "media","admin_task", "revisions"
+            , "alert","admin_tab", "media","admin_task","jsinfo", "revisions"
         );
         $data       = array(
             "type"  => $arrayTypes[$this->type],
