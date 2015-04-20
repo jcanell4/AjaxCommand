@@ -117,7 +117,7 @@ class JSonGeneratorImpl implements JsonGenerator {
             "html", "title", "info", "command", "error"
             , "login", "sectok", "data", "metainfo", "remove"
             , "removeall", "code", "simple_data", "array", "object"
-            , "alert","admin_tab", "media","admin_task","jsinfo"
+            , "alert","admin_tab", "media","admin_task","metaMedia"
         );
         $data       = array(
             "type"  => $arrayTypes[$this->type],
