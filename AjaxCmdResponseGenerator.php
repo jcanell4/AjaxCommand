@@ -174,6 +174,30 @@ class AjaxCmdResponseGenerator {
                            $contentData)
         );
     }
+    
+   /**
+     * Afegeix una resposta de tipus MEDIADETAILS_TYPE al generador de respostes.
+     *
+     * @param string $id
+     * @param string $ns
+     * @param string $title
+     * @param string $content
+     */
+    public function addMediaDetails($id, $ns, $title, $content) {
+        $contentData = array(
+            'id'      => $id,
+            'ns'      => $ns,
+            'title'   => $title,
+            'content' => $content
+        );
+
+        $this->response->add(
+                       new JSonGeneratorImpl(
+                           JSonGenerator::MEDIADETAILS_TYPE,
+                           $contentData)
+        );
+    }
+    
 
     /**
      * Afegeix una resposta de tipus DATA_TYPE al generador de respostes.
