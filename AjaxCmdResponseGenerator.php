@@ -73,11 +73,12 @@ class AjaxCmdResponseGenerator {
     public function addSetJsInfo($jsInfo) {
         $this->response->add(
                        new JSonGeneratorImpl(
-                           JSonGenerator::COMMAND_TYPE,
-                           array(
-                               "type"  => JSonGenerator::JSINFO,
-                               "value" => $jsInfo,
-                           )
+                           JSonGenerator::JSINFO,
+                           $jsInfo
+//                           array(
+//                               "isadmin"  => $jsInfo['isadmin'],
+//                               "ismanager" => $jsInfo['ismanager']
+//                           )
                        )
         );
     }
@@ -181,13 +182,15 @@ class AjaxCmdResponseGenerator {
      * @param string $ns
      * @param string $title
      * @param string $content
+     * @param string[] $editing - Editing params
      */
-    public function addWikiCodeDoc($id, $ns, $title, $content) {
+    public function addWikiCodeDoc($id, $ns, $title, $content, $editing) {
         $contentData = array(
             'id'      => $id,
             'ns'      => $ns,
             'title'   => $title,
-            'content' => $content
+            'content' => $content,
+	        'editing' => $editing
         );
 
         $this->response->add(
@@ -515,5 +518,4 @@ class AjaxCmdResponseGenerator {
             'id' => $id,
             'revisions' => $revisions));
     }
-
 }
