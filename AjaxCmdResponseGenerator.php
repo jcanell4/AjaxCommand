@@ -175,6 +175,23 @@ class AjaxCmdResponseGenerator {
         );
     }
     
+     /**
+     * Afegeix una resposta de tipus META_MEDIA_INFO al generador de respostes.
+     *
+     * @param string   $docId
+     * @param string[] $meta hash amb les metadades
+     */
+    public function addMetaMediaData($docId, $meta) {
+        $this->response->add(
+                       new JSonGeneratorImpl(JSonGenerator::META_MEDIA_INFO,
+                                             array(
+                                                 "docId" => $docId,
+                                                 "meta"  => $meta,
+                                             ))
+        );
+    }
+    
+    
    /**
      * Afegeix una resposta de tipus MEDIADETAILS_TYPE al generador de respostes.
      *
@@ -447,21 +464,6 @@ class AjaxCmdResponseGenerator {
                        new JSonGeneratorImpl(JSonGenerator::META_INFO,
                                              array(
                                                  "id" => $id,
-                                                 "meta"  => $meta,
-                                             ))
-        );
-    }
-        /**
-     * Afegeix una resposta de tipus META_MEDIA_INFO al generador de respostes.
-     *
-     * @param string   $docId
-     * @param string[] $meta hash amb les metadades
-     */
-    public function addMetaMediaData($docId, $meta) {
-        $this->response->add(
-                       new JSonGeneratorImpl(JSonGenerator::META_MEDIA_INFO,
-                                             array(
-                                                 "docId" => $docId,
                                                  "meta"  => $meta,
                                              ))
         );
