@@ -28,6 +28,7 @@ interface JsonGenerator {
     const ALERT_TYPE             = 15;
     const ADMIN_TAB              = 16;
     const MEDIA_TYPE             = 17;
+    const REVISIONS_TYPE         = 21;
     const ADMIN_TASK             = 18;
 
 
@@ -116,7 +117,7 @@ class JSonGeneratorImpl implements JsonGenerator {
             "html", "title", "info", "command", "error"
             , "login", "sectok", "data", "metainfo", "remove"
             , "removeall", "code", "simple_data", "array", "object"
-            , "alert","admin_tab", "media","admin_task","jsinfo"
+            , "alert","admin_tab", "media","admin_task","jsinfo", "","revisions"
         );
         $data       = array(
             "type"  => $arrayTypes[$this->type],

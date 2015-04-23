@@ -182,13 +182,15 @@ class AjaxCmdResponseGenerator {
      * @param string $ns
      * @param string $title
      * @param string $content
+     * @param string[] $editing - Editing params
      */
-    public function addWikiCodeDoc($id, $ns, $title, $content) {
+    public function addWikiCodeDoc($id, $ns, $title, $content, $editing) {
         $contentData = array(
             'id'      => $id,
             'ns'      => $ns,
             'title'   => $title,
-            'content' => $content
+            'content' => $content,
+	        'editing' => $editing
         );
 
         $this->response->add(
@@ -413,14 +415,14 @@ class AjaxCmdResponseGenerator {
     /**
      * Afegeix una resposta de tipus META_INFO al generador de respostes.
      *
-     * @param string   $docId
+     * @param string   $id
      * @param string[] $meta hash amb les metadades
      */
-    public function addMetadata($docId, $meta) {
+    public function addMetadata($id, $meta) {
         $this->response->add(
                        new JSonGeneratorImpl(JSonGenerator::META_INFO,
                                              array(
-                                                 "docId" => $docId,
+                                                 "id" => $id,
                                                  "meta"  => $meta,
                                              ))
         );
@@ -502,5 +504,18 @@ class AjaxCmdResponseGenerator {
                                'content' => $content
                            ))
         );
+    }
+
+    /**
+     * Afegeix una resposta de tipus REVISIONS al generador de respostes.
+     *
+     * @param $id
+     * @param $revisions
+     *
+     */
+    public function addRevisionsTypeResponse($id, $revisions) {
+        $this->add(JSonGenerator::REVISIONS_TYPE, array (
+            'id' => $id,
+            'revisions' => $revisions));
     }
 }
