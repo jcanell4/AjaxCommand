@@ -129,20 +129,22 @@ class AjaxCmdResponseGenerator {
         );
     }
 
-    /**
-     * Afegeix una resposta de tipus HTML_TYPE al generador de respostes.
-     *
-     * @param string $id
-     * @param string $ns
-     * @param string $title
-     * @param string $content
-     */
-    public function addHtmlDoc($id, $ns, $title, $content) {
+	/**
+	 * Afegeix una resposta de tipus HTML_TYPE al generador de respostes.
+	 *
+	 * @param string $id
+	 * @param string $ns
+	 * @param string $title
+	 * @param string $content
+	 * @param string $rev
+	 */
+    public function addHtmlDoc($id, $ns, $title, $content, $rev) {
         $contentData = array(
             'id'      => $id,
             'ns'      => $ns,
             'title'   => $title,
-            'content' => $content
+            'content' => $content,
+	        'rev' => $rev
         );
 
         $this->response->add(
