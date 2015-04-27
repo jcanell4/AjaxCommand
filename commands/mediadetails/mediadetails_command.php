@@ -13,9 +13,9 @@ require_once(DOKU_COMMAND . 'abstract_command_class.php');
 /**
  * Class page_command
  *
- * @author Josep Cañellas <jcanell4@ioc.cat>
+ * @author Josep Cañellas <mlozan54@ioc.cat>
  */
-class media_command extends abstract_command_class {
+class mediadetails_command extends abstract_command_class {
 
     /**
      * El constructor estableix els tipus de 'id' i 'rev' i el valor per defecte de 'id' com a 'start'. i l'estableix
@@ -29,8 +29,6 @@ class media_command extends abstract_command_class {
         $this->types['media'] = abstract_command_class::T_STRING;
         $this->types['rev'] = abstract_command_class::T_STRING;
         $this->types['isupload'] = abstract_command_class::T_STRING;
-        //getMediaManager($imageId = NULL, $fromPage = NULL, $prev = NULL)
-        //getImageDetail($imageId, $fromPage = NULL)
     }
 
     /**
@@ -39,17 +37,15 @@ class media_command extends abstract_command_class {
      * @return array amb la informació de la pàgina formatada amb 'id', 'ns', 'tittle' i 'content'
      */
     protected function process() {
-        /*if ($this->params['isupload']) {
-            $this->modelWrapper->MediaUpload();           
-        }*/
+
         if ($this->params['media']) {
             $this->params['image'] = $this->params['media'];
         }
-        if ($this->params['id']) {
-            $this->params['fromId'] = $this->params['id'];
-        }
-        $contentData = $this->modelWrapper->getMediaManager(
+        /*$contentData = $this->modelWrapper->getMediaDetails(
                 $this->params['image'], $this->params['fromId'], $this->params['rev']
+        );*/
+        $contentData = $this->modelWrapper->getMediaDetails(
+                $this->params['image']
         );
         return $contentData;
     }
@@ -63,12 +59,7 @@ class media_command extends abstract_command_class {
      * @return void
      */
     protected function getDefaultResponse($contentData, &$responseGenerator) {
-        //addHtmlDoc($id, $ns, $title, $content)
-        /*$responseGenerator->addHtmlDoc(
-                $contentData["imageId"], $contentData["imageTitle"], 
-                $contentData["fromId"], $contentData["modifyImageLabel"], 
-                $contentData["closeDialogLabel"], $contentData["content"]
-        );*/
+
         $responseGenerator->addHtmlDoc(
                 $contentData["image"], null, 
                 $contentData["imageTitle"],

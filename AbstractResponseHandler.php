@@ -16,6 +16,7 @@ abstract class AbstractResponseHandler {
     const CANCEL = 'cancel';
     const SAVE   = 'save';
     const MEDIA  = 'media';
+    const MEDIADETAILS  = 'mediadetails';    
     const ADMIN_TASK  = 'admin_task';
     const ADMIN_TAB  = 'admin_tab';
 
