@@ -160,8 +160,12 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
                 $this->errorMessage = "permission denied"; /*TODO internacionalització */
             }
         } else {
+
+            //TODO[xavi] Per poder fer proves deshabilitem la comprovació
             $this->error        = 403;
             $this->errorMessage = "permission denied"; /*TODO internacionalització */
+
+            //$ret = $this->getResponse();
         }
         if($this->error && $this->throwsException) {
             throw new Exception($this->errorMessage);
@@ -199,7 +203,14 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
             }            
         }
 
-        return $ret->getResponse();
+        $jsonResponse = $ret->getResponse();
+
+        // for a dojo iframe the json response has to be inside a textarea 
+        if (isset($this->params['iframe'])) {
+          $jsonResponse = "<html><body><textarea>" . $jsonResponse . "</textarea></body></html>";   
+       }
+        
+        return $jsonResponse;
     }
 
     /**
