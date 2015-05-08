@@ -36,16 +36,18 @@ class action_plugin_ajaxcommand extends DokuWiki_Action_Plugin {
                    'AJAX_CALL_UNKNOWN', 'BEFORE', $this,
                    'runAjaxCall'
         );
+        //[TODO Josep] Cal passar això al plugin aceeditor
         $controller->register_hook(
                    'WIOC_PROCESS_RESPONSE_edit', 'AFTER', $this,
                    'processCmd'
         );
+        //[END TODO]
     }
 
     /**
      * @param Doku_Event $event
      * @param mixed      $param
-     * [TODO] This method should be located in the plugin aceeditor, 
+     * [TODO Josep] This method should be located in the plugin aceeditor, 
      * but for now, we keep the method here, to  don't modify the plugin aceeditor.
      */
     function processCmd(&$event, $param) {
@@ -74,15 +76,15 @@ class action_plugin_ajaxcommand extends DokuWiki_Action_Plugin {
         $event->preventDefault();
 
         if(!auth_isadmin()) {
-            print ('fobiben! for admins only  ');
+            print ('fobiben! for admins only.');
         } else {
-            print 'Ok! You are an admin ';
+            print 'Ok! You are an admin. ';
         }
 
         if(!checkSecurityToken()) {
             print ('CRSF Attack' . 'fora: ' . $_SERVER['REMOTE_USER']);
         } else {
-            print "Hola usuari: " . $_SERVER['REMOTE_USER'] . ". Vols executar: " . $call;
+            print "Hola usuari " . $_SERVER['REMOTE_USER'] . ". Vols executar: " . $call . ", però no reconec la comanda.";
         }
     }
 }
