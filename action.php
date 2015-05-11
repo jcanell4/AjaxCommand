@@ -32,10 +32,10 @@ class action_plugin_ajaxcommand extends DokuWiki_Action_Plugin {
      * @param Doku_Event_Handler $controller controlador d'events de la DokuWiki
      */
     function register(&$controller) {
-        $controller->register_hook(
-                   'AJAX_CALL_UNKNOWN', 'BEFORE', $this,
-                   'runAjaxCall'
-        );
+//        $controller->register_hook(
+//                   'AJAX_CALL_UNKNOWN', 'BEFORE', $this,
+//                   'runAjaxCall'
+//        );
         //[TODO Josep] Cal passar això al plugin aceeditor
         $controller->register_hook(
                    'WIOC_PROCESS_RESPONSE_edit', 'AFTER', $this,
