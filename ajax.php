@@ -60,7 +60,6 @@ if(existCommand($call)) {
     // Creem un evento Doku_Event amb
     $dataEvent = array('command' => $call, 'params' => $params);
     $evt       = new Doku_Event('AJAX_CALL_UNKNOWN', $dataEvent);
-//                            array('command' => $call, 'params' => $params));
     if($evt->advise_before()) {
         print "AJAX call '" . htmlspecialchars($call) . "' unknown!\n";
         exit;

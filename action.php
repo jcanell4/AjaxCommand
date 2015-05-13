@@ -64,27 +64,4 @@ class action_plugin_ajaxcommand extends DokuWiki_Action_Plugin {
             );
         }
     }
-
-    /**
-     * @param Doku_Event $event
-     * @param mixed      $param
-     */
-    function runAjaxCall(&$event, $param) {
-        global $INFO;
-
-        $call = $event->data['command'];
-        $event->preventDefault();
-
-        if(!auth_isadmin()) {
-            print ('fobiben! for admins only.');
-        } else {
-            print 'Ok! You are an admin. ';
-        }
-
-        if(!checkSecurityToken()) {
-            print ('CRSF Attack' . 'fora: ' . $_SERVER['REMOTE_USER']);
-        } else {
-            print "Hola usuari " . $_SERVER['REMOTE_USER'] . ". Vols executar: " . $call . ", però no reconec la comanda.";
-        }
-    }
 }
