@@ -520,4 +520,22 @@ class AjaxCmdResponseGenerator {
             'id' => $id,
             'revisions' => $revisions));
     }
+    
+    /**
+     * Afegeix una resposta de tipus EXTRA_CONTENT_STATE al generador de 
+     * respostes. Aquest tipus de resposta permet als plugins afegir valors 
+     * extres a l'estat d'un contingut identificat per un id.
+     *
+     * @param $id
+     * @param $type
+     * @param $value
+     *
+     */
+    public function addExtraContentStateResponse($id, $type, $value) {
+        $this->add(JSonGenerator::EXTRA_CONTENT_STATE, array (
+            'id' => $id,
+            'type' => $type,
+            'value' => $value));
+    }
+    
 }
