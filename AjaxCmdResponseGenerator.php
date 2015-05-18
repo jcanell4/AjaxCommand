@@ -472,6 +472,27 @@ class AjaxCmdResponseGenerator {
     }
 
     /**
+     * Afegeix una resposta de tipus META_INFO al generador de respostes.
+     *
+     * @param string   $id
+     * @param string[] $meta hash amb les metadades
+     */
+    public function addExtraMetadata($id, $meta, $tit=NULL, $cont=NULL) {
+        if($tit){
+            $aMeta = array("id" => $meta, 'title' => $tit, 'content' => $cont);
+        }else{
+            $aMeta = $meta;
+        }
+        $this->response->add(
+                       new JSonGeneratorImpl(JSonGenerator::EXTRA_META_INFO,
+                                             array(
+                                                 "id" => $id,
+                                                 "meta"  => $aMeta,
+                                             ))
+        );
+    }
+
+    /**
      * Retorna una cadena en format JSON amb totes les respostes codificades.
      *
      * @return string resposta codificada en JSON
