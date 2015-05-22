@@ -41,11 +41,10 @@ class page_command extends abstract_command_class {
 	 */
 	protected function process() {
 
-		// TODO[Xavi] Comprovar do=diff i si es així que cridi al nou modelWrapper->getDiffPage()
-		// TODO[Xavi] Al getDiffPage s'haura de pasar un array amb 2 valors amb el nom 'rev2' per comparar 2 revisions
+            // TODO[Xavi] Comprovar do=diff i si es així que cridi al nou modelWrapper->getDiffPage()
+            // TODO[Xavi] Al getDiffPage s'haura de pasar un array amb 2 valors amb el nom 'rev2' per comparar 2 revisions
 
-
-		if ( $_REQUEST['do']=='diff') {
+            if ( $_REQUEST['do']=='diff') {
 		    $contentData = $this->modelWrapper->getDiffPage(
 			    $this->params['id'],
 			    $this->params['rev']
@@ -56,10 +55,6 @@ class page_command extends abstract_command_class {
 			    $this->params['rev']
 		    );
 	    }
-
-
-
-
 
         return $contentData;
     }
