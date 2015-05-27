@@ -162,12 +162,14 @@ class AjaxCmdResponseGenerator {
      * @param string $title
      * @param string $content
      */
-    public function addMedia($id, $ns, $title, $content) {
+    public function addMedia($id, $ns, $title, $content,$preserveMetaData) {
         $contentData = array(
             'id'      => $id,
             'ns'      => $ns,
             'title'   => $title,
+            'preserveMetaData' => $preserveMetaData,
             'content' => $content
+
         );
 
         $this->response->add(
