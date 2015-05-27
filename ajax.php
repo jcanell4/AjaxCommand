@@ -55,17 +55,30 @@ if(existCommand($call)) {
     print callCommand($call, $params);
 
 } else {
-    if(!checkSecurityToken()) die("CSRF Attack");
-
-    // Creem un evento Doku_Event amb
-    $dataEvent = array('command' => $call, 'params' => $params);
-    $evt       = new Doku_Event('AJAX_CALL_UNKNOWN', $dataEvent);
-    if($evt->advise_before()) {
-        print "AJAX call '" . htmlspecialchars($call) . "' unknown!\n";
-        exit;
-    }
-    $evt->advise_after();
+    $dataEvent = array();
+    $evt = new Doku_Event('CALLING_EXTRA_COMMANDS', $dataEvent);
+    $evt->trigger();
     unset($evt);
+    
+    $noCommand=TRUE;
+    if(sizeof($dataEvent)>0){
+        $noCommand = !$dataEvent[$call]|| !existCommand($dataEvent[$call]["callFile"], TRUE);
+    }
+    if(!$noCommand){
+        print callCommand($call, $params, $dataEvent[$call]["respHandlerDir"]);
+    }else{
+        if(!checkSecurityToken()) die("CSRF Attack");
+
+        // Creem un evento Doku_Event amb
+        $dataEvent = array('command' => $call, 'params' => $params);
+        $evt       = new Doku_Event('AJAX_CALL_UNKNOWN', $dataEvent);
+        if($evt->advise_before()) {
+            print "AJAX call '" . htmlspecialchars($call) . "' unknown!\n";
+            exit;
+        }
+        $evt->advise_after();
+        unset($evt);
+    }
 }
 
 /**
@@ -88,8 +101,13 @@ function isUserAuthenticated() {
  *
  * @return bool true si existeix un command amb aquest nom, o false en cas contrari.
  */
-function existCommand($command) {
-    $file = DOKU_COMMANDS . $command . '/' . $command . '_command.php';
+function existCommand($command, $isFile=FALSE) {
+    if($isFile){
+        $file = $command;
+    }else{
+        $file = DOKU_COMMANDS . $command . '/' . $command . '_command.php';
+    }
+
     $ret  = FALSE;
     if(@file_exists($file)) {
         $ret = TRUE;
@@ -113,7 +131,7 @@ function existCommand($command) {
  *
  * @return string el resultat de executar el command en format JSON o un missatge d'error
  */
-function callCommand($str_command, $arr_parameters) {
+function callCommand($str_command, $arr_parameters, $respHandDir=NULL) {
     global $INFO;
     $respHandObj = NULL;
 
@@ -124,7 +142,9 @@ function callCommand($str_command, $arr_parameters) {
         $tplincdir = DOKU_TPLINC;
     }
 
-    $respHandDir   = $tplincdir . 'cmd_response_handler/';
+    if(!$respHandDir){
+        $respHandDir   = $tplincdir . 'cmd_response_handler/';
+    }
     $respHandClass = $str_command . '_response_handler';
     $respHandFile  = $respHandDir . $respHandClass . '.php';
 
