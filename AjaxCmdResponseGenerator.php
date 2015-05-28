@@ -468,6 +468,11 @@ class AjaxCmdResponseGenerator {
 	 * @param string[] $meta hash amb les metadades
 	 */
 	public function addMetadata( $id, $meta ) {
+
+		if (!$id || !$meta) {
+			return;
+		}
+
 		$this->response->add(
 			new JSonGeneratorImpl( JSonGenerator::META_INFO,
 			                       array(
