@@ -143,19 +143,35 @@ class AjaxCmdResponseGenerator {
 	 * @param string $rev
 	 * @param string $type
 	 */
-	public function addHtmlDoc( $id, $ns, $title, $content, $rev, $type ) {
+	public function addHtmlDoc( $id, $ns, $title, $content, $rev, $type) {
 		$contentData = array(
 			'id'      => $id,
 			'ns'      => $ns,
 			'title'   => $title,
 			'content' => $content,
 			'rev'     => $rev,
-			'type'    => $type
+			'type'    => $type,
 		);
 
 		$this->response->add(
 			new JSonGeneratorImpl(
 				JSonGenerator::HTML_TYPE,
+				$contentData )
+		);
+	}
+
+	public function addDiffDoc( $id, $ns, $title, $content, $type) {
+		$contentData = array(
+			'id'      => $id,
+			'ns'      => $ns,
+			'title'   => $title,
+			'content' => $content,
+			'type'    => $type,
+		);
+
+		$this->response->add(
+			new JSonGeneratorImpl(
+				JSonGenerator::DIFF_TYPE,
 				$contentData )
 		);
 	}
@@ -168,13 +184,13 @@ class AjaxCmdResponseGenerator {
 	 * @param string $title
 	 * @param string $content
 	 */
-    public function addMedia($id, $ns, $title, $content,$preserveMetaData) {
+	public function addMedia( $id, $ns, $title, $content, $preserveMetaData ) {
 		$contentData = array(
-			'id'      => $id,
-			'ns'      => $ns,
-			'title'   => $title,
-                        'preserveMetaData' => $preserveMetaData,
-			'content' => $content
+			'id'               => $id,
+			'ns'               => $ns,
+			'title'            => $title,
+			'preserveMetaData' => $preserveMetaData,
+			'content'          => $content
 		);
 
 		$this->response->add(
@@ -469,7 +485,7 @@ class AjaxCmdResponseGenerator {
 	 */
 	public function addMetadata( $id, $meta ) {
 
-		if (!$id || !$meta) {
+		if ( ! $id || ! $meta ) {
 			return;
 		}
 

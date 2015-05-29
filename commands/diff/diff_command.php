@@ -15,9 +15,9 @@ require_once( DOKU_COMMAND . 'abstract_command_class.php' );
 /**
  * Class page_command
  *
- * @author Josep Cañellas <jcanell4@ioc.cat>
+ * @author Xavier García <xaviergaro.dev@gmail.com>
  */
-class page_command extends abstract_command_class {
+class diff_command extends abstract_command_class {
 
 	/**
 	 * El constructor estableix els tipus de 'id' i 'rev' i el valor per defecte de 'id' com a 'start'. i l'estableix
@@ -29,7 +29,7 @@ class page_command extends abstract_command_class {
 		$this->types['rev'] = abstract_command_class::T_STRING;
 
 		$defaultValues = array(
-			'id' => 'start',
+//			'id' => 'start',
 		);
 		$this->setParameters( $defaultValues );
 	}
@@ -41,13 +41,15 @@ class page_command extends abstract_command_class {
 	 */
 	protected function process() {
 
-		$contentData = $this->modelWrapper->getHtmlPage(
+		// TODO[Xavi] Al getDiffPage s'haura de pasar un array amb 2 valors amb el nom 'rev2' per comparar 2 revisions
+
+		$contentData = $this->modelWrapper->getDiffPage(
 			$this->params['id'],
 			$this->params['rev']
 		);
 
-		return $contentData;
-	}
+        return $contentData;
+    }
 
 	/**
 	 * Afegeix el contingut com una resposta de tipus HTML_TYPE al generador de respostes passat com argument.
