@@ -499,6 +499,27 @@ class AjaxCmdResponseGenerator {
 	}
 
 	/**
+	 * Afegeix una resposta de tipus META_DIFF al generador de respostes.
+	 *
+	 * @param string   $id
+	 * @param string[] $meta hash amb les metadades
+	 */
+	public function addMetaDiff( $id, $meta ) {
+
+		if ( ! $id || ! $meta ) {
+			return;
+		}
+
+		$this->response->add(
+			new JSonGeneratorImpl( JSonGenerator::META_DIFF,
+			                       array(
+				                       "id"   => $id,
+				                       "meta" => $meta,
+			                       ) )
+		);
+	}
+
+	/**
 	 * Afegeix una resposta de tipus META_INFO al generador de respostes.
 	 *
 	 * @param string   $id
@@ -607,7 +628,8 @@ class AjaxCmdResponseGenerator {
 	public function addRevisionsTypeResponse( $id, $revisions ) {
 		$this->add( JSonGenerator::REVISIONS_TYPE, array(
 			'id'        => $id,
-			'revisions' => $revisions
+			'revisions' => $revisions,
+		    'type' => 'revisions'
 		) );
 	}
 
