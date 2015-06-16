@@ -38,6 +38,7 @@ interface JsonGenerator {
 	const EXTRA_META_INFO = 24;
 	const DIFF_TYPE = 25;
 	const META_DIFF= 26;
+        const META_MEDIADETAILS_INFO = 27;
 
 	// Aquestes constants es fan servir com a subtipus
 	const ADD_ADMIN_TAB = "add_admin_tab";
@@ -152,7 +153,8 @@ class JSonGeneratorImpl implements JsonGenerator {
 			,
 			"extra_metainfo",
 			"diff",
-			"diff_metainfo"
+			"diff_metainfo",
+                        "metamediadetails"
 		);
 		$data       = array(
 			"type"  => $arrayTypes[ $this->type ],
