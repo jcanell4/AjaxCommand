@@ -47,6 +47,7 @@ class mediadetails_command extends abstract_command_class {
         $contentData = $this->modelWrapper->getMediaDetails(
                 $this->params['image']
         );
+        
         return $contentData;
     }
 
