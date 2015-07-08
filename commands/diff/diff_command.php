@@ -13,7 +13,7 @@ require_once( DOKU_COMMAND . 'JsonGenerator.php' );
 require_once( DOKU_COMMAND . 'abstract_command_class.php' );
 
 /**
- * Class page_command
+ * Class diff_command
  *
  * @author Xavier García <xaviergaro.dev@gmail.com>
  */
@@ -60,10 +60,10 @@ class diff_command extends abstract_command_class {
 	 *
 	 * @return void
 	 */
-	protected function getDefaultResponse( $contentData, &$responseGenerator ) {
-		$responseGenerator->addHtmlDoc(
-			$contentData["id"], $contentData["ns"],
-			$contentData["title"], $contentData["content"]
-		);
+	protected function getDefaultResponse($response, &$ret) {
+		global $lang;
+
+
+		$ret->addInfoDta("info", $lang['draftdate'].' '.dformat(), $this->types['id']);
 	}
 }
