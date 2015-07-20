@@ -29,7 +29,8 @@ class cancel_command extends abstract_command_class {
     protected function process() {
         $contentData = $this->modelWrapper->cancelEdition(
                                           $this->params['id'],
-                                          $this->params['rev']
+                                          $this->params['rev'],
+                                          $this->params['keep_draft']
         );
         return $contentData;
 
