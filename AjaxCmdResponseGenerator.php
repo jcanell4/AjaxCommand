@@ -176,6 +176,23 @@ class AjaxCmdResponseGenerator {
 		);
 	}
 
+	public function addDraftDialog( $id, $ns, $title, $content, $draft, $timeout ) {
+		$contentData = array(
+			'id'      => $id,
+			'ns'      => $ns,
+			'title'   => $title,
+			'content' => $content,
+			'draft'    => $draft,
+			'timeout' => $timeout,
+		);
+
+		$this->response->add(
+			new JSonGeneratorImpl(
+				JSonGenerator::DRAFT_DIALOG,
+				$contentData )
+		);
+	}
+
 	/**
 	 * Afegeix una resposta de tipus MEDIA_TYPE al generador de respostes.
 	 *
@@ -249,13 +266,14 @@ class AjaxCmdResponseGenerator {
 	 * @param string   $draft
 	 * @param string[] $editing - Editing params
 	 */
-	public function addWikiCodeDoc( $id, $ns, $title, $content, $draft, $editing ) {
+	public function addWikiCodeDoc( $id, $ns, $title, $content, $draft, $recover_draft, $editing ) {
 		$contentData = array(
 			'id'      => $id,
 			'ns'      => $ns,
 			'title'   => $title,
 			'content' => $content,
 			'draft'   => $draft,
+			'recover_draft' => $recover_draft,
 			'editing' => $editing
 		);
 
