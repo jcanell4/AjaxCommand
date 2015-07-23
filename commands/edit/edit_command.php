@@ -37,25 +37,7 @@ class edit_command extends abstract_command_class {
 	 */
 	protected function process() {
 
-		$id = str_replace( ':', '_', $this->params['id']);
-
-		$info = basicinfo( $id );
-
-
-
-		// draft
-		$draft = getCacheName( $info['client'] . $id, '.draft' );
-		$draftExists = false;
-
-		if ( @file_exists( $draft ) ) {
-			if ( @filemtime( $draft ) < @filemtime( wikiFN( $id ) ) ) {
-				// remove stale draft
-				@unlink( $draft );
-			} else {
-				$draftExists = true;
-				$info['draft'] = $draft;
-			}
-		}
+		$draftExists = $this->getModelWrapper()->hasDraft($this->params['id']);
 
 		$contentData = null;
 
@@ -71,20 +53,6 @@ class edit_command extends abstract_command_class {
 			// No hi ha draft, enviem el actual
 			$contentData= $this->_sendEditPageResponse(false);
 		}
-
-		// Si es troba un draft es comprova si s'ha rebut el paràmetre recover_draft
-		//      no hi ha recover_draft -> s'ha d'enviar el dialog
-		//      hi ha i es true -> es canvia el content pel draft, s'afegeix una info de warning: recoverDraft = true <-- TODO[Xavi] per simplificar el warning i el reemplaçs es fa al frontend
-		//      hi ha i es false -> s'envia el document normal.
-
-//		$contentData = $this->modelWrapper->getCodePage(
-//			$this->params['id'],
-//			$this->params['rev'],
-//			$this->params['range'],
-//			$this->types['summary']
-//		);
-//
-//		return $contentData;
 
 		return $contentData;
 	}
