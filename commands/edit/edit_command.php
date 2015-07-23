@@ -59,7 +59,7 @@ class edit_command extends abstract_command_class {
 
 		$contentData = null;
 
-		if ($draftExists && array_key_exists('recover_draft', $this->params)) { // TODO[Xavi] comprovar si funciona així o ha de ser booleà
+		if ($draftExists && array_key_exists('recover_draft', $this->params)) {
 			// Carreguem el draft
 			$contentData = $this->_sendEditPageResponse($this->params['recover_draft']);
 

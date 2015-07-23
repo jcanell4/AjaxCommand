@@ -176,7 +176,7 @@ class AjaxCmdResponseGenerator {
 		);
 	}
 
-	public function addDraftDialog( $id, $ns, $title, $content, $draft, $timeout ) {
+	public function addDraftDialog( $id, $ns, $title, $content, $draft, $timeout, $lastmod ) {
 		$contentData = array(
 			'id'      => $id,
 			'ns'      => $ns,
@@ -184,6 +184,7 @@ class AjaxCmdResponseGenerator {
 			'content' => $content,
 			'draft'    => $draft,
 			'timeout' => $timeout,
+			'lastmod' => $lastmod
 		);
 
 		$this->response->add(
