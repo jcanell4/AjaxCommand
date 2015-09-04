@@ -143,7 +143,7 @@ class AjaxCmdResponseGenerator {
 	 * @param string $rev
 	 * @param string $type
 	 */
-	public function addHtmlDoc( $id, $ns, $title, $content, $rev, $type) {
+	public function addHtmlDoc( $id, $ns, $title, $content, $rev, $type ) {
 		$contentData = array(
 			'id'      => $id,
 			'ns'      => $ns,
@@ -160,7 +160,7 @@ class AjaxCmdResponseGenerator {
 		);
 	}
 
-	public function addDiffDoc( $id, $ns, $title, $content, $type) {
+	public function addDiffDoc( $id, $ns, $title, $content, $type ) {
 		$contentData = array(
 			'id'      => $id,
 			'ns'      => $ns,
@@ -172,6 +172,24 @@ class AjaxCmdResponseGenerator {
 		$this->response->add(
 			new JSonGeneratorImpl(
 				JSonGenerator::DIFF_TYPE,
+				$contentData )
+		);
+	}
+
+	public function addDraftDialog( $id, $ns, $title, $content, $draft, $timeout, $lastmod ) {
+		$contentData = array(
+			'id'      => $id,
+			'ns'      => $ns,
+			'title'   => $title,
+			'content' => $content,
+			'draft'    => $draft,
+			'timeout' => $timeout,
+			'lastmod' => $lastmod
+		);
+
+		$this->response->add(
+			new JSonGeneratorImpl(
+				JSonGenerator::DRAFT_DIALOG,
 				$contentData )
 		);
 	}
@@ -264,14 +282,17 @@ class AjaxCmdResponseGenerator {
 	 * @param string   $ns
 	 * @param string   $title
 	 * @param string   $content
+	 * @param string   $draft
 	 * @param string[] $editing - Editing params
 	 */
-	public function addWikiCodeDoc( $id, $ns, $title, $content, $editing ) {
+	public function addWikiCodeDoc( $id, $ns, $title, $content, $draft, $recover_draft, $editing ) {
 		$contentData = array(
 			'id'      => $id,
 			'ns'      => $ns,
 			'title'   => $title,
 			'content' => $content,
+			'draft'   => $draft,
+			'recover_draft' => $recover_draft,
 			'editing' => $editing
 		);
 
@@ -647,7 +668,7 @@ class AjaxCmdResponseGenerator {
 		$this->add( JSonGenerator::REVISIONS_TYPE, array(
 			'id'        => $id,
 			'revisions' => $revisions,
-		    'type' => 'revisions'
+			'type'      => 'revisions'
 		) );
 	}
 
