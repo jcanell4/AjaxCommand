@@ -142,8 +142,9 @@ class AjaxCmdResponseGenerator {
 	 * @param string $content
 	 * @param string $rev
 	 * @param string $type
+	 * @param $structured
 	 */
-	public function addHtmlDoc( $id, $ns, $title, $content, $rev, $type ) {
+	public function addHtmlDoc( $id, $ns, $title, $content, $rev, $type, $structured ) {
 		$contentData = array(
 			'id'      => $id,
 			'ns'      => $ns,
@@ -151,6 +152,7 @@ class AjaxCmdResponseGenerator {
 			'content' => $content,
 			'rev'     => $rev,
 			'type'    => $type,
+			'structured' => $structured
 		);
 
 		$this->response->add(
