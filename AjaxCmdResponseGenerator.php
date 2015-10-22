@@ -691,18 +691,17 @@ class AjaxCmdResponseGenerator {
 		) );
 	}
 
-	public function addWikiCodeDocPartial( $id, $ns, $title, $selected, $structure ) {
+	public function addWikiCodeDocPartial( $id, $ns, $title, $structure, $selected) {
 		$contentData = array(
 			'id'      => $id,
 			'ns'      => $ns,
 			'title'   => $title,
-			'selected'   => $selected,
 			'structure' => $structure,
 		);
 
 		$this->response->add(
 			new JSonGeneratorImpl(
-				JSonGenerator::EDIT_PARTIAL_TYPE,
+				JSonGenerator::HTML_PARTIAL_TYPE,
 				$contentData )
 		);
 	}

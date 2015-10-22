@@ -17,7 +17,7 @@ require_once( DOKU_COMMAND . 'abstract_command_class.php' );
  *
  * @author Josep Cañellas <jcanell4@ioc.cat>
  */
-class edit_partial_command extends abstract_command_class {
+class html_partial_command extends abstract_command_class {
 
 	/**
 	 * Al constructor s'estableixen els tipus, els valors per defecte, i s'estableixen aquest valors com a paràmetres.
@@ -68,9 +68,8 @@ class edit_partial_command extends abstract_command_class {
 
 
 
-		$structure = $this->modelWrapper->getStructuredDocument();
+		$structure = $this->modelWrapper->getStructuredDocument($this->params['section_id']);
         $codePage['structure'] = $structure;
-        $codePage['selected'] = $this->params['section_id'];
 
 		return $codePage;
 
