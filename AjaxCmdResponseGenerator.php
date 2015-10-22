@@ -691,7 +691,7 @@ class AjaxCmdResponseGenerator {
 		) );
 	}
 
-	public function addWikiCodeDocPartial( $id, $ns, $title, $structure, $selected) {
+	public function addWikiCodeDocPartial( $id, $ns, $title, $structure, $edit=false) {
 		$contentData = array(
 			'id'      => $id,
 			'ns'      => $ns,
@@ -699,10 +699,19 @@ class AjaxCmdResponseGenerator {
 			'structure' => $structure,
 		);
 
-		$this->response->add(
-			new JSonGeneratorImpl(
-				JSonGenerator::HTML_PARTIAL_TYPE,
-				$contentData )
-		);
+		if ($edit) {
+			$this->response->add(
+				new JSonGeneratorImpl(
+					JSonGenerator::EDIT_PARTIAL_TYPE,
+					$contentData )
+			);
+		} else {
+			$this->response->add(
+				new JSonGeneratorImpl(
+					JSonGenerator::HTML_PARTIAL_TYPE,
+					$contentData )
+			);
+		}
+
 	}
 }

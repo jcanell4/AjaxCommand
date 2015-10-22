@@ -17,7 +17,7 @@ require_once( DOKU_COMMAND . 'abstract_command_class.php' );
  *
  * @author Josep Cañellas <jcanell4@ioc.cat>
  */
-class html_partial_command extends abstract_command_class {
+class edit_partial_command extends abstract_command_class {
 
 	/**
 	 * Al constructor s'estableixen els tipus, els valors per defecte, i s'estableixen aquest valors com a paràmetres.
@@ -36,51 +36,24 @@ class html_partial_command extends abstract_command_class {
 	 * @return array amb el contingut de la pàgina (id, ns, tittle i content)
 	 */
 	protected function process() {
-
-		// TODO: Desactivat tot el relacionat amb els esborranys
-		//$draftExists = $this->getModelWrapper()->hasDraft($this->params['id']);
-
 		$contentData = null;
-
-//		if ($draftExists && array_key_exists('recover_draft', $this->params)) {
-//			// Carreguem el draft
-//			$contentData = $this->_sendEditPageResponse($this->params['recover_draft']);
-//
-//		} else if ($draftExists) {
-//			// Enviem el dialog, no la pàgina a editar
-//			$contentData = $this->_sendDraftDialogResponse();
-//
-//		} else {
-			// No hi ha draft, enviem el actual
 			$contentData= $this->_sendEditPageResponse(false);
-//		}
-
 		return $contentData;
 	}
 
 	private function _sendEditPageResponse($recover) {
-        $codePage = $this->modelWrapper->getCodePage(
-            $this->params['id'],
-            $this->params['rev'],
-            $this->params['range'],
-            $this->types['summary'],
-            $recover);
+		$codePage = $this->modelWrapper->getCodePage(
+			$this->params['id'],
+			$this->params['rev'],
+			$this->params['range'],
+			$this->types['summary'],
+			$recover);
 
 		$structure = $this->modelWrapper->getStructuredDocument($this->params['section_id']);
-        $codePage['structure'] = $structure;
+		$codePage['structure'] = $structure;
 
 		return $codePage;
-
 	}
-
-//	private function _sendDraftDialogResponse() {
-//		return $this->modelWrapper->getDraftDialog(
-//			$this->params['id'],
-//			$this->params['rev'],
-//			$this->params['range'],
-//			$this->types['summary']
-//		);
-//	}
 
 	/**
 	 * Afegeix la pàgina passada com argument com una resposta de tipus DATA_TYPE al generador de respostes.
