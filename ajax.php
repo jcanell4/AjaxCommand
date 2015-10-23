@@ -148,26 +148,20 @@ function callCommand($str_command, $arr_parameters, $respHandDir=NULL) {
     $respHandClass = $str_command . '_response_handler';
     $respHandFile  = $respHandDir . $respHandClass . '.php';
 
-    if(@file_exists($respHandFile)) {
-        require_once($respHandFile);
-        $respHandObj = new $respHandClass();
-
-    } else {
+    if(!@file_exists($respHandFile)) {
         //CamelCase
         $respHandClass = strtoupper(substr($str_command, 0, 1))
             . strtolower(substr($str_command, 1))
             . 'ResponseHandler';
         $respHandFile  = $respHandDir . $respHandClass . '.php';
-        if(@file_exists($respHandFile)) {
-            require_once($respHandFile);
-            $respHandObj = new $respHandClass();
-        } else {
-            $respHandObj = NULL;
-        }
+    }
+    
+    if(@file_exists($respHandFile)) {
+        require_once($respHandFile);
+        $respHandObj = new $respHandClass();
     }
 
     $str_command .= '_command';
-
     /** @var abstracT_command_class $command */
     $command = new $str_command();
 
