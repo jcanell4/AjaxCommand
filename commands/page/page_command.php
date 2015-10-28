@@ -41,6 +41,7 @@ class page_command extends abstract_command_class {
 			$this->params['rev']
 		);
 
+
 		return $contentData;
 	}
 

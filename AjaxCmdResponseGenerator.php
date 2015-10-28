@@ -142,15 +142,16 @@ class AjaxCmdResponseGenerator {
 	 * @param string $content
 	 * @param string $rev
 	 * @param string $type
+	 * @param $structured
 	 */
-	public function addHtmlDoc( $id, $ns, $title, $content, $rev, $type ) {
+	public function addHtmlDoc( $id, $ns, $title, $content, $rev, $type) {
 		$contentData = array(
 			'id'      => $id,
 			'ns'      => $ns,
 			'title'   => $title,
 			'content' => $content,
 			'rev'     => $rev,
-			'type'    => $type,
+			'type'    => $type
 		);
 
 		$this->response->add(
@@ -690,4 +691,27 @@ class AjaxCmdResponseGenerator {
 		) );
 	}
 
+	public function addWikiCodeDocPartial( $id, $ns, $title, $structure, $edit=false) {
+		$contentData = array(
+			'id'      => $id,
+			'ns'      => $ns,
+			'title'   => $title,
+			'structure' => $structure,
+		);
+
+		if ($edit) {
+			$this->response->add(
+				new JSonGeneratorImpl(
+					JSonGenerator::EDIT_PARTIAL_TYPE,
+					$contentData )
+			);
+		} else {
+			$this->response->add(
+				new JSonGeneratorImpl(
+					JSonGenerator::HTML_PARTIAL_TYPE,
+					$contentData )
+			);
+		}
+
+	}
 }
