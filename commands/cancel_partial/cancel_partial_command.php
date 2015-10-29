@@ -12,7 +12,7 @@ require_once(DOKU_COMMAND . 'abstract_command_class.php');
  *
  * @author Josep Cañellas <jcanell4@ioc.cat>, Xavier García <xaviergaro.dev@gmail.com>
  */
-class save_partial_command extends abstract_command_class
+class cancel_partial_command extends abstract_command_class
 {
 
     /**
@@ -46,13 +46,37 @@ class save_partial_command extends abstract_command_class
      */
     protected function process()
     {
-        $ret = $this->modelWrapper->savePartialEdition(
-            $this->params['id'], $this->params['rev'],
-            $this->params['range'], $this->params['date'],
-            $this->params['prefix'], $this->params['wikitext'],
-            $this->params['suffix'], $this->params['summary'],
-            $this->params['section_id'], explode(',', $this->params['editing_chunks'])
+        $ret = null;
+        $editingChunks = explode(',', $this->params['editing_chunks']);
+
+        $key = array_search($this->params['section_id'], $editingChunks);
+
+        if ($key !== false) {
+            unset($editingChunks[$key]);
+        }
+
+
+        if (count($editingChunks) ===0) {
+//            $this->modelWrapper->cancelEdition(
+//                $this->params['id'],
+//                $this->params['rev'],
+//                $this->params['keep_draft'] //TODO[Xavi] això no es fa servir, ho deixem per quan implementem els esborranys
+//            );
+
+
+        }
+
+        $ret = $this->modelWrapper->cancelPartialEdition( // No fa falta actualitzar la data ni els rangs, només el html, així que no cal cridar al SetFormInputValueForPartials
+            $this->params['id'], $this->params['summary'],
+            $this->params['date'],
+//                $this->params['id'], $this->params['rev'],
+//                $this->params['range'], $this->params['date'],
+//                $this->params['prefix'], $this->params['wikitext'],
+//                $this->params['suffix'], $this->params['summary'],
+            $this->params['section_id'], $editingChunks
         );
+
+
         return $ret;
     }
 
