@@ -82,7 +82,7 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
      */
     public function setModelManager($modelManager) {
         $this->modelWrapper = $modelManager->getModelWrapperManager();
-        $this->authorization = $modelManager->getAuthorizationManager($this->getNameCommandClass(), $this->params);
+        $this->authorization = $modelManager->getAuthorizationManager($this->getNameCommandClass(), $this);
     }
     
     /**
