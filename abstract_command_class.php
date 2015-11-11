@@ -57,7 +57,8 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
         if($modelManager){
             $this->setModelManager($modelManager);
         }else{
-            $this->setModelManager(new WikiIocModelManager());
+            $newModelManager = new WikiIocModelManager();
+            $this->setModelManager($newModelManager->Instance());
         }
     }
 
