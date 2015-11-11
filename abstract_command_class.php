@@ -1,10 +1,11 @@
 <?php
 if(!defined('DOKU_INC')) die();
 if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
-require_once(DOKU_PLUGIN . 'wikiiocmodel/DokuModelAdapter.php');
-require_once(DOKU_PLUGIN . 'wikiiocmodel/WikiIocModelExceptions.php');
 require_once(DOKU_PLUGIN . 'ajaxcommand/AbstractResponseHandler.php');
 require_once(DOKU_INC . 'inc/plugin.php');
+
+if(!defined('DOKU_IOCMODEL')) define('DOKU_IOCMODEL', DOKU_PLUGIN . 'wikiiocmodel/default/');
+require_once(DOKU_IOCMODEL . 'WikiIocModelManager.php');
 
 /**
  * Class abstract_command_class
@@ -39,6 +40,8 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
     protected $permissionFor = array();
     protected $authenticatedUsersOnly = TRUE;
     protected $runPreprocess = FALSE;
+    
+    protected $authorization;
     protected $modelWrapper;
 
     // TODO[Xavi] el var està @deprecated, s'ha de substituir per protected, public o private (en aquest cas protected suposo)
@@ -50,14 +53,46 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
     /**
      * Constructor en el que s'assigna un nou DokuModelAdapter a la classe
      */
-    public function __construct($modelWrapper=NULL) {
-        if($modelWrapper){
-            $this->modelWrapper = $modelWrapper;
+    public function __construct($modelManager=NULL) {
+        if($modelManager){
+            $this->setModelManager($modelManager);
         }else{
-            $this->modelWrapper = new DokuModelAdapter();
+            $this->setModelManager(new WikiIocModelManager());
         }
     }
 
+    /**
+     * Retorna l'adaptador a emprar.
+     *
+     * @return DokuModelAdapter
+     */
+    public function getModelWrapper() {
+        return $this->modelWrapper;
+    }
+    
+    public function getAuthorization() {
+        return $this->authorization;
+    }
+    
+    /**
+     * Estableix l'adaptador a emprar i l'autorització que li correspon.
+     *
+     * @param modelManager
+     */
+    public function setModelManager($modelManager) {
+        $this->modelWrapper = $modelManager->getModelWrapperManager();
+        $this->authorization = $modelManager->getAuthorizationManager($this->getNameCommandClass(), $this->params);
+    }
+    
+    /**
+     * Retorna el nom del command a partir del nom de la clase
+     *
+     * @return command name
+     */
+    private function getNameCommandClass() {
+        return rtrim(get_class($this), '_command');
+    }
+    
     /**
      * @param AbstractResponseHandler $respHand
      */
@@ -75,16 +110,10 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
         return $this->responseHandler;
     }
 
-    /**
-     * @param AbstractResponseHandler $respHand
-     */
     public function setErrorHandler($errorHand) {
         $this->errorHandler = $errorHand;
     }
 
-    /**
-     * @return AbstractResponseHandler
-     */
     public function getErrorHandler() {
         return $this->errorHandler;
     }
@@ -320,24 +349,6 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
             $ret = parent::getPluginName();
         }
         return $ret;
-    }
-
-    /**
-     * Retorna l'adaptador a emprear.
-     *
-     * @return DokuModelAdapter
-     */
-    public function getModelWrapper() {
-        return $this->modelWrapper;
-    }
-
-    /**
-     * Estableix l'adaptador a emprear.
-     *
-     * @param DokuModelAdapter
-     */
-    public function setModelWrapper($mw) {
-        $this->modelWrapper = $mw;
     }
 
     /**

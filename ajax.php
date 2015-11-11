@@ -137,7 +137,6 @@ function callCommand($str_command, $arr_parameters, $respHandDir=NULL) {
 
     if(is_callable('tpl_incdir')) {
         $tplincdir = tpl_incdir();
-
     } else {
         $tplincdir = DOKU_TPLINC;
     }
@@ -162,7 +161,6 @@ function callCommand($str_command, $arr_parameters, $respHandDir=NULL) {
     }
 
     $str_command .= '_command';
-    /** @var abstracT_command_class $command */
     $command = new $str_command();
 
     if($respHandObj) {
@@ -212,3 +210,43 @@ function getParams($without) {
     return $params;
 }
 
+/**
+ * Carga el archivo correspondiente al comando.
+ * buscando por el nombre en formato convencional y en formato CamelCase
+ * 
+ * @param string $dir directori base
+ * @param string[] $nameParts partes que conforman el nombre del comando
+ * @return string nombre del comando o NULL
+*/
+function readFileIn2CaseFormat($dir, $nameParts) {
+    $name = NameCaseFormat($nameParts,'');
+    $ret = NULL;
+    $authFile = $dir . $name . '.php';
+    if (!file_exists($authFile)) {
+        $name = NameCaseFormat($nameParts,'camel');
+        $authFile = $dir . $name . '.php';
+    }
+    if (file_exists($authFile)) {
+        require_once($authFile);
+        $ret = $name;
+    }
+    return $ret;
+}
+    
+function NameCaseFormat($nameParts, $case) {
+    /* Devuelve un nombre compuesto en el formato solicitado:
+         * guion_bajo o CamelCase
+        */
+    $ret = '';
+    if ($case === 'camel') {
+        foreach ($nameParts as $part) {
+            $ret .= strtoupper(substr($part, 0, 1)) . strtolower(substr($part, 1));
+        }
+    }else {
+        foreach ($nameParts as $part) {
+            $ret .= $part . '_';
+        }
+        $ret = rtrim($ret, '_');
+    }
+    return $ret;
+}
