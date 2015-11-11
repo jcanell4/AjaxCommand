@@ -58,7 +58,8 @@ class html_partial_command extends abstract_command_class {
 		return $contentData;
 	}
 
-	private function _sendEditPageResponse($recover) {
+	private function _sendEditPageResponse($recover) {//
+		//TODO[Xavi] esborrar tot el que no fa falta
         $codePage = $this->modelWrapper->getCodePage(
             $this->params['id'],
             $this->params['rev'],
