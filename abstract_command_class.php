@@ -4,8 +4,8 @@ if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
 require_once(DOKU_PLUGIN . 'ajaxcommand/AbstractResponseHandler.php');
 require_once(DOKU_INC . 'inc/plugin.php');
 
-if(!defined('DOKU_IOCMODEL')) define('DOKU_IOCMODEL', DOKU_PLUGIN . 'wikiiocmodel/default/');
-require_once(DOKU_IOCMODEL . 'WikiIocModelManager.php');
+if(!defined('WIKIIOCMODEL')) define('WIKIIOCMODEL', DOKU_PLUGIN . 'wikiiocmodel/');
+require_once(WIKIIOCMODEL . 'WikiIocModelManager.php');
 
 /**
  * Class abstract_command_class
