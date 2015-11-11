@@ -42,17 +42,22 @@ class edit_partial_command extends abstract_command_class {
 	}
 
 	private function _sendEditPageResponse($recover) {
-		$codePage = $this->modelWrapper->getCodePage(
+		// El cridem per inicialitzar els valors de les variables i comprovar els permisos
+		$this->modelWrapper->getCodePage(
 			$this->params['id'],
 			$this->params['rev'],
 			$this->params['range'],
 			$this->types['summary'],
 			$recover);
 
-		$structure = $this->modelWrapper->getStructuredDocument($this->params['section_id']);
-		$codePage['structure'] = $structure;
+		$contentData = $this->modelWrapper->getPartialEdit($this->params['id'], $this->params['rev'], $this->params['summary'], $this->params['section_id']);
 
-		return $codePage;
+
+
+
+//		$codePage['structure'] = $structure;
+
+		return $contentData;
 	}
 
 	/**

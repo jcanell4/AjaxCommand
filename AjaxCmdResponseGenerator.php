@@ -691,13 +691,8 @@ class AjaxCmdResponseGenerator {
 		) );
 	}
 
-	public function addWikiCodeDocPartial( $id, $ns, $title, $structure, $edit=false) {
-		$contentData = array(
-			'id'      => $id,
-			'ns'      => $ns,
-			'title'   => $title,
-			'structure' => $structure,
-		);
+	public function addWikiCodeDocPartial( $structure, $edit=false) {
+		$contentData = $structure;
 
 		if ($edit) {
 			$this->response->add(
@@ -712,6 +707,5 @@ class AjaxCmdResponseGenerator {
 					$contentData )
 			);
 		}
-
 	}
 }

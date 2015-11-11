@@ -67,13 +67,7 @@ class cancel_partial_command extends abstract_command_class
         }
 
         $ret = $this->modelWrapper->cancelPartialEdition( // No fa falta actualitzar la data ni els rangs, només el html, així que no cal cridar al SetFormInputValueForPartials
-            $this->params['id'], $this->params['summary'],
-            $this->params['date'],
-//                $this->params['id'], $this->params['rev'],
-//                $this->params['range'], $this->params['date'],
-//                $this->params['prefix'], $this->params['wikitext'],
-//                $this->params['suffix'], $this->params['summary'],
-            $this->params['section_id'], $editingChunks
+            $this->params['id'], $this->params['rev'], $this->params['summary'], $this->params['section_id'], $editingChunks
         );
 
 
