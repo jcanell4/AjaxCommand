@@ -36,26 +36,8 @@ class edit_partial_command extends abstract_command_class {
 	 * @return array amb el contingut de la pàgina (id, ns, tittle i content)
 	 */
 	protected function process() {
-		$contentData = null;
-			$contentData= $this->_sendEditPageResponse(false);
-		return $contentData;
-	}
-
-	private function _sendEditPageResponse($recover) {
-		// El cridem per inicialitzar els valors de les variables i comprovar els permisos
-		$this->modelWrapper->getCodePage(
-			$this->params['id'],
-			$this->params['rev'],
-			$this->params['range'],
-			$this->types['summary'],
-			$recover);
 
 		$contentData = $this->modelWrapper->getPartialEdit($this->params['id'], $this->params['rev'], $this->params['summary'], $this->params['section_id']);
-
-
-
-
-//		$codePage['structure'] = $structure;
 
 		return $contentData;
 	}

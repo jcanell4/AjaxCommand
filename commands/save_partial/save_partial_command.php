@@ -46,14 +46,14 @@ class save_partial_command extends abstract_command_class
      */
     protected function process()
     {
-        $ret = $this->modelWrapper->savePartialEdition(
+        $contentData = $this->modelWrapper->savePartialEdition(
             $this->params['id'], $this->params['rev'],
             $this->params['range'], $this->params['date'],
             $this->params['prefix'], $this->params['wikitext'],
             $this->params['suffix'], $this->params['summary'],
             $this->params['section_id'], explode(',', $this->params['editing_chunks'])
         );
-        return $ret;
+        return $contentData;
     }
 
     /**
