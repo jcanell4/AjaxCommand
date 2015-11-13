@@ -85,15 +85,51 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
         $this->authorization = $modelManager->getAuthorizationManager($this->getNameCommandClass(), $this);
     }
     
+    
     /**
-     * Retorna el nom del command a partir del nom de la clase
-     *
-     * @return command name
+     * Retorna un array amb totes les variables de la classe
+     * @return array $p 
      */
-    private function getNameCommandClass() {
+    private function getParameters() {
+        $p['className'] = $this->getNameCommandClass();
+        $p['responseHandler'] = $this->responseHandler;
+        $p['errorHandler'] = $this->errorHandler;
+        $p['params'] = $this->params;
+        $p['types'] = $this->types;
+        $p['runPreprocess'] = $this->runPreprocess;
+        $p['permissionFor'] = $this->permissionFor;
+        $p['authenticatedUsersOnly'] = $this->authenticatedUsersOnly;
+        $p['authorization'] = $this->authorization;
+        $p['modelWrapper'] = $this->modelWrapper;
+        return $p;
+    }
+    /**
+     * @return string (nom del command a partir del nom de la clase)
+     */
+    public function getNameCommandClass() {
         return rtrim(get_class($this), '_command');
     }
-    
+
+    public function getParams() {
+        return $this->params;
+    }
+
+    public function getTypes() {
+        return $this->types;
+    }
+
+    public function getRunPreprocess() {
+        return $this->runPreprocess;
+    }
+
+    public function getPermissionFor() {
+        return $this->permissionFor;
+    }
+
+    public function getAuthenticatedUsersOnly() {
+        return $this->authenticatedUsersOnly;
+    }
+
     /**
      * @param AbstractResponseHandler $respHand
      */
