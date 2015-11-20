@@ -43,7 +43,7 @@ switch($method) {
 $extra_url_params   = split('/', $_SERVER['PATH_INFO']); //TODO[Xavi] @deprecated split, canviar per explode() o splitreg()
 $_REQUEST['sectok'] = $extra_url_params[SECTOK_PARAM];
 
-fillinfo();
+//fillinfo();  //revisar si habría que usar el fillInfo de DokuModelAdapter
 
 if(@file_exists(DOKU_INC . "lib/plugins/ownInit/init.php")) {
     require_once(DOKU_INC . "lib/plugins/ownInit/init.php");
@@ -66,6 +66,7 @@ if(existCommand($command)) {
     print callCommand($command, $method, $request_params, $extra_url_params);
 
 } else {
+    //checkSecurityToken(): revisar si habría que usar isSecurityTokenVerified() de DokuModelAdapter
     if(!checkSecurityToken()) die("CSRF Attack");
 
     $dataEvent = array('command' => $call, 'params' => $params);
@@ -117,16 +118,15 @@ function existCommand($command) {
  */
 
 function callCommand($str_command, $method, $request_params, $extra_url_params) {
-    global $INFO;
+    //global $INFO;
     $str_command .= '_command';
     /** @var abstract_rest_command_class $command */
     $command = new $str_command();
     $command->setParameters($request_params);
     $ret = $command->dispatchRequest(
                    $method,
-                   $extra_url_params,
-                   $INFO['userinfo']['grps']
-    );
+                   $extra_url_params
+            );
 
     if($command->error) {
         $ret = $command->errorMessage;
@@ -135,7 +135,7 @@ function callCommand($str_command, $method, $request_params, $extra_url_params) 
     return $ret;
 }
 
-function fillinfo() {
-    global $INFO;
-    $INFO = pageinfo();
-}
+//function fillinfo() {  //revisar si habría que usar el fillInfo de DokuModelAdapter
+//    global $INFO;
+//    $INFO = pageinfo();
+//}

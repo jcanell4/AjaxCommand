@@ -1,11 +1,10 @@
 <?php
 if(!defined('DOKU_INC')) die();
 if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
+if(!defined('WIKI_IOC_MODEL')) define('WIKI_IOC_MODEL', DOKU_PLUGIN . 'wikiiocmodel/');
 require_once(DOKU_PLUGIN . 'ajaxcommand/AbstractResponseHandler.php');
 require_once(DOKU_INC . 'inc/plugin.php');
-
-if(!defined('WIKIIOCMODEL')) define('WIKIIOCMODEL', DOKU_PLUGIN . 'wikiiocmodel/');
-require_once(WIKIIOCMODEL . 'WikiIocModelManager.php');
+require_once(WIKI_IOC_MODEL . 'WikiIocModelManager.php');
 
 /**
  * Class abstract_command_class
@@ -57,8 +56,7 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
         if($modelManager){
             $this->setModelManager($modelManager);
         }else{
-            $newModelManager = new WikiIocModelManager();
-            $this->setModelManager($newModelManager->Instance());
+            $this->setModelManager(WikiIocModelManager::Instance());
         }
     }
 
@@ -81,33 +79,15 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
      * @param modelManager
      */
     public function setModelManager($modelManager) {
-        $this->modelWrapper = $modelManager->getModelWrapperManager();
+        $this->modelWrapper  = $modelManager->getModelWrapperManager();
         $this->authorization = $modelManager->getAuthorizationManager($this->getNameCommandClass(), $this);
     }
     
-    
-    /**
-     * Retorna un array amb totes les variables de la classe
-     * @return array $p 
-     */
-    private function getParameters() {
-        $p['className'] = $this->getNameCommandClass();
-        $p['responseHandler'] = $this->responseHandler;
-        $p['errorHandler'] = $this->errorHandler;
-        $p['params'] = $this->params;
-        $p['types'] = $this->types;
-        $p['runPreprocess'] = $this->runPreprocess;
-        $p['permissionFor'] = $this->permissionFor;
-        $p['authenticatedUsersOnly'] = $this->authenticatedUsersOnly;
-        $p['authorization'] = $this->authorization;
-        $p['modelWrapper'] = $this->modelWrapper;
-        return $p;
-    }
     /**
      * @return string (nom del command a partir del nom de la clase)
      */
     public function getNameCommandClass() {
-        return rtrim(get_class($this), '_command');
+        return preg_replace('/_command$/', '', get_class($this));
     }
 
     public function getParams() {
@@ -206,32 +186,24 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
      * si l'usuari està autenticat i si està autoritzat per fer corre la comanda. Si es aixi la executa i en cas
      * contrari llença una excepció.
      *
-     * @param string[]|null $permission hash amb els permissos. Correspon a $INFO[userinfo][grps] de la DokuWiki
-     *
+     * @param ANULADO string[]|null $grup hash amb els permissos. Correspon a $INFO[userinfo][grps] de la DokuWiki
+     *          run($grup = NULL)
      * @return string|null resposta de executar el command en format JSON
      * @throws Exception si no es té autorització
      */
-    public function run($permission = NULL) {
+    public function run() {
         $ret = NULL;
-        if(!$this->authenticatedUsersOnly
-            || $this->isSecurityTokenVerified()
-            && $this->isUserAuthenticated()
-            && $this->isAuthorized($permission)
-        ) {
-
+        $permission = $this->authorization->getPermission();
+        if ($this->authorization->canRun($permission)) {
             $ret = $this->getResponse();
-
-            if($this->modelWrapper->isDenied()) {
+            
+            if($permission->isDenied()) {
                 $this->error        = 403;
                 $this->errorMessage = "permission denied"; /*TODO internacionalització */
             }
         } else {
-
-            //TODO[xavi] Per poder fer proves deshabilitem la comprovació
             $this->error        = 403;
             $this->errorMessage = "permission denied"; /*TODO internacionalització */
-
-            //$ret = $this->getResponse();
         }
         if($this->error && $this->throwsException) {
             throw new Exception($this->errorMessage);
@@ -249,7 +221,7 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
      * @return string resposta processada en format JSON
      */
     protected function getResponse() {
-        $ret      = new AjaxCmdResponseGenerator();
+        $ret = new AjaxCmdResponseGenerator();
         try{
             $response = $this->process();
 
@@ -301,40 +273,6 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
      */
     protected function getDefaultErrorResponse($params, $e, &$ret){
         $ret->addError($e->getCode(), $e->getMessage());
-    }
-
-    /**
-     * Retorna l'estat d'autenticació del usuari
-     *
-     * @return bool cert si està autenticat i fals en cas contrari.
-     */
-    protected function isUserAuthenticated() {
-        global $_SERVER;
-        return $_SERVER['REMOTE_USER'] ? TRUE : FALSE;
-    }
-
-    /**
-     * Comproba si el token de seguretat està verificat o no fent servir una funció de la DokuWiki.
-     *
-     * @return bool
-     */
-    protected function isSecurityTokenVerified() {
-        return checkSecurityToken();
-    }
-
-    /**
-     * Comproba si l'usuari te el permis necessari per fer corre aquest command.
-     *
-     * @param string[] $permission hash amb els permisos del usuari
-     *
-     * @return bool
-     */
-    protected function  isAuthorized($permission) {
-        $found = sizeof($this->permissionFor) == 0 || !is_array($permission);
-        for($i = 0; !$found && $i < sizeof($permission); $i++) {
-            $found = in_array($permission[$i], $this->permissionFor);
-        }
-        return $found;
     }
 
     /**

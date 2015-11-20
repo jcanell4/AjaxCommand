@@ -50,9 +50,9 @@ class login_command extends abstract_command_class {
         );
 
         if($this->params['do'] === 'login') {
-            $response["loginResult"] = $this->isUserAuthenticated();
+            $response["loginResult"] = $this->authorization->isUserAuthenticated();
             $response["userId"]=  $this->params['u'];
-        } else if($this->isUserAuthenticated()) {
+        } else if($this->authorization->isUserAuthenticated()) {
             $this->_logoff();
             $response["loginResult"] = FALSE;
         }
@@ -62,8 +62,7 @@ class login_command extends abstract_command_class {
     /**
      * Afegeix una resposta de tipus LOGIN_INFO al generador de respostes a partir de la informació passada com argument.
      *
-     * @param array                    $response          array associatiu amb els valors de 'loginRequest' i
-     *                                                    'loginResult'
+     * @param array $response array associatiu amb els valors de 'loginRequest' i 'loginResult'
      * @param AjaxCmdResponseGenerator $responseGenerator objecte al que s'afegirà la resposta
      *
      * @return void

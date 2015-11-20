@@ -70,10 +70,10 @@ abstract class abstract_rest_command_class extends abstract_command_class {
      * @return null|void
      * @throws Exception si es detaman un mètode no implementat.
      */
-    public function dispatchRequest($method, $extra_url_params = NULL, $permission = NULL) {
+    public function dispatchRequest($method, $extra_url_params = NULL) {
         $ret = NULL;
 
-        if($this->isAuthorized($permission)) {
+        if($this->authorization->isAuthorized()) {
             if($this->isContentTypeSupported()) {
                 switch($method) {
                     case 'GET':

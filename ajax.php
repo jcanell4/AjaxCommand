@@ -44,8 +44,8 @@ if(isset($_POST['call'])) {
 $params = getParams($without);
 
 //if(!checkSecurityToken()) die("CSRF Attack");
-
 //fillinfo();
+
 if(@file_exists(DOKU_INC . "lib/plugins/ownInit/init.php")) {
     require_once(DOKU_INC . "lib/plugins/ownInit/init.php");
     own_init();
@@ -67,6 +67,7 @@ if(existCommand($call)) {
     if(!$noCommand){
         print callCommand($call, $params, $dataEvent[$call]["respHandlerDir"]);
     }else{
+        //checkSecurityToken(): revisar si habría que usar isSecurityTokenVerified() de DokuModelAdapter
         if(!checkSecurityToken()) die("CSRF Attack");
 
         // Creem un evento Doku_Event amb
@@ -168,7 +169,7 @@ function callCommand($str_command, $arr_parameters, $respHandDir=NULL) {
     }
     $command->setParameters($arr_parameters);
 
-    $ret = $command->run($INFO['userinfo']['grps']);
+    $ret = $command->run(); //$command->run($INFO['userinfo']['grps']);
 
     if($command->error) {
         /**[TO DO] Controll exceptions**/
