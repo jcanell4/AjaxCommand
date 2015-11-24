@@ -133,7 +133,6 @@ function existCommand($command, $isFile=FALSE) {
  * @return string el resultat de executar el command en format JSON o un missatge d'error
  */
 function callCommand($str_command, $arr_parameters, $respHandDir=NULL) {
-    global $INFO;
     $respHandObj = NULL;
 
     if(is_callable('tpl_incdir')) {

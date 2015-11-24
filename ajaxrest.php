@@ -118,7 +118,6 @@ function existCommand($command) {
  */
 
 function callCommand($str_command, $method, $request_params, $extra_url_params) {
-    //global $INFO;
     $str_command .= '_command';
     /** @var abstract_rest_command_class $command */
     $command = new $str_command();

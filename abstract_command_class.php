@@ -43,11 +43,10 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
     protected $authorization;
     protected $modelWrapper;
 
-    // TODO[Xavi] el var està @deprecated, s'ha de substituir per protected, public o private (en aquest cas protected suposo)
-    var $content = '';
-    var $error = FALSE;
-    var $errorMessage = '';
-    var $throwsException = FALSE;
+    //protected $content = ''; no utilizado
+    public $error = FALSE;
+    public $errorMessage = '';
+    public $throwsException = FALSE;
 
     /**
      * Constructor en el que s'assigna un nou DokuModelAdapter a la classe
@@ -62,7 +61,6 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
 
     /**
      * Retorna l'adaptador a emprar.
-     *
      * @return DokuModelAdapter
      */
     public function getModelWrapper() {
@@ -75,12 +73,18 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
     
     /**
      * Estableix l'adaptador a emprar i l'autorització que li correspon.
-     *
      * @param modelManager
      */
     public function setModelManager($modelManager) {
         $this->modelWrapper  = $modelManager->getModelWrapperManager();
         $this->authorization = $modelManager->getAuthorizationManager($this->getNameCommandClass(), $this);
+        // PROVES DE PERMISSOS
+//        $permission = $this->authorization->getPermission();
+//        if ($permission->getIsAuthorized()) {
+//            $permission->setIsAuthorized(FALSE);
+//        }else{
+//            $permission->setIsAuthorized(TRUE);
+//        }
     }
     
     /**
@@ -117,6 +121,9 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
         $this->responseHandler = $respHand;
         if(!$respHand->getModelWrapper()){
             $respHand->setModelWrapper($this->modelWrapper);
+        }
+        if(!$respHand->getAuthorization()){
+            $respHand->setAuthorization($this->authorization);
         }
     }
 

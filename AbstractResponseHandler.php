@@ -22,16 +22,20 @@ abstract class AbstractResponseHandler {
 
     private $cmd;
     private $modelWrapper;
+    private $authorization;
 
     /**
      * Constructor al que se li passa el nom del Command com argument.
      *
      * @param string $cmd
      */
-    public function __construct($cmd, $modelWrapper=NULL) {
+    public function __construct($cmd, $modelWrapper=NULL, $authorization=NULL) {
         $this->cmd = $cmd;
         if($modelWrapper){
             $this->modelWrapper = $modelWrapper;
+        }
+        if($authorization){
+            $this->authorization = $authorization;
         }
     }
 
@@ -50,10 +54,24 @@ abstract class AbstractResponseHandler {
     }
 
     /**
-     * @return ModelWrapper instance
+     * Set ModelWrapper instance
      */
     public function setModelWrapper($modelWrapper) {
         $this->modelWrapper=$modelWrapper;
+    }
+
+    /**
+     * @return Authorization instance
+     */
+    public function getAuthorization() {
+        return $this->authorization;
+    }
+
+    /**
+     * Set Authorization instance
+     */
+    public function setAuthorization($authorization) {
+        $this->authorization = $authorization;
     }
 
     /**
