@@ -742,4 +742,22 @@ class AjaxCmdResponseGenerator
                 $contentData)
         );
     }
+
+    /**
+     * Afegeix una resposta de tipus INFO_TYPE al generador de respostes.
+     *
+     * @param $id - id del document
+     * @param $timeout
+     */
+    public function addRefreshLock($id, $timeout)
+    {
+        $this->response->add(
+            new JSonGeneratorImpl(
+                JSonGenerator::LOCK_DATA,
+                [
+                    'id' => $id,
+                    'timeout' => $timeout,
+                ])
+        );
+    }
 }
