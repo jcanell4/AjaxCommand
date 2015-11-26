@@ -27,7 +27,13 @@ class lock_command extends abstract_command_class {
      * @return string[] array associatiu amb la resposta formatada (id, ns, tittle i content)
      */
     protected function process() {
-        return $this->modelWrapper->lock($this->params['id']);;
+        $draft =json_decode($this->params['draft'], true);
+
+        if ($draft) {
+            $this->modelWrapper->saveDraft($draft);
+        }
+
+        return $this->modelWrapper->lock($this->params['id']);
     }
 
     /**
