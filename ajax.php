@@ -168,7 +168,7 @@ function callCommand($str_command, $arr_parameters, $respHandDir=NULL) {
     }
     $command->setParameters($arr_parameters);
 
-    $ret = $command->run(); //$command->run($INFO['userinfo']['grps']);
+    $ret = $command->run($command->getParams()); //$command->run($INFO['userinfo']['grps']);
 
     if($command->error) {
         /**[TO DO] Controll exceptions**/

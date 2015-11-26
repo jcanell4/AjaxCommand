@@ -198,9 +198,9 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
      * @return string|null resposta de executar el command en format JSON
      * @throws Exception si no es té autorització
      */
-    public function run() {
+    public function run($params) {
         $ret = NULL;
-        $permission = $this->authorization->getPermission();
+        $permission = $this->authorization->getPermission($params);
         if ($this->authorization->canRun($permission)) {
             $ret = $this->getResponse();
             
