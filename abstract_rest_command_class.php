@@ -73,7 +73,7 @@ abstract class abstract_rest_command_class extends abstract_command_class {
     public function dispatchRequest($method, $extra_url_params = NULL) {
         $ret = NULL;
 
-        if($this->authorization->isAuthorized()) {
+        if($this->authorization->isCommandAllowed()) {
             if($this->isContentTypeSupported()) {
                 switch($method) {
                     case 'GET':

@@ -80,10 +80,10 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
         $this->authorization = $modelManager->getAuthorizationManager($this->getNameCommandClass(), $this);
         // PROVES DE PERMISSOS
 //        $permission = $this->authorization->getPermission();
-//        if ($permission->getIsAuthorized()) {
-//            $permission->setIsAuthorized(FALSE);
+//        if ($permission->getIsCommandAllowed()) {
+//            $permission->setIsCommandAllowed(FALSE);
 //        }else{
-//            $permission->setIsAuthorized(TRUE);
+//            $permission->setIsCommandAllowed(TRUE);
 //        }
     }
     
