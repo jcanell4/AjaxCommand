@@ -86,10 +86,11 @@ if(existCommand($call)) {
  *
  * @return string retorna el nom del usuari autenticat // TODO[Xavi] hauria de ser bool?
  */
-function isUserAuthenticated() {
-    global $_SERVER;
-    return $_SERVER['REMOTE_USER'];
-}
+//NO ES NECESSÀRIA EN AQUEST MOMENT
+//function isUserAuthenticated() {
+//    global $_SERVER;
+//    return $_SERVER['REMOTE_USER'];
+//}
 
 /**
  * Si existeix una classe command amb el nom passat com argument el carrega i retorna true, en cas contrari retorna
@@ -168,7 +169,7 @@ function callCommand($str_command, $arr_parameters, $respHandDir=NULL) {
     }
     $command->setParameters($arr_parameters);
 
-    $ret = $command->run($command->getParams()); //$command->run($INFO['userinfo']['grps']);
+    $ret = $command->run();   //run($command->getParams())   //run($INFO['userinfo']['grps']);
 
     if($command->error) {
         /**[TO DO] Controll exceptions**/
@@ -208,45 +209,4 @@ function getParams($without) {
         }
     }
     return $params;
-}
-
-/**
- * Carga el archivo correspondiente al comando.
- * buscando por el nombre en formato convencional y en formato CamelCase
- * 
- * @param string $dir directori base
- * @param string[] $nameParts partes que conforman el nombre del comando
- * @return string nombre del comando o NULL
-*/
-function readFileIn2CaseFormat($dir, $nameParts) {
-    $name = NameCaseFormat($nameParts,'');
-    $ret = NULL;
-    $authFile = $dir . $name . '.php';
-    if (!file_exists($authFile)) {
-        $name = NameCaseFormat($nameParts,'camel');
-        $authFile = $dir . $name . '.php';
-    }
-    if (file_exists($authFile)) {
-        require_once($authFile);
-        $ret = $name;
-    }
-    return $ret;
-}
-    
-function NameCaseFormat($nameParts, $case) {
-    /* Devuelve un nombre compuesto en el formato solicitado:
-         * guion_bajo o CamelCase
-        */
-    $ret = '';
-    if ($case === 'camel') {
-        foreach ($nameParts as $part) {
-            $ret .= strtoupper(substr($part, 0, 1)) . strtolower(substr($part, 1));
-        }
-    }else {
-        foreach ($nameParts as $part) {
-            $ret .= $part . '_';
-        }
-        $ret = rtrim($ret, '_');
-    }
-    return $ret;
 }

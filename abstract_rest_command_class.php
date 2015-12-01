@@ -73,7 +73,7 @@ abstract class abstract_rest_command_class extends abstract_command_class {
     public function dispatchRequest($method, $extra_url_params = NULL) {
         $ret = NULL;
 
-        if($this->authorization->isCommandAllowed()) {
+//        if($this->authorization->isCommandAllowed()) {
             if($this->isContentTypeSupported()) {
                 switch($method) {
                     case 'GET':
@@ -103,10 +103,10 @@ abstract class abstract_rest_command_class extends abstract_command_class {
                 $this->error        = TRUE;
                 $this->errorMessage = "Error: Content type is not accepted"; /*TODO internacionalitzaió (convertir missatges en variable) */
             }
-        } else {
-            $this->error        = TRUE;
-            $this->errorMessage = "permission denied";
-        }
+//        } else {
+//            $this->error        = TRUE;
+//            $this->errorMessage = "permission denied";
+//        }
         if($this->error && $this->throwsException) {
             throw new Exception($this->errorMessage);
         }

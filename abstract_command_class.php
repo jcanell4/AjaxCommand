@@ -80,10 +80,10 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
         $this->authorization = $modelManager->getAuthorizationManager($this->getNameCommandClass(), $this);
         // PROVES DE PERMISSOS
 //        $permission = $this->authorization->getPermission();
-//        if ($permission->getIsCommandAllowed()) {
-//            $permission->setIsCommandAllowed(FALSE);
+//        if ($permission->getPermissionFor()) {
+//            $permission->setPermissionFor(FALSE);
 //        }else{
-//            $permission->setIsCommandAllowed(TRUE);
+//            $permission->setPermissionFor(TRUE);
 //        }
     }
     
@@ -193,15 +193,16 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
      * si l'usuari està autenticat i si està autoritzat per fer corre la comanda. Si es aixi la executa i en cas
      * contrari llença una excepció.
      *
-     * @param mixed $params Parámetros extra para permisos adicionales
-     *          Anteriormente string[]|null $grup hash amb els permissos.
-     *          Corresponia a $INFO[userinfo][grps] de la DokuWiki -> run($grup = NULL)
+     * @param NO USADO
+     *          Anteriormente mixed $params: Parámetros extra para permisos adicionales
+     *          más Anteriormente string[]|null: $grup hash amb els permissos.
+     *              Corresponia a $INFO[userinfo][grps] de la DokuWiki -> run($grup = NULL)
      * @return string|null resposta de executar el command en format JSON
      * @throws Exception si no es té autorització
      */
-    public function run($params) {
+    public function run() {
         $ret = NULL;
-        $permission = $this->authorization->getPermission($params);
+        $permission = $this->authorization->getPermission($this);   //anteriormente ($params)
         if ($this->authorization->canRun($permission)) {
             $ret = $this->getResponse();
             
