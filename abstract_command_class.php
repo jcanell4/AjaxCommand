@@ -122,9 +122,6 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
         if(!$respHand->getModelWrapper()){
             $respHand->setModelWrapper($this->modelWrapper);
         }
-        if(!$respHand->getAuthorization()){
-            $respHand->setAuthorization($this->authorization);
-        }
     }
 
     /**
@@ -235,6 +232,7 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
             $response = $this->process();
 
             if($this->getResponseHandler()) {
+                $this->getResponseHandler()->setPermission($this->authorization->getPermission($this));
                 $this->getResponseHandler()->processResponse($this->params, $response, $ret);
             } else {
                 $this->getDefaultResponse($response, $ret);

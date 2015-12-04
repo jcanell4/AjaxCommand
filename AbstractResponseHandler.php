@@ -22,21 +22,25 @@ abstract class AbstractResponseHandler {
 
     private $cmd;
     private $modelWrapper;
-    private $authorization;
+//    private $authorization;
+    private $permission;
 
     /**
      * Constructor al que se li passa el nom del Command com argument.
      *
      * @param string $cmd
      */
-    public function __construct($cmd, $modelWrapper=NULL, $authorization=NULL) {
+    public function __construct($cmd, $modelWrapper=NULL, $authorization=NULL, $permission=NULL) {
         $this->cmd = $cmd;
         if($modelWrapper){
             $this->modelWrapper = $modelWrapper;
         }
-        if($authorization){
-            $this->authorization = $authorization;
+        if($permission){
+            $this->permission = $permission;
         }
+//        if($authorization){
+//            $this->authorization = $authorization;
+//        }
     }
 
     /**
@@ -61,18 +65,32 @@ abstract class AbstractResponseHandler {
     }
 
     /**
-     * @return Authorization instance
+     * @return Permission instance
      */
-    public function getAuthorization() {
-        return $this->authorization;
+    public function getPermission() {
+        return $this->permission;
     }
 
     /**
-     * Set Authorization instance
+     * Set Permission instance
      */
-    public function setAuthorization($authorization) {
-        $this->authorization = $authorization;
+    public function setPermission($permission) {
+        $this->permission = $permission;
     }
+
+//    /**
+//     * @return Authorization instance
+//     */
+//    public function getAuthorization() {
+//        return $this->authorization;
+//    }
+//
+//    /**
+//     * Set Authorization instance
+//     */
+//    public function setAuthorization($authorization) {
+//        $this->authorization = $authorization;
+//    }
 
     /**
      * Processa la resposta cridant abans a preResponse() i després de processar-la a postResponse().

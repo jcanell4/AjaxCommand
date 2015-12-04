@@ -60,12 +60,11 @@ abstract class abstract_rest_command_class extends abstract_command_class {
     }
 
     /**
-     * Si la petició te els permissos necessaris i el tipus de contingut es suportat es retorna eo resultat de processar
-     * la petició.
+     * Si el tipus de contingut de la petició es suportat es retorna el resultat de processar
+     * la petició. No necessita mirar permissos.
      *
      * @param string        $method           mètode a través del qual s'ha rebut la petició
      * @param null|string[] $extra_url_params hash amb els paràmetres de la petició
-     * @param string[]|null $permission       hash amb els permisos del usuari
      *
      * @return null|void
      * @throws Exception si es detaman un mètode no implementat.
@@ -73,40 +72,36 @@ abstract class abstract_rest_command_class extends abstract_command_class {
     public function dispatchRequest($method, $extra_url_params = NULL) {
         $ret = NULL;
 
-//        if($this->authorization->isCommandAllowed()) {
-            if($this->isContentTypeSupported()) {
-                switch($method) {
-                    case 'GET':
-                        $ret = $this->processGet($extra_url_params);
-                        break;
-                    case 'HEAD':
-                        $ret = $this->processHead($extra_url_params);
-                        break;
-                    case 'POST':
-                        $ret = $this->processPost($extra_url_params);
-                        break;
-                    case 'PUT':
-                        $ret = $this->processPut($extra_url_params);
-                        break;
-                    case 'DELETE':
-                        $ret = $this->processDelete($extra_url_params);
-                        break;
-                    default:
-                        /* 501 (Not Implemented) for any unknown methods */
-                        header('Allow: ' . implode($this->supportedMethods), TRUE, 501);
-                        $this->error        = TRUE;
-                        $this->errorMessage = "Error: " . $method . " does not implemented"; /*TODO internacionalitzaió (convertir missatges en variable) */
-                }
-            } else {
-                /* 406 Not Acceptable */
-                header('406 Not Acceptable');
-                $this->error        = TRUE;
-                $this->errorMessage = "Error: Content type is not accepted"; /*TODO internacionalitzaió (convertir missatges en variable) */
+        if($this->isContentTypeSupported()) {
+            switch($method) {
+                case 'GET':
+                    $ret = $this->processGet($extra_url_params);
+                    break;
+                case 'HEAD':
+                    $ret = $this->processHead($extra_url_params);
+                    break;
+                case 'POST':
+                    $ret = $this->processPost($extra_url_params);
+                    break;
+                case 'PUT':
+                    $ret = $this->processPut($extra_url_params);
+                    break;
+                case 'DELETE':
+                    $ret = $this->processDelete($extra_url_params);
+                    break;
+                default:
+                    /* 501 (Not Implemented) for any unknown methods */
+                    header('Allow: ' . implode($this->supportedMethods), TRUE, 501);
+                    $this->error        = TRUE;
+                    $this->errorMessage = "Error: " . $method . " does not implemented"; /*TODO internacionalitzaió (convertir missatges en variable) */
             }
-//        } else {
-//            $this->error        = TRUE;
-//            $this->errorMessage = "permission denied";
-//        }
+        } else {
+            /* 406 Not Acceptable */
+            header('406 Not Acceptable');
+            $this->error        = TRUE;
+            $this->errorMessage = "Error: Content type is not accepted"; /*TODO internacionalitzaió (convertir missatges en variable) */
+        }
+
         if($this->error && $this->throwsException) {
             throw new Exception($this->errorMessage);
         }
