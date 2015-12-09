@@ -58,7 +58,7 @@ class edit_partial_command extends abstract_command_class
             $this->params['summary'],
             $this->params['section_id'],
             $editingChunks,
-            $this->params['recover_draft']);
+            isset($this->params['recover_draft']) ? $this->params['recover_draft']==='true' :null);
 
         return $contentData;
     }
