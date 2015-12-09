@@ -40,15 +40,25 @@ class edit_partial_command extends abstract_command_class
     protected function process()
     {
 
-        $editingChunks = explode(',', $this->params['editing_chunks']);
-        $editingChunks[] = $this->params['section_id'];
+        if (strlen($this->params['editing_chunks']) == 0) {
+            $editingChunks = [];
+        } else {
+            $editingChunks = explode(',', $this->params['editing_chunks']);
+            $editingChunks[] = $this->params['section_id'];
+        }
+
+        // TODO[Xavi] Si hem passat el discard_draft = true, primer esborrem el draft complet
+        if ($this->params['discard_draft']) {
+            $this->modelWrapper->clearFullDraft($this->params['id']);
+        }
 
         $contentData = $this->modelWrapper->getPartialEdit(
             $this->params['id'],
             $this->params['rev'],
             $this->params['summary'],
             $this->params['section_id'],
-            $editingChunks);
+            $editingChunks,
+            $this->params['recover_draft']);
 
         return $contentData;
     }

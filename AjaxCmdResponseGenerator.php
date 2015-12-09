@@ -188,17 +188,17 @@ class AjaxCmdResponseGenerator
         );
     }
 
-    public function addDraftDialog($id, $ns, $title, $content, $draft, $timeout, $lastmod)
+    public function addDraftDialog($id, $ns, $rev, $params)
     {
-        $contentData = array(
+        global $conf;
+        $contentData = [
             'id' => $id,
             'ns' => $ns,
-            'title' => $title,
-            'content' => $content,
-            'draft' => $draft,
-            'timeout' => $timeout,
-            'lastmod' => $lastmod
-        );
+            'rev' => $rev,
+        ];
+
+        $contentData['params'] =$params;
+        $contentData['timeout'] = $conf['locktime'];
 
         $this->response->add(
             new JSonGeneratorImpl(
@@ -206,6 +206,24 @@ class AjaxCmdResponseGenerator
                 $contentData)
         );
     }
+//    public function addDraftDialog($id, $ns, $title, $content, $draft, $timeout, $lastmod)
+//    {
+//        $contentData = array(
+//            'id' => $id,
+//            'ns' => $ns,
+//            'title' => $title,
+//            'content' => $content,
+//            'draft' => $draft,
+//            'timeout' => $timeout,
+//            'lastmod' => $lastmod
+//        );
+//
+//        $this->response->add(
+//            new JSonGeneratorImpl(
+//                JSonGenerator::DRAFT_DIALOG,
+//                $contentData)
+//        );
+//    }
 
     /**
      * Afegeix una resposta de tipus MEDIA_TYPE al generador de respostes.
