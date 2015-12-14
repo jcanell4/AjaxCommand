@@ -30,7 +30,7 @@ abstract class AbstractResponseHandler {
      *
      * @param string $cmd
      */
-    public function __construct($cmd, $modelWrapper=NULL, $authorization=NULL, $permission=NULL) {
+    public function __construct($cmd, $modelWrapper=NULL, /*$authorization=NULL,*/ $permission=NULL) {
         $this->cmd = $cmd;
         if($modelWrapper){
             $this->modelWrapper = $modelWrapper;

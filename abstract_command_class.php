@@ -48,13 +48,15 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
     public $errorMessage = '';
     public $throwsException = FALSE;
 
+    public function __construct() {}
+
     /**
      * Constructor en el que s'assigna un nou DokuModelAdapter a la classe
      */
-    public function __construct($modelManager=NULL) {
-        if($modelManager){
+    public function init( $modelManager = NULL ) {
+        if ($modelManager) {
             $this->setModelManager($modelManager);
-        }else{
+        } else {
             $this->setModelManager(WikiIocModelManager::Instance());
         }
     }
