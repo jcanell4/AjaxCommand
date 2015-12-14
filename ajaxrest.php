@@ -71,7 +71,6 @@ if(existCommand($command)) {
 
     $dataEvent = array('command' => $call, 'params' => $params);
     $evt       = new Doku_Event('AJAX_CALL_UNKNOWN', $dataEvent);
-//                            array('command' => $call, 'params' => $params));
 
     if($evt->advise_before()) {
         print "AJAX call '" . htmlspecialchars($call) . "' unknown!\n";
@@ -121,6 +120,7 @@ function callCommand($str_command, $method, $request_params, $extra_url_params) 
     $str_command .= '_command';
     /** @var abstract_rest_command_class $command */
     $command = new $str_command();
+    $command->init();
     $command->setParameters($request_params);
     $ret = $command->dispatchRequest(
                    $method,

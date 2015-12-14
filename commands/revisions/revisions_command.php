@@ -16,6 +16,13 @@ class revisions_command extends abstract_command_class {
 
     public function __construct() {
         parent::__construct();
+    }
+
+    public function preInit() {
+    }
+
+    public function init() {
+        parent::init();
         $this->types['id'] = abstract_command_class::T_STRING;
     }
 

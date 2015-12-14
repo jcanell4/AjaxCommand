@@ -14,49 +14,53 @@ require_once( DOKU_COMMAND . 'abstract_command_class.php' );
  */
 class page_command extends abstract_command_class {
 
-	/**
-	 * El constructor estableix els tipus de 'id' i 'rev' i el valor per defecte de 'id' com a 'start'. i l'estableix
-	 * com a paràmetre.
-	 */
-	public function __construct() {
-		parent::__construct();
-		$this->types['id']  = abstract_command_class::T_STRING;
-		$this->types['rev'] = abstract_command_class::T_STRING;
+    public function __construct() {
+        parent::__construct();
+    }
 
-		$defaultValues = array(
-			'id' => 'start',
-		);
-		$this->setParameters( $defaultValues );
-	}
+    public function preInit() {
+    }
 
-	/**
-	 * Retorna la pàgina corresponent a la 'id' i 'rev'.
-	 *
-	 * @return array amb la informació de la pàgina formatada amb 'id', 'ns', 'tittle' i 'content'
-	 */
-	protected function process() {
+    /**
+     * El constructor estableix els tipus de 'id' i 'rev' i
+     * el valor per defecte de 'id' com a 'start', i l'estableix com a paràmetre.
+     */
+    public function init() {
+        parent::init();
+	$this->types['id']  = abstract_command_class::T_STRING;
+	$this->types['rev'] = abstract_command_class::T_STRING;
 
-		$contentData = $this->modelWrapper->getHtmlPage(
-			$this->params['id'],
-			$this->params['rev']
-		);
+	$defaultValues = array(
+            'id' => 'start'
+        );
+	$this->setParameters( $defaultValues );
+    }
 
-		return $contentData;
-	}
+    /**
+     * Retorna la pàgina corresponent a la 'id' i 'rev'.
+     *
+     * @return array amb la informació de la pàgina formatada amb 'id', 'ns', 'tittle' i 'content'
+     */
+    protected function process() {
+	$contentData = $this->modelWrapper->getHtmlPage(
+		$this->params['id'],
+		$this->params['rev']
+	);
+	return $contentData;
+    }
 
-	/**
-	 * Afegeix el contingut com una resposta de tipus HTML_TYPE al generador de respostes passat com argument.
-	 *
-	 * @param array                    $contentData array amb la informació de la pàgina 'id', 'ns', 'tittle' i
-	 *                                              'content'
-	 * @param AjaxCmdResponseGenerator $responseGenerator
-	 *
-	 * @return void
-	 */
-	protected function getDefaultResponse( $contentData, &$responseGenerator ) {
-		$responseGenerator->addHtmlDoc(
-			$contentData["id"], $contentData["ns"],
-			$contentData["title"], $contentData["content"]
-		);
-	}
+    /**
+     * Afegeix el contingut com una resposta de tipus HTML_TYPE al generador de respostes passat com argument.
+     *
+     * @param array                    $contentData array amb informació de la pàgina 'id', 'ns', 'tittle' i 'content'
+     * @param AjaxCmdResponseGenerator $responseGenerator
+     *
+     * @return void
+     */
+    protected function getDefaultResponse( $contentData, &$responseGenerator ) {
+    	$responseGenerator->addHtmlDoc(
+		$contentData["id"], $contentData["ns"],
+		$contentData["title"], $contentData["content"]
+	);
+    }
 }

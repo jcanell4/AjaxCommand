@@ -14,12 +14,19 @@ require_once(DOKU_COMMAND . 'abstract_command_class.php');
  */
 class save_command extends abstract_command_class {
 
+    public function __construct() {
+        parent::__construct();
+    }
+
+    public function preInit() {
+    }
+
     /**
      * El constructor estableix els tipus per 'id', 'rev', 'range', 'date', 'prefix', 'suffix', 'changecheck', 'target'
      * i 'summary', i el valor per defecte de 'id' a 'index' que s'estableix com a paràmetre.
      */
-    public function __construct() {
-        parent::__construct();
+    public function init() {
+        parent::init();
         $this->types['id']          = abstract_command_class::T_STRING;
         $this->types['rev']         = abstract_command_class::T_STRING;
         $this->types['range']       = abstract_command_class::T_STRING;
@@ -33,7 +40,6 @@ class save_command extends abstract_command_class {
         $defaultValues = array(
             'id' => 'index'
         );
-
         $this->setParameters($defaultValues);
     }
 

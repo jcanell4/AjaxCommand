@@ -163,6 +163,7 @@ function callCommand($str_command, $arr_parameters, $respHandDir=NULL) {
 
     $str_command .= '_command';
     $command = new $str_command();
+    $command->init();
 
     if($respHandObj) {
         $command->setResponseHandler($respHandObj);

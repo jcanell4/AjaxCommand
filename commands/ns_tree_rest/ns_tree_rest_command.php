@@ -15,12 +15,16 @@ require_once(DOKU_COMMAND . 'abstract_rest_command_class.php');
  */
 class ns_tree_rest_command extends abstract_rest_command_class {
 
+    public function __construct() {
+        parent::__construct();
+    }
+
     /**
      * El constructor defineix el content type per defecte, els content type suportats, el mètode ('GET'), els tipus i
      * els valors per defecte sortBy = 0 i onlydirs = FALSE i els estableix com a paràmetres.
      */
-    public function __construct() {
-        parent::__construct();
+    public function init() {
+        parent::init();
         $this->defaultContentType    = "application/json";
         $this->supportedContentTypes = array("application/json");
         $this->supportedMethods      = array("GET");
@@ -32,10 +36,9 @@ class ns_tree_rest_command extends abstract_rest_command_class {
         //$this->types['refreshAll'] = abstract_command_class::T_BOOLEAN;
 
         $defaultValues = array(
-            'sortBy'     => 0
-            , 'onlyDirs' => FALSE
+            'sortBy'    => 0
+            ,'onlyDirs' => FALSE
         );
-
         $this->setParameters($defaultValues);
     }
 

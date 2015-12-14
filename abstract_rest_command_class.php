@@ -12,11 +12,15 @@ abstract class abstract_rest_command_class extends abstract_command_class {
     protected $supportedMethods;
     protected $defaultContentType = 'none';
 
+    public function __construct() {
+        parent::__construct();
+    }
+
     /**
      * Constructor que fa servir els paràmetres rebuts per GET com a valors per defecte.
      */
-    public function __construct() {
-        parent::__construct();
+    public function init() {
+        parent::init();
         $this->types['method'] = abstract_command_class::T_STRING;
         $defaultValues         = array('GET');
         $this->setParameters($defaultValues);
