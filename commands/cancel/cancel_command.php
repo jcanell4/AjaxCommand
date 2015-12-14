@@ -44,7 +44,7 @@ class cancel_command extends abstract_command_class {
      *
      * @return void
      */
-    protected function getDefaultResponse($response, &$ret) {
+    protected function getDefaultResponse($contentData, &$ret) {
         //TODO[Xavi] $contentData no te cap valor?
         $ret->addHtmlDoc(
             $contentData["id"], $contentData["ns"],
