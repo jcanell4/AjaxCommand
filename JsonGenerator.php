@@ -12,6 +12,7 @@ require_once( DOKU_INC . 'inc/JSON.php' );
  * @author Josep Cañellas <jcanell4@ioc.cat>
  */
 interface JsonGenerator {
+	const PLAIN = -1;
 	const HTML_TYPE = 0;
 	const TITLE_TYPE = 1;
 	const INFO_TYPE = 2;
@@ -121,7 +122,8 @@ class JSonGeneratorImpl implements JsonGenerator {
 	 * @return mixed hash amb el tipus i les dades a codificar.
 	 */
 	public function getJson() {
-		//$arrayTypes = JSonGenerator::TYPES;
+            if ($this->type !== JSonGenerator::PLAIN) {
+                //$arrayTypes = JSonGenerator::TYPES;
 		$arrayTypes = array(
 			"html",
 			"title",
@@ -153,12 +155,15 @@ class JSonGeneratorImpl implements JsonGenerator {
                         "metamediadetails",
                         "draft_dialog"
 		);
-		$data       = array(
+		$data = array(
 			"type"  => $arrayTypes[ $this->type ],
 			"value" => $this->value,
 		);
+            } else {
+                $data = $this->value;
+            }
 
-		return $data;
+            return $data;
 	}
 
 	/**

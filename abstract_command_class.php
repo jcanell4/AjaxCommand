@@ -1,10 +1,9 @@
 <?php
 if(!defined('DOKU_INC')) die();
 if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
-if(!defined('WIKI_IOC_MODEL')) define('WIKI_IOC_MODEL', DOKU_PLUGIN . 'wikiiocmodel/');
-require_once(DOKU_PLUGIN . 'ajaxcommand/AbstractResponseHandler.php');
 require_once(DOKU_INC . 'inc/plugin.php');
-require_once(WIKI_IOC_MODEL . 'WikiIocModelManager.php');
+require_once(DOKU_PLUGIN . 'ajaxcommand/AbstractResponseHandler.php');
+require_once(DOKU_PLUGIN . 'wikiiocmodel/WikiIocModelManager.php');
 
 /**
  * Class abstract_command_class
@@ -43,7 +42,6 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
     protected $authorization;
     protected $modelWrapper;
 
-    //protected $content = ''; no utilizado
     public $error = FALSE;
     public $errorMessage = '';
     public $throwsException = FALSE;
@@ -80,7 +78,7 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
     public function setModelManager($modelManager) {
         $this->modelWrapper  = $modelManager->getModelWrapperManager();
         $this->authorization = $modelManager->getAuthorizationManager($this->getNameCommandClass(), $this);
-        // PROVES DE PERMISSOS
+//        PROVES DE PERMISSOS
 //        $permission = $this->authorization->getPermission();
 //        if ($permission->getPermissionFor()) {
 //            $permission->setPermissionFor(FALSE);
@@ -192,16 +190,12 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
      * si l'usuari està autenticat i si està autoritzat per fer corre la comanda. Si es aixi la executa i en cas
      * contrari llença una excepció.
      *
-     * @param NO USADO
-     *          Anteriormente mixed $params: Parámetros extra para permisos adicionales
-     *          más Anteriormente string[]|null: $grup hash amb els permissos.
-     *              Corresponia a $INFO[userinfo][grps] de la DokuWiki -> run($grup = NULL)
      * @return string|null resposta de executar el command en format JSON
      * @throws Exception si no es té autorització
      */
     public function run() {
         $ret = NULL;
-        $permission = $this->authorization->getPermission($this);   //anteriormente ($params)
+        $permission = $this->authorization->getPermission($this);
         if ($this->authorization->canRun($permission)) {
             $ret = $this->getResponse();
             
@@ -209,6 +203,7 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
                 $this->error        = 403;
                 $this->errorMessage = "permission denied"; /*TODO internacionalització */
             }
+        
         } else {
             $this->error        = 403;
             $this->errorMessage = "permission denied"; /*TODO internacionalització */
@@ -240,7 +235,7 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
                 $this->getDefaultResponse($response, $ret);
             }
         }  catch (HttpErrorCodeException $e){
-            $this->error = $e->getCode();
+            $this->error        = $e->getCode();
             $this->errorMessage = $e->getMessage();
         }  catch (Exception $e){
             if($this->getErrorHandler()) {

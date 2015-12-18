@@ -14,16 +14,16 @@ abstract class abstract_rest_command_class extends abstract_command_class {
 
     public function __construct() {
         parent::__construct();
+        $this->types['method'] = abstract_command_class::T_STRING;
+        $defaultValues         = array('GET');
+        $this->setParameters($defaultValues);
     }
 
     /**
      * Constructor que fa servir els paràmetres rebuts per GET com a valors per defecte.
      */
-    public function init() {
-        parent::init();
-        $this->types['method'] = abstract_command_class::T_STRING;
-        $defaultValues         = array('GET');
-        $this->setParameters($defaultValues);
+    public function init($modelManager = NULL) {
+        parent::init($modelManager);
     }
 
     /**
@@ -70,28 +70,28 @@ abstract class abstract_rest_command_class extends abstract_command_class {
      * @param string        $method           mètode a través del qual s'ha rebut la petició
      * @param null|string[] $extra_url_params hash amb els paràmetres de la petició
      *
-     * @return null|void
+     * @return null|JSON
      * @throws Exception si es detaman un mètode no implementat.
      */
-    public function dispatchRequest($method, $extra_url_params = NULL) {
+    public function dispatchRequest($method) {
         $ret = NULL;
 
         if($this->isContentTypeSupported()) {
             switch($method) {
                 case 'GET':
-                    $ret = $this->processGet($extra_url_params);
+                    $ret = $this->processGet();
                     break;
                 case 'HEAD':
-                    $ret = $this->processHead($extra_url_params);
+                    $ret = $this->processHead();
                     break;
                 case 'POST':
-                    $ret = $this->processPost($extra_url_params);
+                    $ret = $this->processPost();
                     break;
                 case 'PUT':
-                    $ret = $this->processPut($extra_url_params);
+                    $ret = $this->processPut();
                     break;
                 case 'DELETE':
-                    $ret = $this->processDelete($extra_url_params);
+                    $ret = $this->processDelete();
                     break;
                 default:
                     /* 501 (Not Implemented) for any unknown methods */
@@ -126,7 +126,7 @@ abstract class abstract_rest_command_class extends abstract_command_class {
      *
      * @return null
      */
-    public function processGet($extra_url_params) {
+    public function processGet() {
         return $this->methodNotAllowedResponse();
     }
 
@@ -135,7 +135,7 @@ abstract class abstract_rest_command_class extends abstract_command_class {
      *
      * @return null
      */
-    public function processHead($extra_url_params) {
+    public function processHead() {
         return $this->methodNotAllowedResponse();
     }
 
@@ -144,7 +144,7 @@ abstract class abstract_rest_command_class extends abstract_command_class {
      *
      * @return null
      */
-    public function processPost($extra_url_params) {
+    public function processPost() {
         return $this->methodNotAllowedResponse();
     }
 
@@ -153,7 +153,7 @@ abstract class abstract_rest_command_class extends abstract_command_class {
      *
      * @return null
      */
-    public function processPut($extra_url_params) {
+    public function processPut() {
         return $this->methodNotAllowedResponse();
     }
 
@@ -162,7 +162,7 @@ abstract class abstract_rest_command_class extends abstract_command_class {
      *
      * @return null
      */
-    public function processDelete($extra_url_params) {
+    public function processDelete() {
         return $this->methodNotAllowedResponse();
     }
 
@@ -172,8 +172,7 @@ abstract class abstract_rest_command_class extends abstract_command_class {
      * @return void
      */
     protected function process() {
-        // TODO[Xavi] s'hauria de fer-se return d'això?
-        $this->dispatchRequest($this->params['method']);
+        return $this->dispatchRequest($this->params['method']);
     }
 
     /**
