@@ -20,7 +20,11 @@ class new_page_command extends abstract_command_class {
     public function __construct() {
         parent::__construct();
         $this->types['id'] = abstract_command_class::T_STRING;
-        //$this->permissionFor=  DokuModelAdapter::ADMIN_PERMISSION;
+        //$this->permissionFor =  DokuModelAdapter::ADMIN_PERMISSION;
+    }
+
+    public function init() {
+        parent::init();
     }
 
     /**

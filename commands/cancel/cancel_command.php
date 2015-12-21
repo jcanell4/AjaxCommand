@@ -13,19 +13,16 @@ require_once(DOKU_COMMAND . 'abstract_command_class.php');
  */
 class cancel_command extends abstract_command_class {
 
-    public function __construct() {
-        parent::__construct();
-    }
-
-    public function preInit() {
-    }
-
     /**
      * Constructor per defecte que estableix el tipus id.
      */
+    public function __construct() {
+        parent::__construct();
+        $this->types['id'] = abstract_command_class::T_STRING;
+    }
+
     public function init() {
         parent::init();
-        $this->types['id'] = abstract_command_class::T_STRING;
     }
 
     /**
@@ -38,7 +35,7 @@ class cancel_command extends abstract_command_class {
                                           $this->params['id'],
                                           $this->params['rev'],
                                           $this->params['keep_draft']
-        );
+                        );
         return $contentData;
     }
 

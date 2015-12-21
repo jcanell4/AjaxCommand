@@ -13,24 +13,20 @@ require_once(DOKU_COMMAND . 'abstract_command_class.php');
  */
 class login_command extends abstract_command_class {
 
-    public function __construct() {
-        parent::__construct();
-        $this->types['do'] = abstract_command_class::T_STRING;
-        $defaultValues = array(
-                            'do' => 'login'
-                         );
-        $this->setParameters($defaultValues);
-    }
-
-    public function preInit() {
-    }
-
     /**
      * El constructor extableix que no es necessari estar autenticat, el tipus,
      * els valors per defecte i els estableix
      * com a paràmetres.
      * El valor per defecte es el paràmetre 'do' amb valor 'login'.
      */
+    public function __construct() {
+        parent::__construct();
+        $this->types['do'] = abstract_command_class::T_STRING;
+
+        $defaultValues = array('do' => 'login');
+        $this->setParameters($defaultValues);
+    }
+
     public function init($modelManager = NULL) {
         parent::init($modelManager);
         $this->authenticatedUsersOnly = FALSE;
