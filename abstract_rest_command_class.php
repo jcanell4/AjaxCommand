@@ -187,7 +187,7 @@ abstract class abstract_rest_command_class extends abstract_command_class {
     /**
      * @return string resultat de processar la resposta
      */
-    protected function getResponse() {
-        return $this->process();
-    }
+//    protected function getResponse() {
+//        return $this->process();
+//    }
 }

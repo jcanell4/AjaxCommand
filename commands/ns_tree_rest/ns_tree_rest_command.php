@@ -116,6 +116,6 @@ class ns_tree_rest_command extends abstract_rest_command_class {
     }
 
     function getDefaultResponse( $response, &$ret ) {
-	$ret->addPlain($response);
+	$ret->setEncodedResponse($response);
     }
 }

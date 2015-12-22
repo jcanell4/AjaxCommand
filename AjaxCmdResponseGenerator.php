@@ -604,13 +604,8 @@ class AjaxCmdResponseGenerator {
 	 * Afegeix una resposta de tipus PLAIN al generador de respostes.
          * La resposta el un text pla sense format igual que l'original
 	*/
-	public function addPlain( $data ) {
-		$this->response->add(
-                        new JSonGeneratorImpl( 
-                                JSonGenerator::PLAIN
-                               ,$data 
-                        ) 
-                );
+	public function setEncodedResponse( $data ) {
+		$this->response = new JSonJustEncoded($data);
 	}
 
 	/**
