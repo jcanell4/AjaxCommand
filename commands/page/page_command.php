@@ -14,26 +14,21 @@ require_once( DOKU_COMMAND . 'abstract_command_class.php' );
  */
 class page_command extends abstract_command_class {
 
-    public function __construct() {
-        parent::__construct();
-    }
-
-    public function preInit() {
-    }
-
     /**
      * El constructor estableix els tipus de 'id' i 'rev' i
      * el valor per defecte de 'id' com a 'start', i l'estableix com a paràmetre.
      */
-    public function init() {
-        parent::init();
+    public function __construct() {
+        parent::__construct();
 	$this->types['id']  = abstract_command_class::T_STRING;
 	$this->types['rev'] = abstract_command_class::T_STRING;
 
-	$defaultValues = array(
-            'id' => 'start'
-        );
+	$defaultValues = array('id' => 'start');
 	$this->setParameters( $defaultValues );
+    }
+
+    public function init() {
+        parent::init();
     }
 
     /**

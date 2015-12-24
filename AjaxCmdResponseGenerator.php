@@ -566,16 +566,18 @@ class AjaxCmdResponseGenerator {
 	 */
 	public function addExtraMetadata( $id, $meta, $tit = NULL, $cont = NULL ) {
 		if ( $tit ) {
-			$aMeta = array( "id" => $meta, 'title' => $tit, 'content' => $cont );
-		} else {
-			$aMeta = $meta;
+                    $aMeta = array( "id"=>$meta, 'title'=>$tit, 'content'=>$cont );
+		}else {
+                    $aMeta = $meta;
 		}
 		$this->response->add(
-			new JSonGeneratorImpl( JSonGenerator::EXTRA_META_INFO,
-			                       array(
-				                       "id"   => $id,
-				                       "meta" => $aMeta,
-			                       ) )
+			new JSonGeneratorImpl( 
+                                JSonGenerator::EXTRA_META_INFO,
+			        array(
+				    "id"   => $id,
+				    "meta" => $aMeta,
+			        )
+                        )
 		);
 	}
 
@@ -599,6 +601,14 @@ class AjaxCmdResponseGenerator {
 	}
 
 	/**
+	 * Afegeix una resposta de tipus PLAIN al generador de respostes.
+         * La resposta el un text pla sense format igual que l'original
+	*/
+	public function setEncodedResponse( $data ) {
+		$this->response = new JSonJustEncoded($data);
+	}
+
+	/**
 	 * Afegeix una resposta de tipus ADMIN_TAB al generador de respostes.
 	 *
 	 * @param string $containerId identificador del contenidor on afegir la pestanya
@@ -612,13 +622,14 @@ class AjaxCmdResponseGenerator {
 			new JSonGeneratorImpl(
 				JSonGenerator::ADMIN_TAB,
 				array(
-					"type"        => JSonGenerator::ADD_ADMIN_TAB,
-					"containerId" => $containerId,
-					"tabId"       => $tabId,
-					"title"       => $title,
-					"content"     => $content,
-					"urlBase"     => $urlBase
-				) )
+                                    "type"        => JSonGenerator::ADD_ADMIN_TAB,
+                                    "containerId" => $containerId,
+                                    "tabId"       => $tabId,
+                                    "title"       => $title,
+                                    "content"     => $content,
+                                    "urlBase"     => $urlBase
+				)
+                        )
 		);
 	}
 
@@ -627,11 +638,12 @@ class AjaxCmdResponseGenerator {
 			new JSonGeneratorImpl(
 				JSonGenerator::ADMIN_TAB,
 				array(
-					"type"        => JSonGenerator::REMOVE_ADMIN_TAB,
-					"containerId" => $containerId,
-					"tabId"       => $tabId,
-					"urlBase"     => $urlBase
-				) )
+                                    "type"        => JSonGenerator::REMOVE_ADMIN_TAB,
+                                    "containerId" => $containerId,
+                                    "tabId"       => $tabId,
+                                    "urlBase"     => $urlBase
+				)
+                        )
 		);
 	}
 
@@ -649,11 +661,12 @@ class AjaxCmdResponseGenerator {
 			new JSonGeneratorImpl(
 				JSonGenerator::ADMIN_TASK,
 				array(
-					'id'      => $id,
-					'ns'      => $ns,
-					'title'   => $title,
-					'content' => $content
-				) )
+                                    'id'      => $id,
+                                    'ns'      => $ns,
+                                    'title'   => $title,
+                                    'content' => $content
+				)
+                        )
 		);
 	}
 
@@ -665,11 +678,14 @@ class AjaxCmdResponseGenerator {
 	 *
 	 */
 	public function addRevisionsTypeResponse( $id, $revisions ) {
-		$this->add( JSonGenerator::REVISIONS_TYPE, array(
-			'id'        => $id,
-			'revisions' => $revisions,
-			'type'      => 'revisions'
-		) );
+		$this->add( 
+                        JSonGenerator::REVISIONS_TYPE
+                      , array(
+                            'id'        => $id,
+                            'revisions' => $revisions,
+                            'type'      => 'revisions'
+                        )
+                );
 	}
 
 	/**
@@ -683,11 +699,14 @@ class AjaxCmdResponseGenerator {
 	 *
 	 */
 	public function addExtraContentStateResponse( $id, $type, $value ) {
-		$this->add( JSonGenerator::EXTRA_CONTENT_STATE, array(
-			'id'    => $id,
-			'type'  => $type,
-			'value' => $value
-		) );
+		$this->add( 
+                        JSonGenerator::EXTRA_CONTENT_STATE
+                      , array(
+                            'id'    => $id,
+                            'type'  => $type,
+                            'value' => $value
+                        ) 
+                );
 	}
 
 }

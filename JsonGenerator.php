@@ -12,6 +12,7 @@ require_once( DOKU_INC . 'inc/JSON.php' );
  * @author Josep Cañellas <jcanell4@ioc.cat>
  */
 interface JsonGenerator {
+	const PLAIN = -1;
 	const HTML_TYPE = 0;
 	const TITLE_TYPE = 1;
 	const INFO_TYPE = 2;
@@ -72,8 +73,8 @@ interface JsonGenerator {
 	/** @const REMOVE_ALL_WIDGET_CHILDREN widgetId afectat */
 	const REMOVE_ALL_WIDGET_CHILDREN = "remove_all_widget_children";
 
-//    const REMOVE_META_TAB="remove_meta_tab";
-//    const REMOVE_ALL_META_TAB="remove_all_meta_tab";
+//      const REMOVE_META_TAB="remove_meta_tab";
+//      const REMOVE_ALL_META_TAB="remove_all_meta_tab";
 	/** @const JSINFO infomració per el javascript */
 	//const JSINFO = "jsinfo";
 	const JSINFO = 19;
@@ -121,44 +122,43 @@ class JSonGeneratorImpl implements JsonGenerator {
 	 * @return mixed hash amb el tipus i les dades a codificar.
 	 */
 	public function getJson() {
-		//$arrayTypes = JSonGenerator::TYPES;
-		$arrayTypes = array(
-			"html",
-			"title",
-			"info",
-			"command",
-			"error",
-			"login",
-			"sectok",
-			"data",
-			"metainfo",
-			"remove",
-			"removeall",
-			"code",
-			"simple_data",
-			"array",
-			"object",
-			"alert",
-			"admin_tab",
-			"media",
-			"admin_task",
-			"jsinfo",
-			"metaMedia",
-			"revisions", // meta
-			"extraContentState",
-			"mediadetails",
-			"extra_metainfo",
-			"diff",
-			"diff_metainfo",
-                        "metamediadetails",
-                        "draft_dialog"
-		);
-		$data       = array(
-			"type"  => $arrayTypes[ $this->type ],
-			"value" => $this->value,
-		);
+            $arrayTypes = array(
+                    "html",
+                    "title",
+                    "info",
+                    "command",
+                    "error",
+                    "login",
+                    "sectok",
+                    "data",
+                    "metainfo",
+                    "remove",
+                    "removeall",
+                    "code",
+                    "simple_data",
+                    "array",
+                    "object",
+                    "alert",
+                    "admin_tab",
+                    "media",
+                    "admin_task",
+                    "jsinfo",
+                    "metaMedia",
+                    "revisions", // meta
+                    "extraContentState",
+                    "mediadetails",
+                    "extra_metainfo",
+                    "diff",
+                    "diff_metainfo",
+                    "metamediadetails",
+                    "draft_dialog"
+            );
+            $data = array(
+                    "type"  => $arrayTypes[ $this->type ],
+                    "value" => $this->value,
+            );
 
-		return $data;
+            return $data;
 	}
 
 	/**
@@ -168,8 +168,7 @@ class JSonGeneratorImpl implements JsonGenerator {
 	 */
 	public function getJsonEncoded() {
 		$dataToEncode = $this->getJson();
-
-		return $this->encoder->encode( $dataToEncode ); //json_encode($dataToEncode);
+		return $this->encoder->encode( $dataToEncode );
 	}
 }
 
@@ -200,8 +199,8 @@ class ArrayJSonGenerator implements JsonGenerator {
 	 * @return string dades codificades en format JSON
 	 */
 	public function getJsonEncoded() {
-		$dataToEncode = $this->getJson(); // TODO[Xavi] no es fa servir, s'hauira de substituir a la línia de sota
-		return $this->encoder->encode( $this->items ); //json_encode($this->items);
+		$dataToEncode = $this->getJson();
+		return $this->encoder->encode( $dataToEncode );
 	}
 
 	/**
@@ -210,4 +209,40 @@ class ArrayJSonGenerator implements JsonGenerator {
 	public function add( $jSonGenerator ) {
 		$this->items[] = $jSonGenerator->getJson();
 	}
+}
+
+/**
+ * Class JSonJustEncoded
+ * Implementació del JSonGenerator per un sol element que ja és un string
+ */
+class JSonJustEncoded implements JsonGenerator {
+    
+    private $value;
+
+    /**
+     * Constructor del generador que admet un valor que son les dades que volem codificar.
+     *
+     * @param mixed $valueToSend valor a codificar
+     */
+    public function __construct( $valueToSend = NULL ) {
+        if ( $valueToSend != NULL ) {
+            $this->value = $valueToSend;
+        }
+    }
+
+    /**
+     * @return string amb les dades originals.
+     */
+    public function getJson() {
+        return $this->value;
+    }
+
+    /**
+     * Retorna les dades codificades en format JSON
+     *
+     * @return string dades en format JSON
+     */
+    public function getJsonEncoded() {
+        return $this->getJson();
+    }
 }

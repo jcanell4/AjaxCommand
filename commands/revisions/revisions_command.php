@@ -14,16 +14,16 @@ require_once(DOKU_COMMAND . 'abstract_command_class.php');
  */
 class revisions_command extends abstract_command_class {
 
+    /**
+     * El constructor estableix els tipus de 'id'
+     */
     public function __construct() {
         parent::__construct();
-    }
-
-    public function preInit() {
+        $this->types['id'] = abstract_command_class::T_STRING;
     }
 
     public function init() {
         parent::init();
-        $this->types['id'] = abstract_command_class::T_STRING;
     }
 
     /**
