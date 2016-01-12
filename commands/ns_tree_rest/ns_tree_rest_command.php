@@ -39,7 +39,7 @@ class ns_tree_rest_command extends abstract_rest_command_class {
     }
 
     /**
-     * Extreu els paràmetres passats a travès de la URL si existeixen, i obté l'arbre a partir del node actual ordenant
+     * Obté l'arbre a partir del node actual ordenant
      * els resultats i excloent els directoris segons els valors dels paràmetres emmagatzemats en aquest objecte.
      *
      * @param string[] $extra_url_params paràmetres passats a travès de la URL.

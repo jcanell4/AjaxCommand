@@ -34,10 +34,6 @@ class save_command extends abstract_command_class {
         $this->setParameters($defaultValues);
     }
 
-    public function init() {
-        parent::init();
-    }
-
     /**
      * Guarda la edició i retorna la informació de la pàgina
      *
