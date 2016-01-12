@@ -25,10 +25,6 @@ class edit_command extends abstract_command_class {
         $this->types['summary'] = abstract_command_class::T_STRING;
     }
 
-    public function init() {
-        parent::init();
-    }
-
     /**
      * Retorna el contingut de la página segons els paràmetres emmagatzemats en aquest command.
      *

@@ -77,7 +77,7 @@ class ajaxCall {
             $noCommand = TRUE;
             if (sizeof($dataEvent) > 0){
                 $noCommand = !$dataEvent[$this->call] ||
-                             !existCommand($dataEvent[$this->call]["callFile"]);
+                             !$this->existCommand($dataEvent[$this->call]["callFile"]);
             }
             if (!$noCommand){
                 print $this->callCommand($dataEvent[$this->call]["respHandlerDir"]);
@@ -85,7 +85,7 @@ class ajaxCall {
                 //revisar si habría que usar isSecurityTokenVerified() de DokuModelAdapter
                 if (!checkSecurityToken()) die("CSRF Attack");
 
-                $dataEvent = array('command' => $this->call, 'params' => $params);
+                $dataEvent = array('command' => $this->call, 'params' => $this->request_params);
                 $evt       = new Doku_Event('AJAX_CALL_UNKNOWN', $dataEvent);
                 if ($evt->advise_before()) {
                     print "AJAX call '" . htmlspecialchars($this->call) . "' unknown!\n";
