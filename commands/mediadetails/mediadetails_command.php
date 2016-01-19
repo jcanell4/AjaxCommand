@@ -66,7 +66,19 @@ class mediadetails_command extends abstract_command_class {
                 $contentData["imageTitle"],
                 $contentData["content"]
         );
-        
+    }
+
+    /**
+     * @return string (nom del command, a partir del nom de la clase,
+     *                 modificat pels valors de $params per a definir subclasses específiques
+     *                 amb autoritzacions específiques)
+     */
+    public function getNameCommandClass() {
+        $className = preg_replace('/_command$/', '', get_class($this));
+        if ($this->params['ow']==1) {
+            $className .= "_write";
+        }
+        return $className;
     }
 
 }
