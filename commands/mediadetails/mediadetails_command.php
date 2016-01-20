@@ -75,8 +75,14 @@ class mediadetails_command extends abstract_command_class {
      */
     public function getNameCommandClass() {
         $className = preg_replace('/_command$/', '', get_class($this));
-        if ($this->params['ow']==1) {
-            $className .= "_write";
+        if ($this->params['delete']) {
+            $className .= "_delete";
+        }
+        elseif ($this->params['isupload'] === 'upload') {
+            $className .= "_upload";
+        }
+        elseif ($this->params['tab_details'] === 'edit' || $this->params['mediado'] === 'save') {
+            $className .= "_edit";
         }
         return $className;
     }
