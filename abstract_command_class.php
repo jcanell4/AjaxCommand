@@ -104,6 +104,10 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
         return $this->permissionFor;
     }
 
+    protected function setPermissionFor($permissionFor) {
+        $this->permissionFor = $permissionFor;
+    }
+  
     public function getAuthenticatedUsersOnly() {
         return $this->authenticatedUsersOnly;
     }

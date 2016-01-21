@@ -22,7 +22,7 @@ class admin_tab_command extends abstract_command_class {
   public function __construct() {
     parent::__construct();
     $this->types['do'] = abstract_command_class::T_STRING;
-
+    $this->setPermissionFor(array('admin','manager'));
     $defaultValues = array('do' => 'admin');
     $this->setParameters($defaultValues);
   }
