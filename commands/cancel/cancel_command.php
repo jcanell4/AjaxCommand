@@ -21,6 +21,10 @@ class cancel_command extends abstract_command_class {
         $this->types['id'] = abstract_command_class::T_STRING;
     }
 
+    public function init() {
+        parent::init();
+    }
+
     /**
      * Cancela la edició.
      *
@@ -31,9 +35,8 @@ class cancel_command extends abstract_command_class {
                                           $this->params['id'],
                                           $this->params['rev'],
                                           $this->params['keep_draft']
-        );
+                        );
         return $contentData;
-
     }
 
     /**
@@ -41,10 +44,8 @@ class cancel_command extends abstract_command_class {
      *
      * @param mixed                    $response // TODO[Xavi] No es fa servir per a res?
      * @param AjaxCmdResponseGenerator $ret      objecte al que s'afegirà la resposta
-     *
-     * @return void
      */
-    protected function getDefaultResponse($response, &$ret) {
+    protected function getDefaultResponse($contentData, &$ret) {
         //TODO[Xavi] $contentData no te cap valor?
         $ret->addHtmlDoc(
             $contentData["id"], $contentData["ns"],

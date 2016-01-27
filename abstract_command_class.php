@@ -1,10 +1,9 @@
 <?php
 if(!defined('DOKU_INC')) die();
 if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
-require_once(DOKU_PLUGIN . 'wikiiocmodel/DokuModelAdapter.php');
-require_once(DOKU_PLUGIN . 'wikiiocmodel/WikiIocModelExceptions.php');
-require_once(DOKU_PLUGIN . 'ajaxcommand/AbstractResponseHandler.php');
 require_once(DOKU_INC . 'inc/plugin.php');
+require_once(DOKU_PLUGIN . 'ajaxcommand/AbstractResponseHandler.php');
+require_once(DOKU_PLUGIN . 'wikiiocmodel/WikiIocModelManager.php');
 
 /**
  * Class abstract_command_class
@@ -39,23 +38,80 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
     protected $permissionFor = array();
     protected $authenticatedUsersOnly = TRUE;
     protected $runPreprocess = FALSE;
+    
+    protected $authorization;
     protected $modelWrapper;
 
-    // TODO[Xavi] el var està @deprecated, s'ha de substituir per protected, public o private (en aquest cas protected suposo)
-    var $content = '';
-    var $error = FALSE;
-    var $errorMessage = '';
-    var $throwsException = FALSE;
+    public $error = FALSE;
+    public $errorMessage = '';
+    public $throwsException = FALSE;
+
+    public function __construct() {}
 
     /**
      * Constructor en el que s'assigna un nou DokuModelAdapter a la classe
      */
-    public function __construct($modelWrapper=NULL) {
-        if($modelWrapper){
-            $this->modelWrapper = $modelWrapper;
-        }else{
-            $this->modelWrapper = new DokuModelAdapter();
+    public function init( $modelManager = NULL ) {
+        if ($modelManager) {
+            $this->setModelManager($modelManager);
+        } else {
+            $this->setModelManager(WikiIocModelManager::Instance());
         }
+    }
+
+    /**
+     * Retorna l'adaptador a emprar.
+     * @return DokuModelAdapter
+     */
+    public function getModelWrapper() {
+        return $this->modelWrapper;
+    }
+    
+    public function getAuthorization() {
+        return $this->authorization;
+    }
+    
+    /**
+     * Estableix l'adaptador a emprar i l'autorització que li correspon.
+     * @param modelManager
+     */
+    public function setModelManager($modelManager) {
+        $this->modelWrapper  = $modelManager->getModelWrapperManager();
+        $this->authorization = $modelManager->getAuthorizationManager($this->getNameCommandClass(), $this);
+//        PROVES DE PERMISSOS
+//        $permission = $this->authorization->getPermission();
+//        if ($permission->getPermissionFor()) {
+//            $permission->setPermissionFor(FALSE);
+//        }else{
+//            $permission->setPermissionFor(TRUE);
+//        }
+    }
+    
+    /**
+     * @return string (nom del command a partir del nom de la clase)
+     */
+    public function getNameCommandClass() {
+        return preg_replace('/_command$/', '', get_class($this));
+    }
+
+    public function getParams() {
+        return $this->params;
+    }
+
+    public function getTypes() {
+        return $this->types;
+    }
+
+    public function getRunPreprocess() {
+        return $this->runPreprocess;
+    }
+
+    public function getPermissionFor() {
+        return $this->permissionFor;
+    }
+
+    public function getAuthenticatedUsersOnly() {
+        return $this->authenticatedUsersOnly;
     }
 
     /**
@@ -75,16 +131,10 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
         return $this->responseHandler;
     }
 
-    /**
-     * @param AbstractResponseHandler $respHand
-     */
     public function setErrorHandler($errorHand) {
         $this->errorHandler = $errorHand;
     }
 
-    /**
-     * @return AbstractResponseHandler
-     */
     public function getErrorHandler() {
         return $this->errorHandler;
     }
@@ -140,32 +190,23 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
      * si l'usuari està autenticat i si està autoritzat per fer corre la comanda. Si es aixi la executa i en cas
      * contrari llença una excepció.
      *
-     * @param string[]|null $permission hash amb els permissos. Correspon a $INFO[userinfo][grps] de la DokuWiki
-     *
      * @return string|null resposta de executar el command en format JSON
      * @throws Exception si no es té autorització
      */
-    public function run($permission = NULL) {
+    public function run() {
         $ret = NULL;
-        if(!$this->authenticatedUsersOnly
-            || $this->isSecurityTokenVerified()
-            && $this->isUserAuthenticated()
-            && $this->isAuthorized($permission)
-        ) {
-
+        $permission = $this->authorization->getPermission($this);
+        if ($this->authorization->canRun($permission)) {
             $ret = $this->getResponse();
-
-            if($this->modelWrapper->isDenied()) {
+            
+            if($permission->isDenied()) {
                 $this->error        = 403;
                 $this->errorMessage = "permission denied"; /*TODO internacionalització */
             }
+        
         } else {
-
-            //TODO[xavi] Per poder fer proves deshabilitem la comprovació
             $this->error        = 403;
             $this->errorMessage = "permission denied"; /*TODO internacionalització */
-
-            //$ret = $this->getResponse();
         }
         if($this->error && $this->throwsException) {
             throw new Exception($this->errorMessage);
@@ -183,17 +224,18 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
      * @return string resposta processada en format JSON
      */
     protected function getResponse() {
-        $ret      = new AjaxCmdResponseGenerator();
+        $ret = new AjaxCmdResponseGenerator();
         try{
             $response = $this->process();
 
             if($this->getResponseHandler()) {
+                $this->getResponseHandler()->setPermission($this->authorization->getPermission($this));
                 $this->getResponseHandler()->processResponse($this->params, $response, $ret);
             } else {
                 $this->getDefaultResponse($response, $ret);
             }
         }  catch (HttpErrorCodeException $e){
-            $this->error = $e->getCode();
+            $this->error        = $e->getCode();
             $this->errorMessage = $e->getMessage();
         }  catch (Exception $e){
             if($this->getErrorHandler()) {
@@ -235,40 +277,6 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
      */
     protected function getDefaultErrorResponse($params, $e, &$ret){
         $ret->addError($e->getCode(), $e->getMessage());
-    }
-
-    /**
-     * Retorna l'estat d'autenticació del usuari
-     *
-     * @return bool cert si està autenticat i fals en cas contrari.
-     */
-    protected function isUserAuthenticated() {
-        global $_SERVER;
-        return $_SERVER['REMOTE_USER'] ? TRUE : FALSE;
-    }
-
-    /**
-     * Comproba si el token de seguretat està verificat o no fent servir una funció de la DokuWiki.
-     *
-     * @return bool
-     */
-    protected function isSecurityTokenVerified() {
-        return checkSecurityToken();
-    }
-
-    /**
-     * Comproba si l'usuari te el permis necessari per fer corre aquest command.
-     *
-     * @param string[] $permission hash amb els permisos del usuari
-     *
-     * @return bool
-     */
-    protected function  isAuthorized($permission) {
-        $found = sizeof($this->permissionFor) == 0 || !is_array($permission);
-        for($i = 0; !$found && $i < sizeof($permission); $i++) {
-            $found = in_array($permission[$i], $this->permissionFor);
-        }
-        return $found;
     }
 
     /**
@@ -320,24 +328,6 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
             $ret = parent::getPluginName();
         }
         return $ret;
-    }
-
-    /**
-     * Retorna l'adaptador a emprear.
-     *
-     * @return DokuModelAdapter
-     */
-    public function getModelWrapper() {
-        return $this->modelWrapper;
-    }
-
-    /**
-     * Estableix l'adaptador a emprear.
-     *
-     * @param DokuModelAdapter
-     */
-    public function setModelWrapper($mw) {
-        $this->modelWrapper = $mw;
     }
 
     /**

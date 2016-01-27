@@ -227,3 +227,39 @@ class ArrayJSonGenerator implements JsonGenerator
         $this->items[] = $jSonGenerator->getJson();
     }
 }
+
+/**
+ * Class JSonJustEncoded
+ * Implementació del JSonGenerator per un sol element que ja és un string
+ */
+class JSonJustEncoded implements JsonGenerator {
+    
+    private $value;
+
+    /**
+     * Constructor del generador que admet un valor que son les dades que volem codificar.
+     *
+     * @param mixed $valueToSend valor a codificar
+     */
+    public function __construct( $valueToSend = NULL ) {
+        if ( $valueToSend != NULL ) {
+            $this->value = $valueToSend;
+        }
+    }
+
+    /**
+     * @return string amb les dades originals.
+     */
+    public function getJson() {
+        return $this->value;
+    }
+
+    /**
+     * Retorna les dades codificades en format JSON
+     *
+     * @return string dades en format JSON
+     */
+    public function getJsonEncoded() {
+        return $this->getJson();
+    }
+}

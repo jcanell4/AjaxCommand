@@ -12,9 +12,6 @@ abstract class abstract_rest_command_class extends abstract_command_class {
     protected $supportedMethods;
     protected $defaultContentType = 'none';
 
-    /**
-     * Constructor que fa servir els paràmetres rebuts per GET com a valors per defecte.
-     */
     public function __construct() {
         parent::__construct();
         $this->types['method'] = abstract_command_class::T_STRING;
@@ -27,8 +24,8 @@ abstract class abstract_rest_command_class extends abstract_command_class {
      *
      * @param String[] $supportedFormats
      */
-    protected function setSupportedFormats($supportedFormats) {
-        $this->$supportedFormats = $supportedFormats;
+    protected function setSupportedContentTypes($supportedFormats) {
+        $this->supportedContentTypes = $supportedFormats;
     }
 
     /**
@@ -60,53 +57,48 @@ abstract class abstract_rest_command_class extends abstract_command_class {
     }
 
     /**
-     * Si la petició te els permissos necessaris i el tipus de contingut es suportat es retorna eo resultat de processar
-     * la petició.
+     * Si el tipus de contingut de la petició es suportat es retorna el resultat de processar
+     * la petició. No necessita mirar permissos.
      *
      * @param string        $method           mètode a través del qual s'ha rebut la petició
      * @param null|string[] $extra_url_params hash amb els paràmetres de la petició
-     * @param string[]|null $permission       hash amb els permisos del usuari
      *
-     * @return null|void
+     * @return null|JSON
      * @throws Exception si es detaman un mètode no implementat.
      */
-    public function dispatchRequest($method, $extra_url_params = NULL, $permission = NULL) {
+    public function dispatchRequest($method) {
         $ret = NULL;
 
-        if($this->isAuthorized($permission)) {
-            if($this->isContentTypeSupported()) {
-                switch($method) {
-                    case 'GET':
-                        $ret = $this->processGet($extra_url_params);
-                        break;
-                    case 'HEAD':
-                        $ret = $this->processHead($extra_url_params);
-                        break;
-                    case 'POST':
-                        $ret = $this->processPost($extra_url_params);
-                        break;
-                    case 'PUT':
-                        $ret = $this->processPut($extra_url_params);
-                        break;
-                    case 'DELETE':
-                        $ret = $this->processDelete($extra_url_params);
-                        break;
-                    default:
-                        /* 501 (Not Implemented) for any unknown methods */
-                        header('Allow: ' . implode($this->supportedMethods), TRUE, 501);
-                        $this->error        = TRUE;
-                        $this->errorMessage = "Error: " . $method . " does not implemented"; /*TODO internacionalitzaió (convertir missatges en variable) */
-                }
-            } else {
-                /* 406 Not Acceptable */
-                header('406 Not Acceptable');
-                $this->error        = TRUE;
-                $this->errorMessage = "Error: Content type is not accepted"; /*TODO internacionalitzaió (convertir missatges en variable) */
+        if($this->isContentTypeSupported()) {
+            switch($method) {
+                case 'GET':
+                    $ret = $this->processGet();
+                    break;
+                case 'HEAD':
+                    $ret = $this->processHead();
+                    break;
+                case 'POST':
+                    $ret = $this->processPost();
+                    break;
+                case 'PUT':
+                    $ret = $this->processPut();
+                    break;
+                case 'DELETE':
+                    $ret = $this->processDelete();
+                    break;
+                default:
+                    /* 501 (Not Implemented) for any unknown methods */
+                    header('Allow: ' . implode($this->supportedMethods), TRUE, 501);
+                    $this->error        = TRUE;
+                    $this->errorMessage = "Error: " . $method . " does not implemented"; /*TODO internacionalitzaió (convertir missatges en variable) */
             }
         } else {
+            /* 406 Not Acceptable */
+            header('406 Not Acceptable');
             $this->error        = TRUE;
-            $this->errorMessage = "permission denied";
+            $this->errorMessage = "Error: Content type is not accepted"; /*TODO internacionalitzaió (convertir missatges en variable) */
         }
+
         if($this->error && $this->throwsException) {
             throw new Exception($this->errorMessage);
         }
@@ -127,7 +119,7 @@ abstract class abstract_rest_command_class extends abstract_command_class {
      *
      * @return null
      */
-    public function processGet($extra_url_params) {
+    public function processGet() {
         return $this->methodNotAllowedResponse();
     }
 
@@ -136,7 +128,7 @@ abstract class abstract_rest_command_class extends abstract_command_class {
      *
      * @return null
      */
-    public function processHead($extra_url_params) {
+    public function processHead() {
         return $this->methodNotAllowedResponse();
     }
 
@@ -145,7 +137,7 @@ abstract class abstract_rest_command_class extends abstract_command_class {
      *
      * @return null
      */
-    public function processPost($extra_url_params) {
+    public function processPost() {
         return $this->methodNotAllowedResponse();
     }
 
@@ -154,7 +146,7 @@ abstract class abstract_rest_command_class extends abstract_command_class {
      *
      * @return null
      */
-    public function processPut($extra_url_params) {
+    public function processPut() {
         return $this->methodNotAllowedResponse();
     }
 
@@ -163,7 +155,7 @@ abstract class abstract_rest_command_class extends abstract_command_class {
      *
      * @return null
      */
-    public function processDelete($extra_url_params) {
+    public function processDelete() {
         return $this->methodNotAllowedResponse();
     }
 
@@ -173,8 +165,7 @@ abstract class abstract_rest_command_class extends abstract_command_class {
      * @return void
      */
     protected function process() {
-        // TODO[Xavi] s'hauria de fer-se return d'això?
-        $this->dispatchRequest($this->params['method']);
+        return $this->dispatchRequest($this->params['method']);
     }
 
     /**
@@ -189,7 +180,7 @@ abstract class abstract_rest_command_class extends abstract_command_class {
     /**
      * @return string resultat de processar la resposta
      */
-    protected function getResponse() {
-        return $this->process();
-    }
+//    protected function getResponse() {
+//        return $this->process();
+//    }
 }

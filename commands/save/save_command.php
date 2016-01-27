@@ -30,10 +30,7 @@ class save_command extends abstract_command_class {
         $this->types['target']      = abstract_command_class::T_STRING;
         $this->types['summary']     = abstract_command_class::T_STRING;
 
-        $defaultValues = array(
-            'id' => 'index'
-        );
-
+        $defaultValues = array('id' => 'index');
         $this->setParameters($defaultValues);
     }
 

@@ -14,21 +14,22 @@ require_once(DOKU_COMMAND . 'abstract_command_class.php');
 class login_command extends abstract_command_class {
 
     /**
-     * El constructor extableix que no es necessari estar autenticat, el tipus, els valors per defecte i els estableix
+     * El constructor extableix que no es necessari estar autenticat, el tipus,
+     * els valors per defecte i els estableix
      * com a paràmetres.
-     *
      * El valor per defecte es el paràmetre 'do' amb valor 'login'.
      */
     public function __construct() {
         parent::__construct();
-        $this->authenticatedUsersOnly = FALSE;
-        $this->types['do']            = abstract_command_class::T_STRING;
-//        $this->types['id'] = abstract_command_class::T_STRING;
-//        $this->types['u'] = abstract_command_class::T_STRING;
-//        $this->types['p'] = abstract_command_class::T_STRING;
+        $this->types['do'] = abstract_command_class::T_STRING;
 
         $defaultValues = array('do' => 'login');
         $this->setParameters($defaultValues);
+    }
+
+    public function init($modelManager = NULL) {
+        parent::init($modelManager);
+        $this->authenticatedUsersOnly = FALSE;
     }
 
     /**
@@ -50,9 +51,9 @@ class login_command extends abstract_command_class {
         );
 
         if($this->params['do'] === 'login') {
-            $response["loginResult"] = $this->isUserAuthenticated();
+            $response["loginResult"] = $this->authorization->isUserAuthenticated();
             $response["userId"]=  $this->params['u'];
-        } else if($this->isUserAuthenticated()) {
+        } else if($this->authorization->isUserAuthenticated()) {
             $this->_logoff();
             $response["loginResult"] = FALSE;
         }
@@ -62,8 +63,7 @@ class login_command extends abstract_command_class {
     /**
      * Afegeix una resposta de tipus LOGIN_INFO al generador de respostes a partir de la informació passada com argument.
      *
-     * @param array                    $response          array associatiu amb els valors de 'loginRequest' i
-     *                                                    'loginResult'
+     * @param array $response array associatiu amb els valors de 'loginRequest' i 'loginResult'
      * @param AjaxCmdResponseGenerator $responseGenerator objecte al que s'afegirà la resposta
      *
      * @return void
