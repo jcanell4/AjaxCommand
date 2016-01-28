@@ -321,7 +321,7 @@ class AjaxCmdResponseGenerator
      * @param string $draft
      * @param string[] $editing - Editing params
      */
-    public function addWikiCodeDoc($id, $ns, $title, $content, $draft, $recover_draft, $editing)
+    public function addWikiCodeDoc($id, $ns, $title, $content, $draft, $recover_draft, $editing, $rev= NULL)
     {
         $contentData = array(
             'id' => $id,
@@ -330,7 +330,8 @@ class AjaxCmdResponseGenerator
             'content' => $content,
             'draft' => $draft,
             'recover_draft' => $recover_draft,
-            'editing' => $editing
+            'editing' => $editing,
+            'rev' => $rev
         );
 
         $this->response->add(
@@ -616,7 +617,7 @@ class AjaxCmdResponseGenerator
                     $aMeta = $meta;
 		}
 		$this->response->add(
-			new JSonGeneratorImpl( 
+			new JSonGeneratorImpl(
                                 JSonGenerator::EXTRA_META_INFO,
 			        array(
 				    "id"   => $id,
@@ -723,7 +724,7 @@ class AjaxCmdResponseGenerator
 	 *
 	 */
 	public function addRevisionsTypeResponse( $id, $revisions ) {
-		$this->add( 
+		$this->add(
                         JSonGenerator::REVISIONS_TYPE
                       , array(
                             'id'        => $id,
@@ -744,13 +745,13 @@ class AjaxCmdResponseGenerator
 	 *
 	 */
 	public function addExtraContentStateResponse( $id, $type, $value ) {
-		$this->add( 
+		$this->add(
                         JSonGenerator::EXTRA_CONTENT_STATE
                       , array(
                             'id'    => $id,
                             'type'  => $type,
                             'value' => $value
-                        ) 
+                        )
                 );
 	}
 
