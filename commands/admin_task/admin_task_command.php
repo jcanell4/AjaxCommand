@@ -33,7 +33,8 @@ class admin_task_command extends abstract_command_class {
   * @return array amb la informació de la pàgina formatada amb 'id', 'tittle' i 'content'
   */
   protected function process() {
-    $contentData = $this->modelWrapper->getAdminTask($this->params['page'], $this->params['id']);
+//    $contentData = $this->modelWrapper->getAdminTask($this->params['page'], $this->params['id']);
+    $contentData = $this->modelWrapper->getAdminTask($this->params);
     return $contentData;
   }
 

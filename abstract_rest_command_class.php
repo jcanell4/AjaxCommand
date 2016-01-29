@@ -20,19 +20,12 @@ abstract class abstract_rest_command_class extends abstract_command_class {
     }
 
     /**
-     * Constructor que fa servir els paràmetres rebuts per GET com a valors per defecte.
-     */
-    public function init($modelManager = NULL) {
-        parent::init($modelManager);
-    }
-
-    /**
      * TODO[Xavi] No es fa servir?
      *
      * @param String[] $supportedFormats
      */
-    protected function setSupportedFormats($supportedFormats) {
-        $this->$supportedFormats = $supportedFormats;
+    protected function setSupportedContentTypes($supportedFormats) {
+        $this->supportedContentTypes = $supportedFormats;
     }
 
     /**
