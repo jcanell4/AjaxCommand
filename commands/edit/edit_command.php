@@ -53,13 +53,8 @@ class edit_command extends abstract_command_class {
     }
 
     private function _sendEditPageResponse($recover) {
-        return $this->modelWrapper->getCodePage(
-                        $this->params['id'],
-                        $this->params['rev'],
-                        $this->params['range'],
-                        $this->types['summary'],
-                        $recover
-                );
+        $this->params["recover"] = $recover;
+        return $this->modelWrapper->getCodePage($this->params);
     }
 
     private function _sendDraftDialogResponse() {
