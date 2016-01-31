@@ -22,7 +22,7 @@ class admin_task_command extends abstract_command_class {
   public function __construct() {
     parent::__construct();
     $this->types['do'] = abstract_command_class::T_STRING;
-
+    $this->setPermissionFor(array('admin','manager'));
     $defaultValues = array('do' => 'admin');
     $this->setParameters($defaultValues);
   }
@@ -33,7 +33,8 @@ class admin_task_command extends abstract_command_class {
   * @return array amb la informació de la pàgina formatada amb 'id', 'tittle' i 'content'
   */
   protected function process() {
-    $contentData = $this->modelWrapper->getAdminTask($this->params['page'], $this->params['id']);
+//    $contentData = $this->modelWrapper->getAdminTask($this->params['page'], $this->params['id']);
+    $contentData = $this->modelWrapper->getAdminTask($this->params);
     return $contentData;
   }
 

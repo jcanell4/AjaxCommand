@@ -78,20 +78,14 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
     public function setModelManager($modelManager) {
         $this->modelWrapper  = $modelManager->getModelWrapperManager();
         $this->authorization = $modelManager->getAuthorizationManager($this->getNameCommandClass(), $this);
-//        PROVES DE PERMISSOS
-//        $permission = $this->authorization->getPermission();
-//        if ($permission->getPermissionFor()) {
-//            $permission->setPermissionFor(FALSE);
-//        }else{
-//            $permission->setPermissionFor(TRUE);
-//        }
     }
     
     /**
      * @return string (nom del command a partir del nom de la clase)
      */
     public function getNameCommandClass() {
-        return preg_replace('/_command$/', '', get_class($this));
+        $className = preg_replace('/_command$/', '', get_class($this));
+        return $className;
     }
 
     public function getParams() {
@@ -110,6 +104,10 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
         return $this->permissionFor;
     }
 
+    protected function setPermissionFor($permissionFor) {
+        $this->permissionFor = $permissionFor;
+    }
+  
     public function getAuthenticatedUsersOnly() {
         return $this->authenticatedUsersOnly;
     }
