@@ -46,7 +46,10 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
     public $errorMessage = '';
     public $throwsException = FALSE;
 
-    public function __construct() {}
+    public function __construct( $modelWrapper = NULL, $authorization=NULL ) {
+        $this->modelWrapper=$modelWrapper;
+        $this->authorization=$authorization;
+    }
 
     /**
      * Constructor en el que s'assigna un nou DokuModelAdapter a la classe
@@ -76,8 +79,12 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
      * @param modelManager
      */
     public function setModelManager($modelManager) {
-        $this->modelWrapper  = $modelManager->getModelWrapperManager();
-        $this->authorization = $modelManager->getAuthorizationManager($this->getNameCommandClass(), $this);
+        if(!$this->modelWrapper){
+            $this->modelWrapper  = $modelManager->getModelWrapperManager();
+        }
+        if(!$this->authorization){
+            $this->authorization = $modelManager->getAuthorizationManager($this->getNameCommandClass(), $this);
+        }
     }
     
     /**
