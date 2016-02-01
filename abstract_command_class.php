@@ -201,7 +201,7 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
     public function run() {
         $ret = NULL;
         $permission = $this->authorization->getPermission($this);
-        if ($this->authorization->canRun($permission)) {
+        if ($this->authorization->canRun($permission) === AbstractCommandAuthorization::AUTH_OK) {
             $ret = $this->getResponse();
             
             if($permission->isDenied()) {

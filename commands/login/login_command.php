@@ -46,8 +46,8 @@ class login_command extends abstract_command_class {
      */
     protected function process() {
         $response = array(
-            "loginRequest"  => $this->params['do'] === 'login'
-            , "loginResult" => FALSE
+             "loginRequest"  => $this->params['do'] === 'login'
+            ,"loginResult" => FALSE
         );
 
         if($this->params['do'] === 'login') {
