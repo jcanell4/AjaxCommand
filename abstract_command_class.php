@@ -201,10 +201,11 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
     public function run() {
         $ret = NULL;
         $permission = $this->authorization->getPermission($this);
-        if ($this->authorization->canRun($permission) === AbstractCommandAuthorization::AUTH_OK) {
+        $retAuth = $this->authorization->canRun($permission);
+        if ($retAuth === AbstractCommandAuthorization::AUTH_OK) {
             $ret = $this->getResponse();
             
-            if($permission->isDenied()) {
+            if ($permission->isDenied()) {
                 $this->error        = 403;
                 $this->errorMessage = "permission denied"; /*TODO internacionalització */
             }
@@ -213,7 +214,10 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
             $this->error        = 403;
             $this->errorMessage = "permission denied"; /*TODO internacionalització */
         }
-        if($this->error && $this->throwsException) {
+        if ($this->authorization->getAuthorizationError('error') && $this->throwsException) {
+            throw new Exception($this->authorization->getAuthorizationError('exception'));
+        }
+        if ($this->error && $this->throwsException) {
             throw new Exception($this->errorMessage);
         }
         return $ret;
