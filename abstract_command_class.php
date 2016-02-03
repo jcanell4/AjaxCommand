@@ -94,8 +94,11 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
         return $className;
     }
 
-    public function getParams() {
-        return $this->params;
+    public function getParams($key=NULL) {
+        if ($key)
+            return $this->params[$key];
+        else
+            return $this->params;
     }
 
     public function getTypes() {
