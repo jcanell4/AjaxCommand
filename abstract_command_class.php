@@ -219,7 +219,7 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
     }
     
     protected function handleError($e, &$responseGenerator){
-        if($this->authorization->getAuthorizationError('error')>=1000){
+        if($e->getCode() >= 1000){
             if($this->getErrorHandler()) {
                 $this->getErrorHandler()->processResponse($this->params, $e, $responseGenerator);
             } else {
