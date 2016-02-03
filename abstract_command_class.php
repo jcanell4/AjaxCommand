@@ -46,9 +46,9 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
     public $errorMessage = '';
     public $throwsException = FALSE;
 
-    public function __construct( $modelWrapper = NULL, $authorization=NULL ) {
-        $this->modelWrapper=$modelWrapper;
-        $this->authorization=$authorization;
+    public function __construct( $modelWrapper=NULL, $authorization=NULL ) {
+        $this->modelWrapper  = $modelWrapper;
+        $this->authorization = $authorization;
     }
 
     /**
@@ -215,7 +215,8 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
             $this->errorMessage = "permission denied"; /*TODO internacionalització */
         }
         if ($this->authorization->getAuthorizationError('error') && $this->throwsException) {
-            throw new Exception($this->authorization->getAuthorizationError('exception'));
+            $e = $this->authorization->getAuthorizationError('exception');
+            throw new $e();
         }
         if ($this->error && $this->throwsException) {
             throw new Exception($this->errorMessage);

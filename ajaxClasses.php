@@ -176,7 +176,7 @@ class ajaxCall {
         if($command->error) {
             /**[TO DO] Controll exceptions**/
             if(is_object($command->error)){
-                $ret = $command->errorMessage->getMessage();
+                $ret = $command->error->getMessage();
             }else{
                 header($command->errorMessage, TRUE, $command->error);
                 $ret = $command->errorMessage;
