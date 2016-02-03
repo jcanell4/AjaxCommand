@@ -44,7 +44,6 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
 
     public $error = FALSE;
     public $errorMessage = '';
-    public $throwsException = FALSE;
 
     public function __construct( $modelWrapper=NULL, $authorization=NULL ) {
         $this->modelWrapper  = $modelWrapper;
@@ -211,17 +210,22 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
             }
         
         } else {
-            $this->error        = 403;
-            $this->errorMessage = "permission denied"; /*TODO internacionalització */
-        }
-        if ($this->authorization->getAuthorizationError('error') && $this->throwsException) {
             $e = $this->authorization->getAuthorizationError('exception');
-            throw new $e();
-        }
-        if ($this->error && $this->throwsException) {
-            throw new Exception($this->errorMessage);
+            $responseGenerator = new AjaxCmdResponseGenerator();
+            $this->handleError(new $e(), $responseGenerator);
+            $ret = $responseGenerator->getResponse();
         }
         return $ret;
+    }
+    
+    protected function handleError($e, &$responseGenerator){
+        if($this->authorization->getAuthorizationError('error')>=1000){
+            if($this->getErrorHandler()) {
+                $this->getErrorHandler()->processResponse($this->params, $e, $responseGenerator);
+            } else {
+                $this->getDefaultErrorResponse($this->params, $e, $responseGenerator);
+            }            
+        }
     }
 
     /**
@@ -248,11 +252,7 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
             $this->error        = $e->getCode();
             $this->errorMessage = $e->getMessage();
         }  catch (Exception $e){
-            if($this->getErrorHandler()) {
-                $this->getErrorHandler()->processResponse($this->params, $e, $ret);
-            } else {
-                $this->getDefaultErrorResponse($this->params, $e, $ret);
-            }            
+            $this->handleError($e, $ret);
         }
 
         $jsonResponse = $ret->getResponse();
