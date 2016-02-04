@@ -30,7 +30,7 @@ class save_command extends abstract_command_class {
         $this->types['target']      = abstract_command_class::T_STRING;
         $this->types['summary']     = abstract_command_class::T_STRING;
 
-        $defaultValues = array('id' => 'index');
+        $defaultValues = array('id' => 'index', 'do' =>'save');
         $this->setParameters($defaultValues);
     }
 
@@ -40,12 +40,7 @@ class save_command extends abstract_command_class {
      * @return array amb la informació de la pàgina 'id', 'ns', 'tittle' i 'content'
      */
     protected function process() {
-        $ret = $this->modelWrapper->saveEdition(
-                                  $this->params['id'], $this->params['rev'],
-                                  $this->params['range'], $this->params['date'],
-                                  $this->params['prefix'], $this->params['wikitext'],
-                                  $this->params['suffix'], $this->params['summary']
-        );
+        $ret = $this->modelWrapper->saveEdition($this->params);
         return $ret;
     }
 

@@ -266,7 +266,6 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
           $jsonResponse = "<html><body><textarea>" . $jsonResponse . "</textarea></body></html>";   
        }
         
-        return $jsonResponse;
     }
 
     /**
