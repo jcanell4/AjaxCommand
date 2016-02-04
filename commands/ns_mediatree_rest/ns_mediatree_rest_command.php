@@ -39,4 +39,11 @@ class ns_mediatree_rest_command extends ns_tree_rest_command {
         return $strData;
 
     }
+    
+     /**
+     * @return string Nnom de l'autorització a fer servir
+     */
+    public function getAuthorizationType() {
+        return "_none";
+    }
 }

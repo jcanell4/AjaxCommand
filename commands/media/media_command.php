@@ -81,7 +81,7 @@ class media_command extends abstract_command_class {
      *                 modificat pels valors de $params per a definir subclasses específiques
      *                 amb autoritzacions específiques)
      */
-    public function getNameCommandClass() {
+    public function getAuthorizationType() {
         $className = preg_replace('/_command$/', '', get_class($this));
         if ($this->params['delete']) {
             $className .= "_delete";

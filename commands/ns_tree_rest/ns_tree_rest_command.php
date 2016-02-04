@@ -118,4 +118,11 @@ class ns_tree_rest_command extends abstract_rest_command_class {
     function getDefaultResponse( $response, &$ret ) {
 	$ret->setEncodedResponse($response);
     }
+
+    /**
+     * @return string Nnom de l'autorització a fer servir
+     */
+    public function getAuthorizationType() {
+        return "_none";
+    }
 }

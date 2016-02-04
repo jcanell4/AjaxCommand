@@ -74,4 +74,8 @@ class cancel_partial_command extends abstract_command_class
     {
         $ret->addInfoDta(" default ");
     }
+    
+    public function getAuthorizationType() {
+        return "cancel";
+    }
 }
