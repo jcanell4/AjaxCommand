@@ -79,4 +79,9 @@ class edit_partial_command extends abstract_command_class
             $response["title"], $response["content"]
         );
     }
+    
+    public function getAuthorizationType() {
+        return "edit";
+    }
+
 }

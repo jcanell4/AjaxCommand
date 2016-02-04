@@ -82,14 +82,14 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
             $this->modelWrapper  = $modelManager->getModelWrapperManager();
         }
         if(!$this->authorization){
-            $this->authorization = $modelManager->getAuthorizationManager($this->getNameCommandClass(), $this);
+            $this->authorization = $modelManager->getAuthorizationManager($this->getAuthorizationType(), $this);
         }
     }
     
     /**
      * @return string (nom del command a partir del nom de la clase)
      */
-    public function getNameCommandClass() {
+    public function getAuthorizationType() {
         $className = preg_replace('/_command$/', '', get_class($this));
         return $className;
     }
@@ -204,8 +204,9 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
         $ret = NULL;
         $permission = $this->authorization->getPermission($this);
         $retAuth = $this->authorization->canRun($permission);
-        if ($retAuth === AbstractCommandAuthorization::AUTH_OK) {
-            $ret = $this->getResponse();
+        //if ($retAuth === AbstractCommandAuthorization::AUTH_OK) { //JA NO CAL RETORNAR CODI. N'HI HA PROU AMB L'EXCEPCTION
+        if ($retAuth) {
+            $ret = $this->getResponse($permission);
             
             if ($permission->isDenied()) {
                 $this->error        = 403;
@@ -240,13 +241,13 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
      *
      * @return string resposta processada en format JSON
      */
-    protected function getResponse() {
+    protected function getResponse($permission) {
         $ret = new AjaxCmdResponseGenerator();
         try{
             $response = $this->process();
 
             if($this->getResponseHandler()) {
-                $this->getResponseHandler()->setPermission($this->authorization->getPermission($this));
+                $this->getResponseHandler()->setPermission($permission);
                 $this->getResponseHandler()->processResponse($this->params, $response, $ret);
             } else {
                 $this->getDefaultResponse($response, $ret);
