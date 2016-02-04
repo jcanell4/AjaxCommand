@@ -265,7 +265,6 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
         if (isset($this->params['iframe'])) {
           $jsonResponse = "<html><body><textarea>" . $jsonResponse . "</textarea></body></html>";   
        }
-        
         return $jsonResponse;
     }
 
