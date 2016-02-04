@@ -58,12 +58,7 @@ class edit_command extends abstract_command_class {
     }
 
     private function _sendDraftDialogResponse() {
-        return $this->modelWrapper->getDraftDialog(
-                        $this->params['id'],
-                        $this->params['rev'],
-                        $this->params['range'],
-                        $this->types['summary']
-                );
+        return $this->modelWrapper->getDraftDialog($this->params);
     }
 
     /**
