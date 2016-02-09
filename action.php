@@ -26,37 +26,38 @@ function action_plugin_ajaxcommand_tplIncDir() {
  */
 class action_plugin_ajaxcommand extends DokuWiki_Action_Plugin {
 
-    /**
-     * Aquest mètode registra els handlers del plugin als events de la DokuWiki.
-     *
-     * @param Doku_Event_Handler $controller controlador d'events de la DokuWiki
-     */
-    function register(&$controller) {
-        $controller->register_hook(
-                   'WIOC_PROCESS_RESPONSE_edit', 'AFTER', $this,
-                   'processCmd'
-        );
-        //[END TODO]
-    }
-
-    /**
-     * @param Doku_Event $event
-     * @param mixed      $param
-     * [TODO Josep] This method should be located in the plugin aceeditor, 
-     * but for now, we keep the method here, to  don't modify the plugin aceeditor.
-     */
-    function processCmd(&$event, $param) {
-        if($event->data != NULL && defined("cfgIdConstants::SAVE_BUTTON")) {
-            $event->data["ajaxCmdResponseGenerator"]->addProcessFunction(
-                                                   TRUE,
-                                                   "ioc/dokuwiki/processAceEditor",
-                                                   array(
-                                                       "id"         => $event->data["responseData"]["id"],
-                                                       "key"        => "edit_ace",
-                                                       "buttonId"   => cfgIdConstants::SAVE_BUTTON,
-                                                       "textAreaId" => 'wiki__text',
-                                                   )
-            );
-        }
-    }
+    //TODO[Xavi] Pendent d'eliminar o adaptar per una altre tasca, ja no existeix el processAceEditor
+//    /**
+//     * Aquest mètode registra els handlers del plugin als events de la DokuWiki.
+//     *
+//     * @param Doku_Event_Handler $controller controlador d'events de la DokuWiki
+//     */
+//    function register(&$controller) {
+//        $controller->register_hook(
+//                   'WIOC_PROCESS_RESPONSE_edit', 'AFTER', $this,
+//                   'processCmd'
+//        );
+//        //[END TODO]
+//    }
+//
+//    /**
+//     * @param Doku_Event $event
+//     * @param mixed      $param
+//     * [TODO Josep] This method should be located in the plugin aceeditor,
+//     * but for now, we keep the method here, to  don't modify the plugin aceeditor.
+//     */
+//    function processCmd(&$event, $param) {
+//        if($event->data != NULL && defined("cfgIdConstants::SAVE_BUTTON")) {
+//            $event->data["ajaxCmdResponseGenerator"]->addProcessFunction(
+//                                                   TRUE,
+//                                                   "ioc/dokuwiki/processAceEditor",
+//                                                   array(
+//                                                       "id"         => $event->data["responseData"]["id"],
+//                                                       "key"        => "edit_ace",
+//                                                       "buttonId"   => cfgIdConstants::SAVE_BUTTON,
+//                                                       "textAreaId" => 'wiki__text',
+//                                                   )
+//            );
+//        }
+//    }
 }
