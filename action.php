@@ -27,18 +27,18 @@ function action_plugin_ajaxcommand_tplIncDir() {
 class action_plugin_ajaxcommand extends DokuWiki_Action_Plugin {
 
     //TODO[Xavi] Pendent d'eliminar o adaptar per una altre tasca, ja no existeix el processAceEditor
-//    /**
-//     * Aquest mètode registra els handlers del plugin als events de la DokuWiki.
-//     *
-//     * @param Doku_Event_Handler $controller controlador d'events de la DokuWiki
-//     */
-//    function register(&$controller) {
+    /**
+     * Aquest mètode registra els handlers del plugin als events de la DokuWiki.
+     *
+     * @param Doku_Event_Handler $controller controlador d'events de la DokuWiki
+     */
+    function register(&$controller) {
 //        $controller->register_hook(
 //                   'WIOC_PROCESS_RESPONSE_edit', 'AFTER', $this,
 //                   'processCmd'
 //        );
-//        //[END TODO]
-//    }
+        //[END TODO]
+    }
 //
 //    /**
 //     * @param Doku_Event $event
