@@ -223,9 +223,10 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
     }
     
     protected function handleError($e, &$responseGenerator){
-        if($e->getCode() >= 1000){
-            if($this->getErrorHandler()) {
-                $this->getErrorHandler()->processResponse($this->params, $e, $responseGenerator);
+        if ($e->getCode() >= 1000){
+            $error_handler = $this->getErrorHandler();
+            if ($error_handler) {
+                $error_handler->processResponse($this->params, $e, $responseGenerator);
             } else {
                 $this->getDefaultErrorResponse($this->params, $e, $responseGenerator);
             }            
@@ -243,19 +244,20 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
      */
     protected function getResponse($permission) {
         $ret = new AjaxCmdResponseGenerator();
-        try{
+        try {
             $response = $this->process();
+            $response_handler = $this->getResponseHandler();
 
-            if($this->getResponseHandler()) {
-                $this->getResponseHandler()->setPermission($permission);
-                $this->getResponseHandler()->processResponse($this->params, $response, $ret);
+            if ($response_handler) {
+                $response_handler->setPermission($permission);
+                $response_handler->processResponse($this->params, $response, $ret);
             } else {
                 $this->getDefaultResponse($response, $ret);
             }
-        }  catch (HttpErrorCodeException $e){
+        } catch (HttpErrorCodeException $e){
             $this->error        = $e->getCode();
             $this->errorMessage = $e->getMessage();
-        }  catch (Exception $e){
+        } catch (Exception $e){
             $this->handleError($e, $ret);
         }
 

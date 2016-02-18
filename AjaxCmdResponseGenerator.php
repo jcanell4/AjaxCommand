@@ -759,6 +759,7 @@ class AjaxCmdResponseGenerator
     {
         $contentData = $structure;
 
+
         $this->response->add(
             new JSonGeneratorImpl(
                 JSonGenerator::HTML_PARTIAL_TYPE,

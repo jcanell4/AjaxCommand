@@ -26,7 +26,7 @@ function action_plugin_ajaxcommand_tplIncDir() {
  */
 class action_plugin_ajaxcommand extends DokuWiki_Action_Plugin {
 
-//    TODO[Xavi] Pendent d'eliminar o adaptar per una altre tasca, ja no existeix el processAceEditor
+    //TODO[Xavi] Pendent d'eliminar o adaptar per una altre tasca, ja no existeix el processAceEditor
     /**
      * Aquest mètode registra els handlers del plugin als events de la DokuWiki.
      *
