@@ -42,5 +42,9 @@ class unlock_command extends abstract_command_class {
 
         $ret->addInfoDta($response['info']);
 
+        $id = $response['id'];
+        $timeout = $response['timeout'];
+
+        $ret->addRefreshLock($id, $timeout);
     }
 }

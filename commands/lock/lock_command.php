@@ -29,6 +29,7 @@ class lock_command extends abstract_command_class {
     protected function process() {
         $draft =json_decode($this->params['draft'], true);
 
+        // TODO[Xavi] El draft es guardarà en un altra command
         if ($draft) {
             $this->modelWrapper->saveDraft($draft);
         }
