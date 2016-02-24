@@ -204,7 +204,6 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
         $ret = NULL;
         $permission = $this->authorization->getPermission($this);
         $retAuth = $this->authorization->canRun($permission);
-        //if ($retAuth === AbstractCommandAuthorization::AUTH_OK) { //JA NO CAL RETORNAR CODI. N'HI HA PROU AMB L'EXCEPCTION
         if ($retAuth) {
             $ret = $this->getResponse($permission);
             
