@@ -772,13 +772,14 @@ class AjaxCmdResponseGenerator
      * @param $id - id del document
      * @param $timeout
      */
-    public function addRefreshLock($id, $timeout)
+    public function addRefreshLock($id, $ns, $timeout)
     {
         $this->response->add(
             new JSonGeneratorImpl(
                 JSonGenerator::LOCK_DATA,
                 [
                     'id' => $id,
+                    'ns' => $ns,
                     'timeout' => $timeout,
                 ])
         );

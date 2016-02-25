@@ -27,12 +27,6 @@ class lock_command extends abstract_command_class {
      * @return string[] array associatiu amb la resposta formatada (id, ns, tittle i content)
      */
     protected function process() {
-        $draft =json_decode($this->params['draft'], true);
-
-        // TODO[Xavi] El draft es guardarà en un altra command
-        if ($draft) {
-            $this->modelWrapper->saveDraft($draft);
-        }
 
         return $this->modelWrapper->lock($this->params['id']);
     }
@@ -47,11 +41,13 @@ class lock_command extends abstract_command_class {
      */
     protected function getDefaultResponse($response, &$ret) {
 
+        // Alerta[Xavi] es identic al unlock_command
         $ret->addInfoDta($response['info']);
 
         $id = $response['id'];
+        $ns = $response['ns'];
         $timeout = $response['timeout'];
 
-        $ret->addRefreshLock($id, $timeout);
+        $ret->addRefreshLock($id, $ns, $timeout);
     }
 }
