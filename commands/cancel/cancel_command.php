@@ -21,10 +21,6 @@ class cancel_command extends abstract_command_class {
         $this->types['id'] = abstract_command_class::T_STRING;
     }
 
-    public function init() {
-        parent::init();
-    }
-
     /**
      * Cancela la edició.
      *

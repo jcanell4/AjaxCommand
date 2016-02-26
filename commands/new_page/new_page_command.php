@@ -23,10 +23,6 @@ class new_page_command extends abstract_command_class {
         //$this->permissionFor =  DokuModelAdapter::ADMIN_PERMISSION;
     }
 
-    public function init() {
-        parent::init();
-    }
-
     /**
      * Retorna la pàgina corresponent a la 'id' i 'rev'.
      *
