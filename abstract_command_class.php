@@ -206,12 +206,6 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
         $retAuth = $this->authorization->canRun($permission);
         if ($retAuth) {
             $ret = $this->getResponse($permission);
-            
-            if ($permission->isDenied()) {
-                $this->error        = 403;
-                $this->errorMessage = "permission denied"; /*TODO internacionalització */
-            }
-        
         } else {
             $e = $this->authorization->getAuthorizationError('exception');
             $responseGenerator = new AjaxCmdResponseGenerator();
