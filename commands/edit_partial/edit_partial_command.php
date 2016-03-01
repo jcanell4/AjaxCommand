@@ -52,13 +52,15 @@ class edit_partial_command extends abstract_command_class
             $this->modelWrapper->clearFullDraft($this->params['id']);
         }
 
-        $contentData = $this->modelWrapper->getPartialEdit(
-            $this->params['id'],
-            $this->params['rev'],
-            $this->params['summary'],
-            $this->params['section_id'],
-            $editingChunks,
-            isset($this->params['recover_draft']) ? $this->params['recover_draft']==='true' :null);
+        $contentData = $this->modelWrapper->getPartialEdit($this->params);
+                
+//        $contentData = $this->modelWrapper->getPartialEdit(
+//            $this->params['id'],
+//            $this->params['rev'],
+//            $this->params['summary'],
+//            $this->params['section_id'],
+//            $editingChunks,
+//            isset($this->params['recover_draft']) ? $this->params['recover_draft']==='true' :null);
 
         return $contentData;
     }
