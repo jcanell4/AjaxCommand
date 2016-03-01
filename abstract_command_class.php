@@ -353,5 +353,5 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
      *
      * @return mixed varia segons la implementació del command
      */
-    protected abstract function process();
+    protected abstract function process($permission=NULL);
 }
