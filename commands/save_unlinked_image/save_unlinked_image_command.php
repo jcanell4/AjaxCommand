@@ -150,7 +150,7 @@ class save_unlinked_image_command extends abstract_command_class {
                 $contentFile = base64_decode(file_get_contents($filePath));
                 file_put_contents($filePath, $contentFile);
                 if (file_exists($imagePath)) {//El nom de fitxer ja existeix
-                    unlink($pathFile); //Elimina el fitxer temporal
+                    unlink($filePath); //Elimina el fitxer temporal
                     $response = self::$FILENAME_EXISTS_CODE;
                 } else {
                     if ($this->modelWrapper->uploadImage($nsImage, $nameImage, $filePath)==0) {
