@@ -29,7 +29,7 @@ class new_page_command extends abstract_command_class {
      * @return array amb la informació de la pàgina formatada amb 'id', 'ns', 'tittle' i 'content'
      */
     protected function process($permission) {
-        $this->modelWrapper->updatePermission($pemission);
+        $this->modelWrapper->updatePermission($permission);
         $contentData = $this->modelWrapper->createPage($this->params);
         return $contentData;
     }

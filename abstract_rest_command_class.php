@@ -164,7 +164,7 @@ abstract class abstract_rest_command_class extends abstract_command_class {
      *
      * @return void
      */
-    protected function process() {
+    protected function process($permission=NULL) {
         return $this->dispatchRequest($this->params['method']);
     }
 
