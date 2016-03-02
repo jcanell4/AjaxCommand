@@ -5,6 +5,7 @@ if (!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_PLUGIN . "ajaxcommand/
 require_once(DOKU_COMMAND . 'AjaxCmdResponseGenerator.php');
 require_once(DOKU_COMMAND . 'JsonGenerator.php');
 require_once(DOKU_COMMAND . 'abstract_command_class.php');
+require_once(DOKU_COMMAND . 'requestparams/PageKeys.php');
 //require_once (DOKU_COMMAND.'DokuModelWrapper.php');
 
 /**
@@ -44,8 +45,8 @@ class save_partial_command extends abstract_command_class
      *
      * @return array amb la informació de la pàgina 'id', 'ns', 'tittle' i 'content'
      */
-    protected function process()
-    {
+    protected function process(){
+        $this->params[PageKeys::KEY_EDITING_CHUNKS]=  $this->params[PageKeys::KEY_IN_EDITING_CHUNKS];
         $contentData = $this->modelWrapper->savePartialEdition($this->params);
 //        $contentData = $this->modelWrapper->savePartialEdition(
 //            $this->params['id'], $this->params['rev'],

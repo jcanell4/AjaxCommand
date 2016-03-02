@@ -5,7 +5,7 @@ if (!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_PLUGIN . "ajaxcommand/
 require_once(DOKU_COMMAND . 'AjaxCmdResponseGenerator.php');
 require_once(DOKU_COMMAND . 'JsonGenerator.php');
 require_once(DOKU_COMMAND . 'abstract_command_class.php');
-//require_once (DOKU_COMMAND.'DokuModelWrapper.php');
+require_once (DOKU_COMMAND.'requestparams/PageKeys.php');
 
 /**
  * Class save_command
@@ -46,8 +46,8 @@ class cancel_partial_command extends abstract_command_class
      */
     protected function process()
     {
-        $editingChunks = explode(',', $this->params['editing_chunks']);
-        $key = array_search($this->params['section_id'], $editingChunks);
+        $editingChunks = explode(',', $this->params[PageKeys::KEY_IN_EDITING_CHUNKS]);
+        $key = array_search($this->params[PageKeys::KEY_SECTION_ID], $editingChunks);
 
         if ($key !== false) {
             unset($editingChunks[$key]);
@@ -57,7 +57,7 @@ class cancel_partial_command extends abstract_command_class
 //            $this->params['id'], $this->params['rev'], $this->params['summary'], $this->params['section_id'], $editingChunks,
 //            $this->params['keep_draft']
 //        );
-        $this->params['editingChunks']=$editingChunks;
+        $this->params[PageKeys::KEY_EDITING_CHUNKS]=$editingChunks;
         $contentData = $this->modelWrapper->cancelPartialEdition($this->params);
 
 
