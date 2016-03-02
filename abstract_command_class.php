@@ -41,6 +41,8 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
     
     protected $authorization;
     protected $modelWrapper;
+    
+    protected $permission;
 
     public $error = FALSE;
     public $errorMessage = '';
@@ -212,10 +214,10 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
      */
     public function run() {
         $ret = NULL;
-        $permission = $this->authorization->getPermission($this);
+        $this->permission = $this->authorization->getPermission($this);
         $retAuth = $this->authorization->canRun();
         if ($retAuth) {
-            $ret = $this->getResponse($permission);
+            $ret = $this->getResponse();
         } else {
             $e = $this->authorization->getAuthorizationError('exception');
             $responseGenerator = new AjaxCmdResponseGenerator();
@@ -245,14 +247,14 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
      *
      * @return string resposta processada en format JSON
      */
-    protected function getResponse($permission) {
+    protected function getResponse() {
         $ret = new AjaxCmdResponseGenerator();
         try {
-            $response = $this->process($permission);
+            $response = $this->process();
             $response_handler = $this->getResponseHandler();
 
             if ($response_handler) {
-                $response_handler->setPermission($permission);
+                $response_handler->setPermission($this->permission);
                 $response_handler->processResponse($this->params, $response, $ret);
             } else {
                 $this->getDefaultResponse($response, $ret);
@@ -363,5 +365,5 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
      *
      * @return mixed varia segons la implementació del command
      */
-    protected abstract function process($permission=NULL);
+    protected abstract function process();
 }
