@@ -27,11 +27,7 @@ class cancel_command extends abstract_command_class {
      * @return string[] array associatiu amb la resposta formatada (id, ns, tittle i content)
      */
     protected function process() {
-        $contentData = $this->modelWrapper->cancelEdition(
-                                          $this->params['id'],
-                                          $this->params['rev'],
-                                          $this->params['keep_draft']
-                        );
+        $contentData = $this->modelWrapper->cancelEdition($this->params);
         return $contentData;
     }
 

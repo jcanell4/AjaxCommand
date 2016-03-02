@@ -9,6 +9,8 @@
 if(!defined('DOKU_INC')) define('DOKU_INC', dirname(__FILE__) . '/../../../');
 require_once(DOKU_INC . 'inc/init.php');
 require_once(DOKU_INC . 'inc/template.php');
+require_once(DOKU_INC . 'lib/plugins/ownInit/WikiGlobalConfig.php');
+
 if(!defined('DOKU_COMMANDS')) define('DOKU_COMMANDS', dirname(__FILE__) . '/commands/');
 if(!defined('SECTOK_PARAM')) define('SECTOK_PARAM', 0);
 
@@ -137,11 +139,12 @@ class ajaxCall {
     function callCommand( $respHandDir=NULL ) {
         $respHandObj = NULL;
 
-        if (is_callable('tpl_incdir')) {
-            $tplincdir = tpl_incdir();
-        } else {
-            $tplincdir = DOKU_TPLINC;
-        }
+        $tplincdir = WikiGlobalConfig::tplIncDir();
+//        if (is_callable('tpl_incdir')) {
+//            $tplincdir = tpl_incdir();
+//        } else {
+//            $tplincdir = DOKU_TPLINC;
+//        }
 
         if (!$respHandDir){
             $respHandDir = $tplincdir . 'cmd_response_handler/';

@@ -30,7 +30,7 @@ class new_page_command extends abstract_command_class {
      */
     protected function process($permission) {
         $this->modelWrapper->updatePermission($pemission);
-        $contentData = $this->modelWrapper->createPage($this->params['id']);
+        $contentData = $this->modelWrapper->createPage($this->params);
         return $contentData;
     }
 

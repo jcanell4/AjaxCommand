@@ -11,6 +11,7 @@ if (!defined('DOKU_COMMAND')) {
 require_once(DOKU_COMMAND . 'AjaxCmdResponseGenerator.php');
 require_once(DOKU_COMMAND . 'JsonGenerator.php');
 require_once(DOKU_COMMAND . 'abstract_command_class.php');
+require_once(DOKU_COMMAND . 'requestparams/PageKeys.php');
 
 /**
  * Class edit_command
@@ -26,10 +27,10 @@ class edit_partial_command extends abstract_command_class
     public function __construct()
     {
         parent::__construct();
-        $this->types['id'] = abstract_command_class::T_STRING;
-        $this->types['rev'] = abstract_command_class::T_STRING;
-        $this->types['range'] = abstract_command_class::T_STRING;
-        $this->types['summary'] = abstract_command_class::T_STRING;
+        $this->types[PageKeys::KEY_ID] = abstract_command_class::T_STRING;
+        $this->types[PageKeys::KEY_REV] = abstract_command_class::T_STRING;
+        $this->types[PageKeys::KEY_RANGE] = abstract_command_class::T_STRING;
+        $this->types[PageKeys::KEY_SUM] = abstract_command_class::T_STRING;
     }
 
     /**
@@ -40,25 +41,28 @@ class edit_partial_command extends abstract_command_class
     protected function process()
     {
 
-        if (strlen($this->params['editing_chunks']) == 0) {
-            $editingChunks = [];
+        if (strlen($this->params[PageKeys::KEY_IN_EDITING_CHUNKS]) == 0) {
+            $this->params[PageKeys::KEY_EDITING_CHUNKS] = [];
         } else {
-            $editingChunks = explode(',', $this->params['editing_chunks']);
-            $editingChunks[] = $this->params['section_id'];
+            $this->params[PageKeys::KEY_EDITING_CHUNKS] = explode(',', $this->params[PageKeys::KEY_IN_EDITING_CHUNKS]);
+            $this->params[PageKeys::KEY_EDITING_CHUNKS][] = $this->params[PageKeys::KEY_SECTION_ID];
         }
+        
 
         // TODO[Xavi] Si hem passat el discard_draft = true, primer esborrem el draft complet
-        if ($this->params['discard_draft']) {
-            $this->modelWrapper->clearFullDraft($this->params['id']);
+        if ($this->params[PageKeys::KEY_DISCARD_DRAFT]) {
+            $this->modelWrapper->clearFullDraft($this->params[PageKeys::KEY_ID]);
         }
 
-        $contentData = $this->modelWrapper->getPartialEdit(
-            $this->params['id'],
-            $this->params['rev'],
-            $this->params['summary'],
-            $this->params['section_id'],
-            $editingChunks,
-            isset($this->params['recover_draft']) ? $this->params['recover_draft']==='true' :null);
+        $contentData = $this->modelWrapper->getPartialEdit($this->params);
+                
+//        $contentData = $this->modelWrapper->getPartialEdit(
+//            $this->params['id'],
+//            $this->params['rev'],
+//            $this->params['summary'],
+//            $this->params['section_id'],
+//            $editingChunks,
+//            isset($this->params['recover_draft']) ? $this->params['recover_draft']==='true' :null);
 
         return $contentData;
     }
