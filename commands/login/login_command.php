@@ -44,7 +44,7 @@ class login_command extends abstract_command_class {
      *
      * @return array associatium amb el valor del index loginResult cert o fals
      */
-    protected function process() {
+    protected function process($permission=NULL) {
         $response = array(
              "loginRequest"  => $this->params['do'] === 'login'
             ,"loginResult" => FALSE

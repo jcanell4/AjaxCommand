@@ -5,6 +5,7 @@ if(!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_PLUGIN . "ajaxcommand/"
 require_once(DOKU_COMMAND . 'AjaxCmdResponseGenerator.php');
 require_once(DOKU_COMMAND . 'JsonGenerator.php');
 require_once(DOKU_COMMAND . 'abstract_command_class.php');
+require_once(DOKU_PLUGIN . 'wikiiocmodel/projects/defaultProject/PermissionPageForUserManager.php');
 
 /**
  * Class page_command
@@ -29,7 +30,7 @@ class new_page_command extends abstract_command_class {
      * @return array amb la informació de la pàgina formatada amb 'id', 'ns', 'tittle' i 'content'
      */
     protected function process($permission) {
-        $this->modelWrapper->updatePermission($permission);
+        PermissionPageForUserManager::updatePermission($permission);
         $contentData = $this->modelWrapper->createPage($this->params);
         return $contentData;
     }
