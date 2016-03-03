@@ -30,7 +30,7 @@ class new_page_command extends abstract_command_class {
      * @return array amb la informació de la pàgina formatada amb 'id', 'ns', 'tittle' i 'content'
      */
     protected function process() {
-        PermissionPageForUserManager::updatePermission($this->permission);
+        PermissionPageForUserManager::updatePermission($this->authorization->getPermission(), WikiIocInfoManager::getInfo('client'));
         $contentData = $this->modelWrapper->createPage($this->params);
         return $contentData;
     }

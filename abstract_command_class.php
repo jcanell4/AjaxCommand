@@ -42,8 +42,6 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
     protected $authorization;
     protected $modelWrapper;
     
-    protected $permission;
-
     public $error = FALSE;
     public $errorMessage = '';
 
@@ -214,7 +212,7 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
      */
     public function run() {
         $ret = NULL;
-        $this->permission = $this->authorization->getPermission($this);
+        $this->authorization->setPermission($this);
         $retAuth = $this->authorization->canRun();
         if ($retAuth) {
             $ret = $this->getResponse();
@@ -254,7 +252,7 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
             $response_handler = $this->getResponseHandler();
 
             if ($response_handler) {
-                $response_handler->setPermission($this->permission);
+                $response_handler->setPermission($this->authorization->getPermission());
                 $response_handler->processResponse($this->params, $response, $ret);
             } else {
                 $this->getDefaultResponse($response, $ret);
