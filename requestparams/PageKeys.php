@@ -27,10 +27,5 @@ class PageKeys {
     const KEY_RECOVER_DRAFT     = "recover_draft";
     const KEY_DISCARD_DRAFT     = "discard_draft";
     const KEY_KEEP_DRAFT        = "keep_draft";
-    
-    // WikiIocLangManager
-    
-    // WikiIocInfoManager
-    const KEY_EXISTS            = "exists";
-    const KEY_LOCKED            = "locked";
+
 }
