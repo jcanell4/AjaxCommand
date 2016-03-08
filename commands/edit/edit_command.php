@@ -60,9 +60,8 @@ class edit_command extends abstract_command_class
         return $contentData;
     }
 
-    private function _sendEditPageResponse($recover)
+    private function _sendEditPageResponse()
     {
-        $this->params['recover'] = $recover;
         return $this->modelWrapper->getCodePage($this->params);
     }
 

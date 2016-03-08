@@ -80,6 +80,6 @@ class login_command extends abstract_command_class {
      * Crida al mètode auth_logoff() de dokuwiki per tancar la sessió del usuari.
      */
     private function _logoff() {
-        auth_logoff(TRUE);
+        $this->getModelWrapper()->logoff();
     }
 }

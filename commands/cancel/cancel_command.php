@@ -23,25 +23,13 @@ class cancel_command extends abstract_command_class
         $this->types['id'] = abstract_command_class::T_STRING;
     }
 
-    public function init()
-    {
-        parent::init();
-    }
-
     /**
      * Cancela la edició.
      *
      * @return string[] array associatiu amb la resposta formatada (id, ns, tittle i content)
      */
-    protected function process()
-    {
-        $contentData = $this->modelWrapper->cancelEdition(
-            $this->params['id'],
-            $this->params['rev'],
-            $this->params['keep_draft'],
-            $this->params['discard_changes'] && strtolower($this->params['discard_changes']) != "false" ? true : false
-
-        );
+    protected function process() {
+        $contentData = $this->modelWrapper->cancelEdition($this->params);
         return $contentData;
     }
 
