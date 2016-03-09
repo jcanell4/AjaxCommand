@@ -44,7 +44,8 @@ interface JsonGenerator
     const HTML_PARTIAL_TYPE = 29;
     const EDIT_PARTIAL_TYPE = 30;
     const LOCK_DATA = 31;
-
+    const TREE = 32;
+    
     // Aquestes constants es fan servir com a subtipus
     const ADD_ADMIN_TAB = "add_admin_tab";
     const REMOVE_ADMIN_TAB = "remove_admin_tab";
@@ -161,7 +162,8 @@ class JSonGeneratorImpl implements JsonGenerator
             "draft_dialog",
             "html_partial",
             "edit_partial",
-            "lock_data"
+            "lock_data",
+            "tree"
         );
         $data = array(
             "type" => $arrayTypes[$this->type],

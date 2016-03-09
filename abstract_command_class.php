@@ -41,7 +41,7 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
     
     protected $authorization;
     protected $modelWrapper;
-
+    
     public $error = FALSE;
     public $errorMessage = '';
 
@@ -212,17 +212,10 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
      */
     public function run() {
         $ret = NULL;
-        $permission = $this->authorization->getPermission($this);
-        $retAuth = $this->authorization->canRun($permission);
-        //if ($retAuth === AbstractCommandAuthorization::AUTH_OK) { //JA NO CAL RETORNAR CODI. N'HI HA PROU AMB L'EXCEPCTION
+        $this->authorization->setPermission($this);
+        $retAuth = $this->authorization->canRun();
         if ($retAuth) {
-            $ret = $this->getResponse($permission);
-            
-            if ($permission->isDenied()) {
-                $this->error        = 403;
-                $this->errorMessage = "permission denied"; /*TODO internacionalització */
-            }
-        
+            $ret = $this->getResponse();
         } else {
             $e = $this->authorization->getAuthorizationError('exception');
             $responseGenerator = new AjaxCmdResponseGenerator();
@@ -252,14 +245,14 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
      *
      * @return string resposta processada en format JSON
      */
-    protected function getResponse($permission) {
+    protected function getResponse() {
         $ret = new AjaxCmdResponseGenerator();
         try {
             $response = $this->process();
             $response_handler = $this->getResponseHandler();
 
             if ($response_handler) {
-                $response_handler->setPermission($permission);
+                $response_handler->setPermission($this->authorization->getPermission());
                 $response_handler->processResponse($this->params, $response, $ret);
             } else {
                 $this->getDefaultResponse($response, $ret);

@@ -474,6 +474,38 @@ class AjaxCmdResponseGenerator
         );
     }
 
+    /**
+     * Afegeix una resposta de tipus REMOVE_ALL_CONTENT_TAB al generador de respostes.
+     */
+    public function addRemoveItemTree($treeId, $itemId)
+    {
+        $this->response->add(
+            new JSonGeneratorImpl(
+                JSonGenerator::TREE,
+                array(
+                    "do" => "remove_item",
+                    "treeId" => $treeId,
+                    "itemId" => $itemId
+                ))
+        );
+    }
+
+    /**
+     * Afegeix una resposta de tipus REMOVE_ALL_CONTENT_TAB al generador de respostes.
+     */
+    public function addAddItemTree($treeId, $itemId)
+    {
+        $this->response->add(
+            new JSonGeneratorImpl(
+                JSonGenerator::TREE,
+                array(
+                    "do" => "add_item",
+                    "treeId" => $treeId,
+                    "itemId" => $itemId
+                ))
+        );
+    }
+
 //    public function addRemoveMetaTab(/*String*/ $tabId){
 //        $this->response->add(
 //            new JSonGeneratorImpl(
@@ -773,13 +805,14 @@ class AjaxCmdResponseGenerator
      * @param $id - id del document
      * @param $timeout
      */
-    public function addRefreshLock($id, $timeout)
+    public function addRefreshLock($id, $ns, $timeout)
     {
         $this->response->add(
             new JSonGeneratorImpl(
                 JSonGenerator::LOCK_DATA,
                 [
                     'id' => $id,
+                    'ns' => $ns,
                     'timeout' => $timeout,
                 ])
         );
