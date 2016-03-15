@@ -49,10 +49,11 @@ class edit_partial_command extends abstract_command_class
         }
         
 
-        // TODO[Xavi] Si hem passat el discard_draft = true, primer esborrem el draft complet
-        if ($this->params[PageKeys::KEY_DISCARD_DRAFT]) {
-            $this->modelWrapper->clearFullDraft($this->params[PageKeys::KEY_ID]);
-        }
+//        // TODO[Xavi] Si hem passat el discard_draft = true, primer esborrem el draft complet
+        // ALERTA[Xavi] Mogut, això no s'ha de controlar aquí, ni d'aquesta manera
+//        if ($this->params[PageKeys::KEY_DISCARD_DRAFT]) {
+//            $this->modelWrapper->clearFullDraft($this->params[PageKeys::KEY_ID]);
+//        }
 
         $contentData = $this->modelWrapper->getPartialEdit($this->params);
                 
