@@ -24,8 +24,10 @@ class PageKeys {
     const KEY_IN_EDITING_CHUNKS = "editing_chunks";
     const KEY_EDITING_CHUNKS    = "editingChunks";
     const KEY_SECTION_ID        = "section_id";
+
     const KEY_RECOVER_DRAFT     = "recover_draft";
     const KEY_DISCARD_DRAFT     = "discard_draft";
     const KEY_KEEP_DRAFT        = "keep_draft";
+    const LAST_LOCAL_DRAFT_TIME = "last_local_draft";
 
 }
