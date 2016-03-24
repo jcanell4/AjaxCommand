@@ -28,6 +28,8 @@ class PageKeys {
     const KEY_RECOVER_DRAFT     = "recover_draft";
     const KEY_DISCARD_DRAFT     = "discard_draft";
     const KEY_KEEP_DRAFT        = "keep_draft";
-    const LAST_LOCAL_DRAFT_TIME = "last_local_draft";
+
+    const STRUCTURED_LAST_LOCAL_DRAFT_TIME = "structured_last_local_draft_time";
+    const FULL_LAST_LOCAL_DRAFT_TIME = "full_last_local_draft_time";
 
 }
