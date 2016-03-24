@@ -26,6 +26,7 @@ class PageKeys {
     const KEY_SECTION_ID        = "section_id";
 
     const KEY_RECOVER_DRAFT     = "recover_draft";
+    const KEY_RECOVER_LOCAL_DRAFT     = "recover_local";
     const KEY_DISCARD_DRAFT     = "discard_draft";
     const KEY_KEEP_DRAFT        = "keep_draft";
 
