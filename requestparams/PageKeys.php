@@ -30,6 +30,8 @@ class PageKeys {
     const KEY_DISCARD_DRAFT     = "discard_draft";
     const KEY_KEEP_DRAFT        = "keep_draft";
 
+    const DISCARD_CHANGES       = "discard_changes";
+
     const STRUCTURED_LAST_LOCAL_DRAFT_TIME = "structured_last_local_draft_time";
     const FULL_LAST_LOCAL_DRAFT_TIME = "full_last_local_draft_time";
 
