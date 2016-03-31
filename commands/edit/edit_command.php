@@ -40,15 +40,23 @@ class edit_command extends abstract_command_class
     protected function process()
     {
 
-        $draftExists = $this->getModelWrapper()->hasDraft($this->params['id']);
+        /* ALERTA[Xavi] Codi antic
+
+        // Existeix un draft desat?
+        $savedDraftExists = $this->getModelWrapper()->hasDraft($this->params['id']);
+
+        // Existeix un draft local?
+        // ALERTA[Xavi] En el cas dels documents complets només farem servir els esborranys locals complets.
+        $localDraftExists = isset($this->params['full_last_local_draft_time']);
+
 
         $contentData = null;
 
-        if ($draftExists && isset($this->params['recover_draft']) && $this->params['recover_draft']) {
+        if ($savedDraftExists && isset($this->params['recover_draft']) && $this->params['recover_draft']) {
             // Carreguem el draft
             $contentData = $this->_sendEditPageResponse($this->params['recover_draft']);
 
-        } else if ($draftExists && !isset($this->params['recover_draft'])) {
+        } else if ($savedDraftExists && !isset($this->params['recover_draft'])) {
             // Enviem el dialog, no la pàgina a editar
             $contentData = $this->_sendDraftDialogResponse();
 
@@ -56,18 +64,21 @@ class edit_command extends abstract_command_class
             // No hi ha draft, enviem el actual
             $contentData = $this->_sendEditPageResponse(false);
         }
+        */
+
+        $contentData = $this->modelWrapper->getCodePage($this->params);
 
         return $contentData;
     }
 
-    private function _sendEditPageResponse()
-    {
-        return $this->modelWrapper->getCodePage($this->params);
-    }
-
-    private function _sendDraftDialogResponse() {
-        return $this->modelWrapper->getDraftDialog($this->params);
-    }
+//    private function _sendEditPageResponse()
+//    {
+//        return $this->modelWrapper->getCodePage($this->params);
+//    }
+//
+//    private function _sendDraftDialogResponse() {
+//        return $this->modelWrapper->getDraftDialog($this->params);
+//    }
 
     /**
      * Afegeix la pàgina passada com argument com una resposta de tipus DATA_TYPE al generador de respostes.
