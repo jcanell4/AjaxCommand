@@ -45,8 +45,14 @@ class save_partial_command extends abstract_command_class
      *
      * @return array amb la informació de la pàgina 'id', 'ns', 'tittle' i 'content'
      */
-    protected function process(){
+    protected function process()
+    {
+        if (isset($this->params[PageKeys::KEY_IN_EDITING_CHUNKS]) && !is_array($this->params[PageKeys::KEY_IN_EDITING_CHUNKS])) {
+            $this->params[PageKeys::KEY_IN_EDITING_CHUNKS] = explode(',', $this->params[PageKeys::KEY_IN_EDITING_CHUNKS]);
+        }
+
         $this->params[PageKeys::KEY_EDITING_CHUNKS]=  $this->params[PageKeys::KEY_IN_EDITING_CHUNKS];
+
         $contentData = $this->modelWrapper->savePartialEdition($this->params);
 //        $contentData = $this->modelWrapper->savePartialEdition(
 //            $this->params['id'], $this->params['rev'],

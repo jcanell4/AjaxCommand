@@ -40,6 +40,8 @@ class edit_command extends abstract_command_class
     protected function process()
     {
 
+        /* ALERTA[Xavi] Codi antic
+
         // Existeix un draft desat?
         $savedDraftExists = $this->getModelWrapper()->hasDraft($this->params['id']);
 
@@ -62,18 +64,21 @@ class edit_command extends abstract_command_class
             // No hi ha draft, enviem el actual
             $contentData = $this->_sendEditPageResponse(false);
         }
+        */
+
+        $contentData = $this->modelWrapper->getCodePage($this->params);
 
         return $contentData;
     }
 
-    private function _sendEditPageResponse()
-    {
-        return $this->modelWrapper->getCodePage($this->params);
-    }
-
-    private function _sendDraftDialogResponse() {
-        return $this->modelWrapper->getDraftDialog($this->params);
-    }
+//    private function _sendEditPageResponse()
+//    {
+//        return $this->modelWrapper->getCodePage($this->params);
+//    }
+//
+//    private function _sendDraftDialogResponse() {
+//        return $this->modelWrapper->getDraftDialog($this->params);
+//    }
 
     /**
      * Afegeix la pàgina passada com argument com una resposta de tipus DATA_TYPE al generador de respostes.
