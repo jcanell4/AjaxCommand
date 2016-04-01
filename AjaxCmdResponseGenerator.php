@@ -197,7 +197,7 @@ class AjaxCmdResponseGenerator
             'rev' => $rev,
         ];
 
-        $contentData['params'] =$params;
+        $contentData['params'] = $params;
         $contentData['timeout'] = $conf['locktime'];
 
         $this->response->add(
@@ -318,21 +318,24 @@ class AjaxCmdResponseGenerator
      * @param string $ns
      * @param string $title
      * @param string $content
-     * @param string $draft
+     * @param string[] $draft
      * @param string[] $editing - Editing params
      */
-    public function addWikiCodeDoc($id, $ns, $title, $content, $draft, $recover_draft, $editing, $rev= NULL)
+    public function addWikiCodeDoc($id, $ns, $title, $content, $draft, $recover_drafts, $editing, $rev = NULL)
     {
-        $contentData = array(
+        $contentData = [
             'id' => $id,
             'ns' => $ns,
             'title' => $title,
             'content' => $content,
             'draft' => $draft,
-            'recover_draft' => $recover_draft,
             'editing' => $editing,
             'rev' => $rev
-        );
+        ];
+
+        if (count($recover_drafts) > 0) {
+            $contentData['recover_draft'] = $recover_drafts;
+        }
 
         $this->response->add(
             new JSonGeneratorImpl(
@@ -526,266 +529,282 @@ class AjaxCmdResponseGenerator
 //
 //    }
 
-	/**
-	 * Afegeix una resposta de tipus INFO_TYPE al generador de respostes.
-	 *
-	 * @param string $info
-	 */ //$type, $message, $id = null, $duration = -1)
-	public function addInfoDta( $info, $message = NULL, $id = NULL, $duration = - 1, $timestamp = "" ) {
-		if ( $message ) {
-			$resp = array(
-				"id"        => $id,
-				"type"      => $info,
-				"message"   => $message,
-				"duration"  => $duration,
-				"timestamp" => $timestamp
-			);
-		} else {
-			$resp = $info;
-		}
-		$this->response->add(
-			new JSonGeneratorImpl(
-				JSonGenerator::INFO_TYPE,
-				$resp )
-		);
-	}
+    /**
+     * Afegeix una resposta de tipus INFO_TYPE al generador de respostes.
+     *
+     * @param string $info
+     */ //$type, $message, $id = null, $duration = -1)
+    public function addInfoDta($info, $message = NULL, $id = NULL, $duration = -1, $timestamp = "")
+    {
+        if ($message) {
+            $resp = array(
+                "id" => $id,
+                "type" => $info,
+                "message" => $message,
+                "duration" => $duration,
+                "timestamp" => $timestamp
+            );
+        } else {
+            $resp = $info;
+        }
+        $this->response->add(
+            new JSonGeneratorImpl(
+                JSonGenerator::INFO_TYPE,
+                $resp)
+        );
+    }
 
-	/**
-	 * Afegeix una resposta de tipus CODE_TYPE_RESPONSE al generador de respostes.
-	 *
-	 * @param int    $responseCode
-	 * @param string $info
-	 */
-	public function addCodeTypeResponse( $responseCode, $info = "" ) {
-		$this->response->add(
-			new JSonGeneratorImpl(
-				JSonGenerator::CODE_TYPE_RESPONSE,
-				array(
-					"code" => $responseCode,
-					"info" => $info,
-				) )
-		);
-	}
+    /**
+     * Afegeix una resposta de tipus CODE_TYPE_RESPONSE al generador de respostes.
+     *
+     * @param int $responseCode
+     * @param string $info
+     */
+    public function addCodeTypeResponse($responseCode, $info = "")
+    {
+        $this->response->add(
+            new JSonGeneratorImpl(
+                JSonGenerator::CODE_TYPE_RESPONSE,
+                array(
+                    "code" => $responseCode,
+                    "info" => $info,
+                ))
+        );
+    }
 
-	/**
-	 * Afegeix una resposta de tipus SIMPLE_TYPE_RESPONSE al generador de respostes.
-	 *
-	 * @param $return
-	 */
-	public function addSimpleTypeResponse( $return ) {
-		$this->add( JSonGenerator::SIMPLE_TYPE_RESPONSE, $return );
-	}
+    /**
+     * Afegeix una resposta de tipus SIMPLE_TYPE_RESPONSE al generador de respostes.
+     *
+     * @param $return
+     */
+    public function addSimpleTypeResponse($return)
+    {
+        $this->add(JSonGenerator::SIMPLE_TYPE_RESPONSE, $return);
+    }
 
-	/**
-	 * Afegeix una resposta de tipus ARRAY_TYPE_RESPONSE al generador de respostes.
-	 *
-	 * @param array $return
-	 */
-	public function addArrayTypeResponse( $return ) {
-		$this->add( JSonGenerator::ARRAY_TYPE_RESPONSE, $return );
-	}
+    /**
+     * Afegeix una resposta de tipus ARRAY_TYPE_RESPONSE al generador de respostes.
+     *
+     * @param array $return
+     */
+    public function addArrayTypeResponse($return)
+    {
+        $this->add(JSonGenerator::ARRAY_TYPE_RESPONSE, $return);
+    }
 
-	/**
-	 * Afegeix una resposta de tipus ARRAY_TYPE_RESPONSE al generador de respostes.
-	 *
-	 * @param object $return
-	 */
-	public function addObjectTypeResponse( $return ) {
-		$this->add( JSonGenerator::OBJECT_TYPE_RESPONSE, $return );
-	}
+    /**
+     * Afegeix una resposta de tipus ARRAY_TYPE_RESPONSE al generador de respostes.
+     *
+     * @param object $return
+     */
+    public function addObjectTypeResponse($return)
+    {
+        $this->add(JSonGenerator::OBJECT_TYPE_RESPONSE, $return);
+    }
 
-	/**
-	 * Afegeix una resposta de tipus META_INFO al generador de respostes.
-	 *
-	 * @param string   $id
-	 * @param string[] $meta hash amb les metadades
-	 */
-	public function addMetadata( $id, $meta ) {
+    /**
+     * Afegeix una resposta de tipus META_INFO al generador de respostes.
+     *
+     * @param string $id
+     * @param string[] $meta hash amb les metadades
+     */
+    public function addMetadata($id, $meta)
+    {
 
-		if ( ! $id || ! $meta ) {
-			return;
-		}
+        if (!$id || !$meta) {
+            return;
+        }
 
-		$this->response->add(
-			new JSonGeneratorImpl( JSonGenerator::META_INFO,
-			                       array(
-				                       "id"   => $id,
-				                       "meta" => $meta,
-			                       ) )
-		);
-	}
+        $this->response->add(
+            new JSonGeneratorImpl(JSonGenerator::META_INFO,
+                array(
+                    "id" => $id,
+                    "meta" => $meta,
+                ))
+        );
+    }
 
-	/**
-	 * Afegeix una resposta de tipus META_DIFF al generador de respostes.
-	 *
-	 * @param string   $id
-	 * @param string[] $meta hash amb les metadades
-	 */
-	public function addMetaDiff( $id, $meta ) {
+    /**
+     * Afegeix una resposta de tipus META_DIFF al generador de respostes.
+     *
+     * @param string $id
+     * @param string[] $meta hash amb les metadades
+     */
+    public function addMetaDiff($id, $meta)
+    {
 
-		if ( ! $id || ! $meta ) {
-			return;
-		}
+        if (!$id || !$meta) {
+            return;
+        }
 
-		$this->response->add(
-			new JSonGeneratorImpl( JSonGenerator::META_DIFF,
-			                       array(
-				                       "id"   => $id,
-				                       "meta" => $meta,
-			                       ) )
-		);
-	}
+        $this->response->add(
+            new JSonGeneratorImpl(JSonGenerator::META_DIFF,
+                array(
+                    "id" => $id,
+                    "meta" => $meta,
+                ))
+        );
+    }
 
-	/**
-	 * Afegeix una resposta de tipus META_INFO al generador de respostes.
-	 *
-	 * @param string   $id
-	 * @param string[] $meta hash amb les metadades
-	 */
-	public function addExtraMetadata( $id, $meta, $tit = NULL, $cont = NULL ) {
-		if ( $tit ) {
-                    $aMeta = array( "id"=>$meta, 'title'=>$tit, 'content'=>$cont );
-		}else {
-                    $aMeta = $meta;
-		}
-		$this->response->add(
-			new JSonGeneratorImpl(
-                                JSonGenerator::EXTRA_META_INFO,
-			        array(
-				    "id"   => $id,
-				    "meta" => $aMeta,
-			        )
-                        )
-		);
-	}
+    /**
+     * Afegeix una resposta de tipus META_INFO al generador de respostes.
+     *
+     * @param string $id
+     * @param string[] $meta hash amb les metadades
+     */
+    public function addExtraMetadata($id, $meta, $tit = NULL, $cont = NULL)
+    {
+        if ($tit) {
+            $aMeta = array("id" => $meta, 'title' => $tit, 'content' => $cont);
+        } else {
+            $aMeta = $meta;
+        }
+        $this->response->add(
+            new JSonGeneratorImpl(
+                JSonGenerator::EXTRA_META_INFO,
+                array(
+                    "id" => $id,
+                    "meta" => $aMeta,
+                )
+            )
+        );
+    }
 
-	/**
-	 * Retorna una cadena en format JSON amb totes les respostes codificades.
-	 *
-	 * @return string resposta codificada en JSON
-	 */
-	public function getResponse() {
-		return $this->response->getJsonEncoded();
-	}
+    /**
+     * Retorna una cadena en format JSON amb totes les respostes codificades.
+     *
+     * @return string resposta codificada en JSON
+     */
+    public function getResponse()
+    {
+        return $this->response->getJsonEncoded();
+    }
 
-	/**
-	 * Afegeix una resposta del tipus especificat amb les dades passades com argument al generador de respostes.
-	 *
-	 * @param int   $type
-	 * @param mixed $data
-	 */
-	private function add( $type, $data ) {
-		$this->response->add( new JSonGeneratorImpl( $type, $data ) );
-	}
+    /**
+     * Afegeix una resposta del tipus especificat amb les dades passades com argument al generador de respostes.
+     *
+     * @param int $type
+     * @param mixed $data
+     */
+    private function add($type, $data)
+    {
+        $this->response->add(new JSonGeneratorImpl($type, $data));
+    }
 
-	/**
-	 * Afegeix una resposta de tipus PLAIN al generador de respostes.
-         * La resposta el un text pla sense format igual que l'original
-	*/
-	public function setEncodedResponse( $data ) {
-		$this->response = new JSonJustEncoded($data);
-	}
+    /**
+     * Afegeix una resposta de tipus PLAIN al generador de respostes.
+     * La resposta el un text pla sense format igual que l'original
+     */
+    public function setEncodedResponse($data)
+    {
+        $this->response = new JSonJustEncoded($data);
+    }
 
-	/**
-	 * Afegeix una resposta de tipus ADMIN_TAB al generador de respostes.
-	 *
-	 * @param string $containerId identificador del contenidor on afegir la pestanya
-	 * @param string $tabId       identificador de la pestanya
-	 * @param string $title       títol de la pestanya
-	 * @param string $content     contingut html amb la llista de tasques
-	 * @param string $urlBase     urlBase de la comanda on dirigir les peticions de cada tasca
-	 */
-	public function addAdminTab( $containerId, $tabId, $title, $content, $urlBase ) {
-		$this->response->add(
-			new JSonGeneratorImpl(
-				JSonGenerator::ADMIN_TAB,
-				array(
-                                    "type"        => JSonGenerator::ADD_ADMIN_TAB,
-                                    "containerId" => $containerId,
-                                    "tabId"       => $tabId,
-                                    "title"       => $title,
-                                    "content"     => $content,
-                                    "urlBase"     => $urlBase
-				)
-                        )
-		);
-	}
+    /**
+     * Afegeix una resposta de tipus ADMIN_TAB al generador de respostes.
+     *
+     * @param string $containerId identificador del contenidor on afegir la pestanya
+     * @param string $tabId identificador de la pestanya
+     * @param string $title títol de la pestanya
+     * @param string $content contingut html amb la llista de tasques
+     * @param string $urlBase urlBase de la comanda on dirigir les peticions de cada tasca
+     */
+    public function addAdminTab($containerId, $tabId, $title, $content, $urlBase)
+    {
+        $this->response->add(
+            new JSonGeneratorImpl(
+                JSonGenerator::ADMIN_TAB,
+                array(
+                    "type" => JSonGenerator::ADD_ADMIN_TAB,
+                    "containerId" => $containerId,
+                    "tabId" => $tabId,
+                    "title" => $title,
+                    "content" => $content,
+                    "urlBase" => $urlBase
+                )
+            )
+        );
+    }
 
-	public function addRemoveAdminTab( $containerId, $tabId, $urlBase ) {
-		$this->response->add(
-			new JSonGeneratorImpl(
-				JSonGenerator::ADMIN_TAB,
-				array(
-                                    "type"        => JSonGenerator::REMOVE_ADMIN_TAB,
-                                    "containerId" => $containerId,
-                                    "tabId"       => $tabId,
-                                    "urlBase"     => $urlBase
-				)
-                        )
-		);
-	}
+    public function addRemoveAdminTab($containerId, $tabId, $urlBase)
+    {
+        $this->response->add(
+            new JSonGeneratorImpl(
+                JSonGenerator::ADMIN_TAB,
+                array(
+                    "type" => JSonGenerator::REMOVE_ADMIN_TAB,
+                    "containerId" => $containerId,
+                    "tabId" => $tabId,
+                    "urlBase" => $urlBase
+                )
+            )
+        );
+    }
 
-	/**
-	 * Afegeix una resposta de tipus ADMIN_TASK al generador de respostes.
-	 *
-	 * @param string $id
-	 * @param string $ns
-	 * @param string $title
-	 * @param string $content
-	 */
-	public function addAdminTask( $id, $ns, $title, $content ) {
+    /**
+     * Afegeix una resposta de tipus ADMIN_TASK al generador de respostes.
+     *
+     * @param string $id
+     * @param string $ns
+     * @param string $title
+     * @param string $content
+     */
+    public function addAdminTask($id, $ns, $title, $content)
+    {
 
-		$this->response->add(
-			new JSonGeneratorImpl(
-				JSonGenerator::ADMIN_TASK,
-				array(
-                                    'id'      => $id,
-                                    'ns'      => $ns,
-                                    'title'   => $title,
-                                    'content' => $content
-				)
-                        )
-		);
-	}
+        $this->response->add(
+            new JSonGeneratorImpl(
+                JSonGenerator::ADMIN_TASK,
+                array(
+                    'id' => $id,
+                    'ns' => $ns,
+                    'title' => $title,
+                    'content' => $content
+                )
+            )
+        );
+    }
 
-	/**
-	 * Afegeix una resposta de tipus REVISIONS al generador de respostes.
-	 *
-	 * @param $id
-	 * @param $revisions
-	 *
-	 */
-	public function addRevisionsTypeResponse( $id, $revisions ) {
-		$this->add(
-                        JSonGenerator::REVISIONS_TYPE
-                      , array(
-                            'id'        => $id,
-                            'revisions' => $revisions,
-                            'type'      => 'revisions'
-                        )
-                );
-	}
+    /**
+     * Afegeix una resposta de tipus REVISIONS al generador de respostes.
+     *
+     * @param $id
+     * @param $revisions
+     *
+     */
+    public function addRevisionsTypeResponse($id, $revisions)
+    {
+        $this->add(
+            JSonGenerator::REVISIONS_TYPE
+            , array(
+                'id' => $id,
+                'revisions' => $revisions,
+                'type' => 'revisions'
+            )
+        );
+    }
 
-	/**
-	 * Afegeix una resposta de tipus EXTRA_CONTENT_STATE al generador de
-	 * respostes. Aquest tipus de resposta permet als plugins afegir valors
-	 * extres a l'estat d'un contingut identificat per un id.
-	 *
-	 * @param $id
-	 * @param $type
-	 * @param $value
-	 *
-	 */
-	public function addExtraContentStateResponse( $id, $type, $value ) {
-		$this->add(
-                        JSonGenerator::EXTRA_CONTENT_STATE
-                      , array(
-                            'id'    => $id,
-                            'type'  => $type,
-                            'value' => $value
-                        )
-                );
-	}
+    /**
+     * Afegeix una resposta de tipus EXTRA_CONTENT_STATE al generador de
+     * respostes. Aquest tipus de resposta permet als plugins afegir valors
+     * extres a l'estat d'un contingut identificat per un id.
+     *
+     * @param $id
+     * @param $type
+     * @param $value
+     *
+     */
+    public function addExtraContentStateResponse($id, $type, $value)
+    {
+        $this->add(
+            JSonGenerator::EXTRA_CONTENT_STATE
+            , array(
+                'id' => $id,
+                'type' => $type,
+                'value' => $value
+            )
+        );
+    }
 
     public function addWikiCodeDocPartial($structure)
     {
