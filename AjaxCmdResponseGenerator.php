@@ -837,7 +837,7 @@ class AjaxCmdResponseGenerator
         );
     }
 
-    public function addNotification($action, $params)
+    public function addNotification($action, $params = [])
     {
         $this->response->add(
             new JSonGeneratorImpl(

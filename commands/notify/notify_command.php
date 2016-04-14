@@ -16,7 +16,8 @@ class notify_command extends abstract_command_class {
     public function __construct() {
         parent::__construct();
         $this->types['do'] = abstract_command_class::T_STRING;
-        $this->types['user_id'] = abstract_command_class::T_STRING;
+        $this->types['message'] = abstract_command_class::T_STRING;
+        $this->types['to'] = abstract_command_class::T_STRING;
         $this->types['params'] = abstract_command_class::T_STRING;
     }
 
@@ -36,16 +37,5 @@ class notify_command extends abstract_command_class {
 
         $ret->addNotification($action, $params);
 
-
-        $test = "ok";
-        //
-        // Alerta[Xavi] Aquest es el codi del lock, no el del notify!
-//        $ret->addInfoDta($response['info']);
-//
-//        $id = $response['id'];
-//        $ns = $response['ns'];
-//        $timeout = $response['timeout'];
-//
-//        $ret->addRefreshLock($id, $ns, $timeout);
     }
 }
