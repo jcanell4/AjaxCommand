@@ -39,4 +39,9 @@ class PageKeys
     const STRUCTURED_LAST_LOCAL_DRAFT_TIME = "structured_last_local_draft_time";
     const FULL_LAST_LOCAL_DRAFT_TIME = "full_last_local_draft_time";
 
+    const KEY_LOCK_STATE = "lock_state";
+    const KEY_INFO = "info";
+
+
+
 }

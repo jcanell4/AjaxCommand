@@ -848,4 +848,17 @@ class AjaxCmdResponseGenerator
                 ])
         );
     }
+
+    public function addDialog($title, $text, $buttons= [])
+    {
+        $this->response->add(
+            new JSonGeneratorImpl(
+                JSonGenerator::CUSTOM_DIALOG,
+                [
+                    'title' => $title,
+                    'text' => $text,
+                    'buttons' => $buttons
+                ])
+        );
+    }
 }
