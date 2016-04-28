@@ -38,4 +38,8 @@ class notify_command extends abstract_command_class {
         $ret->addNotification($action, $params);
 
     }
+    
+    public function getAuthorizationType() {
+        return "_none";
+    }
 }
