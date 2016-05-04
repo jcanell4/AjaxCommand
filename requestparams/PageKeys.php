@@ -31,7 +31,7 @@ class PageKeys
     const KEY_DISCARD_DRAFT = "discard_draft";
     const KEY_KEEP_DRAFT = "keep_draft";
 
-    const KEY_PARAMS = "params";
+    const KEY_PARAMS = "params"; // response
     const KEY_USER_ID = "user_id";
 
     const DISCARD_CHANGES = "discard_changes";
