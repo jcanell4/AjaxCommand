@@ -188,9 +188,8 @@ class AjaxCmdResponseGenerator
         );
     }
 
-    public function addDraftDialog($id, $ns, $rev, $params)
+    public function addDraftDialog($id, $ns, $rev, $params, $timeout)
     {
-        global $conf;
         $contentData = [
             'id' => $id,
             'ns' => $ns,
@@ -198,7 +197,7 @@ class AjaxCmdResponseGenerator
         ];
 
         $contentData['params'] = $params;
-        $contentData['timeout'] = $conf['locktime'];
+        $contentData['timeout'] = $timeout;
 
         $this->response->add(
             new JSonGeneratorImpl(
@@ -321,13 +320,14 @@ class AjaxCmdResponseGenerator
      * @param string[] $draft
      * @param string[] $editing - Editing params
      */
-    public function addWikiCodeDoc($id, $ns, $title, $content, $draft, $recover_drafts, $editing, $rev = NULL)
+    public function addWikiCodeDoc($id, $ns, $title, $content, $draft, $recover_drafts, $htmlForm, $editing, $rev = NULL)
     {
         $contentData = [
             'id' => $id,
             'ns' => $ns,
             'title' => $title,
             'content' => $content,
+            'htmlForm' => $htmlForm,
             'draft' => $draft,
             'editing' => $editing,
             'rev' => $rev

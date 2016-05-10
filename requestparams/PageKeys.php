@@ -26,6 +26,7 @@ class PageKeys
     const KEY_EDITING_CHUNKS = "editingChunks";
     const KEY_SECTION_ID = "section_id";
 
+    const KEY_TO_REQUIRE = "to_require";
     const KEY_RECOVER_DRAFT = "recover_draft";
     const KEY_RECOVER_LOCAL_DRAFT = "recover_local";
     const KEY_DISCARD_DRAFT = "discard_draft";

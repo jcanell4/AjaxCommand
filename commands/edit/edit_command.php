@@ -6,6 +6,7 @@ if (!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_PLUGIN . "ajaxcommand/
 require_once(DOKU_COMMAND . 'AjaxCmdResponseGenerator.php');
 require_once(DOKU_COMMAND . 'JsonGenerator.php');
 require_once(DOKU_COMMAND . 'abstract_command_class.php');
+require_once(DOKU_COMMAND . 'requestparams/PageKeys.php');
 
 /**
  * Class edit_command
@@ -26,6 +27,9 @@ class edit_command extends abstract_command_class
         $this->types['range'] = abstract_command_class::T_STRING;
         $this->types['summary'] = abstract_command_class::T_STRING;
         $this->types['do'] = abstract_command_class::T_STRING;
+        $this->types[PageKeys::KEY_RECOVER_LOCAL_DRAFT] = abstract_command_class::T_BOOLEAN;
+        $this->types[PageKeys::KEY_RECOVER_DRAFT] = abstract_command_class::T_BOOLEAN;
+        $this->types[PageKeys::KEY_TO_REQUIRE] = abstract_command_class::T_BOOLEAN;
 
         $defaultValues = ['do' => 'edit'];
         $this->setParameters($defaultValues);
