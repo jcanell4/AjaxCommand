@@ -42,7 +42,7 @@ class PageKeys
 
     const KEY_LOCK_STATE = "lock_state";
     const KEY_INFO = "info";
-
-
+    
+    const KEY_MINOR = "minor";
 
 }
