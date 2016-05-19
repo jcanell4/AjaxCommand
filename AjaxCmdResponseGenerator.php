@@ -345,6 +345,37 @@ class AjaxCmdResponseGenerator
     }
 
     /**
+     * Afegeix una resposta de tipus DATA_TYPE al generador de respostes.
+     *
+     * @param string $id
+     * @param string $ns
+     * @param string $title
+     * @param string $content
+     * @param string[] $draft
+     * @param string[] $editing - Editing params
+     */
+    public function addRequiringDoc($id, $ns, $title, $action, $timer, $content, $dialog=NULL)
+    {
+        $contentData = [
+            'id' => $id,
+            'ns' => $ns,
+            'title' => $title,
+            'action' => $action,
+            'timer' => $timer,
+            'content' => $content
+        ];
+        if($dialog){
+            $contentData["dialog"] = $dialog;
+        }
+
+        $this->response->add(
+            new JSonGeneratorImpl(
+                JSonGenerator::REQUIRING,
+                $contentData)
+        );
+    }
+
+    /**
      * Afegeix una resposta de tipus LOGIN_INFO al generador de respostes.
      *
      * @param string $loginRequest
