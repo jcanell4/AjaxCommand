@@ -320,7 +320,7 @@ class AjaxCmdResponseGenerator
      * @param string[] $draft
      * @param string[] $editing - Editing params
      */
-    public function addWikiCodeDoc($id, $ns, $title, $content, $draft, $recover_drafts, $htmlForm, $editing, $rev = NULL)
+    public function addWikiCodeDoc($id, $ns, $title, $content, $draft, $recover_drafts, $htmlForm, $editing, $timer, $rev = NULL)
     {
         $contentData = [
             'id' => $id,
@@ -330,6 +330,7 @@ class AjaxCmdResponseGenerator
             'htmlForm' => $htmlForm,
             'draft' => $draft,
             'editing' => $editing,
+            "timer" => $timer,
             'rev' => $rev
         ];
 
