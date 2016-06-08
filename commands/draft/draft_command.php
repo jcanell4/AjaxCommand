@@ -49,6 +49,11 @@ class draft_command extends abstract_command_class {
      */
     protected function getDefaultResponse($response, &$ret) {
 
+        if($response['lockInfo']){
+            $timeout =  ($response["lockInfo"]["locker"]["time"] + WikiGlobalConfig::getConf("locktime") - time()) * 1000;
+
+            $ret->addRefreshLock($response["id"], $this->params["id"], $timeout);
+        }
         if(isset($response['info'])){
             $ret->addInfoDta($response['info']);
         }else{

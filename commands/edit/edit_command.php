@@ -30,6 +30,7 @@ class edit_command extends abstract_command_class
         $this->types[PageKeys::KEY_RECOVER_LOCAL_DRAFT] = abstract_command_class::T_BOOLEAN;
         $this->types[PageKeys::KEY_RECOVER_DRAFT] = abstract_command_class::T_BOOLEAN;
         $this->types[PageKeys::KEY_TO_REQUIRE] = abstract_command_class::T_BOOLEAN;
+        $this->types[PageKeys::KEY_REFRESH] = abstract_command_class::T_BOOLEAN;
 
         $defaultValues = ['do' => 'edit'];
         $this->setParameters($defaultValues);
@@ -70,7 +71,7 @@ class edit_command extends abstract_command_class
         }
         */
 
-        $contentData = $this->modelWrapper->getCodePage($this->params);
+        $contentData = $this->modelWrapper->editPage($this->params);
 
         return $contentData;
     }

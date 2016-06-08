@@ -46,5 +46,7 @@ class PageKeys
     const KEY_MINOR = "minor";
 
     const KEY_NO_RESPONSE = "no_response";
+    const KEY_AUTO = "auto";
+    const KEY_REFRESH = "refresh";
 
 }
