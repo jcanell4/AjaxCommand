@@ -355,7 +355,7 @@ class AjaxCmdResponseGenerator
      * @param string[] $draft
      * @param string[] $editing - Editing params
      */
-    public function addRequiringDoc($id, $ns, $title, $action, $timer, $content, $dialog=NULL)
+    public function addRequiringDoc($id, $ns, $title, $action, $timer, $content, $type, $dialog=NULL)
     {
         $contentData = [
             'id' => $id,
@@ -363,7 +363,8 @@ class AjaxCmdResponseGenerator
             'title' => $title,
             'action' => $action,
             'timer' => $timer,
-            'content' => $content
+            'content' => $content,
+            'requiring_type' => $type,
         ];
         if($dialog){
             $contentData["dialog"] = $dialog;
