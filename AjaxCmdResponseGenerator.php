@@ -839,10 +839,13 @@ class AjaxCmdResponseGenerator
         );
     }
 
-    public function addWikiCodeDocPartial($structure)
+    public function addWikiCodeDocPartial($structure, $timer)
     {
         $contentData = $structure;
 
+        if ($timer) {
+            $contentData['timer'] = $timer;
+        }
 
         $this->response->add(
             new JSonGeneratorImpl(
