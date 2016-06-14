@@ -62,9 +62,6 @@ class login_command extends abstract_command_class {
 
             $response['notification'] = $this->modelWrapper->notify(['do' => 'close']);
         }
-
-
-
         return $response;
     }
 
