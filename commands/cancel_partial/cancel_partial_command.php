@@ -31,6 +31,7 @@ class cancel_partial_command extends abstract_command_class
         $this->types['changecheck'] = abstract_command_class::T_STRING;
         $this->types['target'] = abstract_command_class::T_STRING;
         $this->types['summary'] = abstract_command_class::T_STRING;
+        $this->types[PageKeys::KEY_TO_REQUIRE] = abstract_command_class::T_BOOLEAN;
 
         $defaultValues = array(
             'id' => 'index'
