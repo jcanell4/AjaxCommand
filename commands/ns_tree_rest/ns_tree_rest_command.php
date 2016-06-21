@@ -20,11 +20,13 @@ class ns_tree_rest_command extends abstract_rest_command_class {
         $this->supportedContentTypes = array("application/json");
         $this->supportedMethods      = array("GET");
         $this->types['currentnode']  = abstract_command_class::T_OBJECT;
-        $this->types['sortBy']       = abstract_command_class::T_INTEGER;
         $this->types['onlyDirs']     = abstract_command_class::T_BOOLEAN;
+        $this->types['sortBy']       = abstract_command_class::T_INTEGER;
+        $this->types['expandProject']= abstract_command_class::T_BOOLEAN;
         $defaultValues = array(
              'sortBy'   => 0
             ,'onlyDirs' => FALSE
+            ,'expandProject' => FALSE
         );
         $this->setParameters($defaultValues);
     }
@@ -52,7 +54,8 @@ class ns_tree_rest_command extends abstract_rest_command_class {
         $tree = $this->modelWrapper->getNsTree(
                                    $this->params['currentnode'],
                                    $this->params['sortBy'],
-                                   $this->params['onlyDirs']
+                                   $this->params['onlyDirs'],
+                                   $this->params['expandProject']
         );
 
         $strData = $json->enc($tree);
@@ -69,8 +72,9 @@ class ns_tree_rest_command extends abstract_rest_command_class {
      */
     public function setParamValuesFromUrl($extra_url_params) {
         $this->setCurrentNode($extra_url_params);
-        $this->setOnlyDirs($extra_url_params);
         $this->setSortBy($extra_url_params);
+        $this->setOnlyDirs($extra_url_params);
+        $this->setExpandProject($extra_url_params);
     }
 
     /**
@@ -85,34 +89,33 @@ class ns_tree_rest_command extends abstract_rest_command_class {
     }
 
     /**
-     * Extreu el valor de ordenació del array passat com argument i l'estableix com a paràmetre 'sortBy'. Aquest valor
-     * es trobarà al index 2 sempre que la mida del array sigui superior a 3, si no es així la crida a aquest mètode no
-     * te cap efecte.
+     * Extreu el valor de ordenació de @param i l'estableix com a valor del paràmetre 'sortBy'. 
+     * Aquest valor es trobarà a l'index 1.
      *
      * @param string[] $extra_url_params
      */
     private function setSortBy($extra_url_params) {
-        if(count($extra_url_params) > 3) {
-            $this->params['sortBy'] = $extra_url_params[2];
-        }
+        if ($extra_url_params[1])
+            $this->params['sortBy'] = settype($extra_url_params[1], $this->types['sortBy']);
     }
 
     /**
-     * Extreu el valor per establir si s'han de filtrar els directoris o no i l'estableix com a valor del paràmetre
-     * 'onlyDirs'.
-     *
-     * Si la mida del array es superior a 2 es comprova si al index 1 el valor emmagatzemat, si no es així la crida a
-     * aquest mètode no te cap efecte. En cas de que el valor sigui 'f' o 'false' el valor establert serà fals, en cas
-     * contrari serà cert.
-     *
-     * El valor establert es un booleà.
+     * Extreu el valor per establir si s'han de filtrar els directoris o no.
+     * Aquest valor es trobarà a l'index 2.
      *
      * @param string[] $extra_url_params
      */
     private function setOnlyDirs($extra_url_params) {
-        if(count($extra_url_params) > 2) {
-            $this->params['onlyDirs'] = ($extra_url_params[1] != 'f' && $extra_url_params[1] != 'false');
-        }
+        if ($extra_url_params[2])
+            $this->params['onlyDirs'] = ($extra_url_params[2] != 'f' && $extra_url_params[2] != 'false');
+    }
+
+    /**
+     * Extreu el valor 'expandProject'. Aquest valor es trobarà a l'index 3.
+     */
+    private function setExpandProject($extra_url_params) {
+        if ($extra_url_params[3])
+            $this->params['expandProject'] = ($extra_url_params[3] != 'f');
     }
 
     function getDefaultResponse( $response, &$ret ) {

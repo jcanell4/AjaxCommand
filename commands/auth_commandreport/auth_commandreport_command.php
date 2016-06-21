@@ -28,10 +28,8 @@ class auth_commandreport_command extends abstract_command_class {
     protected function process() {
         $response = (array("params" => array())); 
         foreach ($this->params as $key => $value) {
-            if(is_array($value)){
-                if($value["error"]==0 
-                                && is_uploaded_file($value["tmp_name"])){
-                    
+            if (is_array($value)){
+                if ($value["error"]==0 && is_uploaded_file($value["tmp_name"])) {
                     $response["params"][$key]=array(
                             "filename" => $value["name"],
                             "type" => $value["type"],
@@ -71,5 +69,12 @@ class auth_commandreport_command extends abstract_command_class {
      */
     protected function getDefaultResponse($response, &$ret) {
         $ret->addInfoDta($response);
+    }
+    
+    /**
+     * @overwrite
+     */
+    public function getAuthorizationType() {
+        return "_none";
     }
 }
