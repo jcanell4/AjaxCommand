@@ -11,7 +11,8 @@
  * @author Josep Cañellas <jcanell4@ioc.cat>
  */
 
-require_once (DOKU_INC.'inc/plugincontroller.class.php');
+//require_once (DOKU_INC.'inc/plugincontroller.class.php');
+require_once (DOKU_INC.'inc/ioc_plugincontroller.php');
 
 class command_controller_class {
     //put your code here
