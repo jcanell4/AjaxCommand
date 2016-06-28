@@ -5,6 +5,8 @@ if (!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_PLUGIN . "ajaxcommand/
 require_once(DOKU_COMMAND . 'AjaxCmdResponseGenerator.php');
 require_once(DOKU_COMMAND . 'JsonGenerator.php');
 require_once(DOKU_COMMAND . 'abstract_command_class.php');
+require_once DOKU_PLUGIN . "ajaxcommand/requestparams/PageKeys.php";
+
 
 /**
  * Class cancel_command
@@ -21,6 +23,10 @@ class cancel_command extends abstract_command_class
     {
         parent::__construct();
         $this->types['id'] = abstract_command_class::T_STRING;
+        $this->types['auto'] = abstract_command_class::T_BOOLEAN;
+        $this->types['auto'] = abstract_command_class::T_BOOLEAN;
+        $this->types[PageKeys::KEY_DISCARD_DRAFT] = abstract_command_class::T_BOOLEAN;
+        $this->types[PageKeys::KEY_KEEP_DRAFT] = abstract_command_class::T_BOOLEAN;
     }
 
     /**

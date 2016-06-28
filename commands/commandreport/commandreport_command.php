@@ -29,9 +29,8 @@ class commandreport_command extends abstract_command_class{
     protected function process() {
         $params = (array("params" => array())); 
         foreach ($this->params as $key => $value) {
-            if(is_array($value)){
-                if($value["error"]==0 
-                                && is_uploaded_file($value["tmp_name"])){
+            if (is_array($value)){
+                if ($value["error"]==0 && is_uploaded_file($value["tmp_name"])) {
                     
                     $params["params"][$key]=array(
                             "filename" => $value["name"],
@@ -62,5 +61,12 @@ class commandreport_command extends abstract_command_class{
      */
     protected function getDefaultResponse($response, &$ret) {
         $ret->addInfoDta("info", $response, null, -1, \date('d-m-Y H:i:s'));        
+    }
+    
+    /**
+     * @overwrite
+     */
+    public function getAuthorizationType() {
+        return "_none";
     }
 }

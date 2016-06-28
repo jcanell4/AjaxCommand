@@ -11,7 +11,7 @@ require_once(DOKU_COMMAND . 'abstract_command_class.php');
  *
  * @author Xavier García <xaviergaro.dev@gmail.com>
  */
-class save_draft_command extends abstract_command_class {
+class draft_command extends abstract_command_class {
 
     /**
      * Constructor per defecte que estableix el tipus id.
@@ -27,8 +27,16 @@ class save_draft_command extends abstract_command_class {
      * @return string[] array associatiu amb la resposta formatada (id, ns, tittle i content)
      */
     protected function process() {
-        $draft =json_decode($this->params['draft'], true);
-        return $this->modelWrapper->saveDraft($draft); // TODO[Xavi] Això hurà de contenir la info
+        return $this->modelWrapper->draft($this->params);
+        
+//        if($this->params["do"]==="save"){
+//            $draft =json_decode($this->params['draft'], true);
+//            return $this->modelWrapper->saveDraft($draft); // TODO[Xavi] Això hurà de contenir la info
+//        }else if($this->params["do"]==="remove"){
+//            return $this->modelWrapper->removeDraft($this->params); // TODO[Xavi] Això hurà de contenir la info
+//        }else{
+//            throw new UnexpectedValueException("Unexpected value '".$this->params["do"]."', for parameter 'do'");
+//        }
     }
 
     /**
@@ -41,7 +49,15 @@ class save_draft_command extends abstract_command_class {
      */
     protected function getDefaultResponse($response, &$ret) {
 
-        $ret->addInfoDta($response['info']);
+        if($response['lockInfo']){
+            $timeout =  ($response["lockInfo"]["locker"]["time"] + WikiGlobalConfig::getConf("locktime") - 60 - time()) * 1000;
 
+            $ret->addRefreshLock($response["id"], $this->params["id"], $timeout);
+        }
+        if(isset($response['info'])){
+            $ret->addInfoDta($response['info']);
+        }else{
+            $ret->addCodeTypeResponse(0);            
+        }
     }
 }

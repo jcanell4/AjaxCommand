@@ -7,7 +7,7 @@ require_once(DOKU_COMMAND . 'JsonGenerator.php');
 require_once(DOKU_COMMAND . 'abstract_command_class.php');
 
 /**
- * Class cancel_command
+ * Class lock_command
  *
  * @author Xavier García <xaviergaro.dev@gmail.com>
  */

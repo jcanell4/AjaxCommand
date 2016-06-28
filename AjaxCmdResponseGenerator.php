@@ -188,17 +188,16 @@ class AjaxCmdResponseGenerator
         );
     }
 
-    public function addDraftDialog($id, $ns, $rev, $params)
+    public function addDraftDialog($id, $ns, $rev, $params, $timeout)
     {
-        global $conf;
         $contentData = [
             'id' => $id,
             'ns' => $ns,
             'rev' => $rev,
         ];
 
-        $contentData['params'] =$params;
-        $contentData['timeout'] = $conf['locktime'];
+        $contentData['params'] = $params;
+        $contentData['timeout'] = $timeout;
 
         $this->response->add(
             new JSonGeneratorImpl(
@@ -321,22 +320,59 @@ class AjaxCmdResponseGenerator
      * @param string $draft
      * @param string[] $editing - Editing params
      */
-    public function addWikiCodeDoc($id, $ns, $title, $content, $draft, $recover_draft, $editing, $rev= NULL)
+    public function addWikiCodeDoc($id, $ns, $title, $content, $draft, $recover_drafts, $htmlForm, $editing, $timer, $rev = NULL)
     {
-        $contentData = array(
+        $contentData = [
             'id' => $id,
             'ns' => $ns,
             'title' => $title,
             'content' => $content,
+            'htmlForm' => $htmlForm,
             'draft' => $draft,
-            'recover_draft' => $recover_draft,
             'editing' => $editing,
+            "timer" => $timer,
             'rev' => $rev
-        );
-
+        ];
+        
+        if (count($recover_drafts) > 0) {
+            $contentData['recover_draft'] = $recover_drafts;
+        }
+        
         $this->response->add(
             new JSonGeneratorImpl(
                 JSonGenerator::DATA_TYPE,
+                $contentData)
+        );
+    }
+
+    /**
+     * Afegeix una resposta de tipus DATA_TYPE al generador de respostes.
+     *
+     * @param string $id
+     * @param string $ns
+     * @param string $title
+     * @param string $content
+     * @param string[] $draft
+     * @param string[] $editing - Editing params
+     */
+    public function addRequiringDoc($id, $ns, $title, $action, $timer, $content, $type, $dialog=NULL)
+    {
+        $contentData = [
+            'id' => $id,
+            'ns' => $ns,
+            'title' => $title,
+            'action' => $action,
+            'timer' => $timer,
+            'content' => $content,
+            'requiring_type' => $type,
+        ];
+        if($dialog){
+            $contentData["dialog"] = $dialog;
+        }
+
+        $this->response->add(
+            new JSonGeneratorImpl(
+                JSonGenerator::REQUIRING,
                 $contentData)
         );
     }
@@ -787,10 +823,13 @@ class AjaxCmdResponseGenerator
                 );
 	}
 
-    public function addWikiCodeDocPartial($structure)
+    public function addWikiCodeDocPartial($structure, $timer)
     {
         $contentData = $structure;
 
+        if ($timer) {
+            $contentData['timer'] = $timer;
+        }
 
         $this->response->add(
             new JSonGeneratorImpl(
@@ -814,6 +853,31 @@ class AjaxCmdResponseGenerator
                     'id' => $id,
                     'ns' => $ns,
                     'timeout' => $timeout,
+                ])
+        );
+    }
+
+    public function addNotification($action, $params = [])
+    {
+        $this->response->add(
+            new JSonGeneratorImpl(
+                JSonGenerator::NOTIFICATION,
+                [
+                    'action' => $action,
+                    'params' => $params
+                ])
+        );
+    }
+
+    public function addDialog($title, $text, $buttons= [])
+    {
+        $this->response->add(
+            new JSonGeneratorImpl(
+                JSonGenerator::CUSTOM_DIALOG,
+                [
+                    'title' => $title,
+                    'text' => $text,
+                    'buttons' => $buttons
                 ])
         );
     }

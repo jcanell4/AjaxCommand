@@ -51,9 +51,31 @@ class save_partial_command extends abstract_command_class
             $this->params[PageKeys::KEY_IN_EDITING_CHUNKS] = explode(',', $this->params[PageKeys::KEY_IN_EDITING_CHUNKS]);
         }
 
-        $this->params[PageKeys::KEY_EDITING_CHUNKS]=  $this->params[PageKeys::KEY_IN_EDITING_CHUNKS];
+        $this->params[PageKeys::KEY_EDITING_CHUNKS] = $this->params[PageKeys::KEY_IN_EDITING_CHUNKS];
 
-        $contentData = $this->modelWrapper->savePartialEdition($this->params);
+        if ($this->params[PageKeys::KEY_DO] === 'save_all') {
+            $toSaveChunks = json_decode($this->params['chunk_params'], true);
+
+            for ($i = 0; $i < count($toSaveChunks); $i++) {
+
+                $contentData = $this->modelWrapper->savePartialEdition($toSaveChunks[$i]); // ALERTA[Xavi] Només cal retornar la resposta de l'ultim, la resta de respostes es descarten
+
+                // Actualitzem el changecheck pel següent chunk
+                if ($i < count($toSaveChunks) - 1) {
+                    $toSaveChunks[$i + 1]['date'] = $contentData['inputs']['date']+ $i + 1; // Afegim 1ms de diferencia entre cadascun per evitar els conflictes
+
+                } else {
+                    $contentData['inputs']['date']+= $i + 1;
+                }
+
+            }
+
+
+        } else {
+            $contentData = $this->modelWrapper->savePartialEdition($this->params);
+        }
+
+
 //        $contentData = $this->modelWrapper->savePartialEdition(
 //            $this->params['id'], $this->params['rev'],
 //            $this->params['range'], $this->params['date'],
