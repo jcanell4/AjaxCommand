@@ -9,6 +9,7 @@
 if(!defined('DOKU_INC')) define('DOKU_INC', dirname(__FILE__) . '/../../../');
 require_once(DOKU_INC . 'inc/init.php');
 require_once(DOKU_INC . 'inc/template.php');
+require_once(DOKU_INC . 'inc/pluginutils.php');
 require_once(DOKU_INC . 'lib/plugins/ownInit/WikiGlobalConfig.php');
 
 if(!defined('DOKU_COMMANDS')) define('DOKU_COMMANDS', dirname(__FILE__) . '/commands/');
@@ -17,6 +18,7 @@ if(!defined('SECTOK_PARAM')) define('SECTOK_PARAM', 0);
 class ajaxCall {
     protected $call;
     protected $method;
+    protected $commandClass;
     protected $request_params;
     protected $extra_url_params;
     
@@ -29,7 +31,15 @@ class ajaxCall {
         return $inst;
     }
 
-    private function __construct() {}
+    private function __construct() {
+        /* 
+         * Aquí se establece el valor por defecto del proyecto actual,
+         * sin embargo, es necesario establecer un mecanismo para la asignación
+         * dinámica de proyectos
+         */
+        global $plugin_controller;
+        $plugin_controller->setCurrentProject('defaultProject');
+    }
 
     public function initialize() {
         session_write_close();
@@ -110,13 +120,48 @@ class ajaxCall {
      * @return bool true si existeix un command amb aquest nom, o false en cas contrari.
      */
     function existCommand($file=NULL) {
+        //'commands' definits a l'estructura 'ajaxcommand'
         if (!$file){
             $file = DOKU_COMMANDS . $this->call . '/' . $this->call . '_command.php';
         }
-        $ret  = FALSE;
-        if (@file_exists($file)) {
+        if (($ret = @file_exists($file))) {
             require_once($file);
-            $ret = TRUE;
+            $this->commandClass = $this->call . '_command';
+        }
+
+        //'commands' definits a altres plugins
+        if (!$ret) {
+            $pluginList = plugin_list('command');
+            $DOKU_PLUGINS = DOKU_INC . "lib/plugins/";
+            foreach ($pluginList as $plugin) {
+                $p = explode('_', $plugin, 3);
+                if ($p[1] == 'projects') { //fa referencia a un projecte dins del plugin
+                    $c = explode('_', $p[2], 2);
+                    if (count($c) === 2) {  //es un fichero del directorio 'command'
+                        $file = "$DOKU_PLUGINS{$p[0]}/{$p[1]}/{$c[0]}/command/{$c[1]}.php";
+                        $nom = "{$p[0]}_{$p[1]}_{$c[0]}_{$c[1]}";
+                    }else {
+                        $file = "$DOKU_PLUGINS{$p[0]}/{$p[1]}/{$c[0]}/command.php";
+                        $nom = "{$p[0]}_{$p[1]}_{$c[0]}_command";
+                    }
+                }else {
+                    $p = explode('_', $plugin, 2);
+                    if (count($p) === 2) {
+                        $file = "$DOKU_PLUGINS{$p[0]}/command/{$p[1]}.php";
+                        $nom = "{$p[0]}_{$p[1]}";
+                    }else {
+                        $file = "$DOKU_PLUGINS{$p[0]}/command.php";
+                        $nom = "{$p[0]}_command";
+                    }
+                }
+                if ($nom == $this->call) {
+                    if (($ret = @file_exists($file))) {
+                        require_once($file);
+                        $this->commandClass = $nom;
+                        return $ret;
+                    }
+                }
+            }
         }
         return $ret;
     }
@@ -140,11 +185,6 @@ class ajaxCall {
         $respHandObj = NULL;
 
         $tplincdir = WikiGlobalConfig::tplIncDir();
-//        if (is_callable('tpl_incdir')) {
-//            $tplincdir = tpl_incdir();
-//        } else {
-//            $tplincdir = DOKU_TPLINC;
-//        }
 
         if (!$respHandDir){
             $respHandDir = $tplincdir . 'cmd_response_handler/';
@@ -162,7 +202,8 @@ class ajaxCall {
             $respHandObj = new $respHandClass();
         }
 
-        $str_command = $this->call . '_command';
+        //$str_command = $this->call . '_command';  Antiga versió, abans de projects
+        $str_command = $this->commandClass;
         $command = new $str_command();
         $command->setParameters($this->request_params);
         if ($this->extra_url_params) {

@@ -17,7 +17,7 @@ class commandreport_command extends abstract_command_class{
      */
     public function __construct() {
         parent::__construct();
-        $this->authenticatedUsersOnly=false;
+        $this->authenticatedUsersOnly = FALSE;
     }
 
     /**

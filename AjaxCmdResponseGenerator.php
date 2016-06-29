@@ -868,7 +868,22 @@ class AjaxCmdResponseGenerator
                 ])
         );
     }
-
+    /**
+     * Afegeix una resposta de tipus CONTROLMANAGER
+     *
+     * @param string $do
+     * @param array $action
+     * @param string $updateViewHandler
+     */
+    public function addControlManager($do, $action, $updateViewHandler=NULL) {
+        $contentData = array(
+                         "do" => $do,
+                         "actions" => $action,
+                         "updateViewHandler" => $updateViewHandler
+                       );
+        $this->add(JSonGenerator::CONTROLMANAGER, $contentData);
+    }
+    
     public function addDialog($title, $text, $buttons= [])
     {
         $this->response->add(

@@ -48,6 +48,7 @@ interface JsonGenerator
     const NOTIFICATION = 33;
     const CUSTOM_DIALOG = 34;
     const REQUIRING = 35;
+    const CONTROLMANAGER = 36;
 
     // Aquestes constants es fan servir com a subtipus
     const ADD_ADMIN_TAB = "add_admin_tab";
@@ -169,7 +170,8 @@ class JSonGeneratorImpl implements JsonGenerator
             "tree",
             "notification",
             "custom_dialog",
-            "requiring"
+            "requiring",
+            "controlManager"
         );
         $data = array(
             "type" => $arrayTypes[$this->type],
