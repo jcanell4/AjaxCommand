@@ -57,16 +57,24 @@ class testform_command extends abstract_command_class
 //            'rows' => 10, // Aquest no crec que sigui necessari
 //            'columns' => 4 // Ha de ser divisor de 12: Bootstrap far servir un grid de 12 que s'ha de dividir per aquest nombre
 //        ];
+        $form['id'] = 'form_' . $this->params['id']; // ALERTA[Xavi]Compte, els : s'han de reemplaçar per _
         $form['method'] = 'GET'; // GET|POST
-        $form['action'] = '#';
-        $fotm['enctype'] = 'alguna cosa aixi';
+        $form['action'] = 'test.php'; // URL de destí del formulari <-- que serà una crida ajax
+//        $fotm['enctype'] = 'multipart/form-data'; // ALERTA[Xavi] Opcional, només per la pujada de fitxers
+
+
+        // El grid està coposat per 12 columnes
+        // Si no s'especifica el nombre de columnes s'utilitzen 12
+        // Les columnes es poden especificar a:
+        // * Group: indica el nombre de columnes que emplea el grup
+        // * Field: indica el nombre de columnes que emplea el camp. S'ha de tenir en compte que es sobre 12 INDEPENDENMENT del nombre de columnes del grup ja que són niuades
 
         $form['rows'] = [ // ALERTA: Per organitzar-los al frontend es més comode com array, si es fa associatiu s'ha d'afegir un diccionary amb la correspondència
             [
-                'columns' => 4,
                 'title' => 'Paràmetres de Dokuwiki',
                 'groups' => [
                     [
+                        'columns' => 3,
                         'hasFrame' => true,
                         'title' => 'Paràmetres bàsics', // Optatiu
                         'priority' => 10, // Més alt es més prioritari
@@ -76,7 +84,7 @@ class testform_command extends abstract_command_class
                                 'name' => 'title',
                                 'value' => 'DokuIOC_josep',
                                 'type' => 'text',
-                                'cols' => 2, // Això es converteix en: 12/(columns/cols) = 6 al grid de bootstrap
+//                                'columns' => 12, // Això es converteix en: 12/(columns/cols) = 6 al grid de bootstrap
                                 'priority' => 1, // Més alt es més prioritari
                             ],
                             [
@@ -84,13 +92,14 @@ class testform_command extends abstract_command_class
                                 'name' => 'start',
                                 'value' => '',
                                 'type' => 'text',
-                                'cols' => 2,
+//                                'columns' => 12,
                                 'priority' => 10, // Més alt es més prioritari
                                 'props' => ['placeholder' => 'Introdueix el nom de la pàgina d\'inici']
                             ]
                         ]
                     ],
                     [
+                        'columns' => 6,
                         'hasFrame' => false,
                         'title' => 'Paràmetres de visualització', // Optatiu
                         'priority' => 10, // Més alt es més prioritari
@@ -99,7 +108,7 @@ class testform_command extends abstract_command_class
                                 'label' => 'Canvis recents', // Etiqueta del formulari
                                 'name' => 'recent',
                                 'type' => 'number',
-                                'cols' => 2, // Això es converteix en: 12/(columns/cols) = 6 al grid de bootstrap
+                                'columns' => 6, // Això es converteix en: 12/(columns/cols) = 6 al grid de bootstrap
                                 'priority' => 10, // Més alt es més prioritari
                                 'value' => 'R.',
                             ],
@@ -108,13 +117,21 @@ class testform_command extends abstract_command_class
                                 'name' => 'recent_days',
                                 'value' => '',
                                 'type' => 'number',
-                                'cols' => 2,
+                                'columns' => 6,
                                 'priority' => 1, // Més alt es més prioritari
                                 'props' => ['placeholder' => 'Quantiat de canvis recents en dies']
+                            ],
+                            [
+                                'label' => 'Camp d\'amplada total', // Etiqueta del formulari
+                                'name' => 'amplada',
+                                'value' => 'amplada completa',
+                                'type' => 'input',
+                                'priority' => 1, // Més alt es més prioritari
                             ]
                         ],
                     ],
                     [
+                        'columns' => 3,
                         'hasFrame' => false,
 //                    'title' => 'Titol del test sense frame', // Optatiu
                         'priority' => 10, // Més alt es més prioritari
@@ -124,150 +141,227 @@ class testform_command extends abstract_command_class
                                 'name' => 'useacl',
 //                                'value' => true,
                                 'type' => 'checkbox',
-                                'cols' => 2, // Això es converteix en: 12/(columns/cols) = 6 al grid de bootstrap
+                                'columns' => 6,
                                 'priority' => 10, // Més alt es més prioritari
                                 'props' => ['checked' => true]
+                            ],
+                            [
+                                'label' => 'Notificacions', // Etiqueta del formulari
+                                'name' => 'notifications',
+//                                'value' => true,
+                                'type' => 'checkbox',
+                                'columns' => 6,
+                                'priority' => 10, // Més alt es més prioritari
+                                'props' => ['checked' => false]
                             ]
                         ]
                     ]
                 ]
             ],
             [
-                'columns' => 2,
-                'title' => 'Fila dos',
+                'title' => 'Segona fila',
                 'groups' => [
                     [
+                        'columns' => 6,
                         'hasFrame' => true,
-                        'title' => 'Títol del testform', // Optatiu
+                        'title' => 'Amplada de columna 6 = 50%', // Optatiu
                         'priority' => 10, // Més alt es més prioritari
                         'fields' => [
                             [
-                                'label' => 'Cognom', // Etiqueta del formulari
+                                'label' => 'Camp d\'amplada màxima', // Etiqueta del formulari
                                 'name' => 'surname',
                                 'value' => '',
                                 'type' => 'input',
-                                'cols' => 2,
-                                'priority' => 10, // Més alt es més prioritari
+                                'priority' => 10,
                                 'props' => ['placeholder' => 'Introdueix el cognom']
                             ]
                         ]
                     ],
                     [
+                        'columns' => 3,
                         'hasFrame' => false,
-                        'title' => 'Titol del test sense frame', // Optatiu
+                        'title' => 'Grup d\'amplada 3 = 25%', // Optatiu
                         'priority' => 10, // Més alt es més prioritari
                         'fields' => [
                             [
-                                'label' => 'Nom2', // Etiqueta del formulari
+                                'label' => 'Mitja amplada 6 = 50%', // Etiqueta del formulari
                                 'name' => 'name2',
+                                'type' => 'text',
+                                'columns' => 6,
+                                'priority' => 1, // Més alt es més prioritari
+                                'value' => 'R.',
+                            ],
+                            [
+                                'label' => 'Mitja amplada 6 = 50%', // Etiqueta del formulari
+                                'name' => 'surname2',
+                                'value' => '',
                                 'type' => 'input',
-                                'cols' => 2, // Això es converteix en: 12/(columns/cols) = 6 al grid de bootstrap
+                                'columns' => 6,
+                                'priority' => 10, // Més alt es més prioritari
+                                'props' => ['placeholder' => 'Introdueix el cognom']
+                            ],
+                            [
+                                'label' => 'Amplada 12 = 100%', // Etiqueta del formulari
+                                'name' => 'name',
+                                'value' => 'amplada completa',
+                                'type' => 'input',
+                                'priority' => 99, // Més alt es més prioritari
+                            ]
+                        ],
+                    ],
+                    [
+                        'columns' => 3,
+                        'priority' => 10, // Més alt es més prioritari
+                        'fields' => [
+                            [
+                                'label' => 'Nom3', // Etiqueta del formulari
+                                'value' => 'res especial',
+                                'type' => 'input',
+                                'priority' => 10, // Més alt es més prioritari
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            [
+                'title' => 'Demostració controls afegits',
+                'groups' => [
+                    [
+                        'columns' => 6,
+                        'hasFrame' => true,
+                        'title' => 'check/radius', // Optatiu
+                        'priority' => 10, // Més alt es més prioritari
+                        'fields' => [
+                            [
+                                'label' => 'Checkbox1', // Etiqueta del formulari
+                                'name' => 'check2',
+                                'columns' => 2,
+                                'type' => 'checkbox',
+                                'props' => ['checked' => true]
+                            ],
+                            [
+                                'label' => 'Checkbox2', // Etiqueta del formulari
+                                'name' => 'check1',
+                                'columns' => 2,
+                                'type' => 'checkbox',
+                            ],
+                            [
+                                'label' => 'Radius1 (grp1)', // Etiqueta del formulari
+                                'name' => 'radius-group-1',
+                                'value' => 1,
+                                'columns' => 2,
+                                'type' => 'radio',
+                                'props' => ['checked' => true]
+                            ],
+                            [
+                                'label' => 'Radius2 (grp1)', // Etiqueta del formulari
+                                'value' => 2,
+                                'name' => 'radius-group-1',
+                                'columns' => 2,
+                                'type' => 'radio',
+                            ],
+                            [
+                                'label' => 'Radius3 (grp2)', // Etiqueta del formulari
+                                'name' => 'radius-group-2',
+                                'value' => 3,
+                                'columns' => 2,
+                                'type' => 'radio',
+                            ],
+                            [
+                                'label' => 'Radius4 (grp4)', // Etiqueta del formulari
+                                'value' => 4,
+                                'name' => 'radius-group-2',
+                                'columns' => 2,
+                                'type' => 'radio',
+                                'props' => ['checked' => true]
+                            ]
+
+
+                        ]
+                    ],
+                    [
+                        'columns' => 3,
+                        'hasFrame' => false,
+                        'title' => 'Grup d\'amplada 3 = 25%', // Optatiu
+                        'priority' => 10, // Més alt es més prioritari
+                        'fields' => [
+                            [
+                                'label' => 'Mitja amplada 6 = 50%', // Etiqueta del formulari
+                                'name' => 'name2',
+                                'type' => 'text',
+                                'columns' => 6,
                                 'priority' => 10, // Més alt es més prioritari
                                 'value' => 'R.',
                             ],
                             [
-                                'label' => 'Cognom2', // Etiqueta del formulari
+                                'label' => 'Mitja amplada 6 = 50%', // Etiqueta del formulari
                                 'name' => 'surname2',
                                 'value' => '',
                                 'type' => 'input',
-                                'cols' => 2,
+                                'columns' => 6,
                                 'priority' => 1, // Més alt es més prioritari
                                 'props' => ['placeholder' => 'Introdueix el cognom']
                             ],
                             [
-                                'label' => 'Nom3', // Etiqueta del formulari
+                                'label' => 'Amplada completa ', // Etiqueta del formulari
                                 'name' => 'name',
-                                'value' => 'Rickirin',
+                                'value' => 'amplada completa',
                                 'type' => 'input',
-                                'cols' => 2, // Això es converteix en: 12/(columns/cols) = 6 al grid de bootstrap
                                 'priority' => 1, // Més alt es més prioritari
                             ]
                         ],
                     ],
                     [
-                        'hasFrame' => false,
-//                    'title' => 'Titol del test sense frame', // Optatiu
+                        'columns' => 3,
                         'priority' => 10, // Més alt es més prioritari
                         'fields' => [
                             [
                                 'label' => 'Nom3', // Etiqueta del formulari
-                                'value' => 'Richie',
+                                'value' => 'res especial',
                                 'type' => 'input',
-                                'cols' => 2, // Això es converteix en: 12/(columns/cols) = 6 al grid de bootstrap
                                 'priority' => 10, // Més alt es més prioritari
                             ]
                         ]
-                    ]
+                    ],
+                    [
+                        'title' => 'Demostració textarea',
+                        'hasFrame' => true,
+//                        'columns' => 12,
+                        'priority' => 10, // Més alt es més prioritari
+                        'fields' => [
+                            [
+                                'label' => 'Nom3', // Etiqueta del formulari
+                                'value' => 'Contingut del textarea',
+                                'name' => 'demotextarea',
+                                'type' => 'textarea',
+                                'priority' => 10, // Més alt es més prioritari
+                                'props' => ['rows' => 5]
+                            ],
+                            [
+                                'label' => 'Demostració select',
+                                'type' => 'select',
+                                'name' => 'demoselect',
+                                'columns' => 3,
+                                'options' => [
+                                    ['value' => 'B', 'description' => 'Barcelona'],
+                                    ['value' => 'T', 'description' => 'Tarragona'],
+                                    ['value' => 'L', 'description' => 'Lleida', 'selected' => true],
+                                    ['value' => 'G', 'description' => 'Girona']
+                                ]
+                            ]
+
+                        ]
+
+                    ],
+
+
                 ]
             ]
 
         ];
 
 
-//        $form['groups'] = [ // ALERTA[Xavi] Canviar el array per un associatiu?
-//            [
-//                'hasFrame' => true,
-//                'title' => 'Títol del testform', // Optatiu
-//                'priority' => 10, // Més alt es més prioritari
-//                'fields' => [
-//                    [
-//                        'label' => 'Nom', // Etiqueta del formulari
-//                        'name' => 'name',
-//                        'value' => 'Rick',
-//                        'type' => 'input',
-//                        'cols' => 2, // Això es converteix en: 12/(columns/cols) = 6 al grid de bootstrap
-//                        'priority' => 1, // Més alt es més prioritari
-//                    ],
-//                    [
-//                        'label' => 'Cognom', // Etiqueta del formulari
-//                        'name' => 'surname',
-//                        'value' => '',
-//                        'type' => 'input',
-//                        'cols' => 2,
-//                        'priority' => 10, // Més alt es més prioritari
-//                        'props' => ['placeholder' => 'Introdueix el cognom']
-//                    ]
-//                ]
-//            ],
-//            [
-//                'hasFrame' => false,
-//                'title' => 'Titol del test sense frame', // Optatiu
-//                'priority' => 10, // Més alt es més prioritari
-//                'fields' => [
-//                    [
-//                        'label' => 'Nom2', // Etiqueta del formulari
-//                        'name' => 'name2',
-//                        'type' => 'input',
-//                        'cols' => 2, // Això es converteix en: 12/(columns/cols) = 6 al grid de bootstrap
-//                        'priority' => 10, // Més alt es més prioritari
-//                        'value' => 'R.',
-//                    ],
-//                    [
-//                        'label' => 'Cognom2', // Etiqueta del formulari
-//                        'name' => 'surname2',
-//                        'value' => '',
-//                        'type' => 'input',
-//                        'cols' => 2,
-//                        'priority' => 1, // Més alt es més prioritari
-//                        'props' => ['placeholder' => 'Introdueix el cognom']
-//                    ]
-//                ],
-//            ],
-//            [
-//                'hasFrame' => false,
-////                    'title' => 'Titol del test sense frame', // Optatiu
-//                'priority' => 10, // Més alt es més prioritari
-//                'fields' => [
-//                    [
-//                        'label' => 'Nom3', // Etiqueta del formulari
-//                        'value' => 'Richie',
-//                        'type' => 'input',
-//                        'cols' => 2, // Això es converteix en: 12/(columns/cols) = 6 al grid de bootstrap
-//                        'priority' => 10, // Més alt es més prioritari
-//                    ]
-//                ]
-//            ]
-//        ];
+
 
 
         if ($response['info']) {
