@@ -326,11 +326,11 @@ class AjaxCmdResponseGenerator
             'id' => $id,
             'ns' => $ns,
             'title' => $title,
-            'content' => $content,
+            'content' => $content, // dades estructurades
             'htmlForm' => $htmlForm,
             'draft' => $draft,
             'editing' => $editing,
-            "timer" => $timer,
+            'timer' => $timer,
             'rev' => $rev
         ];
 
