@@ -37,8 +37,8 @@ class testform_command extends abstract_command_class
      */
     protected function process()
     {
-        $i = $this->modelWrapper->getProjectMetaData($this->params);
-        return ['test' => $i];
+        $projectMetaData = $this->modelWrapper->getProjectMetaData($this->params);
+        return $projectMetaData;
     }
 
     /**
