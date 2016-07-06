@@ -41,7 +41,7 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
     
     protected $authorization;
     protected $modelWrapper;
-    
+
     public $error = FALSE;
     public $errorMessage = '';
 
@@ -54,10 +54,16 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
      * Constructor en el que s'assigna un nou DokuModelAdapter a la classe
      */
     public function init( $modelManager = NULL ) {
+        global $plugin_controller;
+
+        if ($this->params[$this->getConf('paramModelManagerType')]) {
+            $plugin_controller->setCurrentProject($this->params[$this->getConf('paramModelManagerType')]);
+        }
+
         if ($modelManager) {
             $this->setModelManager($modelManager);
         } else {
-            $this->setModelManager(WikiIocModelManager::Instance());
+            $this->setModelManager(WikiIocModelManager::Instance($this->params[$this->getConf('paramModelManagerType')]));
         }
     }
 
@@ -72,7 +78,8 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
     public function getAuthorization() {
         return $this->authorization;
     }
-    
+
+
     /**
      * Estableix l'adaptador a emprar i l'autorització que li correspon.
      * @param modelManager

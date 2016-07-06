@@ -16,9 +16,9 @@ require_once(DOKU_COMMAND . 'requestparams/PageKeys.php');
 /**
  * Class edit_command
  *
- * @author Josep Cañellas <jcanell4@ioc.cat>
+ * @author Xavier García <xaviergaro.dev#gmail.com>
  */
-class testform_command extends abstract_command_class
+class project_command extends abstract_command_class
 {
 
     /**
