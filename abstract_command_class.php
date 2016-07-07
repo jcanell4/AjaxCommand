@@ -223,7 +223,7 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
             $e = $this->authorization->getAuthorizationError('exception');
             $responseGenerator = new AjaxCmdResponseGenerator();
             $this->handleError(new $e(), $responseGenerator);
-            $ret = $responseGenerator->getResponse();
+            $ret = $responseGenerator->getJsonResponse();
         }
         return $ret;
     }
@@ -267,7 +267,7 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
             $this->handleError($e, $ret);
         }
 
-        $jsonResponse = $ret->getResponse();
+        $jsonResponse = $ret->getJsonResponse();
 
         // for a dojo iframe the json response has to be inside a textarea 
         if (isset($this->params['iframe'])) {

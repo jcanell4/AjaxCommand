@@ -700,7 +700,7 @@ class AjaxCmdResponseGenerator
 	 *
 	 * @return string resposta codificada en JSON
 	 */
-	public function getResponse() {
+	public function getJsonResponse() {
 		return $this->response->getJsonEncoded();
 	}
 
