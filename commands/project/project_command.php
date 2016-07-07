@@ -12,6 +12,7 @@ require_once(DOKU_COMMAND . 'AjaxCmdResponseGenerator.php');
 require_once(DOKU_COMMAND . 'JsonGenerator.php');
 require_once(DOKU_COMMAND . 'abstract_command_class.php');
 require_once(DOKU_COMMAND . 'requestparams/PageKeys.php');
+require_once(DOKU_COMMAND . 'requestparams/RequestParameterKeys.php');
 
 /**
  * Class edit_command
@@ -28,17 +29,32 @@ class project_command extends abstract_command_class
     {
         parent::__construct();
         $this->types[PageKeys::KEY_ID] = abstract_command_class::T_STRING;
+
+        $this->types[RequestParameterKeys::DO_KEY] = abstract_command_class::T_STRING;
+        $defaultValues = [RequestParameterKeys::DO_KEY => 'edit'];
+
+        $this->setParameters($defaultValues);
     }
 
-    /**
-     * Retorna el contingut de la página segons els paràmetres emmagatzemats en aquest command.
-     *
-     * @return array amb el contingut de la pàgina (id, ns, tittle i content)
-     */
     protected function process()
     {
-        $i = $this->modelWrapper->getProjectMetaData($this->params);
-        return ['test' => $i];
+
+        switch ($this->params[RequestParameterKeys::DO_KEY]) {
+            case 'edit':
+                $projectMetaData = $this->modelWrapper->getProjectMetaData($this->params);
+                break;
+
+            case 'save':
+
+                $projectMetaData = $this->modelWrapper->setProjectMetaData($this->params);
+                break;
+
+            default:
+                // TODO[Xavi] Llençar una excepció personlitzada, no existeix aquest 'do'.
+                throw new Exception();
+        }
+
+        return $projectMetaData;
     }
 
     /**

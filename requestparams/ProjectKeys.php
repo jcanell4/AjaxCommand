@@ -13,6 +13,10 @@
  */
 class ProjectKeys {
     const KEY_ID = "id";
-    const KEY_DO = "do";
     const KEY_PROJECT_TYPE= "projectType";
+    const KEY_FILTER= "filter";
+    const KEY_METADATA_SUBSET= "metaDataSubSet";
+    const KEY_ID_RESOURCE = "idResource";
+    const KEY_PERSISTENCE = "persistence";
+    const KEY_METADATA_VALUE = 'metaDataValue';
 }
