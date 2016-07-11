@@ -7,8 +7,8 @@
 
 
 //Setup VIM: ex: et ts=2 enc=utf-8 :
-$lang['saveFileIncorrect']      = 'No s\'ha pogut dessar el fitxer correctament';
-$lang['saveFileCorrect']        = 'Fitxer dessat correctament';
+$lang['saveFileIncorrect']      = 'No s\'ha pogut guardar el fitxer correctament';
+$lang['saveFileCorrect']        = 'Fitxer guardat correctament';
 $lang['filenameExists']         = 'El nom del fitxer ja existeix';
 $lang['filenameNotExists']      = 'El nom del fitxer està disponible';
 $lang['undefinedCommand']       = 'Comanda no definida';
