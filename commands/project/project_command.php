@@ -46,6 +46,7 @@ class project_command extends abstract_command_class
 
             case 'save':
 
+                // TODO[Xavi] els 'name' dels camps arriben amb el format "aplanat", s'ha de reconstruir l'estructura
                 $projectMetaData = $this->modelWrapper->setProjectMetaData($this->params);
                 break;
 
