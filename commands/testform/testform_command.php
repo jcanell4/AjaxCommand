@@ -28,7 +28,6 @@ class testform_command extends abstract_command_class
     {
         parent::__construct();
         $this->types[PageKeys::KEY_ID] = abstract_command_class::T_STRING;
-
     }
 
     /**
@@ -38,8 +37,8 @@ class testform_command extends abstract_command_class
      */
     protected function process()
     {
-
-        return [];
+        $projectMetaData = $this->modelWrapper->getProjectMetaData($this->params);
+        return $projectMetaData;
     }
 
     /**
@@ -370,7 +369,8 @@ class testform_command extends abstract_command_class
 
         $id = $this->params['id']; // Alerta[Xavi] només és una prova, però s'ha de comptar que no es reemplcen els : si es fa servir una carpeta
         $ns = $this->params['id'];
-        $title = "Formulari TestForm";
+//        $title = "Formulari TestForm";
+        $title = $response['test'];
 
         $ret->addForm($id, $ns, $title, $form);
     }
