@@ -922,7 +922,7 @@ class AjaxCmdResponseGenerator
      * @param $ns
      * @param $form
      */
-    public function addForm($id, $ns, $title, $form)
+    public function addForm($id, $ns, $title, $form, $values, $extra = [])
     {
         $this->response->add(
             new JSonGeneratorImpl(
@@ -931,7 +931,11 @@ class AjaxCmdResponseGenerator
                     'id' => $id,
                     'ns' => $ns,
                     'title' => $title,
-                    'content' => $form])
+                    'content' => $form,
+                    'originalContent' => $values,
+                    'extra' => $extra
+                ]
+            )
         );
     }
 }
