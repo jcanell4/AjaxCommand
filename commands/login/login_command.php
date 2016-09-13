@@ -47,20 +47,19 @@ class login_command extends abstract_command_class {
     protected function process() {
         $response = array(
              "loginRequest"  => $this->params['do'] === 'login'
-            ,"loginResult" => FALSE
+            ,"loginResult" => $this->authorization->isUserAuthenticated()
         );
 
-        if($this->params['do'] === 'login') {
-            $response["loginResult"] = $this->authorization->isUserAuthenticated();
+        if($this->params['do'] === 'login'  && $response["loginResult"] ) {
             $response["userId"]=  $this->params['u'];
-
             $response['notification'] = $this->modelWrapper->notify(['do' => 'init']);
-
-        } else if($this->authorization->isUserAuthenticated()) {
-            $this->_logoff();
-            $response["loginResult"] = FALSE;
-
-            $response['notification'] = $this->modelWrapper->notify(['do' => 'close']);
+        } else /*if($this->authorization->isUserAuthenticated())*/ {
+            if($response["loginResult"]){
+                $this->_logoff();
+                $response["loginResult"] = FALSE;
+                $response['notification'] = $this->modelWrapper->notify(['do' => 'close']);
+            }
+            
         }
         return $response;
     }
