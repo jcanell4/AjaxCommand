@@ -25,3 +25,5 @@ $conf['javaLibs']                       = 'ImageGenerator.jar,'
                                             . 'pdf.jar,'
                                             . 'commons-codec-1.9.jar,'
                                             . 'javax.json-1.0.2.jar'; //java libraries
+
+$conf['paramModelManagerType'] = 'projectType';

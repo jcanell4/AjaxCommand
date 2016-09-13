@@ -896,4 +896,28 @@ class AjaxCmdResponseGenerator
                 ])
         );
     }
+
+
+    /**
+     * Afegeix una resposta de tipus FORM_TYPE al generador de respostes.
+     * @param $id
+     * @param $ns
+     * @param $form
+     */
+    public function addForm($id, $ns, $title, $form, $values, $extra = [])
+    {
+        $this->response->add(
+            new JSonGeneratorImpl(
+                JSonGenerator::FORM_TYPE,
+                [
+                    'id' => $id,
+                    'ns' => $ns,
+                    'title' => $title,
+                    'content' => $form,
+                    'originalContent' => $values,
+                    'extra' => $extra
+                ]
+            )
+        );
+    }
 }

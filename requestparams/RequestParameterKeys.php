@@ -13,4 +13,6 @@
  */
 class RequestParameterKeys {
     //put your code here
+    const DO_KEY = 'do';
+    const CALL_KEY = 'call';
 }
