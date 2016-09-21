@@ -15,13 +15,12 @@ require_once(DOKU_COMMAND . 'requestparams/PageKeys.php');
 require_once(DOKU_COMMAND . 'requestparams/RequestParameterKeys.php');
 
 /**
- * Class edit_command
+ * Class 
  *
  * @author Xavier García <xaviergaro.dev#gmail.com>
  */
 class project_command extends abstract_command_class
 {
-
     /**
      * Al constructor s'estableixen els tipus, els valors per defecte, i s'estableixen aquest valors com a paràmetres.
      */
@@ -29,24 +28,25 @@ class project_command extends abstract_command_class
     {
         parent::__construct();
         $this->types[PageKeys::KEY_ID] = abstract_command_class::T_STRING;
-
         $this->types[RequestParameterKeys::DO_KEY] = abstract_command_class::T_STRING;
         $defaultValues = [RequestParameterKeys::DO_KEY => 'edit'];
 
         $this->setParameters($defaultValues);
     }
 
+    public function init( $modelManager = NULL ) {
+         parent::init($modelManager);
+    }
+
+    
     protected function process()
     {
-
         switch ($this->params[RequestParameterKeys::DO_KEY]) {
             case 'edit':
                 $projectMetaData = $this->modelWrapper->getProjectMetaData($this->params);
                 break;
 
             case 'save':
-
-
                 // TODO[Xavi] els 'name' dels camps arriben amb el format "aplanat", s'ha de reconstruir l'estructura
                 $projectMetaData = $this->modelWrapper->setProjectMetaData($this->params);
                 break;

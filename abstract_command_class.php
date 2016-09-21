@@ -8,7 +8,7 @@ require_once(DOKU_PLUGIN . 'wikiiocmodel/WikiIocModelManager.php');
 /**
  * Class abstract_command_class
  *
- * Classe abstracta a partir de la que hereten els altres commands.
+ * Classe abstracta de la que hereten els altres commands.
  *
  * @author Josep Cañellas <jcanell4@ioc.cat>
  */
@@ -55,16 +55,16 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
      */
     public function init( $modelManager = NULL ) {
         global $plugin_controller;
+        $paramModelManagerType = $this->getConf('paramModelManagerType');
 
-        if ($this->params[$this->getConf('paramModelManagerType')]) {
-            $plugin_controller->setCurrentProject($this->params[$this->getConf('paramModelManagerType')]);
+        if ($this->params[$paramModelManagerType]) {
+            $plugin_controller->setCurrentProject($this->params[$paramModelManagerType]);
         }
 
-        if ($modelManager) {
-            $this->setModelManager($modelManager);
-        } else {
-            $this->setModelManager(WikiIocModelManager::Instance($this->params[$this->getConf('paramModelManagerType')]));
+        if (!$modelManager) {
+            $modelManager = WikiIocModelManager::Instance($this->params[$paramModelManagerType]);
         }
+        $this->setModelManager($modelManager);
     }
 
     /**
