@@ -8,8 +8,8 @@ if (!defined('DOKU_PLUGIN')) {
 if (!defined('DOKU_COMMAND')) {
     define('DOKU_COMMAND', DOKU_PLUGIN . "ajaxcommand/");
 }
-require_once(DOKU_COMMAND . 'AjaxCmdResponseGenerator.php');
-require_once(DOKU_COMMAND . 'JsonGenerator.php');
+//require_once(DOKU_COMMAND . 'AjaxCmdResponseGenerator.php');
+//require_once(DOKU_COMMAND . 'JsonGenerator.php');
 require_once(DOKU_COMMAND . 'abstract_command_class.php');
 require_once(DOKU_COMMAND . 'requestparams/PageKeys.php');
 require_once(DOKU_COMMAND . 'requestparams/RequestParameterKeys.php');
