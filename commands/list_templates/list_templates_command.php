@@ -1,69 +1,49 @@
 <?php
-if(!defined('DOKU_INC')) die();
-if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
-if(!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_PLUGIN . "ajaxcommand/");
+/**
+ * Retorna un array en formato JSON que contiene la lista de plantillas de documentos
+ *
+ * @culpable Rafael Claver
+ */
+if (!defined('DOKU_INC')) die();
+if (!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
+if (!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_PLUGIN . "ajaxcommand/");
+
 require_once(DOKU_INC . 'inc/search.php');
 require_once(DOKU_INC . 'inc/pageutils.php');
 require_once(DOKU_INC . 'inc/JSON.php');
 require_once(DOKU_COMMAND . 'abstract_rest_command_class.php');
 
-/**
- * Class ns_tree_rest_command
- *
- * @author Josep Cañellas <jcanell4@ioc.cat>
- */
-class ns_tree_rest_command extends abstract_rest_command_class {
+class list_templates_command extends abstract_rest_command_class {
 
     public function __construct() {
         parent::__construct();
-//        $this->defaultContentType     = "application/json";
-//        $this->supportedContentTypes  = array("application/json");
-//        $this->supportedMethods       = array("GET");
-//        $this->types['currentnode']   = abstract_command_class::T_OBJECT;
-//        $this->types['onlyDirs']      = abstract_command_class::T_BOOLEAN;
-//        $this->types['sortBy']        = abstract_command_class::T_INTEGER;
-//        $this->types['expandProject'] = abstract_command_class::T_BOOLEAN;
-//        $this->types['hiddenProjects']= abstract_command_class::T_BOOLEAN;
         $defaultValues = array(
              'sortBy'   => 0
-            ,'onlyDirs' => FALSE
-            ,'expandProject' => FALSE
-            ,'hiddenProjects' => FALSE
+            ,'onlyDirs' => "TRUE"
+            ,'expandProject' => "FALSE"
+            ,'hiddenProjects' => "TRUE"
         );
         $this->setParameters($defaultValues);
     }
 
-    /**
-     * El constructor defineix el content type per defecte, els content type suportats, el mètode ('GET'), els tipus i
-     * els valors per defecte sortBy = 0 i onlydirs = FALSE i els estableix com a paràmetres.
-     */
-    public function init($modelManager = NULL) {
+    public function init( $modelManager = NULL ) {
         parent::init($modelManager);
         $this->authenticatedUsersOnly = FALSE;
     }
 
     /**
-     * Obté l'arbre a partir del node actual ordenant els resultats i excloent 
-     * els directoris segons els valors dels paràmetres emmagatzemats en aquest objecte.
-     *
-     * @param string[] $extra_url_params paràmetres passats a travès de la URL.
-     * @return string arbre formatat com a JSON
+     * Obté la llista de plantilles del fitxer de configuració
+     * @return string llista en format JSON
      */
     public function processGet() {
-        $json = new JSON();
-        $tree = $this->modelWrapper->getNsTree(
-                                   $this->params['currentnode'],
-                                   $this->params['sortBy'],
-                                   $this->params['onlyDirs'],
-                                   $this->params['expandProject'],
-                                   $this->params['hiddenProjects']
-        );
-        $strData = $json->enc($tree);
-        return $strData;
+        $tree = $this->getListTemplates();
+        return $tree;
     }
-
-//    protected function startCommand() {}
-//    protected function preprocess() {}
+    //esta función està aquí temporalemente
+    private function getListTemplates() {
+        include(DOKU_PLUGIN . 'wikiiocmodel/conf/default.php');
+        return json_encode($conf['projects']['defaultProject']['templates']);
+    }
 
     /**
      * Extreu els paràmetres de la url passada com argument i els estableix com a paràmetres del objecte.
@@ -128,11 +108,11 @@ class ns_tree_rest_command extends abstract_rest_command_class {
     }
 
     function getDefaultResponse( $response, &$ret ) {
-	$ret->setEncodedResponse($response);
+        $ret->setEncodedResponse($response);
     }
 
     /**
-     * @return string Nnom de l'autorització a fer servir
+     * @return string nom del 'command' corresponent a l'autorització què es vol fer servir
      */
     public function getAuthorizationType() {
         return "_none";

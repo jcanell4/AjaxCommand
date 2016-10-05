@@ -1,6 +1,6 @@
 <?php
 /**
- * Retorna un array que contiene la lista de proyectos
+ * Retorna un array en formato JSON que contiene la lista de tipos de proyecto
  *
  * @culpable Rafael Claver
  */
@@ -14,20 +14,8 @@ require_once(DOKU_COMMAND . 'abstract_rest_command_class.php');
 
 class list_projects_command extends abstract_rest_command_class {
 
-    /**
-     * El constructor defineix el content type per defecte, els content type suportats, el mètode ('GET'), els tipus i
-     * els valors per defecte sortBy = 0 i onlyDirs = TRUE i els estableix com a paràmetres.
-     */
     public function __construct() {
         parent::__construct();
-        $this->defaultContentType     = "application/json";
-        $this->supportedContentTypes  = array("application/json");
-        $this->supportedMethods       = array("GET");
-        $this->types['currentnode']   = abstract_command_class::T_OBJECT;
-        $this->types['onlyDirs']      = abstract_command_class::T_BOOLEAN;
-        $this->types['sortBy']        = abstract_command_class::T_INTEGER;
-        $this->types['expandProject'] = abstract_command_class::T_BOOLEAN;
-        $this->types['hiddenProjects']= abstract_command_class::T_BOOLEAN;
         $defaultValues = array(
              'sortBy'   => 0
             ,'onlyDirs' => "TRUE"
@@ -43,23 +31,19 @@ class list_projects_command extends abstract_rest_command_class {
     }
 
     /**
-     * Obté l'arbre a partir del node actual ordenant
-     * els resultats i excloent els directoris segons els valors dels paràmetres emmagatzemats en aquest objecte.
-     *
-     * @param string[] $extra_url_params paràmetres passats a travès de la URL.
-     *
-     * @return string arbre formatat com a JSON
+     * Obté la llista de directoris que responen a tipus de projecte
+     * @return string llista en format JSON
      */
     public function processGet() {
-        $tree = $this->getListProjects();
+        $tree = $this->getListProjects(DOKU_PLUGIN.'wikiiocmodel/projects/');
         return $tree;
     }
     //esta función està aquí temporalemente
     private function getListProjects( $projectsPath=NULL ) {
         $projectsPath = ($projectsPath) ? $projectsPath : DOKU_PLUGIN.'wikiiocmodel/projects/';
-        $ret = "[{'id': 'defaultProject', 'name': 'defaultProject'},
-                {'id': 'documentation', 'name': 'documentation'},
-                {'id': 'testmat', 'name': 'testmat'}]";
+        $ret = "[{'id': 'id_defaultProject', 'name': 'defaultProject'},
+                 {'id': 'id_documentation', 'name': 'documentation'},
+                 {'id': 'id_testmat', 'name': 'testmat'}]";
         return $ret;
     }
 

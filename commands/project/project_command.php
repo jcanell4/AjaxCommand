@@ -1,13 +1,7 @@
 <?php
-if (!defined('DOKU_INC')) {
-    die();
-}
-if (!defined('DOKU_PLUGIN')) {
-    define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
-}
-if (!defined('DOKU_COMMAND')) {
-    define('DOKU_COMMAND', DOKU_PLUGIN . "ajaxcommand/");
-}
+if (!defined('DOKU_INC')) die();
+if (!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
+if (!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_PLUGIN . "ajaxcommand/");
 //require_once(DOKU_COMMAND . 'AjaxCmdResponseGenerator.php');
 //require_once(DOKU_COMMAND . 'JsonGenerator.php');
 require_once(DOKU_COMMAND . 'abstract_command_class.php');
@@ -19,13 +13,11 @@ require_once(DOKU_COMMAND . 'requestparams/RequestParameterKeys.php');
  *
  * @author Xavier García <xaviergaro.dev#gmail.com>
  */
-class project_command extends abstract_command_class
-{
+class project_command extends abstract_command_class {
     /**
      * Al constructor s'estableixen els tipus, els valors per defecte, i s'estableixen aquest valors com a paràmetres.
      */
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
         $this->types[PageKeys::KEY_ID] = abstract_command_class::T_STRING;
         $this->types[RequestParameterKeys::DO_KEY] = abstract_command_class::T_STRING;
@@ -37,9 +29,8 @@ class project_command extends abstract_command_class
     public function init( $modelManager = NULL ) {
          parent::init($modelManager);
     }
-
     
-    protected function process()
+    protected function process() 
     {
         switch ($this->params[RequestParameterKeys::DO_KEY]) {
             case 'edit':
@@ -51,11 +42,13 @@ class project_command extends abstract_command_class
                 $projectMetaData = $this->modelWrapper->setProjectMetaData($this->params);
                 break;
 
+            case 'create':
+                break;
+
             default:
                 // TODO[Xavi] Llençar una excepció personlitzada, no existeix aquest 'do'.
                 throw new Exception();
         }
-
         return $projectMetaData;
     }
 
