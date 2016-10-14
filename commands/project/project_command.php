@@ -43,7 +43,7 @@ class project_command extends abstract_command_class {
                 break;
 
             case 'create':
-                $projectMetaData = $this->modelWrapper->createProjectMetaData($this->params);
+                $projectMetaData = $this->modelWrapper->setProjectMetaData($this->params);
                 break;
 
             default:
