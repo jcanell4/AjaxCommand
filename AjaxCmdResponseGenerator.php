@@ -823,12 +823,16 @@ class AjaxCmdResponseGenerator
                 );
 	}
 
-    public function addWikiCodeDocPartial($structure, $timer)
+    public function addWikiCodeDocPartial($structure, $timer=NULL, $hasDraft=NULL)
     {
         $contentData = $structure;
 
         if ($timer) {
             $contentData['timer'] = $timer;
+        }
+
+        if ($hasDraft) {
+            $contentData['hasDraft'] = $hasDraft;
         }
 
         $this->response->add(
