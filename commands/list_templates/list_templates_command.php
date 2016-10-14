@@ -8,23 +8,23 @@ if (!defined('DOKU_INC')) die();
 if (!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
 if (!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_PLUGIN . "ajaxcommand/");
 
-require_once(DOKU_INC . 'inc/search.php');
-require_once(DOKU_INC . 'inc/pageutils.php');
-require_once(DOKU_INC . 'inc/JSON.php');
+//require_once(DOKU_INC . 'inc/search.php');
+//require_once(DOKU_INC . 'inc/pageutils.php');
+//require_once(DOKU_INC . 'inc/JSON.php');
 require_once(DOKU_COMMAND . 'abstract_rest_command_class.php');
 
 class list_templates_command extends abstract_rest_command_class {
 
-    public function __construct() {
-        parent::__construct();
-        $defaultValues = array(
-             'sortBy'   => 0
-            ,'onlyDirs' => "TRUE"
-            ,'expandProject' => "FALSE"
-            ,'hiddenProjects' => "TRUE"
-        );
-        $this->setParameters($defaultValues);
-    }
+//    public function __construct() {
+//        parent::__construct();
+//        $defaultValues = array(
+//             'sortBy'   => 0
+//            ,'onlyDirs' => "TRUE"
+//            ,'expandProject' => "FALSE"
+//            ,'hiddenProjects' => "TRUE"
+//        );
+//        $this->setParameters($defaultValues);
+//    }
 
     public function init( $modelManager = NULL ) {
         parent::init($modelManager);

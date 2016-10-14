@@ -30,8 +30,8 @@ class project_command extends abstract_command_class {
          parent::init($modelManager);
     }
     
-    protected function process() 
-    {
+    protected function process() {
+        
         switch ($this->params[RequestParameterKeys::DO_KEY]) {
             case 'edit':
                 $projectMetaData = $this->modelWrapper->getProjectMetaData($this->params);
@@ -43,6 +43,7 @@ class project_command extends abstract_command_class {
                 break;
 
             case 'create':
+                $projectMetaData = $this->modelWrapper->createProjectMetaData($this->params);
                 break;
 
             default:
