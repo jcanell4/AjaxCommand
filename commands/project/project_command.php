@@ -1,9 +1,7 @@
 <?php
 if (!defined('DOKU_INC')) die();
-if (!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
-if (!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_PLUGIN . "ajaxcommand/");
-//require_once(DOKU_COMMAND . 'AjaxCmdResponseGenerator.php');
-//require_once(DOKU_COMMAND . 'JsonGenerator.php');
+if (!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_INC . "lib/plugins/ajaxcommand/");
+
 require_once(DOKU_COMMAND . 'abstract_command_class.php');
 require_once(DOKU_COMMAND . 'requestparams/PageKeys.php');
 require_once(DOKU_COMMAND . 'requestparams/RequestParameterKeys.php');
@@ -21,8 +19,8 @@ class project_command extends abstract_command_class {
         parent::__construct();
         $this->types[PageKeys::KEY_ID] = abstract_command_class::T_STRING;
         $this->types[RequestParameterKeys::DO_KEY] = abstract_command_class::T_STRING;
-        $defaultValues = [RequestParameterKeys::DO_KEY => 'edit'];
 
+        $defaultValues = [RequestParameterKeys::DO_KEY => 'edit'];
         $this->setParameters($defaultValues);
     }
 
@@ -34,20 +32,21 @@ class project_command extends abstract_command_class {
         
         switch ($this->params[RequestParameterKeys::DO_KEY]) {
             case 'edit':
-                $projectMetaData = $this->modelWrapper->getProjectMetaData($this->params);
+                $action = new GetProjectMetaDataAction($this->modelWrapper->getPersistenceEngine());
+                $projectMetaData = $action->get($this->params);
                 break;
 
             case 'save':
-                // TODO[Xavi] els 'name' dels camps arriben amb el format "aplanat", s'ha de reconstruir l'estructura
-                $projectMetaData = $this->modelWrapper->setProjectMetaData($this->params);
+                $action = new SetProjectMetaDataAction($this->modelWrapper->getPersistenceEngine());
+                $projectMetaData = $action->get($this->params);
                 break;
 
             case 'create':
-                $projectMetaData = $this->modelWrapper->setProjectMetaData($this->params);
+                $action = new CreateProjectMetaDataAction($this->modelWrapper->getPersistenceEngine());
+                $projectMetaData = $action->get($this->params);
                 break;
 
             default:
-                // TODO[Xavi] Llençar una excepció personlitzada, no existeix aquest 'do'.
                 throw new Exception();
         }
         return $projectMetaData;
@@ -61,13 +60,11 @@ class project_command extends abstract_command_class {
      *
      * @return mixed|void
      */
-    protected function getDefaultResponse($response, &$ret)
-    {
+    protected function getDefaultResponse($response, &$ret) {
 
     }
 
-    public function getAuthorizationType()
-    {
+    public function getAuthorizationType() {
         return "_none";
     }
 
