@@ -320,7 +320,7 @@ class AjaxCmdResponseGenerator
      * @param string $draft
      * @param string[] $editing - Editing params
      */
-    public function addWikiCodeDoc($id, $ns, $title, $content, $draft, $recover_drafts, $htmlForm, $editing, $timer, $rev = NULL)
+    public function addWikiCodeDoc($id, $ns, $title, $content, $draft, $recover_drafts, $htmlForm, $editing, $timer, $rev = NULL, $autosaveTimer=NULL)
     {
         $contentData = [
             'id' => $id,
@@ -336,6 +336,10 @@ class AjaxCmdResponseGenerator
         
         if (count($recover_drafts) > 0) {
             $contentData['recover_draft'] = $recover_drafts;
+        }
+        
+        if ($autosaveTimer) {
+            $contentData['autosaveTimer'] = $autosaveTimer;
         }
         
         $this->response->add(
@@ -823,7 +827,7 @@ class AjaxCmdResponseGenerator
                 );
 	}
 
-    public function addWikiCodeDocPartial($structure, $timer=NULL, $hasDraft=NULL)
+    public function addWikiCodeDocPartial($structure, $timer=NULL, $hasDraft=NULL, $autosaveTimer=NULL)
     {
         $contentData = $structure;
 
@@ -833,6 +837,10 @@ class AjaxCmdResponseGenerator
 
         if ($hasDraft) {
             $contentData['hasDraft'] = $hasDraft;
+        }
+
+        if ($autosaveTimer) {
+            $contentData['autosaveTimer'] = $autosaveTimer;
         }
 
         $this->response->add(
