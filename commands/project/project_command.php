@@ -49,7 +49,11 @@ class project_command extends abstract_command_class {
             default:
                 throw new Exception();
         }
-        return $projectMetaData;
+        
+        if ($projectMetaData) 
+            return $projectMetaData;
+        else
+            throw new Exception();
     }
 
     /**
