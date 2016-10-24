@@ -27,6 +27,7 @@ class PageKeys {
     const KEY_SELECTED = "selected";
 
     const KEY_TO_REQUIRE = "to_require";
+    const KEY_FORCE_REQUIRE = "force_require";
     const KEY_RECOVER_DRAFT = "recover_draft";
     const KEY_RECOVER_LOCAL_DRAFT = "recover_local";
     const KEY_DISCARD_DRAFT = "discard_draft";
@@ -48,5 +49,4 @@ class PageKeys {
     const KEY_NO_RESPONSE = "no_response";
     const KEY_AUTO = "auto";
     const KEY_REFRESH = "refresh";
-
 }
