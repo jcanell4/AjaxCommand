@@ -46,14 +46,19 @@ class project_command extends abstract_command_class {
                 $projectMetaData = $action->get($this->params);
                 break;
 
+            case 'generate':
+//                $action = new GenerateProjectMetaDataAction($this->modelWrapper->getPersistenceEngine());
+//                $projectMetaData = $action->get($this->params);
+                break;
+
             default:
-                throw new Exception();
+                throw new UnknownProjectException();
         }
-        
-        if ($projectMetaData) 
+
+        if ($projectMetaData)
             return $projectMetaData;
         else
-            throw new Exception();
+            throw new UnknownProjectException();
     }
 
     /**
