@@ -1,30 +1,26 @@
 <?php
 /**
- * Retorna un array en formato JSON que contiene la lista de plantillas de documentos
+ * Lista de tipos de proyecto
  *
  * @culpable Rafael Claver
  */
-if (!defined('DOKU_INC')) die();
-if (!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
-if (!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_PLUGIN . "ajaxcommand/");
+if(!defined('DOKU_INC')) die();
+if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
+require_once(DOKU_PLUGIN . 'ajaxcommand/abstract_rest_command_class.php');
+require_once(DOKU_PLUGIN . 'wikiiocmodel/actions/ListProjectsAction.php');
 
-//require_once(DOKU_INC . 'inc/search.php');
-//require_once(DOKU_INC . 'inc/pageutils.php');
-//require_once(DOKU_INC . 'inc/JSON.php');
-require_once(DOKU_COMMAND . 'abstract_rest_command_class.php');
+class list_projects_rest_command extends abstract_rest_command_class {
 
-class list_templates_command extends abstract_rest_command_class {
-
-//    public function __construct() {
-//        parent::__construct();
-//        $defaultValues = array(
-//             'sortBy'   => 0
-//            ,'onlyDirs' => "TRUE"
-//            ,'expandProject' => "FALSE"
-//            ,'hiddenProjects' => "TRUE"
-//        );
-//        $this->setParameters($defaultValues);
-//    }
+    public function __construct() {
+        parent::__construct();
+        $defaultValues = array(
+             'sortBy'   => 0
+            ,'onlyDirs' => "TRUE"
+            ,'expandProject' => "FALSE"
+            ,'hiddenProjects' => "TRUE"
+        );
+        $this->setParameters($defaultValues);
+    }
 
     public function init( $modelManager = NULL ) {
         parent::init($modelManager);
@@ -32,17 +28,14 @@ class list_templates_command extends abstract_rest_command_class {
     }
 
     /**
-     * Obté la llista de plantilles del fitxer de configuració
-     * @return string llista en format JSON
+     * Solicita la lista de tipos de proyecto
+     * @return json 
      */
     public function processGet() {
-        $tree = $this->getListTemplates();
-        return $tree;
-    }
-    //esta función està aquí temporalemente
-    private function getListTemplates() {
-        include(DOKU_PLUGIN . 'wikiiocmodel/conf/default.php');
-        return json_encode($conf['projects']['defaultProject']['templates']);
+        $action = new ListProjectsAction($this->modelWrapper->getPersistenceEngine());
+        $projectMetaData = $action->get();
+        return $projectMetaData;
+        
     }
 
     /**

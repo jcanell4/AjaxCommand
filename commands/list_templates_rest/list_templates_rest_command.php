@@ -1,29 +1,16 @@
 <?php
 /**
- * Retorna un array en formato JSON que contiene la lista de tipos de proyecto
+ * Retorna un array en formato JSON que contiene la lista de plantillas de documentos
  *
  * @culpable Rafael Claver
  */
-if(!defined('DOKU_INC')) die();
-if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
-if(!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_PLUGIN . "ajaxcommand/");
-require_once(DOKU_INC . 'inc/search.php');
-require_once(DOKU_INC . 'inc/pageutils.php');
-require_once(DOKU_INC . 'inc/JSON.php');
-require_once(DOKU_COMMAND . 'abstract_rest_command_class.php');
+if (!defined('DOKU_INC')) die();
+if (!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
 
-class list_projects_command extends abstract_rest_command_class {
+require_once(DOKU_PLUGIN . 'ajaxcommand/abstract_rest_command_class.php');
+require_once(DOKU_PLUGIN . 'wikiiocmodel/actions/ListTemplatesAction.php');
 
-    public function __construct() {
-        parent::__construct();
-        $defaultValues = array(
-             'sortBy'   => 0
-            ,'onlyDirs' => "TRUE"
-            ,'expandProject' => "FALSE"
-            ,'hiddenProjects' => "TRUE"
-        );
-        $this->setParameters($defaultValues);
-    }
+class list_templates_rest_command extends abstract_rest_command_class {
 
     public function init( $modelManager = NULL ) {
         parent::init($modelManager);
@@ -31,20 +18,13 @@ class list_projects_command extends abstract_rest_command_class {
     }
 
     /**
-     * Obté la llista de directoris que responen a tipus de projecte
+     * Obté la llista de plantilles del fitxer de configuració
      * @return string llista en format JSON
      */
     public function processGet() {
-        $tree = $this->getListProjects(DOKU_PLUGIN.'wikiiocmodel/projects/');
-        return $tree;
-    }
-    //esta función està aquí temporalemente
-    private function getListProjects( $projectsPath=NULL ) {
-        $projectsPath = ($projectsPath) ? $projectsPath : DOKU_PLUGIN.'wikiiocmodel/projects/';
-        $ret = "[{'id': 'id_defaultProject', 'name': 'defaultProject'},
-                 {'id': 'id_documentation', 'name': 'documentation'},
-                 {'id': 'id_testmat', 'name': 'testmat'}]";
-        return $ret;
+        $action = new ListTemplatesAction();
+        $projectMetaData = $action->get();
+        return $projectMetaData;
     }
 
     /**
