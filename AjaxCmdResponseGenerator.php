@@ -126,20 +126,19 @@ class AjaxCmdResponseGenerator
      * @param string $processName
      * @param array $params
      */
-    public function addProcessDomFromFunction($domId, $isAmd, $processName, $params)
+    public function addProcessDomFromFunction($domId, $isAmd, $processName, $params=NULL)
     {
-        $this->response->add(
-            new JSonGeneratorImpl(
-                JSonGenerator::COMMAND_TYPE,
-                array(
+        $resp = array(
                     "type" => JSonGenerator::PROCESS_DOM_FROM_FUNCTION,
                     "id" => $domId,
                     "amd" => $isAmd,
                     "processName" => $processName,
-                    "params" => $params,
-                )
-            )
-        );
+                );
+        if($params!==NULL){
+            $resp["params"] = $params;
+        }
+        
+        $this->response->add(new JSonGeneratorImpl(JSonGenerator::COMMAND_TYPE, $resp));
     }
 
     /**
