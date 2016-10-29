@@ -50,11 +50,14 @@ interface JsonGenerator
     const REQUIRING = 35;
     const CONTROLMANAGER = 36;
     const FORM_TYPE = 37;
+    const SHORTCUTS_TAB = 38;
 
     // Aquestes constants es fan servir com a subtipus
     const ADD_ADMIN_TAB = "add_admin_tab";
     const REMOVE_ADMIN_TAB = "remove_admin_tab";
     const PROCESS_FUNCTION = "process_function";
+    const ADD_SHORTCUTS_TAB = "add_shortcuts_tab";
+    const REMOVE_SHORTCUTS_TAB = "remove_shortcuts_tab";
 
     /**
      * @const PROCESS_DOM_FROM_FUNCTION domId afectat + AMD (true/flase) + nom funcio/modul on es troba la funció +
@@ -173,7 +176,8 @@ class JSonGeneratorImpl implements JsonGenerator
             "custom_dialog",
             "requiring",
             "controlManager",
-            "form"
+            "form",
+            "shortcuts_tab"
         );
         $data = array(
             "type" => $arrayTypes[$this->type],

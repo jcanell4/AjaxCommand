@@ -751,6 +751,37 @@ class AjaxCmdResponseGenerator
 		);
 	}
 
+    public function addShortcutsTab( $containerId, $tabId, $title, $content, $urlBase ) {
+        $this->response->add(
+            new JSonGeneratorImpl(
+                JSonGenerator::SHORTCUTS_TAB,
+                array(
+                    "type"        => JSonGenerator::ADD_SHORTCUTS_TAB,
+                    "containerId" => $containerId,
+                    "tabId"       => $tabId,
+                    "title"       => $title,
+                    "content"     => $content,
+                    "urlBase"     => $urlBase
+                )
+            )
+        );
+    }
+
+    public function addRemoveShortcutsTab( $containerId, $tabId, $urlBase ) {
+        $this->response->add(
+            new JSonGeneratorImpl(
+                JSonGenerator::SHORTCUTS_TAB,
+                array(
+                    "type"        => JSonGenerator::REMOVE_SHORTCUTS_TAB,
+                    "containerId" => $containerId,
+                    "tabId"       => $tabId,
+                    "urlBase"     => $urlBase
+                )
+            )
+        );
+    }
+
+
 	public function addRemoveAdminTab( $containerId, $tabId, $urlBase ) {
 		$this->response->add(
 			new JSonGeneratorImpl(
