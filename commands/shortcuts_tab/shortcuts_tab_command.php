@@ -34,7 +34,7 @@ class shortcuts_tab_command extends abstract_command_class {
   */
   protected function process() {
       // TODO[Xavi] Aqui s'ha d'obtenir la pàgina de les dreceres de l'usuari
-    $contentData = $this->modelWrapper->getAdminTaskList();
+    $contentData = $this->getModelWrapper()->getShortcutsTaskList();
     return $contentData;
   }
 
@@ -53,7 +53,7 @@ class shortcuts_tab_command extends abstract_command_class {
 
       $responseGenerator->addShortcutsTab(cfgIdConstants::ZONA_NAVEGACIO,
               cfgIdConstants::TB_SHORTCUTS,
-              /*$contentData['title']*/ "Dreceres",
+              $contentData['title'],
               $contentData['content'],
               $urlBase);
       }
