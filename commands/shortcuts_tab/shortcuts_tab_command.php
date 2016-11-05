@@ -49,7 +49,7 @@ class shortcuts_tab_command extends abstract_command_class {
   */
   protected function getDefaultResponse($contentData, &$responseGenerator) {
 //      protected function response($requestParams, $responseData, &$ajaxCmdResponseGenerator) {
-          $urlBase = "lib/plugins/ajaxcommand/ajax.php?call=admin_task";
+          $urlBase = "lib/plugins/ajaxcommand/ajax.php?call=page";
 
       $responseGenerator->addShortcutsTab(cfgIdConstants::ZONA_NAVEGACIO,
               cfgIdConstants::TB_SHORTCUTS,
