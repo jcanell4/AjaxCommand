@@ -31,8 +31,19 @@ class media_command extends abstract_command_class {
         $this->types['isupload'] = abstract_command_class::T_STRING;
         //getMediaManager($imageId = NULL, $fromPage = NULL, $prev = NULL)
         //getImageDetail($imageId, $fromPage = NULL)
+        $this->needMediaInfo = TRUE;
     }
 
+    public function setParameters($params) {
+        if($params['id']){
+            if($params['ns'] && $params['id'] === $params['ns'] ){
+                $params['id']=$params['ns'].':';
+            }
+        }else if($params['ns']){
+            $params['id']=$params['ns'].':';
+        }
+        parent::setParameters($params);        
+    }    
     /**
      * Retorna la pàgina corresponent a la 'id' i 'rev'.
      *
@@ -48,9 +59,13 @@ class media_command extends abstract_command_class {
         if ($this->params['id']) {
             $this->params['fromId'] = $this->params['id'];
         }
-        $contentData = $this->modelWrapper->getMediaManager(
-                $this->params['image'], $this->params['fromId'], $this->params['rev']
-        );
+        if($this->params['delete']){
+            $contentData =$this->modelWrapper->deleteMediaManager($this->params);
+        }else{
+            $contentData = $this->modelWrapper->getMediaManager(
+                    $this->params['image'], $this->params['fromId'], $this->params['rev']
+            );
+        }
         return $contentData;
     }
 

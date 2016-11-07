@@ -29,6 +29,7 @@ class mediadetails_command extends abstract_command_class {
         $this->types['media'] = abstract_command_class::T_STRING;
         $this->types['rev'] = abstract_command_class::T_STRING;
         $this->types['isupload'] = abstract_command_class::T_STRING;
+        $this->needMediaInfo = TRUE;
     }
 
     /**
@@ -44,9 +45,13 @@ class mediadetails_command extends abstract_command_class {
         /*$contentData = $this->modelWrapper->getMediaDetails(
                 $this->params['image'], $this->params['fromId'], $this->params['rev']
         );*/
-        $contentData = $this->modelWrapper->getMediaDetails(
+        if($this->params['delete']){
+            $contentData =$this->modelWrapper->deleteMediaManager($this->params);
+        }else{
+            $contentData = $this->modelWrapper->getMediaDetails(
                 $this->params['image']
-        );
+            );
+        }
         
         return $contentData;
     }

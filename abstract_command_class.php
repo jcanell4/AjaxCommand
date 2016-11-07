@@ -41,6 +41,8 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
     
     protected $authorization;
     protected $modelWrapper;
+
+    protected $needMediaInfo =FALSE;
     
     public $error = FALSE;
     public $errorMessage = '';
@@ -231,6 +233,10 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
             $this->handleError(new $e(), $responseGenerator);
             $ret = $responseGenerator->getJsonResponse();
         }
+ //      for a dojo iframe the json response has to be inside a textarea 
+         if (isset($this->params['iframe'])) {
+          $ret = "<html><body><textarea>" . $ret. "</textarea></body></html>";   
+        }
         return $ret;
     }
     
@@ -274,11 +280,6 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
         }
 
         $jsonResponse = $ret->getJsonResponse();
-
-        // for a dojo iframe the json response has to be inside a textarea 
-        if (isset($this->params['iframe'])) {
-          $jsonResponse = "<html><body><textarea>" . $jsonResponse . "</textarea></body></html>";   
-       }
         return $jsonResponse;
     }
 
@@ -304,6 +305,15 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
      */
     protected function getDefaultErrorResponse($params, $e, &$ret){
         $ret->addError($e->getCode(), $e->getMessage());
+    }
+
+    /**
+     * Retorna si cal carregar la informació incloent dades de media.
+     *
+     * @return string
+     */
+    public function getNeedMediaInfo() {
+        return $this->needMediaInfo;
     }
 
     /**
