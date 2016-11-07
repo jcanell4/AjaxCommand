@@ -683,7 +683,7 @@ class AjaxCmdResponseGenerator
 	 */
 	public function addExtraMetadata( $id, $meta, $tit = NULL, $cont = NULL ) {
 		if ( $tit ) {
-                    $aMeta = array( "id"=>$meta, 'title'=>$tit, 'content'=>$cont );
+                    $aMeta = array("id"=>$meta, 'title'=>$tit, 'content'=>$cont, "docId" => $id);
 		}else {
                     $aMeta = $meta;
 		}
