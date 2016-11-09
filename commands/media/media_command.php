@@ -9,6 +9,8 @@ if (!defined('DOKU_COMMAND'))
 require_once(DOKU_COMMAND . 'AjaxCmdResponseGenerator.php');
 require_once(DOKU_COMMAND . 'JsonGenerator.php');
 require_once(DOKU_COMMAND . 'abstract_command_class.php');
+require_once DOKU_COMMAND . "requestparams/MediaKeys.php";
+
 
 /**
  * Class page_command
@@ -29,6 +31,8 @@ class media_command extends abstract_command_class {
         $this->types['media'] = abstract_command_class::T_STRING;
         $this->types['rev'] = abstract_command_class::T_STRING;
         $this->types['isupload'] = abstract_command_class::T_STRING;
+        $this->types[MediaKeys::KEY_OVERWRITE] = abstract_command_class::T_BOOLEAN;
+        $this->types[MediaKeys::KEY_UPLOAD] = abstract_command_class::T_FILE;
         //getMediaManager($imageId = NULL, $fromPage = NULL, $prev = NULL)
         //getImageDetail($imageId, $fromPage = NULL)
         $this->needMediaInfo = TRUE;
@@ -61,6 +65,8 @@ class media_command extends abstract_command_class {
         }
         if($this->params['delete']){
             $contentData =$this->modelWrapper->deleteMediaManager($this->params);
+        }else if($this->params[MediaKeys::KEY_IS_UPLOAD]){
+            $contentData =$this->modelWrapper->uploadMediaManager($this->params);
         }else{
             $contentData = $this->modelWrapper->getMediaManager(
                     $this->params['image'], $this->params['fromId'], $this->params['rev']
