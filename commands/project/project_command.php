@@ -6,11 +6,6 @@ require_once(DOKU_COMMAND . 'abstract_command_class.php');
 require_once(DOKU_COMMAND . 'requestparams/PageKeys.php');
 require_once(DOKU_COMMAND . 'requestparams/RequestParameterKeys.php');
 
-/**
- * Class 
- *
- * @author Xavier García <xaviergaro.dev#gmail.com>
- */
 class project_command extends abstract_command_class {
     /**
      * Al constructor s'estableixen els tipus, els valors per defecte, i s'estableixen aquest valors com a paràmetres.
@@ -46,9 +41,9 @@ class project_command extends abstract_command_class {
                 $projectMetaData = $action->get($this->params);
                 break;
 
-            case 'generate':
-//                $action = new GenerateProjectMetaDataAction($this->modelWrapper->getPersistenceEngine());
-//                $projectMetaData = $action->get($this->params);
+            case 'generateProject':
+                $action = new GenerateProjectMetaDataAction($this->modelWrapper->getPersistenceEngine());
+                $projectMetaData = $action->get($this->params);
                 break;
 
             default:
@@ -69,9 +64,7 @@ class project_command extends abstract_command_class {
      *
      * @return mixed|void
      */
-    protected function getDefaultResponse($response, &$ret) {
-
-    }
+    protected function getDefaultResponse($response, &$ret) {}
 
     public function getAuthorizationType() {
         return "_none";
