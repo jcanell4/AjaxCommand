@@ -24,4 +24,6 @@ class MediaKeys {
     const KEY_ERROR = 'error';
     const KEY_TMP_NAME = 'tmp_name';
     const KEY_IS_UPLOAD = 'isupload';
+    const KEY_QUERY = 'q';
+    const KEY_SORT = 'sort';
 }
