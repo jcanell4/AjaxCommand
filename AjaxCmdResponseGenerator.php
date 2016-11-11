@@ -340,7 +340,11 @@ class AjaxCmdResponseGenerator
         if ($autosaveTimer) {
             $contentData['autosaveTimer'] = $autosaveTimer;
         }
-        
+
+        // ALERTA[Xavi] Pendent de determinar com s'ha d'obtenir aquest valor (del projecte)
+        $contentData['ignoreLastNSSections'] = 2;
+
+
         $this->response->add(
             new JSonGeneratorImpl(
                 JSonGenerator::DATA_TYPE,
@@ -841,6 +845,9 @@ class AjaxCmdResponseGenerator
         if ($autosaveTimer) {
             $contentData['autosaveTimer'] = $autosaveTimer;
         }
+
+        // ALERTA[Xavi] Pendent de determinar com s'ha d'obtenir aquest valor (del projecte)
+        $contentData['ignoreLastNSSections'] = 2;
 
         $this->response->add(
             new JSonGeneratorImpl(
