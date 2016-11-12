@@ -27,3 +27,10 @@ $conf['javaLibs']                       = 'ImageGenerator.jar,'
                                             . 'javax.json-1.0.2.jar'; //java libraries
 
 $conf['paramModelManagerType'] = 'projectType';
+
+// Avisos del sistema
+$conf['system_warning_user'] = 'Avís del sistema';
+$conf['system_warning_title'] = '';
+$conf['system_warning_message'] = '';
+$conf['system_warning_start_date'] = '31-12-2000 00:00';
+$conf['system_warning_end_date'] = '31-12-2000 00:00';
