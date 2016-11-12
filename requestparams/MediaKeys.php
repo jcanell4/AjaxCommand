@@ -10,7 +10,7 @@ class MediaKeys {
     const KEY_IMAGE_ID = "image";
     const KEY_IMG_ID = "img";
     const KEY_FILE_PATH_SOURCE = "filePathSource";
-    const KEY_OVERWRITE = "overWrite";
+    const KEY_OVERWRITE = "ow";
     const KEY_NS = "ns";
     const KEY_NS_TARGET = "nsTarget";
     const KEY_MEDIA_NAME = "mediaName";

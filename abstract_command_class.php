@@ -182,7 +182,7 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
         foreach($params as $key => $value) {
             if(isset($this->types[$key])
                     && $this->types[$key]==self::T_BOOLEAN){
-                $value =  strtolower($value)==="true";
+                $value =  filter_var($value, FILTER_VALIDATE_BOOLEAN);
             }else if(isset($this->types[$key])
                         && $this->types[$key]!= self::T_OBJECT
                         && $this->types[$key]!= self::T_ARRAY
