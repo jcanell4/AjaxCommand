@@ -49,4 +49,6 @@ class PageKeys {
     const KEY_NO_RESPONSE = "no_response";
     const KEY_AUTO = "auto";
     const KEY_REFRESH = "refresh";
+
+    const KEY_TEMPLATE = "template";
 }
