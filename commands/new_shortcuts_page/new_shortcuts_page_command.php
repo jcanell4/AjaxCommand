@@ -48,20 +48,23 @@ class new_shortcuts_page_command extends new_page_command {
      */
     protected function getDefaultResponse($contentData, &$responseGenerator) {
 
-//        parent::response($requestParams, $responseData, $ajaxCmdResponseGenerator);
-        $responseGenerator->addAddItemTree(cfgIdConstants::TB_INDEX, $this->params[PageKeys::KEY_ID]);
+        // ALERTA[Xavi] No es pot posar aquí el codi per que cal cridar al PageResponseHandler (parent del responsehandler) perquè carregui la pàgina creada
+//        $responseGenerator->addAddItemTree(cfgIdConstants::TB_INDEX, $this->params[PageKeys::KEY_ID]);
+//
+//        $user_id = WikiIocInfoManager::getInfo('client');
+//
+//        $dades = $this->getModelWrapper()->getShortcutsTaskList($user_id);
+//        $urlBase = "lib/plugins/ajaxcommand/ajax.php?call=page";
+//
+//        $responseGenerator->addShortcutsTab(cfgIdConstants::ZONA_NAVEGACIO,
+//            cfgIdConstants::TB_SHORTCUTS,
+//            $dades['title'],
+//            $dades['content'],
+//            $urlBase);
 
-        $user_id = WikiIocInfoManager::getInfo("userinfo");
+    }
 
-        $dades = $this->getModelWrapper()->getShortcutsTaskList($user_id);
-//            $dades = $this->getModelWrapper()->getShortcutsTaskList();
-        $urlBase = "lib/plugins/ajaxcommand/ajax.php?call=page";
-
-        $responseGenerator->addShortcutsTab(cfgIdConstants::ZONA_NAVEGACIO,
-            cfgIdConstants::TB_SHORTCUTS,
-            $dades['title'],
-            $dades['content'],
-            $urlBase);
-
+    public function getAuthorizationType() {
+        return "new_page";
     }
 }
