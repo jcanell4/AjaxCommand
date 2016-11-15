@@ -34,7 +34,7 @@ class shortcuts_tab_command extends abstract_command_class {
   */
   protected function process() {
       // TODO[Xavi] Aqui s'ha d'obtenir la pàgina de les dreceres de l'usuari
-    $contentData = $this->getModelWrapper()->getShortcutsTaskList();
+    $contentData = $this->getModelWrapper()->getShortcutsTaskList($this->params[KEY_USER_ID]);
     return $contentData;
   }
 
