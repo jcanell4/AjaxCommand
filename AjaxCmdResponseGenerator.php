@@ -126,20 +126,19 @@ class AjaxCmdResponseGenerator
      * @param string $processName
      * @param array $params
      */
-    public function addProcessDomFromFunction($domId, $isAmd, $processName, $params)
+    public function addProcessDomFromFunction($domId, $isAmd, $processName, $params=NULL)
     {
-        $this->response->add(
-            new JSonGeneratorImpl(
-                JSonGenerator::COMMAND_TYPE,
-                array(
+        $resp = array(
                     "type" => JSonGenerator::PROCESS_DOM_FROM_FUNCTION,
                     "id" => $domId,
                     "amd" => $isAmd,
                     "processName" => $processName,
-                    "params" => $params,
-                )
-            )
-        );
+                );
+        if($params!==NULL){
+            $resp["params"] = $params;
+        }
+        
+        $this->response->add(new JSonGeneratorImpl(JSonGenerator::COMMAND_TYPE, $resp));
     }
 
     /**
@@ -341,7 +340,11 @@ class AjaxCmdResponseGenerator
         if ($autosaveTimer) {
             $contentData['autosaveTimer'] = $autosaveTimer;
         }
-        
+
+        // ALERTA[Xavi] Pendent de determinar com s'ha d'obtenir aquest valor (del projecte)
+        $contentData['ignoreLastNSSections'] = 2;
+
+
         $this->response->add(
             new JSonGeneratorImpl(
                 JSonGenerator::DATA_TYPE,
@@ -684,7 +687,7 @@ class AjaxCmdResponseGenerator
 	 */
 	public function addExtraMetadata( $id, $meta, $tit = NULL, $cont = NULL ) {
 		if ( $tit ) {
-                    $aMeta = array( "id"=>$meta, 'title'=>$tit, 'content'=>$cont );
+                    $aMeta = array("id"=>$meta, 'title'=>$tit, 'content'=>$cont, "docId" => $id);
 		}else {
                     $aMeta = $meta;
 		}
@@ -874,6 +877,9 @@ class AjaxCmdResponseGenerator
             $contentData['autosaveTimer'] = $autosaveTimer;
         }
 
+        // ALERTA[Xavi] Pendent de determinar com s'ha d'obtenir aquest valor (del projecte)
+        $contentData['ignoreLastNSSections'] = 2;
+
         $this->response->add(
             new JSonGeneratorImpl(
                 JSonGenerator::HTML_PARTIAL_TYPE,
@@ -963,4 +969,82 @@ class AjaxCmdResponseGenerator
             )
         );
     }
+    
+    /**
+     * Genera un element amb la informació correctament formatada i afegeix el timestamp. Si no s'especifica el id
+     * s'assignarà el id del document que s'estigui gestionant actualment.
+     *
+     * Per generar un info associat al esdeveniment global s'ha de passar el id com a buit, es a dir
+     *
+     * @param string          $type     - tipus de missatge [notify, info, success, warning, error, debug]
+     * @param string|string[] $message  - Missatge o missatges associats amb aquesta informació
+     * @param string          $id       - id del document al que pertany el missatge
+     * @param int             $duration - Si existeix indica la quantitat de segons que es mostrarà el missatge
+     *
+     * @return array - array amb la configuració del item de informació
+     */
+    public static function generateInfo( $type, $message, $id='', $duration = - 1 ) {
+            return [
+                    "id"        => str_replace(':', '_', $id),  //netejar l'ID i posar : a _
+                    "type"      => $type,
+                    "message"   => $message,
+                    "duration"  => $duration,
+                    "timestamp" => date( "d-m-Y H:i:s" )
+            ];
+    }
+
+    // En els casos en que hi hagi discrepancies i no hi haci cap preferencia es fa servir el valor de A
+    public static function addInfoToInfo( $infoA, $infoB ) {
+            // Els tipus global de la info serà el de major gravetat: "debug" > "error" > "warning" > "info"
+            $info = [ ];
+
+            if ( $infoA['type'] == 'debug' || $infoB['type'] == 'debug' ) {
+                    $info['type'] = 'debug';
+            } else if ( $infoA['type'] == 'error' || $infoB['type'] == 'error' ) {
+                    $info['type'] = 'error';
+            } else if ( $infoA['type'] == 'warning' || $infoB['type'] == 'warning' ) {
+                    $info['type'] = 'warning';
+            } else {
+                    $info['type'] = $infoA['type'];
+            }
+
+            // Si algun dels dos te duració ilimitada, aquesta perdura
+            if ( $infoA['duration'] == - 1 || $infoB['duration'] == - 1 ) {
+                    $info['duration'] = -1;
+            } else {
+                    $info['duration'] = $infoA['duration'];
+            }
+
+            // El $id i el timestamp ha de ser el mateix per a tots dos
+            $info ['timestamp'] = $infoA['timestamp'];
+            $info ['id']        = $infoA['id'];
+
+            $messageStack = [ ];
+
+            if ( is_string( $infoA ['message'] ) ) {
+
+                    $messageStack[] = $infoA['message'];
+
+            } else if ( is_array( $infoA['message'] ) ) {
+
+                    $messageStack = $infoA['message'];
+
+            }
+
+            if ( is_string( $infoB ['message'] ) ) {
+
+                    $messageStack[] = $infoB['message'];
+
+            } else if ( is_array( $infoB['message'] ) ) {
+
+                    $messageStack = array_merge($messageStack, $infoB['message']);
+
+            }
+
+            $info['message'] = $messageStack;
+
+            return $info;
+    }
+
+
 }
