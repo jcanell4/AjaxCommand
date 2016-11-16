@@ -770,30 +770,28 @@ class AjaxCmdResponseGenerator
         );
     }
 
-    public function addRemoveShortcutsTab( $containerId, $tabId, $urlBase ) {
+    public function addRemoveShortcutsTab( $containerId, $tabId) {
         $this->response->add(
             new JSonGeneratorImpl(
                 JSonGenerator::SHORTCUTS_TAB,
                 array(
                     "type"        => JSonGenerator::REMOVE_SHORTCUTS_TAB,
                     "containerId" => $containerId,
-                    "tabId"       => $tabId,
-                    "urlBase"     => $urlBase
+                    "tabId"       => $tabId
                 )
             )
         );
     }
 
 
-	public function addRemoveAdminTab( $containerId, $tabId, $urlBase ) {
+	public function addRemoveAdminTab( $containerId, $tabId) {
 		$this->response->add(
 			new JSonGeneratorImpl(
 				JSonGenerator::ADMIN_TAB,
 				array(
                                     "type"        => JSonGenerator::REMOVE_ADMIN_TAB,
                                     "containerId" => $containerId,
-                                    "tabId"       => $tabId,
-                                    "urlBase"     => $urlBase
+                                    "tabId"       => $tabId
 				)
                         )
 		);
