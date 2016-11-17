@@ -62,7 +62,8 @@ class shortcuts_tab_command extends abstract_command_class
             $contentData['title'],
             $contentData['content'],
             $urlBase,
-            ResponseParameterKeys::FIRST_POSITION);
+            ResponseParameterKeys::FIRST_POSITION,
+            true);
     }
 
 

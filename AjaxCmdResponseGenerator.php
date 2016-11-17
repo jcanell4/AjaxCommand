@@ -785,7 +785,7 @@ class AjaxCmdResponseGenerator
         );
     }
 
-    public function addAddTab( $containerId, $tabId, $title, $content, $urlBase, $position ) {
+    public function addAddTab( $containerId, $tabId, $title, $content, $urlBase, $position, $selected = false ) {
         $this->response->add(
             new JSonGeneratorImpl(
                 JSonGenerator::TAB,
@@ -796,7 +796,8 @@ class AjaxCmdResponseGenerator
                     "title"       => $title,
                     "content"     => $content,
                     "urlBase"     => $urlBase,
-                    "position"    => $position
+                    "position"    => $position,
+                    "selected"    => $selected
                 )
             )
         );
