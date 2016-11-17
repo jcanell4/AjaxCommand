@@ -2,10 +2,11 @@
 if(!defined('DOKU_INC')) die();
 if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
 if(!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_PLUGIN . "ajaxcommand/");
-require_once(DOKU_COMMAND . 'AjaxCmdResponseGenerator.php');
-require_once(DOKU_COMMAND . 'JsonGenerator.php');
-require_once(DOKU_COMMAND . 'abstract_command_class.php');
-require_once(DOKU_PLUGIN . 'wikiiocmodel/projects/defaultProject/PermissionPageForUserManager.php');
+require_once(DOKU_COMMAND . "requestparams/ProjectKeys.php");
+//require_once(DOKU_COMMAND . 'AjaxCmdResponseGenerator.php');
+//require_once(DOKU_COMMAND . 'JsonGenerator.php');
+//require_once(DOKU_COMMAND . 'abstract_command_class.php');
+//require_once(DOKU_PLUGIN . 'wikiiocmodel/projects/defaultProject/PermissionPageForUserManager.php');
 
 /**
  * Class page_command
@@ -14,14 +15,9 @@ require_once(DOKU_PLUGIN . 'wikiiocmodel/projects/defaultProject/PermissionPageF
  */
 class new_page_command extends abstract_command_class {
 
-    /**
-     * El constructor estableix els tipus de 'id' i 'rev' i el valor per defecte de 'id' com a 'start'. i l'estableix
-     * com a paràmetre.
-     */
     public function __construct() {
         parent::__construct();
         $this->types['id'] = abstract_command_class::T_STRING;
-        //$this->permissionFor =  DokuModelAdapter::ADMIN_PERMISSION;
     }
 
     /**
@@ -31,8 +27,16 @@ class new_page_command extends abstract_command_class {
      */
     protected function process() {
         PermissionPageForUserManager::updatePermission($this->authorization->getPermission());
-        $contentData = $this->modelWrapper->createPage($this->params);
-        return $contentData;
+        $pageModel = new DokuPageModel($this->modelWrapper->getPersistenceEngine());
+        //sólo se ejecuta si no existe un proyecto en la ruta especificada
+        if (!$pageModel->existProject($this->params[ProjectKeys::KEY_ID])) {
+            $action = new CreatePageAction($this->modelWrapper->getPersistenceEngine());
+            $contentData = $action->get($this->params);
+        }
+        if ($contentData)
+            return $contentData;
+        else
+            throw new CantCreatePageInProjectException();
     }
 
     /**
