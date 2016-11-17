@@ -5,11 +5,12 @@ if (!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_PLUGIN . "ajaxcommand/
 require_once(DOKU_COMMAND . 'AjaxCmdResponseGenerator.php');
 require_once(DOKU_COMMAND . 'JsonGenerator.php');
 require_once(DOKU_COMMAND . 'abstract_command_class.php');
+require_once(DOKU_COMMAND . 'requestparams/ResponseParameterKeys.php');
 
 /**
  * Class admin_tab_command crea la pestanya admin
  *
- * @author Eduardo Latorre Jarque <eduardo.latorre@gmail.com>
+ * @author Xavier Garcia <xaviergaro.dev@gmail.com>
  */
 class shortcuts_tab_command extends abstract_command_class
 {
@@ -56,11 +57,12 @@ class shortcuts_tab_command extends abstract_command_class
 
         $urlBase = "lib/plugins/ajaxcommand/ajax.php?call=page";
 
-        $responseGenerator->addShortcutsTab(cfgIdConstants::ZONA_NAVEGACIO,
+        $responseGenerator->addAddTab(cfgIdConstants::ZONA_NAVEGACIO,
             cfgIdConstants::TB_SHORTCUTS,
             $contentData['title'],
             $contentData['content'],
-            $urlBase);
+            $urlBase,
+            ResponseParameterKeys::FIRST_POSITION);
     }
 
 

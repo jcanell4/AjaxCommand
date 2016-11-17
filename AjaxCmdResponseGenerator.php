@@ -754,6 +754,7 @@ class AjaxCmdResponseGenerator
 		);
 	}
 
+	/* @deprecated */
     public function addShortcutsTab( $containerId, $tabId, $title, $content, $urlBase ) {
         $this->response->add(
             new JSonGeneratorImpl(
@@ -770,12 +771,43 @@ class AjaxCmdResponseGenerator
         );
     }
 
+    /* @deprecated */
     public function addRemoveShortcutsTab( $containerId, $tabId) {
         $this->response->add(
             new JSonGeneratorImpl(
                 JSonGenerator::SHORTCUTS_TAB,
                 array(
                     "type"        => JSonGenerator::REMOVE_SHORTCUTS_TAB,
+                    "containerId" => $containerId,
+                    "tabId"       => $tabId
+                )
+            )
+        );
+    }
+
+    public function addAddTab( $containerId, $tabId, $title, $content, $urlBase, $position ) {
+        $this->response->add(
+            new JSonGeneratorImpl(
+                JSonGenerator::TAB,
+                array(
+                    "type"        => JSonGenerator::ADD_TAB,
+                    "containerId" => $containerId,
+                    "tabId"       => $tabId,
+                    "title"       => $title,
+                    "content"     => $content,
+                    "urlBase"     => $urlBase,
+                    "position"    => $position
+                )
+            )
+        );
+    }
+
+    public function addRemoveTab( $containerId, $tabId) {
+        $this->response->add(
+            new JSonGeneratorImpl(
+                JSonGenerator::TAB,
+                array(
+                    "type"        => JSonGenerator::REMOVE_TAB,
                     "containerId" => $containerId,
                     "tabId"       => $tabId
                 )
