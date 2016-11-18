@@ -19,11 +19,12 @@ class ns_tree_rest_command extends abstract_rest_command_class {
 //        $this->defaultContentType     = "application/json";
 //        $this->supportedContentTypes  = array("application/json");
 //        $this->supportedMethods       = array("GET");
-//        $this->types['currentnode']   = abstract_command_class::T_OBJECT;
-//        $this->types['onlyDirs']      = abstract_command_class::T_BOOLEAN;
-//        $this->types['sortBy']        = abstract_command_class::T_INTEGER;
-//        $this->types['expandProject'] = abstract_command_class::T_BOOLEAN;
-//        $this->types['hiddenProjects']= abstract_command_class::T_BOOLEAN;
+        //JOSEP: Els atributs de sota són específics d'un arbre de directoris no pas de qualsevol abstract_rest_command! S'han mogut des de l'abstract_rest_command_class a aquí
+        $this->types['currentnode']   = abstract_command_class::T_OBJECT;
+        $this->types['onlyDirs']      = abstract_command_class::T_BOOLEAN;
+        $this->types['sortBy']        = abstract_command_class::T_INTEGER;
+        $this->types['expandProject'] = abstract_command_class::T_BOOLEAN;
+        $this->types['hiddenProjects']= abstract_command_class::T_BOOLEAN;
         $defaultValues = array(
              'sortBy'   => 0
             ,'onlyDirs' => FALSE

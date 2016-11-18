@@ -66,6 +66,7 @@ class project_command extends abstract_command_class {
      */
     protected function getDefaultResponse($response, &$ret) {}
 
+    //[TO DO] JOSEP: Alerta! l'autorització no pot ser _none, cal canviar-la quant estigui feta la part d'autorització!
     public function getAuthorizationType() {
         return "_none";
     }
