@@ -54,6 +54,9 @@ class shortcuts_tab_command extends abstract_command_class
      */
     protected function getDefaultResponse($contentData, &$responseGenerator)
     {
+        //TO DO [JOSEP] Aixo s'hauria de passar a una classe Shortcuts_tabResponseHandler, 
+        //perque el retorn no es neutre, implica que a la interficie hi ha un widget amb pestanyes
+        //i aixo nomes ho pot saber el template!
 
         $urlBase = "lib/plugins/ajaxcommand/ajax.php?call=page";
 
