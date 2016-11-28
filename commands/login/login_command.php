@@ -50,27 +50,17 @@ class login_command extends abstract_command_class {
             ,"loginResult" => $this->authorization->isUserAuthenticated()
         );
 
-        $response['notifications'] = [];
-
         if($this->params['do'] === 'login'  && $response["loginResult"] ) {
             $response["userId"]=  $this->params['u'];
-//            $response['notification'] = $this->modelWrapper->notify(['do' => 'init']);
 
-            $notificationInit = $this->modelWrapper->notify(['do' => 'init']);
-
-            $response['notifications'][] = $notificationInit;
-
-
-            if ($notificationInit['params']['type'] == "ajax") { // En cas dels websockets s'enviarà en iniciar la conexxió amb el servidor de websockets
-                $response['notifications'][] = $this->modelWrapper->notify(['do' => 'get']);
-            }
-
+            $notifications = $this->modelWrapper->notify(['do' => 'init']);
+            $response = array_merge($response, $notifications);
 
 
         } else if($response["loginResult"]){
             $this->_logoff();
             $response["loginResult"] = FALSE;
-            $response['notifications'][] = $this->modelWrapper->notify(['do' => 'close']);
+            $response = array_merge($response, $this->modelWrapper->notify(['do' => 'close']));
         }
         return $response;
     }

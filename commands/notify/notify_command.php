@@ -32,10 +32,21 @@ class notify_command extends abstract_command_class {
 
     protected function getDefaultResponse($response, &$ret) {
 
-        $action = $response['action'];
-        $params = $response['params'];
+        if ($response['notifications']) {
+            for ($i=0; $i<count($response['notifications']);$i++) {
+                $action = $response['notifications'][$i]['action'];
+                $params = $response['notifications'][$i]['params'];
 
-        $ret->addNotification($action, $params);
+                $ret->addNotification($action, $params);
+            }
+
+
+        } else {
+            $action = $response['action'];
+            $params = $response['params'];
+
+            $ret->addNotification($action, $params);
+        }
 
     }
     
