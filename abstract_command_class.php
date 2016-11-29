@@ -98,15 +98,11 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
      * @return string (nom del command a partir del nom de la clase)
      */
     public function getAuthorizationType() {
-        $className = preg_replace('/_command$/', '', get_class($this));
-        return $className;
+        return preg_replace('/_command$/', '', get_class($this));
     }
 
     public function getParams($key=NULL) {
-        if ($key)
-            return $this->params[$key];
-        else
-            return $this->params;
+        return ($key) ? $this->params[$key] : $this->params;
     }
 
     public function getTypes() {
@@ -229,8 +225,9 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
             $ret = $this->getResponse();
         } else {
             $e = $this->authorization->getAuthorizationError('exception');
+            $p = $this->authorization->getAuthorizationError('extra_params');
             $responseGenerator = new AjaxCmdResponseGenerator();
-            $this->handleError(new $e(), $responseGenerator);
+            $this->handleError(new $e($p), $responseGenerator);
             $ret = $responseGenerator->getJsonResponse();
         }
  //      for a dojo iframe the json response has to be inside a textarea 

@@ -7,9 +7,9 @@ require_once(DOKU_COMMAND . 'requestparams/PageKeys.php');
 require_once(DOKU_COMMAND . 'requestparams/RequestParameterKeys.php');
 
 class project_command extends abstract_command_class {
-    /**
-     * Al constructor s'estableixen els tipus, els valors per defecte, i s'estableixen aquest valors com a paràmetres.
-     */
+
+    private $dataProject;   //guarda los datos del proyecto para verificar la autorización
+    
     public function __construct() {
         parent::__construct();
         $this->types[PageKeys::KEY_ID] = abstract_command_class::T_STRING;
@@ -20,7 +20,11 @@ class project_command extends abstract_command_class {
     }
 
     public function init( $modelManager = NULL ) {
-         parent::init($modelManager);
+        parent::init($modelManager);
+        $persistenceEngine = $this->modelWrapper->getPersistenceEngine();
+        $projectMetaDataQuery = $persistenceEngine->createProjectMetaDataQuery();
+        $ns = ($this->params['ns']) ? $this->params['ns'] : $this->params['id'];
+        $this->dataProject = $projectMetaDataQuery->getDataProject($ns, $this->params['projectType']);
     }
     
     protected function process() {
@@ -41,7 +45,7 @@ class project_command extends abstract_command_class {
                 $projectMetaData = $action->get($this->params);
                 break;
 
-            case 'generateProject':
+            case 'generate':
                 $action = new GenerateProjectMetaDataAction($this->modelWrapper->getPersistenceEngine());
                 $projectMetaData = $action->get($this->params);
                 break;
@@ -56,6 +60,25 @@ class project_command extends abstract_command_class {
             throw new UnknownProjectException();
     }
 
+    public function getKeyDataProject($key) {
+        return ($key) ? $this->dataProject[$key] : $this->dataProject;
+    }
+
+    public function getAuthorizationType() {
+        $dokey = $this->params[RequestParameterKeys::DO_KEY];
+        switch ($dokey) {
+            case 'edit':
+            case 'create':
+            case 'generate':
+            case 'save':
+                $dokey .= "Project";
+                break;
+            default:
+                $dokey = "admin";
+        }
+        return $dokey;
+    }
+
     /**
      * Afegeix la pàgina passada com argument com una resposta de tipus DATA_TYPE al generador de respostes.
      *
@@ -65,10 +88,5 @@ class project_command extends abstract_command_class {
      * @return mixed|void
      */
     protected function getDefaultResponse($response, &$ret) {}
-
-    //[TO DO] JOSEP: Alerta! l'autorització no pot ser _none, cal canviar-la quant estigui feta la part d'autorització!
-    public function getAuthorizationType() {
-        return "_none";
-    }
 
 }
