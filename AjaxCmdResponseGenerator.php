@@ -785,22 +785,20 @@ class AjaxCmdResponseGenerator
         );
     }
 
-    public function addAddTab( $containerId, $tabId, $title, $content, $urlBase, $position, $selected = false ) {
-        $this->response->add(
-            new JSonGeneratorImpl(
-                JSonGenerator::TAB,
-                array(
-                    "type"        => JSonGenerator::ADD_TAB,
-                    "containerId" => $containerId,
-                    "tabId"       => $tabId,
-                    "title"       => $title,
-                    "content"     => $content,
-                    "urlBase"     => $urlBase,
-                    "position"    => $position,
-                    "selected"    => $selected
-                )
-            )
-        );
+    public function addAddTab( $containerId, $contentParams, $position=NULL, $selected= FALSE, $containerClass=NULL) {
+        $responseParams = array(
+                    "type"          => JSonGenerator::ADD_TAB,
+                    "containerId"   => $containerId,
+                    "contentParams" => $contentParams,
+                    "selected" => $selected,
+                );
+        if($position){
+            $responseParams["position"] = $position;
+        }
+        if($containerClass){
+            $responseParams["containerClass"] = $containerClass;
+        }
+        $this->response->add(new JSonGeneratorImpl(JSonGenerator::TAB, $responseParams));
     }
 
     public function addRemoveTab( $containerId, $tabId) {

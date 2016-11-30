@@ -13,6 +13,7 @@
  */
 class ProjectKeys {
     const KEY_ID = "id";
+    const KEY_NS = "ns";
     const KEY_PROJECT_TYPE= "projectType";
     const KEY_FILTER= "filter";
     const KEY_METADATA_SUBSET= "metaDataSubSet";

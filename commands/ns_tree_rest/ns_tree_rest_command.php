@@ -16,17 +16,20 @@ class ns_tree_rest_command extends abstract_rest_command_class {
 
     public function __construct() {
         parent::__construct();
-        $this->defaultContentType    = "application/json";
-        $this->supportedContentTypes = array("application/json");
-        $this->supportedMethods      = array("GET");
-        $this->types['currentnode']  = abstract_command_class::T_OBJECT;
-        $this->types['onlyDirs']     = abstract_command_class::T_BOOLEAN;
-        $this->types['sortBy']       = abstract_command_class::T_INTEGER;
-        $this->types['expandProject']= abstract_command_class::T_BOOLEAN;
+//        $this->defaultContentType     = "application/json";
+//        $this->supportedContentTypes  = array("application/json");
+//        $this->supportedMethods       = array("GET");
+        //JOSEP: Els atributs de sota són específics d'un arbre de directoris no pas de qualsevol abstract_rest_command! S'han mogut des de l'abstract_rest_command_class a aquí
+        $this->types['currentnode']   = abstract_command_class::T_OBJECT;
+        $this->types['onlyDirs']      = abstract_command_class::T_BOOLEAN;
+        $this->types['sortBy']        = abstract_command_class::T_INTEGER;
+        $this->types['expandProject'] = abstract_command_class::T_BOOLEAN;
+        $this->types['hiddenProjects']= abstract_command_class::T_BOOLEAN;
         $defaultValues = array(
              'sortBy'   => 0
             ,'onlyDirs' => FALSE
             ,'expandProject' => FALSE
+            ,'hiddenProjects' => FALSE
         );
         $this->setParameters($defaultValues);
     }
@@ -41,21 +44,21 @@ class ns_tree_rest_command extends abstract_rest_command_class {
     }
 
     /**
-     * Obté l'arbre a partir del node actual ordenant
-     * els resultats i excloent els directoris segons els valors dels paràmetres emmagatzemats en aquest objecte.
+     * Obté l'arbre a partir del node actual ordenant els resultats i excloent 
+     * els directoris segons els valors dels paràmetres emmagatzemats en aquest objecte.
      *
      * @param string[] $extra_url_params paràmetres passats a travès de la URL.
-     *
      * @return string arbre formatat com a JSON
      */
     public function processGet() {
         $json = new JSON();
-
         $tree = $this->modelWrapper->getNsTree(
                                    $this->params['currentnode'],
                                    $this->params['sortBy'],
                                    $this->params['onlyDirs'],
-                                   $this->params['expandProject']
+                                   $this->params['expandProject'],
+				   $this->params['hiddenProjects'],
+                                   $this->params['fromRoot']                
         );
 
         $strData = $json->enc($tree);
@@ -75,6 +78,8 @@ class ns_tree_rest_command extends abstract_rest_command_class {
         $this->setSortBy($extra_url_params);
         $this->setOnlyDirs($extra_url_params);
         $this->setExpandProject($extra_url_params);
+	$this->setHiddenProjects($extra_url_params);
+        $this->setFromRoot($extra_url_params);
     }
 
     /**
@@ -116,6 +121,22 @@ class ns_tree_rest_command extends abstract_rest_command_class {
     private function setExpandProject($extra_url_params) {
         if ($extra_url_params[3])
             $this->params['expandProject'] = ($extra_url_params[3] != 'f');
+    }
+
+    /**
+     * Extreu el valor 'setFromRoot'. Aquest valor es trobarà a l'index 5.
+     */
+    private function setFromRoot($extra_url_params) {
+        if (count($extra_url_params)>6)
+            $this->params['fromRoot'] = ($extra_url_params[5]);
+    }
+    
+    /**
+     * Extreu el valor 'setHiddenProjects'. Aquest valor es trobarà a l'index 4.
+     */
+    private function setHiddenProjects($extra_url_params) {
+        if ($extra_url_params[4])
+            $this->params['hiddenProjects'] = ($extra_url_params[4] != 'f');
     }
 
     function getDefaultResponse( $response, &$ret ) {
