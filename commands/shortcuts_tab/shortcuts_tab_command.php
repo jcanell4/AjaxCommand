@@ -57,16 +57,37 @@ class shortcuts_tab_command extends abstract_command_class
         //TO DO [JOSEP] Aixo s'hauria de passar a una classe Shortcuts_tabResponseHandler, 
         //perque el retorn no es neutre, implica que a la interficie hi ha un widget amb pestanyes
         //i aixo nomes ho pot saber el template!
+        if($contentData){
+            $containerClass = "ioc/gui/ContentTabNsTreeListFromPage";
+            $urlBase = "lib/plugins/ajaxcommand/ajax.php?call=page";
+            $urlTree = "lib/plugins/ajaxcommand/ajaxrest.php/ns_tree_rest/";
 
-        $urlBase = "lib/plugins/ajaxcommand/ajax.php?call=page";
-
-        $responseGenerator->addAddTab(cfgIdConstants::ZONA_NAVEGACIO,
-            cfgIdConstants::TB_SHORTCUTS,
-            $contentData['title'],
-            $contentData['content'],
-            $urlBase,
-            ResponseParameterKeys::FIRST_POSITION,
-            true);
+            $contantParams = array(
+                "id" => cfgIdConstants::TB_SHORTCUTS,
+                "title" =>  $contentData['title'],
+                "standbyId" => cfgIdConstants::MAIN_CONTENT,
+                "urlBase" => $urlBase,
+                "data" => $contentData["content"],
+                "treeDataSource" => $urlTree,
+                'typeDictionary' => array (
+                                        'p' => 
+                                        array (
+                                          'urlBase' => '\'lib/plugins/ajaxcommand/ajax.php?call=project\'',
+                                          'params' => 
+                                          array (
+                                            0 => 'projectType',
+                                          ),
+                                        ),
+                                      ),                
+            );
+            $responseGenerator->addAddTab(cfgIdConstants::ZONA_NAVEGACIO,
+                    $contantParams,
+                    ResponseParameterKeys::FIRST_POSITION,
+                    FALSE,                
+                    $containerClass);
+        }else{
+           $responseGenerator->addError(-1, "ShortcutsNotFound!");  //JOSEP: [TO DO] CANVIAR PER UNA EXCEPCIÓ QUAN ES PASSI AL RESPONSE HANDLER
+        }
     }
 
 

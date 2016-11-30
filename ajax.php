@@ -6,7 +6,7 @@
  * @author Josep Cañellas <jcanell4@ioc.cat>
  */
 
-if(!defined('DOKU_INC')) define('DOKU_INC', dirname(__FILE__) . '/../../../');
+if (!defined('DOKU_INC')) define('DOKU_INC', realpath(dirname(__FILE__) . '/../../../') . '/');
 require_once(DOKU_INC . 'inc/init.php');
 require_once(DOKU_INC . 'inc/template.php');
 require_once(dirname(__FILE__) . '/ajaxClasses.php');

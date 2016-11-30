@@ -6,7 +6,7 @@
  * @author Josep Cañellas <jcanell4@ioc.cat>
  */
 
-if(!defined('DOKU_INC')) define('DOKU_INC', dirname(__FILE__) . '/../../../');
+if(!defined('DOKU_INC')) define('DOKU_INC', realpath(dirname(__FILE__) . '/../../../') . '/');
 require_once(DOKU_INC . 'inc/init.php');
 require_once(DOKU_INC . 'inc/template.php');
 require_once(DOKU_INC . 'inc/pluginutils.php');
@@ -309,7 +309,7 @@ class ajaxRest extends ajaxCall {
         }
         $this->extra_url_params = explode('/', $_SERVER['PATH_INFO']);
         $this->request_params['method'] = $this->method;
-        $_REQUEST['sectok']     = $this->extra_url_params[SECTOK_PARAM];
+        $_REQUEST['sectok']     = $this->extra_url_params[2];
     }
 
     public function setCommand() {

@@ -12,11 +12,21 @@ abstract class abstract_rest_command_class extends abstract_command_class {
     protected $supportedMethods;
     protected $defaultContentType = 'none';
 
+    /**
+     * El constructor defineix el content type per defecte, els content type suportats, el mètode ('GET') i els tipus
+     */
     public function __construct() {
         parent::__construct();
-        $this->types['method'] = abstract_command_class::T_STRING;
-        $defaultValues         = array('GET');
-        $this->setParameters($defaultValues);
+        $this->defaultContentType     = "application/json";
+        $this->supportedContentTypes  = array("application/json");
+        $this->supportedMethods       = array("GET");
+        $this->types['method']        = abstract_command_class::T_STRING;
+        //JOSEP: Els atributs de sota són específics d'un arbre de directoris no pas de qualsevol abstract_rest_command!
+//        $this->types['currentnode']   = abstract_command_class::T_OBJECT;
+//        $this->types['onlyDirs']      = abstract_command_class::T_BOOLEAN;
+//        $this->types['sortBy']        = abstract_command_class::T_INTEGER;
+//        $this->types['expandProject'] = abstract_command_class::T_BOOLEAN;
+//        $this->types['hiddenProjects']= abstract_command_class::T_BOOLEAN;
     }
 
     /**

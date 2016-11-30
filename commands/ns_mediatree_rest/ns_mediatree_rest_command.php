@@ -32,7 +32,8 @@ class ns_mediatree_rest_command extends ns_tree_rest_command {
         $tree = $this->modelWrapper->getNsMediaTree(
                                    $this->params['currentnode'],
                                    $this->params['sortBy'],
-                                   $this->params['onlyDirs']
+                                   $this->params['onlyDirs'],
+                                   $this->params['hiddenProjects']
         );
 
         $strData = $json->enc($tree);
