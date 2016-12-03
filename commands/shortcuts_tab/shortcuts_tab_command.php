@@ -57,7 +57,7 @@ class shortcuts_tab_command extends abstract_command_class
         //TO DO [JOSEP] Aixo s'hauria de passar a una classe Shortcuts_tabResponseHandler, 
         //perque el retorn no es neutre, implica que a la interficie hi ha un widget amb pestanyes
         //i aixo nomes ho pot saber el template!
-        if($contentData){
+        if($contentData["content"]){
             $containerClass = "ioc/gui/ContentTabNsTreeListFromPage";
             $urlBase = "lib/plugins/ajaxcommand/ajax.php?call=page";
             $urlTree = "lib/plugins/ajaxcommand/ajaxrest.php/ns_tree_rest/";
