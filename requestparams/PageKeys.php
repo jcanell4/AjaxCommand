@@ -21,6 +21,7 @@ class PageKeys {
     const KEY_TEXT              = "wikitext";
     const KEY_SUF               = "suffix";
     const KEY_SUM               = "summary";
+    const KEY_TEMPLATE          = "template";
     const KEY_IN_EDITING_CHUNKS = "editing_chunks";
     const KEY_EDITING_CHUNKS = "editingChunks";
     const KEY_SECTION_ID = "section_id";
@@ -49,6 +50,4 @@ class PageKeys {
     const KEY_NO_RESPONSE = "no_response";
     const KEY_AUTO = "auto";
     const KEY_REFRESH = "refresh";
-
-    const KEY_TEMPLATE = "template";
 }
