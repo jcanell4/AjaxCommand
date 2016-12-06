@@ -4,7 +4,6 @@ if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
 if(!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_PLUGIN . "ajaxcommand/");
 require_once(DOKU_COMMAND . "requestparams/ProjectKeys.php");
 require_once(DOKU_COMMAND . 'abstract_command_class.php');
-require_once(DOKU_PLUGIN . 'wikiiocmodel/projects/defaultProject/PermissionPageForUserManager.php');
 
 /**
  * Class page_command

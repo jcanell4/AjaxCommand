@@ -23,9 +23,9 @@ class PageKeys {
     const KEY_SUM               = "summary";
     const KEY_TEMPLATE          = "template";
     const KEY_IN_EDITING_CHUNKS = "editing_chunks";
-    const KEY_EDITING_CHUNKS = "editingChunks";
-    const KEY_SECTION_ID = "section_id";
-    const KEY_SELECTED = "selected";
+    const KEY_EDITING_CHUNKS    = "editingChunks";
+    const KEY_SECTION_ID        = "section_id";
+    const KEY_SELECTED          = "selected";
 
     const KEY_TO_REQUIRE = "to_require";
     const KEY_FORCE_REQUIRE = "force_require";

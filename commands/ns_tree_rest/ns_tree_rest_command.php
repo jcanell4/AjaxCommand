@@ -60,7 +60,6 @@ class ns_tree_rest_command extends abstract_rest_command_class {
 				   $this->params['hiddenProjects'],
                                    $this->params['fromRoot']                
         );
-
         $strData = $json->enc($tree);
         return $strData;
     }
