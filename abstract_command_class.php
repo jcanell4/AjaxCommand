@@ -4,6 +4,7 @@ if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
 require_once(DOKU_INC . 'inc/plugin.php');
 require_once(DOKU_PLUGIN . 'ajaxcommand/AbstractResponseHandler.php');
 require_once(DOKU_PLUGIN . 'wikiiocmodel/WikiIocModelManager.php');
+require_once(DOKU_PLUGIN . 'wikiiocmodel/AuthorizationKeys.php');
 
 /**
  * Class abstract_command_class
@@ -224,10 +225,14 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
         if ($retAuth) {
             $ret = $this->getResponse();
         } else {
-            $e = $this->authorization->getAuthorizationError('exception');
-            $p = $this->authorization->getAuthorizationError('extra_params');
             $responseGenerator = new AjaxCmdResponseGenerator();
-            $this->handleError(new $e($p), $responseGenerator);
+            $e = $this->authorization->getAuthorizationError(AuthorizationKeys::EXCEPTION_KEY);
+            $p = $this->authorization->getAuthorizationError(AuthorizationKeys::ERROR_PARAMS_KEY);
+            if($p){
+                $this->handleError(new $e($p), $responseGenerator);
+            }else{
+                $this->handleError(new $e(), $responseGenerator);
+            }
             $ret = $responseGenerator->getJsonResponse();
         }
  //      for a dojo iframe the json response has to be inside a textarea 
