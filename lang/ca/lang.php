@@ -34,3 +34,6 @@ $lang['unauthorized_request']   = 'No es pot penjar el fitxer. Potser no teniu p
 $lang['auth_error']        = 'Error d\'autenticació';
 $lang['user_login']        = 'Usuari connectat';
 $lang['user_logout']       = 'Usuari desconnectat';
+
+// Avisos del sistema
+$lang['system_warning_default_title'] = 'Avís del sistema';

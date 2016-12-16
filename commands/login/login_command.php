@@ -52,11 +52,15 @@ class login_command extends abstract_command_class {
 
         if($this->params['do'] === 'login'  && $response["loginResult"] ) {
             $response["userId"]=  $this->params['u'];
-            $response['notification'] = $this->modelWrapper->notify(['do' => 'init']);
+
+            $notifications = $this->modelWrapper->notify(['do' => 'init']);
+            $response = array_merge($response, $notifications);
+
+
         } else if($response["loginResult"]){
             $this->_logoff();
             $response["loginResult"] = FALSE;
-            $response['notification'] = $this->modelWrapper->notify(['do' => 'close']);
+            $response = array_merge($response, $this->modelWrapper->notify(['do' => 'close']));
         }
         return $response;
     }

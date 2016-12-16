@@ -754,15 +754,75 @@ class AjaxCmdResponseGenerator
 		);
 	}
 
-	public function addRemoveAdminTab( $containerId, $tabId, $urlBase ) {
+	/* @deprecated */
+    public function addShortcutsTab( $containerId, $tabId, $title, $content, $urlBase ) {
+        $this->response->add(
+            new JSonGeneratorImpl(
+                JSonGenerator::SHORTCUTS_TAB,
+                array(
+                    "type"        => JSonGenerator::ADD_SHORTCUTS_TAB,
+                    "containerId" => $containerId,
+                    "tabId"       => $tabId,
+                    "title"       => $title,
+                    "content"     => $content,
+                    "urlBase"     => $urlBase
+                )
+            )
+        );
+    }
+
+    /* @deprecated */
+    public function addRemoveShortcutsTab( $containerId, $tabId) {
+        $this->response->add(
+            new JSonGeneratorImpl(
+                JSonGenerator::SHORTCUTS_TAB,
+                array(
+                    "type"        => JSonGenerator::REMOVE_SHORTCUTS_TAB,
+                    "containerId" => $containerId,
+                    "tabId"       => $tabId
+                )
+            )
+        );
+    }
+
+    public function addAddTab( $containerId, $contentParams, $position=NULL, $selected= FALSE, $containerClass=NULL) {
+        $responseParams = array(
+                    "type"          => JSonGenerator::ADD_TAB,
+                    "containerId"   => $containerId,
+                    "contentParams" => $contentParams,
+                    "selected" => $selected,
+                );
+        if($position){
+            $responseParams["position"] = $position;
+        }
+        if($containerClass){
+            $responseParams["containerClass"] = $containerClass;
+        }
+        $this->response->add(new JSonGeneratorImpl(JSonGenerator::TAB, $responseParams));
+    }
+
+    public function addRemoveTab( $containerId, $tabId) {
+        $this->response->add(
+            new JSonGeneratorImpl(
+                JSonGenerator::TAB,
+                array(
+                    "type"        => JSonGenerator::REMOVE_TAB,
+                    "containerId" => $containerId,
+                    "tabId"       => $tabId
+                )
+            )
+        );
+    }
+
+
+	public function addRemoveAdminTab( $containerId, $tabId) {
 		$this->response->add(
 			new JSonGeneratorImpl(
 				JSonGenerator::ADMIN_TAB,
 				array(
                                     "type"        => JSonGenerator::REMOVE_ADMIN_TAB,
                                     "containerId" => $containerId,
-                                    "tabId"       => $tabId,
-                                    "urlBase"     => $urlBase
+                                    "tabId"       => $tabId
 				)
                         )
 		);

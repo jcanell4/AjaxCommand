@@ -309,7 +309,7 @@ class ajaxRest extends ajaxCall {
         }
         $this->extra_url_params = explode('/', $_SERVER['PATH_INFO']);
         $this->request_params['method'] = $this->method;
-        $_REQUEST['sectok']     = $this->extra_url_params[SECTOK_PARAM];
+        $_REQUEST['sectok']     = $this->extra_url_params[2];
     }
 
     public function setCommand() {

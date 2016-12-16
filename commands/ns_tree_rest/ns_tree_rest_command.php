@@ -57,7 +57,8 @@ class ns_tree_rest_command extends abstract_rest_command_class {
                                    $this->params['sortBy'],
                                    $this->params['onlyDirs'],
                                    $this->params['expandProject'],
-                                   $this->params['hiddenProjects']
+				   $this->params['hiddenProjects'],
+                                   $this->params['fromRoot']                
         );
         $strData = $json->enc($tree);
         return $strData;
@@ -76,7 +77,8 @@ class ns_tree_rest_command extends abstract_rest_command_class {
         $this->setSortBy($extra_url_params);
         $this->setOnlyDirs($extra_url_params);
         $this->setExpandProject($extra_url_params);
-        $this->setHiddenProjects($extra_url_params);
+	$this->setHiddenProjects($extra_url_params);
+        $this->setFromRoot($extra_url_params);
     }
 
     /**
@@ -120,6 +122,14 @@ class ns_tree_rest_command extends abstract_rest_command_class {
             $this->params['expandProject'] = ($extra_url_params[3] != 'f');
     }
 
+    /**
+     * Extreu el valor 'setFromRoot'. Aquest valor es trobarà a l'index 5.
+     */
+    private function setFromRoot($extra_url_params) {
+        if (count($extra_url_params)>6)
+            $this->params['fromRoot'] = ($extra_url_params[5]);
+    }
+    
     /**
      * Extreu el valor 'setHiddenProjects'. Aquest valor es trobarà a l'index 4.
      */

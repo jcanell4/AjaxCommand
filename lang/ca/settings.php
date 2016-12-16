@@ -9,3 +9,10 @@ $lang['debugLvl']                 = "nivell de depuarció: 0-void, 1-Display err
 $lang['logFile']                  = "ruta del fitxer de registre (log file)";
 $lang['defCommandClassFolder']    = "ruta de la carpeta on es troben la classes de tipus comanda per defecte";
 $lang['userCommandClassFolder']   = "ruta de la carpeta on es poden posar classes de tipus comanda definides per l'usuari";
+
+$lang['system_warning_user'] = "Nom de l'usuari que envia els avisos del sistema";
+$lang['system_warning_title'] = "Títol de l'avís";
+$lang['system_warning_message'] = "Missatge ques es mostrarà";
+$lang['system_warning_show_alert'] = "Avís activat";
+$lang['system_warning_start_date'] = "Data d'inici a partir de la qual es mostrarà l'avís (dd-mm-aaaa hh:mm)";
+$lang['system_warning_end_date'] = "Data d'final a partir de la qual ja no es mostrarà l'avís (dd-mm-aaaa hh:mm)";
