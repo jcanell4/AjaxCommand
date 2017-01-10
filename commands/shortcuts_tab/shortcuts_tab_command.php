@@ -54,7 +54,7 @@ class shortcuts_tab_command extends abstract_command_class
      */
     protected function getDefaultResponse($contentData, &$responseGenerator)
     {
-        //TO DO [JOSEP] Aixo s'hauria de passar a una classe Shortcuts_tabResponseHandler, 
+        //TO DO [JOSEP] Xavier, Aixo s'hauria de passar a una classe Shortcuts_tabResponseHandler, 
         //perque el retorn no es neutre, implica que a la interficie hi ha un widget amb pestanyes
         //i aixo nomes ho pot saber el template!
         if($contentData["content"]){
@@ -65,7 +65,7 @@ class shortcuts_tab_command extends abstract_command_class
             $contantParams = array(
                 "id" => cfgIdConstants::TB_SHORTCUTS,
                 "title" =>  $contentData['title'],
-                "standbyId" => cfgIdConstants::MAIN_CONTENT,
+                "standbyId" => cfgIdConstants::BODY_CONTENT,
                 "urlBase" => $urlBase,
                 "data" => $contentData["content"],
                 "treeDataSource" => $urlTree,
