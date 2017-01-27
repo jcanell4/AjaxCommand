@@ -167,18 +167,14 @@ class ajaxCall {
     }
 
     /**
-     * Aquest mètode instancia un command amb el nom passat com argument, i li passa els paràmetres passats com argument.
-     * Després el fa corre passant els grups als que pertany el usuari com a permissos.
-     *
-     * Intenta carregar un response_handler adequat pel command passat com argument. Els response handler s'han de trobar
-     * dins de la carpeta del template, a una carpeta anomenada cmd_response_handler.
+     * Aquest mètode instancia un command amb el nom definit a $this->call.
+     * Intenta carregar un response_handler adequat al command. Si no s'indica com a paràmetre, 
+     * els response handler s'han de trobar a una carpeta del template anomenada cmd_response_handler.
      *
      * El nom del handler pot ser igual al nom del command afegint '_response_handler.php' o en CamelCase afegint
      * 'ResponseHandler'.php, per exemple ioc-template/cmd_response_handler/CancelResponseHandler.php.
      *
-     * @param string   $str_command    nom del command
-     * @param string[] $arr_parameters hash amb els paràmetres per executar el command
-     *
+     * @param string $respHandDir directori alternatiu dels ResponseHandler
      * @return string el resultat de executar el command en format JSON o un missatge d'error
      */
     function callCommand( $respHandDir=NULL ) {
@@ -202,28 +198,25 @@ class ajaxCall {
             $respHandObj = new $respHandClass();
         }
 
-        //$str_command = $this->call . '_command';  Antiga versió, abans de projects
         $str_command = $this->commandClass;
         $command = new $str_command();
         $command->setParameters($this->request_params);
         if ($this->extra_url_params) {
             $command->setParamValuesFromUrl($this->extra_url_params);
         }
-        $command->init(); //ALERTA! 
+        $command->init();
 
-        if($respHandObj) {
+        if ($respHandObj) {
             $command->setResponseHandler($respHandObj);
         }
 
         $ret = $command->run();
 
-        if($command->error) {
-            /**[TO DO] Controll exceptions**/
-            if(is_object($command->error)){
+        if ($command->error) {
+            if (is_object($command->error)) {
                 $ret = $command->error->getMessage();
-            }else{
+            }else {
                 header($command->errorMessage, TRUE, $command->error);
-                $ret = $command->errorMessage;
             }
         }
         return $ret;

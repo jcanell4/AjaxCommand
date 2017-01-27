@@ -24,7 +24,6 @@ class cancel_command extends abstract_command_class
         parent::__construct();
         $this->types['id'] = abstract_command_class::T_STRING;
         $this->types['auto'] = abstract_command_class::T_BOOLEAN;
-        $this->types['auto'] = abstract_command_class::T_BOOLEAN;
         $this->types[PageKeys::KEY_DISCARD_DRAFT] = abstract_command_class::T_BOOLEAN;
         $this->types[PageKeys::KEY_KEEP_DRAFT] = abstract_command_class::T_BOOLEAN;
         $this->types[PageKeys::KEY_NO_RESPONSE] = abstract_command_class::T_BOOLEAN;

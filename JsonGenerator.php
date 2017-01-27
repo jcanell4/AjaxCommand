@@ -204,42 +204,36 @@ class JSonGeneratorImpl implements JsonGenerator
  * Class ArrayJSonGenerator
  * Implementació de JsonGenerator per codificar un array d'elements JsonGenerator
  */
-class ArrayJSonGenerator implements JsonGenerator
-{
+class ArrayJSonGenerator implements JsonGenerator {
     private $items;
     private $encoder;
 
     /**
-     * El constructor d'aquesta classe no accepta paràmetres, els valors a codificar s'afegeixen cridant al mètode
-     * add().
+     * El constructor d'aquesta classe no accepta paràmetres,
+     * els valors a codificar s'afegeixen cridant al mètode add().
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->encoder = new JSON();
     }
 
     /**
      * @return JsonGenerator array d'elements afegits per codificar
      */
-    public function getJson()
-    {
+    public function getJson() {
         return $this->items;
     }
 
     /**
      * @return string dades codificades en format JSON
      */
-    public function getJsonEncoded()
-    {
-        $dataToEncode = $this->getJson(); // TODO[Xavi] no es fa servir, s'hauira de substituir a la línia de sota
-        return $this->encoder->encode($this->items); //json_encode($this->items);
+    public function getJsonEncoded() {
+        return $this->encoder->encode($this->getJson());
     }
 
     /**
      * @param JSonGenerator $jSonGenerator
      */
-    public function add($jSonGenerator)
-    {
+    public function add($jSonGenerator) {
         $this->items[] = $jSonGenerator->getJson();
     }
 }

@@ -1,10 +1,6 @@
 <?php
-if (!defined('DOKU_PLUGIN')) {
-    define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
-}
-if (!defined('DOKU_COMMAND')) {
-    define('DOKU_COMMAND', DOKU_PLUGIN . "ajaxcommand/");
-}
+if (!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
+if (!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_PLUGIN . "ajaxcommand/");
 require_once DOKU_COMMAND . 'JsonGenerator.php';
 
 /**
@@ -708,7 +704,7 @@ class AjaxCmdResponseGenerator
 	 * @return string resposta codificada en JSON
 	 */
 	public function getJsonResponse() {
-		return $this->response->getJsonEncoded();
+            return ($this->response->getJson()) ? $this->response->getJsonEncoded() : NULL;
 	}
 
 	/**

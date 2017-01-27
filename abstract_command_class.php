@@ -8,7 +8,6 @@ require_once(DOKU_PLUGIN . 'wikiiocmodel/AuthorizationKeys.php');
 
 /**
  * Class abstract_command_class
- *
  * Classe abstracta de la que hereten els altres commands.
  *
  * @author Josep Cañellas <jcanell4@ioc.cat>
@@ -39,12 +38,12 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
     protected $permissionFor = array();
     protected $authenticatedUsersOnly = TRUE;
     protected $runPreprocess = FALSE;
-    
+
     protected $authorization;
     protected $modelWrapper;
 
     protected $needMediaInfo =FALSE;
-    
+
     public $error = FALSE;
     public $errorMessage = '';
 
@@ -77,11 +76,11 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
     public function getModelWrapper() {
         return $this->modelWrapper;
     }
-    
+
     public function getAuthorization() {
         return $this->authorization;
     }
-    
+
     /**
      * Estableix l'adaptador a emprar i l'autorització que li correspon.
      * @param modelManager
@@ -91,10 +90,10 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
             $this->modelWrapper  = $modelManager->getModelWrapperManager();
         }
         if(!$this->authorization){
-            $this->authorization = $modelManager->getAuthorizationManager($this->getAuthorizationType(), $this);
+            $this->authorization = $modelManager->getAuthorizationManager($this->getAuthorizationType());
         }
     }
-    
+
     /**
      * @return string (nom del command a partir del nom de la clase)
      */
@@ -121,7 +120,7 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
     protected function setPermissionFor($permissionFor) {
         $this->permissionFor = $permissionFor;
     }
-  
+
     public function getAuthenticatedUsersOnly() {
         return $this->authenticatedUsersOnly;
     }
@@ -185,7 +184,7 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
                         && $this->types[$key]!= self::T_ARRAY
                         && $this->types[$key]!= self::T_FUNCTION
                         && $this->types[$key]!= self::T_METHOD
-                        && $this->types[$key]!= self::T_FILE                    
+                        && $this->types[$key]!= self::T_FILE
                         && gettype($value) != $this->types[$key]) {
                 settype($value, $this->types[$key]);
             }else if(isset($this->types[$key])
@@ -200,11 +199,11 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
                         && ($this->types[$key]== self::T_FUNCTION
                                 || $this->types[$key]== self::T_METHOD
                        )&& gettype($value) != self::T_STRING){
-                settype($value, self::T_STRING);                
+                settype($value, self::T_STRING);
             }else if(isset($this->types[$key])
                         && $this->types[$key]== self::T_FILE
                         && gettype($value) != self::T_ARRAY){
-                settype($value, self::T_ARRAY);                
+                settype($value, self::T_ARRAY);
             }
             $this->params[$key] = $value;
         }
@@ -235,13 +234,13 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
             }
             $ret = $responseGenerator->getJsonResponse();
         }
- //      for a dojo iframe the json response has to be inside a textarea 
-         if (isset($this->params['iframe'])) {
-          $ret = "<html><body><textarea>" . $ret. "</textarea></body></html>";   
+        //for a dojo iframe the json response has to be inside a textarea
+        if (isset($this->params['iframe'])) {
+            $ret = "<html><body><textarea>" . $ret. "</textarea></body></html>";
         }
         return $ret;
     }
-    
+
     protected function handleError($e, &$responseGenerator){
         if ($e->getCode() >= 1000){
             $error_handler = $this->getErrorHandler();
@@ -249,7 +248,7 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
                 $error_handler->processResponse($this->params, $e, $responseGenerator);
             } else {
                 $this->getDefaultErrorResponse($this->params, $e, $responseGenerator);
-            }            
+            }
         }
     }
 
@@ -277,10 +276,10 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
         } catch (HttpErrorCodeException $e){
             $this->error        = $e->getCode();
             $this->errorMessage = $e->getMessage();
+            return $this->errorMessage;
         } catch (Exception $e){
             $this->handleError($e, $ret);
         }
-
         $jsonResponse = $ret->getJsonResponse();
         return $jsonResponse;
     }
@@ -297,7 +296,7 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
 
     /**
      * Retorna la resposta per defecte quan el process llença una excepció.
-     * Aquest mètode s'executarà només en cas que la comanda no disposi de cap 
+     * Aquest mètode s'executarà només en cas que la comanda no disposi de cap
      * objecte errorHandler (de tipus ResponseHandler).
      *
      * @param Exception                    $response
