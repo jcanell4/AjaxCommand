@@ -21,7 +21,7 @@ class ajaxCall {
     protected $commandClass;
     protected $request_params;
     protected $extra_url_params;
-    
+
     public static function Instance() {
         static $inst = NULL;
         if($inst === NULL) {
@@ -32,7 +32,7 @@ class ajaxCall {
     }
 
     private function __construct() {
-        /* 
+        /*
          * Aquí se establece el valor por defecto del proyecto actual,
          * sin embargo, es necesario establecer un mecanismo para la asignación
          * dinámica de proyectos
@@ -49,7 +49,7 @@ class ajaxCall {
     public function setCommand() {
         global $_GET;
         global $_POST;
-        
+
         if(isset($_POST['call'])) {
             $without    = 'call';
             $this->call = $_POST['call'];
@@ -85,7 +85,7 @@ class ajaxCall {
             $evt = new Doku_Event('CALLING_EXTRA_COMMANDS', $dataEvent);
             $evt->trigger();
             unset($evt);
-    
+
             $noCommand = TRUE;
             if (sizeof($dataEvent) > 0){
                 $noCommand = !$dataEvent[$this->call] ||
@@ -108,7 +108,7 @@ class ajaxCall {
             }
         }
     }
-    
+
     /**
      * Si existeix una classe command amb el nom passat com argument el carrega i retorna true,
      * en cas contrari retorna false.
@@ -168,7 +168,7 @@ class ajaxCall {
 
     /**
      * Aquest mètode instancia un command amb el nom definit a $this->call.
-     * Intenta carregar un response_handler adequat al command. Si no s'indica com a paràmetre, 
+     * Intenta carregar un response_handler adequat al command. Si no s'indica com a paràmetre,
      * els response handler s'han de trobar a una carpeta del template anomenada cmd_response_handler.
      *
      * El nom del handler pot ser igual al nom del command afegint '_response_handler.php' o en CamelCase afegint
@@ -192,7 +192,7 @@ class ajaxCall {
             $respHandClass = $this->camelCase($this->call, 'ResponseHandler');
             $respHandFile  = $respHandDir . $respHandClass . '.php';
         }
-    
+
         if (@file_exists($respHandFile)) {
             require_once($respHandFile);
             $respHandObj = new $respHandClass();
@@ -256,7 +256,7 @@ class ajaxCall {
     public function setRequestParams($request_params) {
         $this->request_params = $request_params;
     }
-    
+
     function camelCase($str, $extra) {
         return strtoupper(substr($str, 0, 1)) . strtolower(substr($str, 1)) . $extra;
     }
@@ -339,7 +339,7 @@ class ajaxRest extends ajaxCall {
 //        $command->setParameters($this->request_params);
 //        $command->setParamValuesFromUrl($this->extra_url_params);
 //        $command->init();
-//    
+//
 //        $ret = $command->dispatchRequest(
 //                       $this->method
 //                       /*,$extra_url_params //a setParamValuesFromUrl */
