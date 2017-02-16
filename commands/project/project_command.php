@@ -29,6 +29,9 @@ class project_command extends abstract_command_class {
     
     protected function process() {
         
+        if (!$this->params[RequestParameterKeys::PROJECT_TYPE])
+            throw new UnknownPojectTypeException();
+        
         switch ($this->params[RequestParameterKeys::DO_KEY]) {
             case 'edit':
                 $action = new GetProjectMetaDataAction($this->modelWrapper->getPersistenceEngine());
