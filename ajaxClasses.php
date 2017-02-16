@@ -217,6 +217,7 @@ class ajaxCall {
                 $ret = $command->error->getMessage();
             }else {
                 header($command->errorMessage, TRUE, $command->error);
+                $ret = $command->errorMessage;
             }
         }
         return $ret;
