@@ -19,6 +19,7 @@ class notify_command extends abstract_command_class {
         $this->types['message'] = abstract_command_class::T_STRING;
         $this->types['to'] = abstract_command_class::T_STRING;
         $this->types['params'] = abstract_command_class::T_STRING;
+        $this->types['changes'] = abstract_command_class::T_STRING;
     }
 
 
@@ -26,6 +27,11 @@ class notify_command extends abstract_command_class {
         if (isset($this->params['params'])) {
             $this->params['params'] = json_decode($this->params['params'], true);
         }
+
+        if (isset($this->params['changes'])) {
+            $this->params['changes'] = json_decode($this->params['changes'], true);
+        }
+
 
         return $this->modelWrapper->notify($this->params);
     }
