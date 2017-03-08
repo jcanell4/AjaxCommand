@@ -183,6 +183,20 @@ class AjaxCmdResponseGenerator
         );
     }
 
+    public function addNotificationResponse($action, $params)
+    {
+        $contentData = array(
+            'action' => $action,
+            'params' => $params
+        );
+
+        $this->response->add(
+            new JSonGeneratorImpl(
+                JSonGenerator::NOTIFICATION,
+                $contentData)
+        );
+    }
+
     public function addDraftDialog($id, $ns, $rev, $params, $timeout)
     {
         $contentData = [

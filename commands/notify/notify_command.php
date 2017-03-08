@@ -36,26 +36,18 @@ class notify_command extends abstract_command_class {
         return $this->modelWrapper->notify($this->params);
     }
 
-    protected function getDefaultResponse($response, &$ret) {
+    protected function getDefaultResponse($response, &$ajaxCmdResponseGenerator) {
 
-        if ($response['notifications']) {
-            for ($i=0; $i<count($response['notifications']);$i++) {
-                $action = $response['notifications'][$i]['action'];
-                $params = $response['notifications'][$i]['params'];
+        if (isset($response['info'])) {
+            $ajaxCmdResponseGenerator->addInfoDta($response['info']);
+        }
 
-                $ret->addNotification($action, $params);
-            }
-
-
-        } else {
-            $action = $response['action'];
-            $params = $response['params'];
-
-            $ret->addNotification($action, $params);
+        foreach ($response['notifications'] as $notification) {
+            $ajaxCmdResponseGenerator->addNotificationResponse($notification['action'], $notification['params']);
         }
 
     }
-    
+
     public function getAuthorizationType() {
         return "_none";
     }
