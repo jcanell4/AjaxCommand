@@ -9,7 +9,7 @@ require_once(DOKU_COMMAND . 'requestparams/RequestParameterKeys.php');
 class project_command extends abstract_command_class {
 
     private $dataProject;   //guarda los datos del proyecto para verificar la autorización
-    
+
     public function __construct() {
         parent::__construct();
         $this->types[PageKeys::KEY_ID] = abstract_command_class::T_STRING;
@@ -26,12 +26,12 @@ class project_command extends abstract_command_class {
         $ns = ($this->params['ns']) ? $this->params['ns'] : $this->params['id'];
         $this->dataProject = $projectMetaDataQuery->getDataProject($ns, $this->params['projectType']);
     }
-    
+
     protected function process() {
-        
+
         if (!$this->params[RequestParameterKeys::PROJECT_TYPE])
             throw new UnknownPojectTypeException();
-        
+
         switch ($this->params[RequestParameterKeys::DO_KEY]) {
             case 'edit':
                 $action = new GetProjectMetaDataAction($this->modelWrapper->getPersistenceEngine());
@@ -40,7 +40,9 @@ class project_command extends abstract_command_class {
 
             case 'save':
                 $action = new SetProjectMetaDataAction($this->modelWrapper->getPersistenceEngine());
-                $projectMetaData = $action->get($this->params);
+                $parms = $this->params;
+                $parms['old_autor'] = $this->dataProject['autor'];
+                $projectMetaData = $action->get($parms);
                 break;
 
             case 'create':
