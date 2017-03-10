@@ -16,4 +16,7 @@ class RequestParameterKeys {
     const DO_KEY = 'do';
     const CALL_KEY = 'call';
     const PROJECT_TYPE = 'projectType';
+    const SHOW_CHANGES_KEY = 'show_changes';
+    const ID_KEY = 'id';
+    const FIRST_KEY = 'first';
 }

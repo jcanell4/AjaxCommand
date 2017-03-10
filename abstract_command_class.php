@@ -23,7 +23,13 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
     const T_FUNCTION = "function";
     const T_METHOD   = "method";
     const T_FILE     = "file";
-
+    const T_ARRAY_KEY  = "array_key";
+    const T_INTEGER_KEY  = "integer_key";
+    const T_BOOLEAN_KEY  = "boolean_key";
+    const T_DOUBLE_KEY   = "double_key";
+    const T_FLOAT_KEY    = "float_key";
+    const T_STRING_KEY   = "string_key";
+    
     protected static $PLUGUIN_TYPE = 'command';
     protected static $FILENAME_PARAM = 'name';
     protected static $FILE_TYPE_PARAM = 'type';
@@ -179,6 +185,9 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
             if(isset($this->types[$key])
                     && $this->types[$key]==self::T_BOOLEAN){
                 $value =  filter_var($value, FILTER_VALIDATE_BOOLEAN);
+            }else if(isset($this->types[$key])
+                    && $this->types[$key]==self::T_ARRAY_KEY){
+                $value = key($value);
             }else if(isset($this->types[$key])
                         && $this->types[$key]!= self::T_OBJECT
                         && $this->types[$key]!= self::T_ARRAY
