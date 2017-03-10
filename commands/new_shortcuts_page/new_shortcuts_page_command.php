@@ -5,9 +5,9 @@ if(!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_PLUGIN . "ajaxcommand/"
 require_once(DOKU_COMMAND . 'AjaxCmdResponseGenerator.php');
 require_once(DOKU_COMMAND . 'JsonGenerator.php');
 require_once(DOKU_COMMAND . 'abstract_command_class.php');
-require_once(DOKU_PLUGIN . 'wikiiocmodel/projects/defaultProject/PermissionPageForUserManager.php');
 require_once(DOKU_COMMAND . 'abstract_command_class.php');
 require_once(DOKU_COMMAND . 'commands/new_page/new_page_command.php');
+require_once(DOKU_PLUGIN . 'wikiiocmodel/authorization/PermissionPageForUserManager.php');
 
 /**
  * Class page_command
