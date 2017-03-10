@@ -995,6 +995,36 @@ class AjaxCmdResponseGenerator
         );
     }
     
+        /**
+     * Afegeix una resposta de tipus HTML_TYPE al generador de respostes.
+     *
+     * @param string $id
+     * @param string $ns
+     * @param string $title
+     * @param string $content
+     * @param array $aFormArgs
+     * @param array $aLinkArgs
+     */
+    public function addRecents($id, $title, $content, $aFormArgs, $linkArgs)
+    {
+        $contentData = array(
+            'id' => $id,
+            'title' => $title,
+            'content' => $content,
+            'aRequestFormArgs' => $aFormArgs,
+            'requestLinkArgs' => $linkArgs,
+            
+        );
+
+        $this->response->add(
+            new JSonGeneratorImpl(
+                JSonGenerator::RECENTS,
+                $contentData)
+        );
+    }
+
+
+    
     /**
      * Genera un element amb la informació correctament formatada i afegeix el timestamp. Si no s'especifica el id
      * s'assignarà el id del document que s'estigui gestionant actualment.
