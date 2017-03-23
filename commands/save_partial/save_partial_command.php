@@ -1,21 +1,18 @@
 <?php
+/**
+ * Class
+ * @author Josep Cañellas <jcanell4@ioc.cat>, Xavier García <xaviergaro.dev@gmail.com>
+ */
 if (!defined('DOKU_INC')) die();
 if (!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
 if (!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_PLUGIN . "ajaxcommand/");
+
 require_once(DOKU_COMMAND . 'AjaxCmdResponseGenerator.php');
 require_once(DOKU_COMMAND . 'JsonGenerator.php');
 require_once(DOKU_COMMAND . 'abstract_command_class.php');
-require_once(DOKU_COMMAND . 'requestparams/PageKeys.php');
-//require_once (DOKU_COMMAND.'DokuModelWrapper.php');
+require_once(DOKU_COMMAND . 'defkeys/PageKeys.php');
 
-/**
- * Class save_command
- *
- * @author Josep Cañellas <jcanell4@ioc.cat>, Xavier García <xaviergaro.dev@gmail.com>
- */
-class save_partial_command extends abstract_command_class
-{
-
+class save_partial_command extends abstract_command_class {
     /**
      * El constructor estableix els tipus per 'id', 'rev', 'range', 'date', 'prefix', 'suffix', 'changecheck', 'target'
      * i 'summary', i el valor per defecte de 'id' a 'index' que s'estableix com a paràmetre.
