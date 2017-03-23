@@ -3,8 +3,7 @@ if (!defined('DOKU_INC')) die();
 if (!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_INC . "lib/plugins/ajaxcommand/");
 
 require_once(DOKU_COMMAND . 'abstract_command_class.php');
-require_once(DOKU_COMMAND . 'requestparams/PageKeys.php');
-require_once(DOKU_COMMAND . 'requestparams/RequestParameterKeys.php');
+require_once(DOKU_COMMAND . 'defkeys/ProjectKeys.php');
 
 class project_command extends abstract_command_class {
 
@@ -12,10 +11,10 @@ class project_command extends abstract_command_class {
 
     public function __construct() {
         parent::__construct();
-        $this->types[PageKeys::KEY_ID] = abstract_command_class::T_STRING;
-        $this->types[RequestParameterKeys::DO_KEY] = abstract_command_class::T_STRING;
+        $this->types[ProjectKeys::KEY_ID] = abstract_command_class::T_STRING;
+        $this->types[ProjectKeys::KEY_DO] = abstract_command_class::T_STRING;
 
-        $defaultValues = [RequestParameterKeys::DO_KEY => 'edit'];
+        $defaultValues = [ProjectKeys::KEY_DO => ProjectKeys::KEY_EDIT];
         $this->setParameters($defaultValues);
     }
 
@@ -23,34 +22,34 @@ class project_command extends abstract_command_class {
         parent::init($modelManager);
         $persistenceEngine = $this->modelWrapper->getPersistenceEngine();
         $projectMetaDataQuery = $persistenceEngine->createProjectMetaDataQuery();
-        $ns = ($this->params['ns']) ? $this->params['ns'] : $this->params['id'];
-        $this->dataProject = $projectMetaDataQuery->getDataProject($ns, $this->params['projectType']);
+        $ns = ($this->params[ProjectKeys::KEY_NS]) ? $this->params[ProjectKeys::KEY_NS] : $this->params[ProjectKeys::KEY_ID];
+        $this->dataProject = $projectMetaDataQuery->getDataProject($ns, $this->params[ProjectKeys::PROJECT_TYPE]);
     }
 
     protected function process() {
 
-        if (!$this->params[RequestParameterKeys::PROJECT_TYPE])
+        if (!$this->params[ProjectKeys::PROJECT_TYPE])
             throw new UnknownPojectTypeException();
 
-        switch ($this->params[RequestParameterKeys::DO_KEY]) {
-            case 'edit':
+        switch ($this->params[ProjectKeys::KEY_DO]) {
+            case ProjectKeys::KEY_EDIT:
                 $action = new GetProjectMetaDataAction($this->modelWrapper->getPersistenceEngine());
                 $projectMetaData = $action->get($this->params);
                 break;
 
-            case 'save':
+            case ProjectKeys::KEY_SAVE:
                 $action = new SetProjectMetaDataAction($this->modelWrapper->getPersistenceEngine());
                 $parms = $this->params;
                 $parms['old_autor'] = $this->dataProject['autor'];
                 $projectMetaData = $action->get($parms);
                 break;
 
-            case 'create':
+            case ProjectKeys::KEY_CREATE:
                 $action = new CreateProjectMetaDataAction($this->modelWrapper->getPersistenceEngine());
                 $projectMetaData = $action->get($this->params);
                 break;
 
-            case 'generate':
+            case ProjectKeys::KEY_GENERATE:
                 $action = new GenerateProjectMetaDataAction($this->modelWrapper->getPersistenceEngine());
                 $projectMetaData = $action->get($this->params);
                 break;
@@ -70,12 +69,12 @@ class project_command extends abstract_command_class {
     }
 
     public function getAuthorizationType() {
-        $dokey = $this->params[RequestParameterKeys::DO_KEY];
+        $dokey = $this->params[ProjectKeys::KEY_DO];
         switch ($dokey) {
-            case 'edit':
-            case 'create':
-            case 'generate':
-            case 'save':
+            case ProjectKeys::KEY_EDIT:
+            case ProjectKeys::KEY_CREATE:
+            case ProjectKeys::KEY_GENERATE:
+            case ProjectKeys::KEY_SAVE:
                 $dokey .= "Project";
                 break;
             default:
