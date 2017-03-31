@@ -166,6 +166,14 @@ class AjaxCmdResponseGenerator
         );
     }
 
+    public function addPrintResponse($content){
+        $this->response->add(
+            new JSonGeneratorImpl(
+                JSonGenerator::TO_PRINT,
+                $content)
+        );
+    }
+
     public function addDiffDoc($id, $ns, $title, $content, $type)
     {
         $contentData = array(

@@ -52,6 +52,7 @@ interface JsonGenerator
     const FORM_TYPE = 37;
     const TAB = 38;
     const RECENTS = 39;
+    const TO_PRINT = 40;
 
     // Aquestes constants es fan servir com a subtipus
     const ADD_ADMIN_TAB = "add_admin_tab";
@@ -179,7 +180,8 @@ class JSonGeneratorImpl implements JsonGenerator
             "controlManager",
             "form",
             "tab",
-            "recents"
+            "recents",
+            "print"
         );
         $data = array(
             "type" => $arrayTypes[$this->type],
