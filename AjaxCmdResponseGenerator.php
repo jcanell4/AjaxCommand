@@ -329,7 +329,7 @@ class AjaxCmdResponseGenerator
      * @param string $draft
      * @param string[] $editing - Editing params
      */
-    public function addWikiCodeDoc($id, $ns, $title, $content, $draft, $recover_drafts, $htmlForm, $editing, $timer, $rev = NULL, $autosaveTimer=NULL)
+    public function addWikiCodeDoc($id, $ns, $title, $content, $draft, $recover_drafts, $htmlForm, $editing, $timer, $rev = NULL, $autosaveTimer=NULL, $extra = NULL)
     {
         $contentData = [
             'id' => $id,
@@ -349,6 +349,10 @@ class AjaxCmdResponseGenerator
         
         if ($autosaveTimer) {
             $contentData['autosaveTimer'] = $autosaveTimer;
+        }
+
+        if ($extra) {
+            $contentData['extra'] = $extra;
         }
 
         // ALERTA[Xavi] Pendent de determinar com s'ha d'obtenir aquest valor (del projecte)
@@ -900,7 +904,7 @@ class AjaxCmdResponseGenerator
                 );
 	}
 
-    public function addWikiCodeDocPartial($structure, $timer=NULL, $hasDraft=NULL, $autosaveTimer=NULL)
+    public function addWikiCodeDocPartial($structure, $timer=NULL, $hasDraft=NULL, $autosaveTimer=NULL, $extra = NULL)
     {
         $contentData = $structure;
 
@@ -916,8 +920,14 @@ class AjaxCmdResponseGenerator
             $contentData['autosaveTimer'] = $autosaveTimer;
         }
 
+        if ($extra) {
+            $contentData['extra'] = $extra;
+        }
+
         // ALERTA[Xavi] Pendent de determinar com s'ha d'obtenir aquest valor (del projecte)
         $contentData['ignoreLastNSSections'] = 2;
+
+
 
         $this->response->add(
             new JSonGeneratorImpl(
