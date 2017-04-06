@@ -19,6 +19,7 @@ abstract class AbstractResponseHandler {
     const MEDIADETAILS  = 'mediadetails';    
     const ADMIN_TASK  = 'admin_task';
     const ADMIN_TAB  = 'admin_tab';
+    const PRINT_ACTION  = 'print';
 
     private $cmd;
     private $modelWrapper;

@@ -26,7 +26,7 @@ class PageKeys {
     const KEY_EDITING_CHUNKS    = "editingChunks";
     const KEY_SECTION_ID        = "section_id";
     const KEY_SELECTED          = "selected";
-
+ 
     const KEY_TO_REQUIRE = "to_require";
     const KEY_FORCE_REQUIRE = "force_require";
     const KEY_RECOVER_DRAFT = "recover_draft";
@@ -50,4 +50,9 @@ class PageKeys {
     const KEY_NO_RESPONSE = "no_response";
     const KEY_AUTO = "auto";
     const KEY_REFRESH = "refresh";
+
+    const KEY_FILTER = "filter";
+    const KEY_START_POS = "start";
+    const KEY_PROJECT = "project";
 }
+
