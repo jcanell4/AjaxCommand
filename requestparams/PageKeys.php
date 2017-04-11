@@ -33,6 +33,7 @@ class PageKeys {
     const KEY_RECOVER_LOCAL_DRAFT = "recover_local";
     const KEY_DISCARD_DRAFT = "discard_draft";
     const KEY_KEEP_DRAFT = "keep_draft";
+    const KEY_UNLOCK = "unlock";
 
     const KEY_PARAMS = "params"; // response
     const KEY_USER_ID = "user_id";
@@ -54,5 +55,7 @@ class PageKeys {
     const KEY_FILTER = "filter";
     const KEY_START_POS = "start";
     const KEY_PROJECT = "project";
+
+
 }
 

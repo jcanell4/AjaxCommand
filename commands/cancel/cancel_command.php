@@ -27,6 +27,7 @@ class cancel_command extends abstract_command_class
         $this->types[PageKeys::KEY_DISCARD_DRAFT] = abstract_command_class::T_BOOLEAN;
         $this->types[PageKeys::KEY_KEEP_DRAFT] = abstract_command_class::T_BOOLEAN;
         $this->types[PageKeys::KEY_NO_RESPONSE] = abstract_command_class::T_BOOLEAN;
+        $this->types[PageKeys::KEY_UNLOCK] = abstract_command_class::T_BOOLEAN;
         
         $this->setParameterDefaultValues(array(PageKeys::KEY_NO_RESPONSE => FALSE));
     }
