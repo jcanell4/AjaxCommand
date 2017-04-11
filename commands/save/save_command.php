@@ -31,6 +31,8 @@ class save_command extends abstract_command_class {
         $this->types['summary']     = abstract_command_class::T_STRING;
         $this->types['minor']     = abstract_command_class::T_BOOLEAN;
 
+        $this->types['reload']     = abstract_command_class::T_BOOLEAN;
+
         $defaultValues = array('id' => 'index');
         $this->setParameters($defaultValues);
     }
