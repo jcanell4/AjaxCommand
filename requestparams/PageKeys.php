@@ -36,6 +36,7 @@ class PageKeys {
 
     const KEY_UNLOCK = "unlock";
     const KEY_RELOAD = "reload";
+    const KEY_CANCEL = "cancel";
 
     const KEY_PARAMS = "params"; // response
     const KEY_USER_ID = "user_id";

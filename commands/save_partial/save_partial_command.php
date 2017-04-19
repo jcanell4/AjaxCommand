@@ -32,6 +32,7 @@ class save_partial_command extends abstract_command_class
         $this->types['changecheck'] = abstract_command_class::T_STRING;
         $this->types['target'] = abstract_command_class::T_STRING;
         $this->types['summary'] = abstract_command_class::T_STRING;
+        $this->types['cancel']     = abstract_command_class::T_BOOLEAN;
 
         $defaultValues = array(
             'id' => 'index'
@@ -54,9 +55,12 @@ class save_partial_command extends abstract_command_class
         $this->params[PageKeys::KEY_EDITING_CHUNKS] = $this->params[PageKeys::KEY_IN_EDITING_CHUNKS];
 
         if ($this->params[PageKeys::KEY_DO] === 'save_all') {
+
             $toSaveChunks = json_decode($this->params['chunk_params'], true);
 
             for ($i = 0; $i < count($toSaveChunks); $i++) {
+
+                $toSaveChunks[$i]['cancel_all'] = $this->params[PageKeys::KEY_CANCEL];
 
                 $contentData = $this->modelWrapper->savePartialEdition($toSaveChunks[$i]); // ALERTA[Xavi] Només cal retornar la resposta de l'ultim, la resta de respostes es descarten
 
