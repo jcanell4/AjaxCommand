@@ -33,7 +33,7 @@ class new_shortcuts_page_command extends new_page_command {
 //     * @return array amb la informació de la pàgina formatada amb 'id', 'ns', 'tittle' i 'content'
 //     */
     protected function process() {
-        PermissionPageForUserManager::updatePermission($this->authorization->getPermission());
+        PermissionPageForUserManager::updateMyOwnPagePermission($this->authorization->getPermission());
         $contentData = $this->modelWrapper->createPage($this->params);
         return $contentData;
     }

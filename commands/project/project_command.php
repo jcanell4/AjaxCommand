@@ -8,6 +8,7 @@ require_once(DOKU_COMMAND . 'defkeys/ProjectKeys.php');
 class project_command extends abstract_command_class {
 
     private $dataProject;   //guarda los datos del proyecto para verificar la autorización
+    private $persistenceEngine;
 
     public function __construct() {
         parent::__construct();
@@ -20,37 +21,41 @@ class project_command extends abstract_command_class {
 
     public function init( $modelManager = NULL ) {
         parent::init($modelManager);
-        $persistenceEngine = $this->modelWrapper->getPersistenceEngine();
-        $projectMetaDataQuery = $persistenceEngine->createProjectMetaDataQuery();
+        $this->persistenceEngine = $this->modelWrapper->getPersistenceEngine();
+        $projectMetaDataQuery = $this->persistenceEngine->createProjectMetaDataQuery();
         $ns = ($this->params[ProjectKeys::KEY_NS]) ? $this->params[ProjectKeys::KEY_NS] : $this->params[ProjectKeys::KEY_ID];
-        $this->dataProject = $projectMetaDataQuery->getDataProject($ns, $this->params[ProjectKeys::PROJECT_TYPE]);
+        $this->dataProject = $projectMetaDataQuery->getDataProject($ns, $this->params[ProjectKeys::KEY_PROJECT_TYPE]);
     }
 
     protected function process() {
 
-        if (!$this->params[ProjectKeys::PROJECT_TYPE])
+        if (!$this->params[ProjectKeys::KEY_PROJECT_TYPE])
             throw new UnknownPojectTypeException();
 
         switch ($this->params[ProjectKeys::KEY_DO]) {
             case ProjectKeys::KEY_EDIT:
-                $action = new GetProjectMetaDataAction($this->modelWrapper->getPersistenceEngine());
+                $action = new GetProjectMetaDataAction($this->persistenceEngine);
                 $projectMetaData = $action->get($this->params);
+                $extra = [ProjectKeys::KEY_PROJECT_TYPE => $this->params[ProjectKeys::KEY_PROJECT_TYPE],
+                          ProjectKeys::KEY_ROL          => $this->authorization->getPermission()->getRol()];
+                $projectMetaData['projectExtraData'] = $extra;
                 break;
 
             case ProjectKeys::KEY_SAVE:
-                $action = new SetProjectMetaDataAction($this->modelWrapper->getPersistenceEngine());
-                $parms = $this->params;
-                $parms['old_autor'] = $this->dataProject['autor'];
+                $action = new SetProjectMetaDataAction($this->persistenceEngine);
+                $parms['dataProject'] = $this->params;
+                $parms['extraProject']['old_autor'] = $this->dataProject['autor'];
+                $parms['extraProject']['old_responsable'] = $this->dataProject['responsable'];
                 $projectMetaData = $action->get($parms);
                 break;
 
             case ProjectKeys::KEY_CREATE:
-                $action = new CreateProjectMetaDataAction($this->modelWrapper->getPersistenceEngine());
+                $action = new CreateProjectMetaDataAction($this->persistenceEngine);
                 $projectMetaData = $action->get($this->params);
                 break;
 
             case ProjectKeys::KEY_GENERATE:
-                $action = new GenerateProjectMetaDataAction($this->modelWrapper->getPersistenceEngine());
+                $action = new GenerateProjectMetaDataAction($this->persistenceEngine);
                 $projectMetaData = $action->get($this->params);
                 break;
 
@@ -64,7 +69,7 @@ class project_command extends abstract_command_class {
             throw new UnknownProjectException();
     }
 
-    public function getKeyDataProject($key) {
+    public function getKeyDataProject($key=NULL) {
         return ($key) ? $this->dataProject[$key] : $this->dataProject;
     }
 
@@ -85,10 +90,8 @@ class project_command extends abstract_command_class {
 
     /**
      * Afegeix la pàgina passada com argument com una resposta de tipus DATA_TYPE al generador de respostes.
-     *
      * @param array $response amb el contingut de la pàgina
      * @param AjaxCmdResponseGenerator $ret objecte al que s'afegirà la resposta
-     *
      * @return mixed|void
      */
     protected function getDefaultResponse($response, &$ret) {}

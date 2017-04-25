@@ -24,7 +24,7 @@ class new_page_command extends abstract_command_class {
      * @return array amb la informació de la pàgina formatada amb 'id', 'ns', 'tittle' i 'content'
      */
     protected function process() {
-        PermissionPageForUserManager::updatePermission($this->authorization->getPermission());
+        PermissionPageForUserManager::updateMyOwnPagePermission($this->authorization->getPermission());
         $pageModel = new DokuPageModel($this->modelWrapper->getPersistenceEngine());
         //sólo se ejecuta si no existe un proyecto en la ruta especificada
         if (!$pageModel->existProject($this->params[ProjectKeys::KEY_ID])) {

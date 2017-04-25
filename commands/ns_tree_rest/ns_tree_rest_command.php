@@ -16,10 +16,6 @@ class ns_tree_rest_command extends abstract_rest_command_class {
 
     public function __construct() {
         parent::__construct();
-//        $this->defaultContentType     = "application/json";
-//        $this->supportedContentTypes  = array("application/json");
-//        $this->supportedMethods       = array("GET");
-        //JOSEP: Rafael, els atributs de sota són específics d'un arbre de directoris no pas de qualsevol abstract_rest_command! S'han mogut des de l'abstract_rest_command_class a aquí
         $this->types['currentnode']   = abstract_command_class::T_OBJECT;
         $this->types['onlyDirs']      = abstract_command_class::T_BOOLEAN;
         $this->types['sortBy']        = abstract_command_class::T_INTEGER;
@@ -44,7 +40,7 @@ class ns_tree_rest_command extends abstract_rest_command_class {
     }
 
     /**
-     * Obté l'arbre a partir del node actual ordenant els resultats i excloent 
+     * Obté l'arbre a partir del node actual ordenant els resultats i excloent
      * els directoris segons els valors dels paràmetres emmagatzemats en aquest objecte.
      *
      * @param string[] $extra_url_params paràmetres passats a travès de la URL.
@@ -58,14 +54,11 @@ class ns_tree_rest_command extends abstract_rest_command_class {
                                    $this->params['onlyDirs'],
                                    $this->params['expandProject'],
 				   $this->params['hiddenProjects'],
-                                   $this->params['fromRoot']                
+                                   $this->params['fromRoot']
         );
         $strData = $json->enc($tree);
         return $strData;
     }
-
-//    protected function startCommand() {}
-//    protected function preprocess() {}
 
     /**
      * Extreu els paràmetres de la url passada com argument i els estableix com a paràmetres del objecte.
@@ -93,7 +86,7 @@ class ns_tree_rest_command extends abstract_rest_command_class {
     }
 
     /**
-     * Extreu el valor de ordenació de @param i l'estableix com a valor del paràmetre 'sortBy'. 
+     * Extreu el valor de ordenació de @param i l'estableix com a valor del paràmetre 'sortBy'.
      * Aquest valor es trobarà a l'index 1.
      *
      * @param string[] $extra_url_params
@@ -129,7 +122,7 @@ class ns_tree_rest_command extends abstract_rest_command_class {
         if (count($extra_url_params)>6)
             $this->params['fromRoot'] = ($extra_url_params[5]);
     }
-    
+
     /**
      * Extreu el valor 'setHiddenProjects'. Aquest valor es trobarà a l'index 4.
      */
