@@ -48,4 +48,8 @@ class admin_tab_command extends abstract_command_class {
   */
   protected function getDefaultResponse($contentData, &$responseGenerator) {
   }
+  
+  public function getAuthorizationType() {
+        return '_none';
+  }
 }

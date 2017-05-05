@@ -26,4 +26,5 @@ class MediaKeys {
     const KEY_IS_UPLOAD = 'isupload';
     const KEY_QUERY = 'q';
     const KEY_SORT = 'sort';
+    const KEY_MEDIA = 'media';
 }
