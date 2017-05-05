@@ -1,9 +1,8 @@
 <?php
 if (!defined('DOKU_INC')) die();
 if (!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_INC . "lib/plugins/ajaxcommand/");
-
-require_once(DOKU_COMMAND . 'abstract_command_class.php');
-require_once(DOKU_COMMAND . 'defkeys/ProjectKeys.php');
+require_once(DOKU_COMMAND . "abstract_command_class.php");
+require_once(DOKU_COMMAND . "defkeys/ProjectKeys.php");
 
 class project_command extends abstract_command_class {
 
@@ -36,9 +35,8 @@ class project_command extends abstract_command_class {
             case ProjectKeys::KEY_EDIT:
                 $action = new GetProjectMetaDataAction($this->persistenceEngine);
                 $projectMetaData = $action->get($this->params);
-                $extra = [ProjectKeys::KEY_PROJECT_TYPE => $this->params[ProjectKeys::KEY_PROJECT_TYPE],
-                          ProjectKeys::KEY_ROL          => $this->authorization->getPermission()->getRol()];
-                $projectMetaData['projectExtraData'] = $extra;
+                $projectMetaData['projectExtraData'] = [ProjectKeys::KEY_PROJECT_TYPE => $this->params[ProjectKeys::KEY_PROJECT_TYPE],
+                                                        ProjectKeys::KEY_ROL          => $this->authorization->getPermission()->getRol()];
                 break;
 
             case ProjectKeys::KEY_SAVE:
