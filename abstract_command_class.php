@@ -228,7 +228,10 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
             $responseGenerator = new AjaxCmdResponseGenerator();
             $e = $this->authorization->getAuthorizationError(AuthorizationKeys::EXCEPTION_KEY);
             $p = $this->authorization->getAuthorizationError(AuthorizationKeys::ERROR_PARAMS_KEY);
-            $this->handleError(new $e($p), $responseGenerator);
+            if ($p)
+                $this->handleError(new $e($p), $responseGenerator);
+            else
+                $this->handleError(new $e(), $responseGenerator);
             $ret = $responseGenerator->getJsonResponse();
         }
         //for a dojo iframe the json response has to be inside a textarea
@@ -248,7 +251,6 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
             }
         }else{
             $this->getDefaultErrorResponse($this->params, $e, $responseGenerator);
-            //throw new Exception($e->getMessage(), $e->getCode(), $e);
         }
     }
 
@@ -298,7 +300,7 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
      * Aquest mètode s'executarà només en cas que la comanda no disposi de cap
      * objecte errorHandler (de tipus ResponseHandler).
      *
-     * @param Exception                    $response
+     * @param Exception                $response
      * @param AjaxCmdResponseGenerator $responseGenerator
      *
      * @return mixed
