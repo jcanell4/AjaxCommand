@@ -20,6 +20,7 @@ abstract class AbstractResponseHandler {
     const ADMIN_TASK  = 'admin_task';
     const ADMIN_TAB  = 'admin_tab';
     const PRINT_ACTION  = 'print';
+    const PREVIEW_ACTION  = 'preview';
 
     private $cmd;
     private $modelWrapper;
