@@ -34,6 +34,7 @@ class cancel_partial_command extends abstract_command_class
         $this->types[PageKeys::KEY_TO_REQUIRE] = abstract_command_class::T_BOOLEAN;
         $this->types[PageKeys::KEY_KEEP_DRAFT] = abstract_command_class::T_BOOLEAN;
         $this->types[PageKeys::KEY_UNLOCK] = abstract_command_class::T_BOOLEAN;
+        $this->types[PageKeys::DISCARD_CHANGES]= abstract_command_class::T_BOOLEAN;
 
         $defaultValues = array(
             'id' => 'index'
