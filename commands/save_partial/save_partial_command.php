@@ -33,6 +33,8 @@ class save_partial_command extends abstract_command_class
         $this->types['target'] = abstract_command_class::T_STRING;
         $this->types['summary'] = abstract_command_class::T_STRING;
         $this->types['cancel']     = abstract_command_class::T_BOOLEAN;
+        $this->types['close']     = abstract_command_class::T_BOOLEAN;
+        $this->types['keep_draft']     = abstract_command_class::T_BOOLEAN;
 
         $defaultValues = array(
             'id' => 'index'
@@ -58,7 +60,13 @@ class save_partial_command extends abstract_command_class
 
             $toSaveChunks = json_decode($this->params['chunk_params'], true);
 
+
             for ($i = 0; $i < count($toSaveChunks); $i++) {
+
+                $toSaveChunks[$i]['cancel_all'] = $this->params[PageKeys::KEY_CANCEL];
+                if ($this->params['close']) {
+                    $toSaveChunks[$i]['close'] =$this->params['close'];
+                }
 
                 $toSaveChunks[$i]['cancel_all'] = $this->params[PageKeys::KEY_CANCEL];
 
@@ -66,7 +74,7 @@ class save_partial_command extends abstract_command_class
 
                 // Actualitzem el changecheck pel següent chunk
                 if ($i < count($toSaveChunks) - 1) {
-                    $toSaveChunks[$i + 1]['date'] = $contentData['inputs']['date']+ $i + 1; // Afegim 1ms de diferencia entre cadascun per evitar els conflictes
+                    $toSaveChunks[$i + 1]['date'] = $contentData['structure']['date']+ $i + 2; // Afegim 1ms de diferencia entre cadascun per evitar els conflictes
 
                 } else {
                     $contentData['inputs']['date']+= $i + 1;
