@@ -174,7 +174,7 @@ class AjaxCmdResponseGenerator
         );
     }
 
-    public function addDiffDoc($id, $ns, $title, $content, $type)
+    public function addDiffDoc($id, $ns, $title, $content, $type, $rev1, $rev2 = NULL)
     {
         $contentData = array(
             'id' => $id,
@@ -182,6 +182,8 @@ class AjaxCmdResponseGenerator
             'title' => $title,
             'content' => $content,
             'type' => $type,
+            'rev1' => $rev1,
+            'rev2' => $rev2
         );
 
         $this->response->add(
