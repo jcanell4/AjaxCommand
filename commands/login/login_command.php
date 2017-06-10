@@ -58,6 +58,9 @@ class login_command extends abstract_command_class
             $response = $this->processLogin(); // ALERTA[Xavi] Aquesta funció conté el codi de login original sense modificar (inclou el logout);
         }
 
+        if (!$response["loginResult"] || !$response["loginRequest"]) {
+            $response = array_merge($response, $this->modelWrapper->notify(['do' => 'close']));
+        }
 
         return $response;
     }
@@ -81,8 +84,9 @@ class login_command extends abstract_command_class
         } else if ($response["loginResult"]) {
             $this->_logoff();
             $response["loginResult"] = FALSE;
-            $response = array_merge($response, $this->modelWrapper->notify(['do' => 'close']));
         }
+
+
 
         return $response;
 
