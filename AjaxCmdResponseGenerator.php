@@ -366,7 +366,7 @@ class AjaxCmdResponseGenerator
         }
 
         // ALERTA[Xavi] Pendent de determinar com s'ha d'obtenir aquest valor (del projecte)
-        $contentData['ignoreLastNSSections'] = 2;
+        $contentData['ignoreLastNSSections'] = 0;
 
 
         $this->response->add(
@@ -935,7 +935,7 @@ class AjaxCmdResponseGenerator
         }
 
         // ALERTA[Xavi] Pendent de determinar com s'ha d'obtenir aquest valor (del projecte)
-        $contentData['ignoreLastNSSections'] = 2;
+        $contentData['ignoreLastNSSections'] = 0;
 
 
 
