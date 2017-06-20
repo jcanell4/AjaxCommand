@@ -1,7 +1,7 @@
 <?php
-if(!defined('DOKU_INC')) die();
-if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
-if(!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_PLUGIN . "ajaxcommand/");
+if (!defined('DOKU_INC')) die();
+if (!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
+if (!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_PLUGIN . "ajaxcommand/");
 require_once(DOKU_COMMAND . 'AjaxCmdResponseGenerator.php');
 require_once(DOKU_COMMAND . 'JsonGenerator.php');
 require_once(DOKU_COMMAND . 'abstract_command_class.php');
@@ -11,7 +11,8 @@ require_once(DOKU_COMMAND . 'abstract_command_class.php');
  *
  * @author Josep Cañellas <jcanell4@ioc.cat>
  */
-class login_command extends abstract_command_class {
+class login_command extends abstract_command_class
+{
 
     /**
      * El constructor extableix que no es necessari estar autenticat, el tipus,
@@ -19,15 +20,18 @@ class login_command extends abstract_command_class {
      * com a paràmetres.
      * El valor per defecte es el paràmetre 'do' amb valor 'login'.
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         $this->types['do'] = abstract_command_class::T_STRING;
+        $this->types['u'] = abstract_command_class::T_STRING;
 
         $defaultValues = array('do' => 'login');
         $this->setParameters($defaultValues);
     }
 
-    public function init($modelManager = NULL) {
+    public function init($modelManager = NULL)
+    {
         parent::init($modelManager);
         $this->authenticatedUsersOnly = FALSE;
     }
@@ -44,24 +48,70 @@ class login_command extends abstract_command_class {
      *
      * @return array associatium amb el valor del index loginResult cert o fals
      */
-    protected function process() {
+    protected function process()
+    {
+
+
+        if ($this->params[PageKeys::KEY_DO] === 'relogin') {
+            $response = $this->processCheck();
+        } else {
+            $response = $this->processLogin(); // ALERTA[Xavi] Aquesta funció conté el codi de login original sense modificar (inclou el logout);
+        }
+
+        if (!$response["loginResult"] || !$response["loginRequest"]) {
+            $response = array_merge($response, $this->modelWrapper->notify(['do' => 'close']));
+        }
+
+        return $response;
+    }
+
+    private function processCheck()
+    {
+
+
         $response = array(
-             "loginRequest"  => $this->params['do'] === 'login'
-            ,"loginResult" => $this->authorization->isUserAuthenticated()
+            "loginRequest" => $this->authorization->isUserAuthenticated($this->params['userId']),
+            "loginResult" => $this->authorization->isUserAuthenticated()
         );
 
-        if($this->params['do'] === 'login'  && $response["loginResult"] ) {
-            $response["userId"]=  $this->params['u'];
+        if ($response["loginResult"] && $response["loginRequest"]) {
+            $response["userId"] = $this->params['userId'];
 
             $notifications = $this->modelWrapper->notify(['do' => 'init']);
             $response = array_merge($response, $notifications);
 
 
-        } else if($response["loginResult"]){
+        } else if ($response["loginResult"]) {
+            $this->_logoff();
+            $response["loginResult"] = FALSE;
+        }
+
+
+
+        return $response;
+
+    }
+
+    private function processLogin()
+    {
+        $response = array(
+            "loginRequest" => $this->params['do'] === 'login'
+        , "loginResult" => $this->authorization->isUserAuthenticated()
+        );
+
+        if ($this->params['do'] === 'login' && $response["loginResult"]) {
+            $response["userId"] = $this->params['u'];
+
+            $notifications = $this->modelWrapper->notify(['do' => 'init']);
+            $response = array_merge($response, $notifications);
+
+
+        } else if ($response["loginResult"]) {
             $this->_logoff();
             $response["loginResult"] = FALSE;
             $response = array_merge($response, $this->modelWrapper->notify(['do' => 'close']));
         }
+
         return $response;
     }
 
@@ -73,18 +123,20 @@ class login_command extends abstract_command_class {
      *
      * @return void
      */
-    protected function getDefaultResponse($response, &$responseGenerator) {
+    protected function getDefaultResponse($response, &$responseGenerator)
+    {
         $responseGenerator->addLoginInfo(
-                          $response["loginRequest"],
-                          $response["loginResult"],
-                          $response["userId"]
+            $response["loginRequest"],
+            $response["loginResult"],
+            $response["userId"]
         );
     }
 
     /**
      * Crida al mètode auth_logoff() de dokuwiki per tancar la sessió del usuari.
      */
-    private function _logoff() {
+    private function _logoff()
+    {
         $this->getModelWrapper()->logoff();
     }
 }
