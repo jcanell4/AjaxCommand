@@ -70,11 +70,14 @@ class login_command extends abstract_command_class
 
 
         $response = array(
-            "loginRequest" => $this->authorization->isUserAuthenticated($this->params['userId']),
-            "loginResult" => $this->authorization->isUserAuthenticated()
+//            "loginRequest" => $this->authorization->isUserAuthenticated($this->params['userId']),
+//            "loginResult" => $this->authorization->isUserAuthenticated()
+
+            "loginRequest" => true,
+            "loginResult" => $this->authorization->isUserAuthenticated($this->params['userId'])
         );
 
-        if ($response["loginResult"] && $response["loginRequest"]) {
+        if ($response["loginResult"] /*&& $response["loginRequest"]*/) {
             $response["userId"] = $this->params['userId'];
 
             $notifications = $this->modelWrapper->notify(['do' => 'init']);
