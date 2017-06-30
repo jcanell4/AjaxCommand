@@ -42,6 +42,7 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
 
     protected $authorization;
     protected $modelWrapper;
+    protected $modelManager;
 
     protected $needMediaInfo =FALSE;
 
@@ -87,6 +88,9 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
      * @param modelManager
      */
     public function setModelManager($modelManager) {
+
+        $this->modelManager = $modelManager;
+
         if(!$this->modelWrapper){
             $this->modelWrapper  = $modelManager->getModelWrapperManager();
         }
