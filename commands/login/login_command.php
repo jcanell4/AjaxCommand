@@ -24,6 +24,7 @@ class login_command extends abstract_command_class
     {
         parent::__construct();
         $this->types['do'] = abstract_command_class::T_STRING;
+        $this->types['unlock'] = abstract_command_class::T_ARRAY;
         $this->types['u'] = abstract_command_class::T_STRING;
 
         $defaultValues = array('do' => 'login');
