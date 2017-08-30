@@ -21,26 +21,17 @@ abstract class abstract_rest_command_class extends abstract_command_class {
         $this->supportedContentTypes  = array("application/json");
         $this->supportedMethods       = array("GET");
         $this->types['method']        = abstract_command_class::T_STRING;
-        //JOSEP: Rafael, els atributs de sota són específics d'un arbre de directoris no pas de qualsevol abstract_rest_command!
-//        $this->types['currentnode']   = abstract_command_class::T_OBJECT;
-//        $this->types['onlyDirs']      = abstract_command_class::T_BOOLEAN;
-//        $this->types['sortBy']        = abstract_command_class::T_INTEGER;
-//        $this->types['expandProject'] = abstract_command_class::T_BOOLEAN;
-//        $this->types['hiddenProjects']= abstract_command_class::T_BOOLEAN;
     }
 
-    /**
-     * TODO[Xavi] No es fa servir?
-     *
+    /** NO ES FA SERVIR
      * @param String[] $supportedFormats
      */
     protected function setSupportedContentTypes($supportedFormats) {
         $this->supportedContentTypes = $supportedFormats;
     }
 
-    /**
+    /** NO ES FA SERVIR
      * Estableix com a mètodes suportats els mètodes passats com argument. El valors d'aquest array poden ser GET, POST, etc.
-     *
      * @param String[] $supportedMethods
      */
     protected function setSupportedMethods($supportedMethods) {
@@ -59,7 +50,6 @@ abstract class abstract_rest_command_class extends abstract_command_class {
     /**
      * Retorna cert si bestContentType (que retorna el valor de $this->defaultContentType) no es 'none' (el valor per
      * defecte).
-     *
      * @return bool true si defaultContentType es diferent a 'none'.
      */
     public function isContentTypeSupported() {
@@ -124,55 +114,28 @@ abstract class abstract_rest_command_class extends abstract_command_class {
         return NULL;
     }
 
-    /**
-     * @param $extra_url_params
-     *
-     * @return null
-     */
     public function processGet() {
         return $this->methodNotAllowedResponse();
     }
 
-    /**
-     * @param $extra_url_params
-     *
-     * @return null
-     */
     public function processHead() {
         return $this->methodNotAllowedResponse();
     }
 
-    /**
-     * @param $extra_url_params
-     *
-     * @return null
-     */
     public function processPost() {
         return $this->methodNotAllowedResponse();
     }
 
-    /**
-     * @param $extra_url_params
-     *
-     * @return null
-     */
     public function processPut() {
         return $this->methodNotAllowedResponse();
     }
 
-    /**
-     * @param $extra_url_params
-     *
-     * @return null
-     */
     public function processDelete() {
         return $this->methodNotAllowedResponse();
     }
 
     /**
      * Envia la petició perquè es processi segons el mètode empreat.
-     *
-     * @return void
      */
     protected function process() {
         return $this->dispatchRequest($this->params['method']);
@@ -187,10 +150,4 @@ abstract class abstract_rest_command_class extends abstract_command_class {
     protected function getDefaultResponse($response, &$responseGenerator) {
     }
 
-    /**
-     * @return string resultat de processar la resposta
-     */
-//    protected function getResponse() {
-//        return $this->process();
-//    }
 }

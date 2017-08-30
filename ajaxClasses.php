@@ -5,11 +5,11 @@
  *
  * @author Josep Cañellas <jcanell4@ioc.cat>
  */
-
 if(!defined('DOKU_INC')) define('DOKU_INC', realpath(dirname(__FILE__) . '/../../../') . '/');
 require_once(DOKU_INC . 'inc/init.php');
 require_once(DOKU_INC . 'inc/template.php');
 require_once(DOKU_INC . 'inc/pluginutils.php');
+require_once(DOKU_INC . 'lib/plugins/ajaxcommand/defkeys/RequestParameterKeys.php');
 require_once(DOKU_INC . 'lib/plugins/ownInit/WikiGlobalConfig.php');
 
 if(!defined('DOKU_COMMANDS')) define('DOKU_COMMANDS', dirname(__FILE__) . '/commands/');
@@ -110,14 +110,12 @@ class ajaxCall {
     }
 
     /**
-     * Si existeix una classe command amb el nom passat com argument el carrega i retorna true,
+     * Si existeix el fitxer amb el nom passat com argument el carrega i retorna true,
      * en cas contrari retorna false.
      * El fitxer que conté la classe ha d'estar dins d'una carpeta amb el nom del command,
      * i el nom del fitxer estarà compost pel nom del command afegint '_command.php'
-     *
-     * @param string $command command a carregar
-     *
-     * @return bool true si existeix un command amb aquest nom, o false en cas contrari.
+     * @param string $file fitxer a carregar
+     * @return bool true si existeix el fitxer amb la classe $this->call, o false en cas contrari.
      */
     function existCommand($file=NULL) {
         //'commands' definits a l'estructura 'ajaxcommand'
@@ -131,6 +129,10 @@ class ajaxCall {
 
         //'commands' definits a altres plugins
         if (!$ret) {
+            if ($this->request_params[RequestParameterKeys::PROJECT_TYPE]) {
+                global $plugin_controller;
+                $plugin_controller->setCurrentProject($this->request_params[RequestParameterKeys::PROJECT_TYPE]);
+            }
             $pluginList = plugin_list('command');
             $DOKU_PLUGINS = DOKU_INC . "lib/plugins/";
             foreach ($pluginList as $plugin) {
@@ -139,7 +141,10 @@ class ajaxCall {
                     $c = explode('_', $p[2], 2);
                     if (count($c) === 2) {  //es un fichero del directorio 'command'
                         $file = "$DOKU_PLUGINS{$p[0]}/{$p[1]}/{$c[0]}/command/{$c[1]}.php";
-                        $nom = "{$p[0]}_{$p[1]}_{$c[0]}_{$c[1]}";
+                        $nom_curt = $c[1];
+                        $nom_breu = "{$p[0]}_{$p[1]}_{$c[0]}_{$c[1]}";
+                        $nom_plugin = "command_plugin_{$p[0]}_{$p[1]}_{$c[0]}_{$c[1]}";
+                        $nom = $nom_curt;
                     }else {
                         $file = "$DOKU_PLUGINS{$p[0]}/{$p[1]}/{$c[0]}/command.php";
                         $nom = "{$p[0]}_{$p[1]}_{$c[0]}_command";
@@ -322,33 +327,5 @@ class ajaxRest extends ajaxCall {
         }
         return $ret;
     }
-
-    /**
-     * Instancia un nou command i li envia el mètode, els paràmetres extra i els permissos del usuari per processar-la.
-     *
-     * @param string   $str_command      nom del command a instanciar
-     * @param string   $method           mètode pel que se ha rebut la petició
-     * @param string[] $request_params   hash amb tots els paràmetres de la petició
-     * @param string[] $extra_url_params hash amb els paràmetres extras de la petició (tots excepte el nom del command)
-     *
-     * @return string el resultat de executar el command en format JSON o un missatge d'error
-     */
-
-//    function callCommand( $respHandDir=NULL ) {
-//        $str_command = $this->call . '_command';
-//        $command = new $str_command();
-//        $command->setParameters($this->request_params);
-//        $command->setParamValuesFromUrl($this->extra_url_params);
-//        $command->init();
-//
-//        $ret = $command->dispatchRequest(
-//                       $this->method
-//                       /*,$extra_url_params //a setParamValuesFromUrl */
-//                );
-//        if($command->error) {
-//            $ret = $command->errorMessage;
-//        }
-//        return $ret;
-//    }
 
 }

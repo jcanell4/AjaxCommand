@@ -1,55 +1,59 @@
 <?php
 if (!defined('DOKU_INC')) die();
 if (!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_INC . "lib/plugins/ajaxcommand/");
-
-require_once(DOKU_COMMAND . 'abstract_command_class.php');
-require_once(DOKU_COMMAND . 'requestparams/PageKeys.php');
-require_once(DOKU_COMMAND . 'requestparams/RequestParameterKeys.php');
+require_once(DOKU_COMMAND . "abstract_command_class.php");
+require_once(DOKU_COMMAND . "defkeys/ProjectKeys.php");
 
 class project_command extends abstract_command_class {
 
     private $dataProject;   //guarda los datos del proyecto para verificar la autorización
-    
+    private $persistenceEngine;
+
     public function __construct() {
         parent::__construct();
-        $this->types[PageKeys::KEY_ID] = abstract_command_class::T_STRING;
-        $this->types[RequestParameterKeys::DO_KEY] = abstract_command_class::T_STRING;
+        $this->types[ProjectKeys::KEY_ID] = abstract_command_class::T_STRING;
+        $this->types[ProjectKeys::KEY_DO] = abstract_command_class::T_STRING;
 
-        $defaultValues = [RequestParameterKeys::DO_KEY => 'edit'];
+        $defaultValues = [ProjectKeys::KEY_DO => ProjectKeys::KEY_EDIT];
         $this->setParameters($defaultValues);
     }
 
     public function init( $modelManager = NULL ) {
         parent::init($modelManager);
-        $persistenceEngine = $this->modelWrapper->getPersistenceEngine();
-        $projectMetaDataQuery = $persistenceEngine->createProjectMetaDataQuery();
-        $ns = ($this->params['ns']) ? $this->params['ns'] : $this->params['id'];
-        $this->dataProject = $projectMetaDataQuery->getDataProject($ns, $this->params['projectType']);
+        $this->persistenceEngine = $this->modelWrapper->getPersistenceEngine();
+        $projectMetaDataQuery = $this->persistenceEngine->createProjectMetaDataQuery();
+        $ns = ($this->params[ProjectKeys::KEY_NS]) ? $this->params[ProjectKeys::KEY_NS] : $this->params[ProjectKeys::KEY_ID];
+        $this->dataProject = $projectMetaDataQuery->getDataProject($ns, $this->params[ProjectKeys::KEY_PROJECT_TYPE]);
     }
-    
+
     protected function process() {
-        
-        if (!$this->params[RequestParameterKeys::PROJECT_TYPE])
+
+        if (!$this->params[ProjectKeys::KEY_PROJECT_TYPE])
             throw new UnknownPojectTypeException();
-        
-        switch ($this->params[RequestParameterKeys::DO_KEY]) {
-            case 'edit':
-                $action = new GetProjectMetaDataAction($this->modelWrapper->getPersistenceEngine());
+
+        switch ($this->params[ProjectKeys::KEY_DO]) {
+            case ProjectKeys::KEY_EDIT:
+                $action = new GetProjectMetaDataAction($this->persistenceEngine);
+                $projectMetaData = $action->get($this->params);
+                $projectMetaData['projectExtraData'] = [ProjectKeys::KEY_PROJECT_TYPE => $this->params[ProjectKeys::KEY_PROJECT_TYPE],
+                                                        ProjectKeys::KEY_ROL          => $this->authorization->getPermission()->getRol()];
+                break;
+
+            case ProjectKeys::KEY_SAVE:
+                $action = new SetProjectMetaDataAction($this->persistenceEngine);
+                $parms['dataProject'] = $this->params;
+                $parms['extraProject']['old_autor'] = $this->dataProject['autor'];
+                $parms['extraProject']['old_responsable'] = $this->dataProject['responsable'];
+                $projectMetaData = $action->get($parms);
+                break;
+
+            case ProjectKeys::KEY_CREATE:
+                $action = new CreateProjectMetaDataAction($this->persistenceEngine);
                 $projectMetaData = $action->get($this->params);
                 break;
 
-            case 'save':
-                $action = new SetProjectMetaDataAction($this->modelWrapper->getPersistenceEngine());
-                $projectMetaData = $action->get($this->params);
-                break;
-
-            case 'create':
-                $action = new CreateProjectMetaDataAction($this->modelWrapper->getPersistenceEngine());
-                $projectMetaData = $action->get($this->params);
-                break;
-
-            case 'generate':
-                $action = new GenerateProjectMetaDataAction($this->modelWrapper->getPersistenceEngine());
+            case ProjectKeys::KEY_GENERATE:
+                $action = new GenerateProjectMetaDataAction($this->persistenceEngine);
                 $projectMetaData = $action->get($this->params);
                 break;
 
@@ -63,17 +67,17 @@ class project_command extends abstract_command_class {
             throw new UnknownProjectException();
     }
 
-    public function getKeyDataProject($key) {
+    public function getKeyDataProject($key=NULL) {
         return ($key) ? $this->dataProject[$key] : $this->dataProject;
     }
 
     public function getAuthorizationType() {
-        $dokey = $this->params[RequestParameterKeys::DO_KEY];
+        $dokey = $this->params[ProjectKeys::KEY_DO];
         switch ($dokey) {
-            case 'edit':
-            case 'create':
-            case 'generate':
-            case 'save':
+            case ProjectKeys::KEY_EDIT:
+            case ProjectKeys::KEY_CREATE:
+            case ProjectKeys::KEY_GENERATE:
+            case ProjectKeys::KEY_SAVE:
                 $dokey .= "Project";
                 break;
             default:
@@ -84,10 +88,8 @@ class project_command extends abstract_command_class {
 
     /**
      * Afegeix la pàgina passada com argument com una resposta de tipus DATA_TYPE al generador de respostes.
-     *
      * @param array $response amb el contingut de la pàgina
      * @param AjaxCmdResponseGenerator $ret objecte al que s'afegirà la resposta
-     *
      * @return mixed|void
      */
     protected function getDefaultResponse($response, &$ret) {}

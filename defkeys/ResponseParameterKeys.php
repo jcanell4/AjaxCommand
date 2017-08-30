@@ -5,9 +5,7 @@
  *
  * @author Xavi
  */
-class ResponseParameterKeys
-{
-
+class ResponseParameterKeys{
     const FIRST_POSITION = 'first';
-
+    const TEXT = 'text';
 }

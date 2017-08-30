@@ -1,4 +1,8 @@
 <?php
+/**
+ * Class edit_command
+ * @author Josep Cañellas <jcanell4@ioc.cat>
+ */
 if (!defined('DOKU_INC')) die();
 if (!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
 if (!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_PLUGIN . "ajaxcommand/");
@@ -6,21 +10,14 @@ if (!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_PLUGIN . "ajaxcommand/
 require_once(DOKU_COMMAND . 'AjaxCmdResponseGenerator.php');
 require_once(DOKU_COMMAND . 'JsonGenerator.php');
 require_once(DOKU_COMMAND . 'abstract_command_class.php');
-require_once(DOKU_COMMAND . 'requestparams/PageKeys.php');
+require_once(DOKU_COMMAND . 'defkeys/PageKeys.php');
 
-/**
- * Class edit_command
- *
- * @author Josep Cañellas <jcanell4@ioc.cat>
- */
-class edit_command extends abstract_command_class
-{
+class edit_command extends abstract_command_class {
 
     /**
      * Al constructor s'estableixen els tipus, els valors per defecte, i s'estableixen aquest valors com a paràmetres.
      */
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
         $this->types['id'] = abstract_command_class::T_STRING;
         $this->types['rev'] = abstract_command_class::T_STRING;
@@ -36,54 +33,33 @@ class edit_command extends abstract_command_class
         $this->setParameters($defaultValues);
     }
 
-
     /**
      * Retorna el contingut de la página segons els paràmetres emmagatzemats en aquest command.
-     *
      * @return array amb el contingut de la pàgina (id, ns, tittle i content)
      */
-    protected function process()
-    {
-
-        /* ALERTA[Xavi] Codi antic
-
-        // Existeix un draft desat?
-        $savedDraftExists = $this->getModelWrapper()->hasDraft($this->params['id']);
-
-        // Existeix un draft local?
-        // ALERTA[Xavi] En el cas dels documents complets només farem servir els esborranys locals complets.
-        $localDraftExists = isset($this->params['full_last_local_draft_time']);
-
-
-        $contentData = null;
-
-        if ($savedDraftExists && isset($this->params['recover_draft']) && $this->params['recover_draft']) {
-            // Carreguem el draft
-            $contentData = $this->_sendEditPageResponse($this->params['recover_draft']);
-
-        } else if ($savedDraftExists && !isset($this->params['recover_draft'])) {
-            // Enviem el dialog, no la pàgina a editar
-            $contentData = $this->_sendDraftDialogResponse();
-
-        } else {
-            // No hi ha draft, enviem el actual
-            $contentData = $this->_sendEditPageResponse(false);
+    protected function process() {
+        if($this->params["refresh"]){
+            $contentData = $this->refreshEdition();
+        }else{
+            //$contentData = $this->modelWrapper->getCodePage($this->params);
+            $contentData = $this->getEditionPage();
         }
-        */
-
-        $contentData = $this->modelWrapper->editPage($this->params);
-
         return $contentData;
     }
 
-//    private function _sendEditPageResponse()
-//    {
-//        return $this->modelWrapper->getCodePage($this->params);
-//    }
-//
-//    private function _sendDraftDialogResponse() {
-//        return $this->modelWrapper->getDraftDialog($this->params);
-//    }
+    private function refreshEdition() {
+        $persistenceEngine = $this->modelWrapper->getPersistenceEngine();
+        $action = new RefreshEditionAction($persistenceEngine);
+        $contentData = $action->get($this->params);
+        return $contentData;
+    }
+
+    private function getEditionPage() {
+        $persistenceEngine = $this->modelWrapper->getPersistenceEngine();
+        $action = new RawPageAction($this->persistenceEngine);
+        $contentData = $action->get($this->params);
+        return $contentData;
+    }
 
     /**
      * Afegeix la pàgina passada com argument com una resposta de tipus DATA_TYPE al generador de respostes.
@@ -93,8 +69,7 @@ class edit_command extends abstract_command_class
      *
      * @return mixed|void
      */
-    protected function getDefaultResponse($response, &$ret)
-    {
+    protected function getDefaultResponse($response, &$ret) {
 
         $ret->addWikiCodeDoc(
             $response["id"], $response["ns"],

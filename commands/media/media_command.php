@@ -1,24 +1,13 @@
 <?php
-
-if (!defined('DOKU_INC'))
-    die();
-if (!defined('DOKU_PLUGIN'))
-    define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
-if (!defined('DOKU_COMMAND'))
-    define('DOKU_COMMAND', DOKU_PLUGIN . "ajaxcommand/");
+if (!defined('DOKU_INC')) die();
+if (!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
+if (!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_PLUGIN . "ajaxcommand/");
 require_once(DOKU_COMMAND . 'AjaxCmdResponseGenerator.php');
 require_once(DOKU_COMMAND . 'JsonGenerator.php');
 require_once(DOKU_COMMAND . 'abstract_command_class.php');
-require_once DOKU_COMMAND . "requestparams/MediaKeys.php";
+require_once DOKU_COMMAND . "defkeys/MediaKeys.php";
 
-
-/**
- * Class page_command
- *
- * @author Josep Cañellas <jcanell4@ioc.cat>
- */
 class media_command extends abstract_command_class {
-
     /**
      * El constructor estableix els tipus de 'id' i 'rev' i el valor per defecte de 'id' com a 'start'. i l'estableix
      * com a paràmetre.
@@ -46,8 +35,8 @@ class media_command extends abstract_command_class {
         }else if($params['ns']){
             $params['id']=$params['ns'].':';
         }
-        parent::setParameters($params);        
-    }    
+        parent::setParameters($params);
+    }
     /**
      * Retorna la pàgina corresponent a la 'id' i 'rev'.
      *
@@ -55,7 +44,7 @@ class media_command extends abstract_command_class {
      */
     protected function process() {
         /*if ($this->params['isupload']) {
-            $this->modelWrapper->MediaUpload();           
+            $this->modelWrapper->MediaUpload();
         }*/
         if ($this->params['media']) {
             $this->params['image'] = $this->params['media'];
@@ -86,12 +75,12 @@ class media_command extends abstract_command_class {
     protected function getDefaultResponse($contentData, &$responseGenerator) {
         //addHtmlDoc($id, $ns, $title, $content)
         /*$responseGenerator->addHtmlDoc(
-                $contentData["imageId"], $contentData["imageTitle"], 
-                $contentData["fromId"], $contentData["modifyImageLabel"], 
+                $contentData["imageId"], $contentData["imageTitle"],
+                $contentData["fromId"], $contentData["modifyImageLabel"],
                 $contentData["closeDialogLabel"], $contentData["content"]
         );*/
         $responseGenerator->addHtmlDoc(
-                $contentData["image"], null, 
+                $contentData["image"], null,
                 $contentData["imageTitle"],
                 $contentData["content"]
         );

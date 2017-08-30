@@ -1,11 +1,12 @@
 <?php
 if (!defined('DOKU_INC')) die();
-if (!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
+if (!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN', DOKU_INC . "lib/plugins/");
 if (!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_PLUGIN . "ajaxcommand/");
 
-require_once( DOKU_COMMAND . 'AjaxCmdResponseGenerator.php' );
-require_once( DOKU_COMMAND . 'JsonGenerator.php' );
-require_once( DOKU_COMMAND . 'abstract_command_class.php' );
+require_once (DOKU_PLUGIN . "ajaxcommand/defkeys/PageKeys.php");
+require_once (DOKU_COMMAND . "AjaxCmdResponseGenerator.php");
+require_once (DOKU_COMMAND . "JsonGenerator.php");
+require_once (DOKU_COMMAND . "abstract_command_class.php");
 
 /**
  * Class page_command
@@ -29,16 +30,17 @@ class page_command extends abstract_command_class {
 
     /**
      * Retorna la pàgina corresponent a la 'id' i 'rev'.
-     *
      * @return array amb la informació de la pàgina formatada amb 'id', 'ns', 'tittle' i 'content'
      */
     protected function process() {
-	$contentData = $this->modelWrapper->getHtmlPage($this->params);
-//	$contentData = $this->modelWrapper->getHtmlPage(
-//		$this->params['id'],
-//		$this->params['rev']
-//	);
-	return $contentData;
+        $persistenceEngine = $this->modelWrapper->getPersistenceEngine();
+        if ($this->params[PageKeys::KEY_REV]) {
+            $action = new HtmlRevisionPageAction($persistenceEngine);
+        }else{
+            $action = new HtmlPageAction($persistenceEngine);
+        }
+        $response = $action->get($this->params);
+	return $response;
     }
 
     /**
