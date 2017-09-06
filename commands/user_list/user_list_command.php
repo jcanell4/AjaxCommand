@@ -11,7 +11,7 @@ if (!defined('DOKU_COMMAND')) {
 require_once(DOKU_COMMAND . 'AjaxCmdResponseGenerator.php');
 require_once(DOKU_COMMAND . 'JsonGenerator.php');
 require_once(DOKU_COMMAND . 'abstract_command_class.php');
-require_once(DOKU_COMMAND . 'requestparams/PageKeys.php');
+require_once(DOKU_COMMAND . 'defkeys/PageKeys.php');
 require_once(DOKU_PLUGIN . 'wikiiocmodel/actions/UserListAction.php');
 
 /**

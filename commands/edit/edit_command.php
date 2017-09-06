@@ -56,7 +56,7 @@ class edit_command extends abstract_command_class {
 
     private function getEditionPage() {
         $persistenceEngine = $this->modelWrapper->getPersistenceEngine();
-        $action = new RawPageAction($this->persistenceEngine);
+        $action = new RawPageAction($persistenceEngine);
         $contentData = $action->get($this->params);
         return $contentData;
     }

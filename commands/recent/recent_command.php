@@ -9,7 +9,7 @@ if (!defined('DOKU_COMMAND'))
 require_once(DOKU_COMMAND . 'AjaxCmdResponseGenerator.php');
 require_once(DOKU_COMMAND . 'JsonGenerator.php');
 require_once(DOKU_COMMAND . 'abstract_command_class.php');
-require_once DOKU_PLUGIN . "ajaxcommand/requestparams/RequestParameterKeys.php";
+require_once DOKU_PLUGIN . "ajaxcommand/defkeys/RequestParameterKeys.php";
 
 
 /**
