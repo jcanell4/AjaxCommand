@@ -20,6 +20,9 @@ class notify_command extends abstract_command_class {
         $this->types['to'] = abstract_command_class::T_STRING;
         $this->types['params'] = abstract_command_class::T_STRING;
         $this->types['changes'] = abstract_command_class::T_STRING;
+        $this->types['since'] = abstract_command_class::T_INTEGER;
+        
+        $this->setParameterDefaultValues(array("since" => 0));
     }
 
 
