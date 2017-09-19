@@ -27,7 +27,7 @@ class diff_command extends abstract_command_class {
 		parent::__construct();
 		$this->types['id']  = abstract_command_class::T_STRING;
 		$this->types['rev'] = abstract_command_class::T_STRING;
-        $this->types['rev2'] = abstract_command_class::T_ARRAY;
+                $this->types['rev2'] = abstract_command_class::T_ARRAY;
 
 		$defaultValues = array(
 //			'id' => 'start',
@@ -47,7 +47,7 @@ class diff_command extends abstract_command_class {
 		$contentData = $this->modelWrapper->getDiffPage(
 			$this->params['id'],
 			$this->params['rev'],
-            $this->params['rev2']
+                        $this->params['rev2']
 		);
 
         return $contentData;

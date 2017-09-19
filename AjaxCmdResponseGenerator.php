@@ -1056,6 +1056,19 @@ class AjaxCmdResponseGenerator
                 $contentData)
         );
     }
+    
+    public function addContenttoolTimerStop($id){
+        $contentData = array(
+            'id' => $id,
+            'action' => "stop",
+        );
+        $this->response->add(
+            new JSonGeneratorImpl(
+                JsonGenerator::CT_TIMER, 
+                $contentData
+            )
+        );
+    }
 
 
     

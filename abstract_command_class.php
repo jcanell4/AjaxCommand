@@ -1,10 +1,11 @@
 <?php
 if(!defined('DOKU_INC')) die();
 if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
-require_once(DOKU_INC . 'inc/plugin.php');
-require_once(DOKU_PLUGIN . 'ajaxcommand/AbstractResponseHandler.php');
-require_once(DOKU_PLUGIN . 'wikiiocmodel/WikiIocModelManager.php');
-require_once(DOKU_PLUGIN . 'wikiiocmodel/AuthorizationKeys.php');
+require_once(DOKU_INC."inc/plugin.php");
+include_once(DOKU_INC."inc/inc_ioc/Logger.php");    //USO: Logger::debug($Texto, $NúmError, __LINE__, __FILE__, $level=-1, $append);
+require_once(DOKU_PLUGIN."ajaxcommand/AbstractResponseHandler.php");
+require_once(DOKU_PLUGIN."wikiiocmodel/WikiIocModelManager.php");
+require_once(DOKU_PLUGIN."wikiiocmodel/AuthorizationKeys.php");
 
 /**
  * Class abstract_command_class
@@ -47,6 +48,7 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
 
     protected $authorization;
     protected $modelWrapper;
+    protected $modelManager;
 
     protected $needMediaInfo =FALSE;
 
@@ -92,6 +94,9 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
      * @param modelManager
      */
     public function setModelManager($modelManager) {
+
+        $this->modelManager = $modelManager;
+
         if(!$this->modelWrapper){
             $this->modelWrapper  = $modelManager->getModelWrapperManager();
         }
@@ -258,14 +263,15 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
             } else {
                 $this->getDefaultErrorResponse($this->params, $e, $responseGenerator);
             }
+        }else{
+            $this->getDefaultErrorResponse($this->params, $e, $responseGenerator);
         }
     }
 
     /**
-     * Processa la comanda, si hi ha un ResponseHandler se li pasa els paràmetres, la resposta i el
+     * Processa la comanda, si hi ha un ResponseHandler se li passen els paràmetres, la resposta i el
      * AjaxCmdResponseGenerator, si no hi ha es pasa es crida al métode per obtenir la resposta per defecte amb el
      * AjaxCmdResponseGenerator i la resposta.
-     *
      * La resposta es passa per referencia, de manera que es modificada als métodes processResponse/getDefaultResponse.
      *
      * @return string resposta processada en format JSON
@@ -308,7 +314,7 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
      * Aquest mètode s'executarà només en cas que la comanda no disposi de cap
      * objecte errorHandler (de tipus ResponseHandler).
      *
-     * @param Exception                    $response
+     * @param Exception                $response
      * @param AjaxCmdResponseGenerator $responseGenerator
      *
      * @return mixed
@@ -361,8 +367,7 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
      * @return string
      */
     public function getPluginComponent() {
-        //TODO[Xavi] split està @deprecated, substituir per explode()
-        $dirs   = split("/", $this->getClassDirName());
+        $dirs   = explode("/", $this->getClassDirName());
         $length = sizeof($dirs);
         if($length > 2) {
             $dir = substr($dirs[$length - 3], -11);
