@@ -22,6 +22,7 @@ class revision_command extends abstract_command_class
     {
         parent::__construct();
         $this->types['id'] = abstract_command_class::T_STRING;
+        $this->types['targetId'] = abstract_command_class::T_STRING;
         $this->types[PageKeys::KEY_OFFSET] = abstract_command_class::T_INTEGER;
 
     }
@@ -36,7 +37,7 @@ class revision_command extends abstract_command_class
 
         $response['revs'] =$this->modelWrapper->getRevisionsList($this->params);
         $response['revs']['urlBase'] = "lib/plugins/ajaxcommand/ajax.php?call=diff";
-        $response['id'] = str_replace(':', '_', $this->params['id']);
+        $response['id'] = $this->params['targetId'];
 
 
         return $response;
