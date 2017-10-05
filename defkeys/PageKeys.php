@@ -8,7 +8,7 @@ require_once (DOKU_INC . 'lib/plugins/ajaxcommand/defkeys/RequestParameterKeys.p
 
 class PageKeys extends RequestParameterKeys {
 
-    //const KEY_ID        = "id";
+//    const KEY_ID        = "id";
     //const KEY_DO        = "do";
     const KEY_REV       = "rev";
     const KEY_RANGE     = "range";
@@ -64,5 +64,6 @@ class PageKeys extends RequestParameterKeys {
     const KEY_START_POS = "start";
     const KEY_PROJECT = "project";
 
+    const KEY_OFFSET = "offset";
 
 }
