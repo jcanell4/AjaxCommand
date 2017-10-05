@@ -26,6 +26,7 @@ class PageKeys extends RequestParameterKeys {
     const KEY_SECTION_ID        = "section_id";
     const KEY_SELECTED          = "selected";
 
+    const KEY_COPY_REMOTE_DRAFT_TO_LOCAL = "copy_remote_draft";
     const KEY_TO_REQUIRE            = "to_require";
     const KEY_FORCE_REQUIRE         = "force_require";
     const KEY_RECOVER_DRAFT         = "recover_draft";

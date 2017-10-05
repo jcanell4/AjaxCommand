@@ -28,6 +28,7 @@ class edit_partial_command extends abstract_command_class
         $this->types[PageKeys::KEY_RECOVER_LOCAL_DRAFT] = abstract_command_class::T_BOOLEAN;
         $this->types[PageKeys::KEY_RECOVER_DRAFT] = abstract_command_class::T_BOOLEAN;
         $this->types[PageKeys::KEY_TO_REQUIRE] = abstract_command_class::T_BOOLEAN;
+        $this->types[PageKeys::KEY_COPY_REMOTE_DRAFT_TO_LOCAL] = abstract_command_class::T_BOOLEAN;
     }
 
     /**
