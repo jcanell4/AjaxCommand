@@ -26,7 +26,7 @@ $conf['javaLibs']                       = 'ImageGenerator.jar,'
                                             . 'commons-codec-1.9.jar,'
                                             . 'javax.json-1.0.2.jar'; //java libraries
 
-$conf['paramModelManagerType'] = 'projectType';
+//$conf['paramModelManagerType'] = 'projectType';
 
 // Avisos del sistema
 $conf['system_warning_user'] = 'Avís del sistema';

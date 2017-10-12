@@ -10,6 +10,7 @@ class RequestParameterKeys {
     const DO_KEY        = 'do';
     const CALL_KEY      = 'call';
     const PROJECT_TYPE  = 'projectType';
+    const PLUGIN  = 'plugin';
     const SHOW_CHANGES_KEY = 'show_changes';
     const KEY_ID        = "id";
     const KEY_DO        = "do";

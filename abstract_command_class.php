@@ -36,6 +36,7 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
     protected static $FILE_TYPE_PARAM = 'type';
     protected static $ERROR_PARAM = 'error';
     protected static $FILE_CONTENT_PARAM = 'tmp_name';
+    protected static $PRJ_TYPE_PARAM_NAME = 'projectType';
 
     protected $responseHandler = NULL;
     protected $errorHandler = NULL;
@@ -65,14 +66,13 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
      */
     public function init( $modelManager = NULL ) {
         global $plugin_controller;
-        $paramModelManagerType = $this->getConf('paramModelManagerType');
 
-        if ($this->params[$paramModelManagerType]) {
-            $plugin_controller->setCurrentProject($this->params[$paramModelManagerType]);
+        if ($this->params[self::$PRJ_TYPE_PARAM_NAME]) {
+            $plugin_controller->setCurrentProject($this->params[self::$PRJ_TYPE_PARAM_NAME]);
         }
 
         if (!$modelManager) {
-            $modelManager = WikiIocModelManager::Instance($this->params[$paramModelManagerType]);
+            $modelManager = WikiIocModelManager::Instance($this->params[self::$PRJ_TYPE_PARAM_NAME]);
         }
         $this->setModelManager($modelManager);
     }
