@@ -28,6 +28,7 @@ class ns_tree_rest_command extends abstract_rest_command_class {
             ,'hiddenProjects' => FALSE
         );
         $this->setParameters($defaultValues);
+        $this->throwsEventResponse=FALSE;
     }
 
     /**

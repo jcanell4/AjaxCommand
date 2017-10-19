@@ -2,10 +2,12 @@
 if(!defined('DOKU_INC')) die();
 if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
 require_once(DOKU_INC."inc/plugin.php");
+require_once(DOKU_INC."inc/events.php");
 include_once(DOKU_INC."inc/inc_ioc/Logger.php");    //USO: Logger::debug($Texto, $NúmError, __LINE__, __FILE__, $level=-1, $append);
 require_once(DOKU_PLUGIN."ajaxcommand/AbstractResponseHandler.php");
 require_once(DOKU_PLUGIN."wikiiocmodel/WikiIocModelManager.php");
 require_once(DOKU_PLUGIN."wikiiocmodel/AuthorizationKeys.php");
+require_once(DOKU_PLUGIN."ajaxcommand/defkeys/ProjectKeys.php");
 
 /**
  * Class abstract_command_class
@@ -52,6 +54,8 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
     protected $modelManager;
 
     protected $needMediaInfo =FALSE;
+
+    protected $throwsEventResponse=TRUE;
 
     public $error = FALSE;
     public $errorMessage = '';
@@ -109,7 +113,7 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
      * @return string (nom del command a partir del nom de la clase)
      */
     public function getAuthorizationType() {
-        return preg_replace('/_command$/', '', get_class($this));
+        return $this->getCommandName();
     }
 
     public function getParams($key=NULL) {
@@ -286,7 +290,13 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
                 $response_handler->setPermission($this->authorization->getPermission());
                 $response_handler->processResponse($this->params, $response, $ret);
             } else {
+                if($this->throwsEventResponse){
+                    $this->preResponse($ret);
+                }
                 $this->getDefaultResponse($response, $ret);
+                if($this->throwsEventResponse){
+                    $this->postResponse($response, $ret);
+                }
             }
         } catch (HttpErrorCodeException $e){
             $this->error        = $e->getCode();
@@ -398,4 +408,46 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
      * @return mixed varia segons la implementació del command
      */
     protected abstract function process();
+
+    protected function postResponse($responseData, &$ajaxCmdResponseGenerator) {
+        $data = $this->_getDataEvent($ajaxCmdResponseGenerator, $this->params, $responseData);
+        $evt = new Doku_Event("WIOC_PROCESS_RESPONSE", $data);
+        $evt->advise_after();
+        unset($evt);
+        $evt = new Doku_Event("WIOC_PROCESS_RESPONSE_".$this->getCommandName(), $data);
+        $evt->advise_after();
+        unset($evt);
+        $ajaxCmdResponseGenerator->addSetJsInfo($this->getModelWrapper()->getJsInfo());
+        if ($requestParams[ProjectKeys::KEY_PROJECT_TYPE]) {
+            if (!$responseData['projectExtraData'][ProjectKeys::KEY_PROJECT_TYPE]) { //es una página de un proyecto
+                $ajaxCmdResponseGenerator->addExtraContentStateResponse($responseData['id'], ProjectKeys::KEY_PROJECT_TYPE, $requestParams[ProjectKeys::KEY_PROJECT_TYPE]);
+            }
+        }
+    }
+    
+    protected function preResponse(&$ajaxCmdResponseGenerator) {
+        $data = $this->_getDataEvent($ajaxCmdResponseGenerator, $this->params);
+        $evt = new Doku_Event("WIOC_PROCESS_RESPONSE", $data);
+        $ret = $evt->advise_before();
+        unset($evt);
+        $evt = new Doku_Event("WIOC_PROCESS_RESPONSE_".$this->getCommandName(), $data);
+        $ret = $ret.$evt->advise_before();
+        unset($evt);
+        return $ret;
+    }
+
+    private function _getDataEvent(&$ajaxCmdResponseGenerator, $requestParams=NULL, $responseData=NULL){
+        $ret = array(
+            "command" => $this->getCommandName(),
+            "requestParams" => $requestParams,
+            "responseData" => $responseData,
+            "ajaxCmdResponseGenerator" => $ajaxCmdResponseGenerator,
+        );
+        return $ret;
+    }    
+
+    private function getCommandName() {
+        return preg_replace('/_command$/', '', get_class($this));
+    }
+
 }
