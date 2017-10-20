@@ -30,6 +30,8 @@ class project_command extends abstract_project_command_class {
             case ProjectKeys::KEY_CREATE:
                 $action = new CreateProjectMetaDataAction($this->persistenceEngine);
                 $projectMetaData = $action->get($this->params);
+                $projectMetaData['projectExtraData'] = [ProjectKeys::KEY_PROJECT_TYPE => $this->params[ProjectKeys::KEY_PROJECT_TYPE],
+                                                        ProjectKeys::KEY_ROL          => $this->authorization->getPermission()->getRol()];
                 break;
 
             case ProjectKeys::KEY_GENERATE:

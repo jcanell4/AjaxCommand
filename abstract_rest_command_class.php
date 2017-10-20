@@ -21,6 +21,7 @@ abstract class abstract_rest_command_class extends abstract_command_class {
         $this->supportedContentTypes  = array("application/json");
         $this->supportedMethods       = array("GET");
         $this->types['method']        = abstract_command_class::T_STRING;
+        $this->throwsEventResponse=FALSE;
     }
 
     /** NO ES FA SERVIR
