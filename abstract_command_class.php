@@ -392,6 +392,11 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
         return $ret;
     }
 
+    
+    public function getJsInfo(){
+        return WikiIocInfoManager::getJsInfo();
+    }
+
     /**
      * Retorna el nom del directori on es troba la classe.
      *
@@ -417,7 +422,7 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
         $evt = new Doku_Event("WIOC_PROCESS_RESPONSE_".$this->getCommandName(), $data);
         $evt->advise_after();
         unset($evt);
-        $ajaxCmdResponseGenerator->addSetJsInfo($this->getModelWrapper()->getJsInfo());
+        $ajaxCmdResponseGenerator->addSetJsInfo($this->getJsInfo());
         if ($requestParams[ProjectKeys::KEY_PROJECT_TYPE]) {
             if (!$responseData['projectExtraData'][ProjectKeys::KEY_PROJECT_TYPE]) { //es una página de un proyecto
                 $ajaxCmdResponseGenerator->addExtraContentStateResponse($responseData['id'], ProjectKeys::KEY_PROJECT_TYPE, $requestParams[ProjectKeys::KEY_PROJECT_TYPE]);

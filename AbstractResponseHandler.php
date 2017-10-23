@@ -76,6 +76,12 @@ abstract class AbstractResponseHandler {
     public function setPermission($permission) {
         $this->permission = $permission;
     }
+    
+    public function getJsInfo(){
+        return WikiIocInfoManager::getJsInfo();
+    }
+
+    
 
     /**
      * Processa la resposta cridant abans a preResponse() i després de processar-la a postResponse().
