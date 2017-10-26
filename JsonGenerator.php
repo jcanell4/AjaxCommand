@@ -54,6 +54,7 @@ interface JsonGenerator
     const RECENTS = 39;
     const TO_PRINT = 40;
     const CT_TIMER = 41;
+    const USER_STATE = 42;
 
     // Aquestes constants es fan servir com a subtipus
     const ADD_ADMIN_TAB = "add_admin_tab";
@@ -183,7 +184,8 @@ class JSonGeneratorImpl implements JsonGenerator
             "tab",
             "recents",
             "print",
-            "contentTool_timer"
+            "contentTool_timer",
+            "user_state"
         );
         $data = array(
             "type" => $arrayTypes[$this->type],

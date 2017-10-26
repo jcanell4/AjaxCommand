@@ -431,6 +431,7 @@ class AjaxCmdResponseGenerator
         ); //afegir si és login(true) o logout(false)
     }
 
+
     /**
      * Afegeix una resposta de tipus SECTOK_DATA al generador de respostes.
      *
@@ -1070,6 +1071,14 @@ class AjaxCmdResponseGenerator
         );
     }
 
+
+    public function addUserState($state = []) {
+        $this->response->add(
+            new JSonGeneratorImpl(
+                JSonGenerator::USER_STATE,
+                $state)
+        );
+    }
 
     
     /**
