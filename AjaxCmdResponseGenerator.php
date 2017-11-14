@@ -1080,7 +1080,15 @@ class AjaxCmdResponseGenerator
         );
     }
 
-    
+    public function addUpdateLocalDrafts($drafts)
+    {
+        $this->response->add(
+            new JSonGeneratorImpl(
+                JSonGenerator::UPDATE_LOCAL_DRAFTS,
+                $drafts)
+        );
+    }
+
     /**
      * Genera un element amb la informació correctament formatada i afegeix el timestamp. Si no s'especifica el id
      * s'assignarà el id del document que s'estigui gestionant actualment.
@@ -1156,6 +1164,7 @@ class AjaxCmdResponseGenerator
 
             return $info;
     }
+
 
 
 }
