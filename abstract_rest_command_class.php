@@ -1,10 +1,6 @@
 <?php
-require_once(dirname(__FILE__) . '/abstract_command_class.php');
-//require_once 'HTTP.php';
-
 /**
  * Class abstract_rest_command_class
- *
  * @author Josep Cañellas <jcanell4@ioc.cat>
  */
 abstract class abstract_rest_command_class extends abstract_command_class {
@@ -17,11 +13,11 @@ abstract class abstract_rest_command_class extends abstract_command_class {
      */
     public function __construct() {
         parent::__construct();
-        $this->defaultContentType     = "application/json";
-        $this->supportedContentTypes  = array("application/json");
-        $this->supportedMethods       = array("GET");
-        $this->types['method']        = abstract_command_class::T_STRING;
-        $this->throwsEventResponse=FALSE;
+        $this->defaultContentType    = "application/json";
+        $this->supportedContentTypes = array("application/json");
+        $this->supportedMethods      = array("GET");
+        $this->types['method']       = self::T_STRING;
+        $this->throwsEventResponse   = FALSE;
     }
 
     /** NO ES FA SERVIR

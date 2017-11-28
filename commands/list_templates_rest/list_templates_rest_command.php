@@ -1,13 +1,10 @@
 <?php
 /**
  * Retorna un array en formato JSON que contiene la lista de plantillas de documentos
- *
  * @culpable Rafael Claver
  */
 if (!defined('DOKU_INC')) die();
 if (!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
-
-require_once(DOKU_PLUGIN . 'ajaxcommand/abstract_rest_command_class.php');
 require_once(DOKU_PLUGIN . 'wikiiocmodel/actions/ListTemplatesAction.php');
 
 class list_templates_rest_command extends abstract_rest_command_class {
@@ -29,7 +26,6 @@ class list_templates_rest_command extends abstract_rest_command_class {
 
     /**
      * Extreu els paràmetres de la url passada com argument i els estableix com a paràmetres del objecte.
-     *
      * @param string[] $extra_url_params paràmetres per extreure
      */
     public function setParamValuesFromUrl($extra_url_params) {
@@ -43,7 +39,6 @@ class list_templates_rest_command extends abstract_rest_command_class {
     /**
      * Extreu el node actual tenint en compte que sempre es l'ultim valor emmagatzemat a l'array i l'estableix com
      * a paràmetre 'currentnode'
-     *
      * @param string[] $extra_url_params
      */
     private function setCurrentNode($extra_url_params) {
@@ -52,9 +47,8 @@ class list_templates_rest_command extends abstract_rest_command_class {
     }
 
     /**
-     * Extreu el valor de ordenació de @param i l'estableix com a valor del paràmetre 'sortBy'. 
+     * Extreu el valor de ordenació de @param i l'estableix com a valor del paràmetre 'sortBy'.
      * Aquest valor es trobarà a l'index 1.
-     *
      * @param string[] $extra_url_params
      */
     private function setSortBy($extra_url_params) {
@@ -65,7 +59,6 @@ class list_templates_rest_command extends abstract_rest_command_class {
     /**
      * Extreu el valor per establir si s'han de filtrar els directoris o no.
      * Aquest valor es trobarà a l'index 2.
-     *
      * @param string[] $extra_url_params
      */
     private function setOnlyDirs($extra_url_params) {

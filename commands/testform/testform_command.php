@@ -1,59 +1,37 @@
 <?php
+if (!defined('DOKU_INC')) die();
+
 /**
- * Class
+ * Class testform_command
  * @author Josep Cañellas <jcanell4@ioc.cat>
  */
-if (!defined('DOKU_INC')) die();
-if (!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
-if (!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_PLUGIN . "ajaxcommand/");
+class testform_command extends abstract_command_class {
 
-require_once(DOKU_COMMAND . 'AjaxCmdResponseGenerator.php');
-require_once(DOKU_COMMAND . 'JsonGenerator.php');
-require_once(DOKU_COMMAND . 'abstract_command_class.php');
-require_once(DOKU_COMMAND . 'defkeys/PageKeys.php');
-
-class testform_command extends abstract_command_class
-{
-    /**
-     * Al constructor s'estableixen els tipus, els valors per defecte, i s'estableixen aquest valors com a paràmetres.
-     */
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
-        $this->types[PageKeys::KEY_ID] = abstract_command_class::T_STRING;
+        $this->types[AjaxKeys::KEY_ID] = self::T_STRING;
     }
 
     /**
      * Retorna el contingut de la página segons els paràmetres emmagatzemats en aquest command.
-     *
      * @return array amb el contingut de la pàgina (id, ns, tittle i content)
      */
-    protected function process()
-    {
+    protected function process() {
         $projectMetaData = $this->modelWrapper->getProjectMetaData($this->params);
         return $projectMetaData;
     }
 
     /**
      * Afegeix la pàgina passada com argument com una resposta de tipus DATA_TYPE al generador de respostes.
-     *
      * @param array $response amb el contingut de la pàgina
      * @param AjaxCmdResponseGenerator $ret objecte al que s'afegirà la resposta
-     *
      * @return mixed|void
      */
-    protected function getDefaultResponse($response, &$ret)
-    {
+    protected function getDefaultResponse($response, &$ret) {
         $form = [];
-//        $form['view'] = [
-//            'rows' => 10, // Aquest no crec que sigui necessari
-//            'columns' => 4 // Ha de ser divisor de 12: Bootstrap far servir un grid de 12 que s'ha de dividir per aquest nombre
-//        ];
         $form['id'] = 'form_' . $this->params['id']; // ALERTA[Xavi]Compte, els : s'han de reemplaçar per _
         $form['method'] = 'GET'; // GET|POST
         $form['action'] = 'test.php'; // URL de destí del formulari <-- que serà una crida ajax
-//        $fotm['enctype'] = 'multipart/form-data'; // ALERTA[Xavi] Opcional, només per la pujada de fitxers
-
 
         // El grid està coposat per 12 columnes
         // Si no s'especifica el nombre de columnes s'utilitzen 12
@@ -352,10 +330,6 @@ class testform_command extends abstract_command_class
 
         ];
 
-
-
-
-
         if ($response['info']) {
             $ret->addInfoDta($response['info']);
         }
@@ -368,8 +342,7 @@ class testform_command extends abstract_command_class
         $ret->addForm($id, $ns, $title, $form);
     }
 
-    public function getAuthorizationType()
-    {
+    public function getAuthorizationType() {
         return "_none";
     }
 

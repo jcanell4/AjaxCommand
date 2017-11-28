@@ -1,40 +1,30 @@
 <?php
-
-/**
- * Description 
- *
- * @author Daniel Criado Casas<dani.criado.casas@gmail.com>
- */
-if (!defined('DOKU_INC'))
-    die();
-if (!defined('DOKU_PLUGIN'))
-    define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
-if (!defined('DOKU_COMMAND'))
-    define('DOKU_COMMAND', DOKU_PLUGIN . "ajaxcommand/");
-if (!defined('DOKU_COMMAND_PDE'))
-    define('DOKU_COMMAND_PDE', DOKU_COMMAND . "commands/save_pde_algorithm/");
-
-require_once (DOKU_COMMAND_PDE . 'PdeJavaManager.php');
+if (!defined('DOKU_INC')) die();
+if (!defined('DOKU_COMMAND_PDE')) define('DOKU_COMMAND_PDE', DOKU_INC . "lib/plugins/ajaxcommand/commands/save_pde_algorithm/");
 require_once (DOKU_COMMAND_PDE . 'PdeXmlManager.php');
 
+/**
+ * PdeJavaManager
+ * @author Daniel Criado Casas<dani.criado.casas@gmail.com>
+ */
 class PdeJavaManager {
-    
+
     private $command;
     private $params;
     
     function PdeJavaManager($command) {
         $this->command = $command;
     }
-    
+
     function setParams($params) {
         $this->params = $params;
     }
-  
+
     /**
      * Genera i compila l'algorisme Pde.
      * @param type $className Nom de la classe Java
      * @param type $pdePath path del fitxer Pde
-     * @return bool True on success, False otherwise 
+     * @return bool True on success, False otherwise
      */
     function generateJavaClass($className, $pdePath) {
         $command = "java -cp " . $this->getJavaDir()
@@ -45,7 +35,7 @@ class PdeJavaManager {
         exec($command, $output, $returnVar);
         $generated = $returnVar == 0;
         if ($generated) {
-            $javaPath = $this->getSrcRepositoryDir() . $this->command->getConf('processingPackage') . $className . save_pde_algorithm_command::$JAVA_EXTENSION;
+            $javaPath = $this->getSrcRepositoryDir() . $this->command->getConf('processingPackage') . $className . save_pde_algorithm_command::JAVA_EXTENSION;
             $generated = $this->compileSource($javaPath);
         }
         if (!$generated) {
@@ -63,10 +53,10 @@ class PdeJavaManager {
         $pathClasses = $this->getClassesRepositoryDir();
         $pathLibs = $this->getJavaLibDir();
         $libNames = $this->command->getConf('javaLibs');
-        $arrayLibs = split(save_pde_algorithm_command::$COMMA, $libNames);
+        $arrayLibs = split(save_pde_algorithm_command::COMMA, $libNames);
         $libs = "";
         foreach ($arrayLibs as $lib) {
-            $libs .= $pathLibs . $lib . save_pde_algorithm_command::$TWO_DOTS;
+            $libs .= $pathLibs . $lib . save_pde_algorithm_command::TWO_DOTS;
         }
         $libs = substr($libs, 0, -1); //Treu els ultims dos punts que sobren.
         //Comanda que funciona
@@ -75,7 +65,7 @@ class PdeJavaManager {
         exec($command, $output, $returnVar);
         return $returnVar == 0;
     }
-    
+
     private function getJavaLibDir() {
         return DOKU_INC . $this->command->getConf('javaLibDir');
     }
@@ -83,7 +73,7 @@ class PdeJavaManager {
     private function getJavaDir() {
         return DOKU_INC . $this->command->getConf('javaDir');
     }
-    
+
         /**
      * Consulta el directori definit per les imatges de processing.
      * @global type $conf
@@ -92,7 +82,7 @@ class PdeJavaManager {
     private function getSrcRepositoryDir() {
         return DOKU_INC . $this->command->getConf('processingSrcRepository');
     }
-    
+
     /**
      * Consulta el directori definit per les imatges de processing.
      * @global type $conf

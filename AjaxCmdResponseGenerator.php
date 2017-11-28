@@ -1,40 +1,35 @@
 <?php
-if (!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
-if (!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_PLUGIN . "ajaxcommand/");
-require_once DOKU_COMMAND . 'JsonGenerator.php';
+if (!defined('DOKU_INC')) die();
+require_once DOKU_INC . "lib/plugins/ajaxcommand/JsonGenerator.php";
 
 /**
  * Class AjaxCmdResponseGenerator
  *
  * @author Josep Cañellas <jcanell4@ioc.cat>
  */
-class AjaxCmdResponseGenerator
-{
+class AjaxCmdResponseGenerator {
+
     private $response;
 
     /**
      * Constructor de la classe on s'instancia el generador de respostes
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->response = new ArrayJSonGenerator();
     }
 
     /**
      * @param JsonGenerator $response
      */
-    public function addResponse($response)
-    {
+    public function addResponse($response) {
         $this->response->add($response);
     }
 
     /**
      * Afegeix una resposta amb tipus ERROR_TYPE al generador de respostes.
-     *
      * @param string $message missatge a afegir al generador de respostes
      */
-    public function addError($c, $m = NULL)
-    {
+    public function addError($c, $m = NULL) {
         if (is_string($c)) {
             $value = array("code" => 0, "message" => $c);
         } else if (isset ($m)) {
@@ -49,11 +44,9 @@ class AjaxCmdResponseGenerator
 
     /**
      * Afegeix una resposta amb tipus ERROR_TYPE al generador de respostes.
-     *
      * @param string $message missatge a afegir al generador de respostes
      */
-    public function addAlert($message)
-    {
+    public function addAlert($message) {
         $this->response->add(
             new JSonGeneratorImpl(JSonGenerator::ALERT_TYPE, $message)
         );
@@ -61,11 +54,9 @@ class AjaxCmdResponseGenerator
 
     /**
      * Afegeix una resposta amb tipus TITTLE_TYPE al generador de respostes.
-     *
      * @param string $tit títol per afegir al generador de respostes
      */
-    public function addTitle($tit)
-    {
+    public function addTitle($tit) {
         $this->response->add(
             new JSonGeneratorImpl(JSonGenerator::TITLE_TYPE, $tit)
         );
@@ -73,19 +64,13 @@ class AjaxCmdResponseGenerator
 
     /**
      * Afegeix una resposta amb tipus COMMAND_TYPE::JSINFO al generador de respostes.
-     *
      * @param string[] $jsInfo hash amb la informació que es pasarà al JavaScript
      */
-    public function addSetJsInfo($jsInfo)
-    {
+    public function addSetJsInfo($jsInfo) {
         $this->response->add(
             new JSonGeneratorImpl(
                 JSonGenerator::JSINFO,
                 $jsInfo
-//                           array(
-//                               "isadmin"  => $jsInfo['isadmin'],
-//                               "ismanager" => $jsInfo['ismanager']
-//                           )
             )
         );
     }
@@ -225,24 +210,6 @@ class AjaxCmdResponseGenerator
                 $contentData)
         );
     }
-//    public function addDraftDialog($id, $ns, $title, $content, $draft, $timeout, $lastmod)
-//    {
-//        $contentData = array(
-//            'id' => $id,
-//            'ns' => $ns,
-//            'title' => $title,
-//            'content' => $content,
-//            'draft' => $draft,
-//            'timeout' => $timeout,
-//            'lastmod' => $lastmod
-//        );
-//
-//        $this->response->add(
-//            new JSonGeneratorImpl(
-//                JSonGenerator::DRAFT_DIALOG,
-//                $contentData)
-//        );
-//    }
 
     /**
      * Afegeix una resposta de tipus MEDIA_TYPE al generador de respostes.
@@ -574,26 +541,6 @@ class AjaxCmdResponseGenerator
                 ))
         );
     }
-
-//    public function addRemoveMetaTab(/*String*/ $tabId){
-//        $this->response->add(
-//            new JSonGeneratorImpl(
-//                JSonGenerator::COMMAND_TYPE,
-//                array(
-//                    "type" => JSonGenerator::REMOVE_META_TAB,
-//                    "id" => $tabId)));
-//
-//    }
-//
-//    public function addRemoveAllMetaTab(/*String*/ $widgetId){
-//        $this->response->add(
-//            new JSonGeneratorImpl(
-//                JSonGenerator::COMMAND_TYPE,
-//                array(
-//                    "type" => JSonGenerator::REMOVE_ALL_META_TAB,
-//                    "id" => $widgetId)));
-//
-//    }
 
     /**
      * Afegeix una resposta de tipus INFO_TYPE al generador de respostes.

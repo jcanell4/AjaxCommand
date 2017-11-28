@@ -1,12 +1,7 @@
 <?php
-
 if(!defined("DOKU_INC")) die();
-if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
-require_once(DOKU_PLUGIN . 'ajaxcommand/AjaxCmdResponseGenerator.php');
-
 /**
  * Class AbstractResponseHandler
- *
  * @author Josep Cañellas <jcanell4@ioc.cat>
  */
 abstract class AbstractResponseHandler {
@@ -16,7 +11,7 @@ abstract class AbstractResponseHandler {
     const CANCEL = 'cancel';
     const SAVE   = 'save';
     const MEDIA  = 'media';
-    const MEDIADETAILS  = 'mediadetails';    
+    const MEDIADETAILS  = 'mediadetails';
     const ADMIN_TASK  = 'admin_task';
     const ADMIN_TAB  = 'admin_tab';
     const PRINT_ACTION  = 'print';
@@ -29,7 +24,6 @@ abstract class AbstractResponseHandler {
 
     /**
      * Constructor al que se li passa el nom del Command com argument.
-     *
      * @param string $cmd
      */
     public function __construct($cmd, $modelWrapper=NULL, $permission=NULL) {
@@ -76,23 +70,18 @@ abstract class AbstractResponseHandler {
     public function setPermission($permission) {
         $this->permission = $permission;
     }
-    
+
     public function getJsInfo(){
         return WikiIocInfoManager::getJsInfo();
     }
 
-    
-
     /**
      * Processa la resposta cridant abans a preResponse() i després de processar-la a postResponse().
-     *
      * @param string[]                 $requestParams hash amb els paràmetres
      * @param mixed                    $responseData  dades per processar
      * @param AjaxCmdResponseGenerator $ajaxCmdResponseGenerator
      */
-    public function processResponse($requestParams,
-                                    $responseData,
-                                    &$ajaxCmdResponseGenerator) {
+    public function processResponse($requestParams, $responseData, &$ajaxCmdResponseGenerator) {
         $this->preResponse($requestParams, $ajaxCmdResponseGenerator);
         $this->response($requestParams, $responseData, $ajaxCmdResponseGenerator);
         $this->postResponse($requestParams, $responseData, $ajaxCmdResponseGenerator);
@@ -100,36 +89,28 @@ abstract class AbstractResponseHandler {
 
     /**
      * Codi per executar quan es processa la resposta.
-     *
      * @param string[]                 $requestParams hash amb els paràmetres
      * @param mixed                    $responseData  dades per processar
      * @param AjaxCmdResponseGenerator $ajaxCmdResponseGenerator
-     *
      * @return mixed
      */
-    protected abstract function response($requestParams, $responseData,
-                                         &$ajaxCmdResponseGenerator);
+    protected abstract function response($requestParams, $responseData, &$ajaxCmdResponseGenerator);
 
     /**
      * Codi per executar abans de processar la resposta.
-     *
      * @param string[]                 $requestParams hash amb els paràmetres
      * @param AjaxCmdResponseGenerator $ajaxCmdResponseGenerator
-     *
      * @return mixed
      */
-    protected abstract function preResponse($requestParams,
-                                            &$ajaxCmdResponseGenerator);
+    protected abstract function preResponse($requestParams,  &$ajaxCmdResponseGenerator);
 
     /**
      * Codi per executar despres de processar la resposta.
-     *
      * @param string[]                 $requestParams hash amb els paràmetres
      * @param mixed                    $responseData  dades per processar
      * @param AjaxCmdResponseGenerator $ajaxCmdResponseGenerator
-     *
      * @return mixed
      */
-    protected abstract function postResponse($requestParams, $responseData,
-                                             &$ajaxCmdResponseGenerator);
+    protected abstract function postResponse($requestParams, $responseData,  &$ajaxCmdResponseGenerator);
+
 }

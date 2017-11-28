@@ -3,17 +3,13 @@
  * DokuWiki AJAX CALL SERVICE
  * Executa un command a partir de les dades rebudes a les variables $_POST o $_GET.
  *
- * @author Josep Cañellas <jcanell4@ioc.cat>
+ * @author Josep Cañellas <jcanell4@ioc.cat>, Rafael Claver
  */
-if(!defined('DOKU_INC')) define('DOKU_INC', realpath(dirname(__FILE__) . '/../../../') . '/');
+if (!defined('DOKU_INC')) die();
 require_once(DOKU_INC . 'inc/init.php');
 require_once(DOKU_INC . 'inc/template.php');
 require_once(DOKU_INC . 'inc/pluginutils.php');
 require_once(DOKU_INC . 'lib/plugins/ajaxcommand/defkeys/RequestParameterKeys.php');
-require_once(DOKU_INC . 'lib/plugins/ownInit/WikiGlobalConfig.php');
-
-if(!defined('DOKU_COMMANDS')) define('DOKU_COMMANDS', dirname(__FILE__) . '/commands/');
-if(!defined('SECTOK_PARAM')) define('SECTOK_PARAM', 0);
 
 class ajaxCall {
     protected $call;
@@ -120,7 +116,8 @@ class ajaxCall {
     function existCommand($file=NULL) {
         //'commands' definits a l'estructura 'ajaxcommand'
         if (!$file){
-            $file = DOKU_COMMANDS . $this->call . '/' . $this->call . '_command.php';
+            $dirCommands = dirname(__FILE__)."/commands/";
+            $file = $dirCommands . $this->call . '/' . $this->call . '_command.php';
         }
         if (($ret = @file_exists($file))) {
             require_once($file);
@@ -135,13 +132,13 @@ class ajaxCall {
             }
             $pluginList = plugin_list('command');
             $DOKU_PLUGINS = DOKU_INC . "lib/plugins/";
-            
+
             if (isset($this->request_params[RequestParameterKeys::PLUGIN])){
                 $file = "$DOKU_PLUGINS{$this->request_params[RequestParameterKeys::PLUGIN]}/";
-                $commandClass = "command_plugin_{$this->request_params[RequestParameterKeys::PLUGIN]}";    
+                $commandClass = "command_plugin_{$this->request_params[RequestParameterKeys::PLUGIN]}";
                 if($this->request_params[RequestParameterKeys::PROJECT_TYPE]) {
                     $file .= "projects/{$this->request_params[RequestParameterKeys::PROJECT_TYPE]}/";
-                    $commandClass .= "_{$this->request_params[RequestParameterKeys::PROJECT_TYPE]}";    
+                    $commandClass .= "_{$this->request_params[RequestParameterKeys::PROJECT_TYPE]}";
                 }
                 $file .= "command";
                 if(@file_exists($file.".php")) {
@@ -153,7 +150,7 @@ class ajaxCall {
                     $commandClass .=  "_{$this->call}";
                     $file = $file."/{$this->call}.php";
                 }
-                
+
                 if($ret){
                     require_once($file);
                     $this->commandClass = $commandClass;
@@ -167,13 +164,13 @@ class ajaxCall {
                         if (count($c) === 2) {  //es un fichero del directorio 'command'
                             $file = "$DOKU_PLUGINS{$p[0]}/{$p[1]}/{$c[0]}/command/{$c[1]}.php";
                             $noms = array($c[1], "{$c[0]}_{$c[1]}", "{$p[0]}_{$c[0]}_{$c[1]}", "{$p[0]}_{$p[1]}_{$c[0]}_{$c[1]}");
-//                            $nom_curt = $c[1];
-//                            $nom_breu = "{$p[0]}_{$p[1]}_{$c[0]}_{$c[1]}";
+                            //$nom_curt = $c[1];
+                            //$nom_breu = "{$p[0]}_{$p[1]}_{$c[0]}_{$c[1]}";
                             $commandClass = "command_plugin_{$p[0]}_{$p[1]}_{$c[0]}_{$c[1]}";
-//                            $nom = $nom_curt;
+                            //$nom = $nom_curt;
                         }else {
                             $file = "$DOKU_PLUGINS{$p[0]}/{$p[1]}/{$c[0]}/command.php";
-//                            $nom = "{$p[0]}_{$p[1]}_{$c[0]}";
+                            //$nom = "{$p[0]}_{$p[1]}_{$c[0]}";
                             $noms = array($c[0], "{$p[0]}_{$c[0]}", "{$p[0]}_{$p[1]}_{$c[0]}");
                             $commandClass = "command_plugin_{$p[0]}_{$p[1]}_{$c[0]}";
                         }
@@ -189,7 +186,6 @@ class ajaxCall {
                             $commandClass = "command_plugin_{$p[0]}";
                         }
                     }
-//                    if ($nom == $this->call) {
                     if (in_array($this->call, $noms)) {
                         if (($ret = @file_exists($file))) {
                             require_once($file);

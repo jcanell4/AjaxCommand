@@ -3,8 +3,7 @@ if(!defined('DOKU_INC')) die();
 if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
 require_once(DOKU_INC."inc/plugin.php");
 require_once(DOKU_INC."inc/events.php");
-include_once(DOKU_INC."inc/inc_ioc/Logger.php");    //USO: Logger::debug($Texto, $NúmError, __LINE__, __FILE__, $level=-1, $append);
-require_once(DOKU_PLUGIN."ajaxcommand/AbstractResponseHandler.php");
+include_once(DOKU_INC."inc/inc_ioc/Logger.php"); //USO: Logger::debug($Texto, $NúmError, __LINE__, __FILE__, $level=-1, $append);
 require_once(DOKU_PLUGIN."wikiiocmodel/WikiIocModelManager.php");
 require_once(DOKU_PLUGIN."wikiiocmodel/AuthorizationKeys.php");
 require_once(DOKU_PLUGIN."ajaxcommand/defkeys/ProjectKeys.php");
@@ -26,19 +25,18 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
     const T_FUNCTION = "function";
     const T_METHOD   = "method";
     const T_FILE     = "file";
-    const T_ARRAY_KEY  = "array_key";
+    const T_ARRAY_KEY    = "array_key";
     const T_INTEGER_KEY  = "integer_key";
     const T_BOOLEAN_KEY  = "boolean_key";
     const T_DOUBLE_KEY   = "double_key";
     const T_FLOAT_KEY    = "float_key";
     const T_STRING_KEY   = "string_key";
-    
+
     protected static $PLUGUIN_TYPE = 'command';
     protected static $FILENAME_PARAM = 'name';
     protected static $FILE_TYPE_PARAM = 'type';
     protected static $ERROR_PARAM = 'error';
     protected static $FILE_CONTENT_PARAM = 'tmp_name';
-    protected static $PRJ_TYPE_PARAM_NAME = 'projectType';
 
     protected $responseHandler = NULL;
     protected $errorHandler = NULL;
@@ -53,9 +51,8 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
     protected $modelWrapper;
     protected $modelManager;
 
-    protected $needMediaInfo =FALSE;
-
-    protected $throwsEventResponse=TRUE;
+    protected $needMediaInfo = FALSE;
+    protected $throwsEventResponse = TRUE;
 
     public $error = FALSE;
     public $errorMessage = '';
@@ -71,12 +68,12 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
     public function init( $modelManager = NULL ) {
         global $plugin_controller;
 
-        if ($this->params[self::$PRJ_TYPE_PARAM_NAME]) {
-            $plugin_controller->setCurrentProject($this->params[self::$PRJ_TYPE_PARAM_NAME]);
+        if ($this->params[AjaxKeys::PROJECT_TYPE]) {
+            $plugin_controller->setCurrentProject($this->params[AjaxKeys::PROJECT_TYPE]);
         }
 
         if (!$modelManager) {
-            $modelManager = WikiIocModelManager::Instance($this->params[self::$PRJ_TYPE_PARAM_NAME]);
+            $modelManager = WikiIocModelManager::Instance($this->params[AjaxKeys::PROJECT_TYPE]);
         }
         $this->setModelManager($modelManager);
     }
@@ -392,7 +389,7 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
         return $ret;
     }
 
-    
+
     public function getJsInfo(){
         return WikiIocInfoManager::getJsInfo();
     }
@@ -423,13 +420,13 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
         $evt->advise_after();
         unset($evt);
         $ajaxCmdResponseGenerator->addSetJsInfo($this->getJsInfo());
-        if ($requestParams[ProjectKeys::KEY_PROJECT_TYPE]) {
-            if (!$responseData['projectExtraData'][ProjectKeys::KEY_PROJECT_TYPE]) { //es una página de un proyecto
-                $ajaxCmdResponseGenerator->addExtraContentStateResponse($responseData['id'], ProjectKeys::KEY_PROJECT_TYPE, $requestParams[ProjectKeys::KEY_PROJECT_TYPE]);
+        if ($requestParams[AjaxKeys::PROJECT_TYPE]) {
+            if (!$responseData['projectExtraData'][AjaxKeys::PROJECT_TYPE]) { //es una página de un proyecto
+                $ajaxCmdResponseGenerator->addExtraContentStateResponse($responseData['id'], AjaxKeys::PROJECT_TYPE, $requestParams[AjaxKeys::PROJECT_TYPE]);
             }
         }
     }
-    
+
     protected function preResponse(&$ajaxCmdResponseGenerator) {
         $data = $this->_getDataEvent($ajaxCmdResponseGenerator, $this->params);
         $evt = new Doku_Event("WIOC_PROCESS_RESPONSE", $data);
@@ -449,7 +446,7 @@ abstract class abstract_command_class extends DokuWiki_Plugin {
             "ajaxCmdResponseGenerator" => $ajaxCmdResponseGenerator,
         );
         return $ret;
-    }    
+    }
 
     private function getCommandName() {
         return preg_replace('/_command$/', '', get_class($this));

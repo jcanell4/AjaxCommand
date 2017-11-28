@@ -1,26 +1,22 @@
 <?php
-if(!defined('DOKU_INC')) die();
-if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
-if(!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_PLUGIN . "ajaxcommand/");
+if (!defined('DOKU_INC')) die();
 require_once(DOKU_INC . 'inc/search.php');
 require_once(DOKU_INC . 'inc/pageutils.php');
 require_once(DOKU_INC . 'inc/JSON.php');
-require_once(DOKU_COMMAND . 'abstract_rest_command_class.php');
 
 /**
  * Class ns_tree_rest_command
- *
  * @author Josep Cañellas <jcanell4@ioc.cat>
  */
 class ns_tree_rest_command extends abstract_rest_command_class {
 
     public function __construct() {
         parent::__construct();
-        $this->types['currentnode']   = abstract_command_class::T_OBJECT;
-        $this->types['onlyDirs']      = abstract_command_class::T_BOOLEAN;
-        $this->types['sortBy']        = abstract_command_class::T_INTEGER;
-        $this->types['expandProject'] = abstract_command_class::T_BOOLEAN;
-        $this->types['hiddenProjects']= abstract_command_class::T_BOOLEAN;
+        $this->types['currentnode']   = self::T_OBJECT;
+        $this->types['onlyDirs']      = self::T_BOOLEAN;
+        $this->types['sortBy']        = self::T_INTEGER;
+        $this->types['expandProject'] = self::T_BOOLEAN;
+        $this->types['hiddenProjects']= self::T_BOOLEAN;
         $defaultValues = array(
              'sortBy'   => 0
             ,'onlyDirs' => FALSE
