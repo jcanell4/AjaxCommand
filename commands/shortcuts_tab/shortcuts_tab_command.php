@@ -43,8 +43,8 @@ class shortcuts_tab_command extends abstract_command_class {
         //i aixo nomes ho pot saber el template!
         if($contentData["content"]){
             $containerClass = "ioc/gui/ContentTabNsTreeListFromPage";
-            $urlBase = "ajax.php?call=page";
-            $urlTree = "ajaxrest.php/ns_tree_rest/";
+            $urlBase = "lib/exe/ioc_ajax.php?call=page";
+            $urlTree = "lib/exe/ioc_ajaxrest.php/ns_tree_rest/";
 
             $contantParams = array(
                 PageKeys::KEY_ID => cfgIdConstants::TB_SHORTCUTS,
@@ -55,7 +55,7 @@ class shortcuts_tab_command extends abstract_command_class {
                 "treeDataSource" => $urlTree,
                 'typeDictionary' => array (
                                       'p' => array (
-                                                'urlBase' => '\'ajax.php?call=project\'',
+                                                'urlBase' => '\'lib/exe/ioc_ajax.php?call=project\'',
                                                 'params' => array (0 => PageKeys::PROJECT_TYPE),
                                              ),
                                     ),

@@ -16,8 +16,7 @@ class auth_commandreport_command extends abstract_command_class {
      * @return string parametres concatenats
      */
     protected function process() {
-        $response = (array("params" => array()));
-        
+        $response = (array("params" => array())); 
         foreach ($this->params as $key => $value) {
             if (is_array($value)){
                 if ($value["error"]==0 && is_uploaded_file($value["tmp_name"])) {

@@ -87,6 +87,7 @@ class login_command extends abstract_command_class {
 
     function getUserConfig($user) {
         // Carregar fitxer amb la configuració
+//        $dir = WikiGlobalConfig::getConf("userdatadir"); // TODO[Xavi]: Afegit el directori al ownInit/init.php
         $dir = fullpath(DOKU_INC .'/data/user_state');
 
         //$filename = $dir . '/' . md5(cleanID($user)) . '.config'; // TODO[Xavi]: deixem el nom de fitxer hashejat o en textpla?

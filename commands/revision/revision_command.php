@@ -22,7 +22,7 @@ class revision_command extends abstract_command_class {
      */
     protected function process() {
         $response['revs'] = $this->modelWrapper->getRevisionsList($this->params);
-        $response['revs']['urlBase'] = "ajax.php?call=diff";
+        $response['revs']['urlBase'] = "lib/exe/ioc_ajax.php?call=diff";
         $response[PageKeys::KEY_ID] = $this->params['targetId'];
         return $response;
     }
