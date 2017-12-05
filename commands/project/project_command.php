@@ -1,9 +1,10 @@
 <?php
 if (!defined('DOKU_INC')) die();
-if (!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_INC . "lib/plugins/ajaxcommand/");
-require_once(DOKU_COMMAND . "abstract_project_command_class.php");
-require_once(DOKU_COMMAND . "defkeys/ProjectKeys.php");
 
+/**
+ * Class project_command
+ * @culpable Rafael Claver
+ */
 class project_command extends abstract_project_command_class {
 
     protected function process() {
@@ -49,12 +50,6 @@ class project_command extends abstract_project_command_class {
             throw new UnknownProjectException();
     }
 
-    /**
-     * Afegeix la pàgina passada com argument com una resposta de tipus DATA_TYPE al generador de respostes.
-     * @param array $response amb el contingut de la pàgina
-     * @param AjaxCmdResponseGenerator $ret objecte al que s'afegirà la resposta
-     * @return mixed|void
-     */
     protected function getDefaultResponse($response, &$ret) {}
 
 }

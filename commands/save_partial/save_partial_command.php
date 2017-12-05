@@ -1,51 +1,40 @@
 <?php
+if (!defined('DOKU_INC')) die();
+if (!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_INC."lib/plugins/ajaxcommand/");
+require_once (DOKU_COMMAND . "defkeys/PageKeys.php");
+
 /**
  * Class
  * @author Josep Cañellas <jcanell4@ioc.cat>, Xavier García <xaviergaro.dev@gmail.com>
  */
-if (!defined('DOKU_INC')) die();
-if (!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
-if (!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_PLUGIN . "ajaxcommand/");
-require_once(DOKU_COMMAND . 'AjaxCmdResponseGenerator.php');
-require_once(DOKU_COMMAND . 'JsonGenerator.php');
-require_once(DOKU_COMMAND . 'abstract_command_class.php');
-require_once(DOKU_COMMAND . 'defkeys/PageKeys.php');
-
 class save_partial_command extends abstract_command_class {
     /**
      * El constructor estableix els tipus per 'id', 'rev', 'range', 'date', 'prefix', 'suffix', 'changecheck', 'target'
      * i 'summary', i el valor per defecte de 'id' a 'index' que s'estableix com a paràmetre.
      */
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
-        $this->types['id'] = abstract_command_class::T_STRING;
-        $this->types['rev'] = abstract_command_class::T_STRING;
-        $this->types['range'] = abstract_command_class::T_STRING;
-        $this->types['date'] = abstract_command_class::T_STRING;
-        $this->types['prefix'] = abstract_command_class::T_STRING;
-        $this->types['suffix'] = abstract_command_class::T_STRING;
-        $this->types['changecheck'] = abstract_command_class::T_STRING;
-        $this->types['target'] = abstract_command_class::T_STRING;
-        $this->types['summary'] = abstract_command_class::T_STRING;
-        $this->types['cancel']     = abstract_command_class::T_BOOLEAN;
-        $this->types['close']     = abstract_command_class::T_BOOLEAN;
-        $this->types['keep_draft']     = abstract_command_class::T_BOOLEAN;
+        $this->types[PageKeys::KEY_ID]        = self::T_STRING;
+        $this->types[PageKeys::KEY_REV]       = self::T_STRING;
+        $this->types[PageKeys::KEY_RANGE]     = self::T_STRING;
+        $this->types[PageKeys::KEY_DATE]      = self::T_STRING;
+        $this->types[PageKeys::KEY_PRE]       = self::T_STRING;
+        $this->types[PageKeys::KEY_SUF]       = self::T_STRING;
+        $this->types[PageKeys::CHANGE_CHECK]  = self::T_STRING;
+        $this->types[PageKeys::KEY_TARGET]    = self::T_STRING;
+        $this->types[PageKeys::KEY_SUM]       = self::T_STRING;
+        $this->types[PageKeys::KEY_CANCEL]    = self::T_BOOLEAN;
+        $this->types[PageKeys::KEY_CLOSE]     = self::T_BOOLEAN;
+        $this->types[PageKeys::KEY_KEEP_DRAFT]= self::T_BOOLEAN;
 
-        $defaultValues = array(
-            'id' => 'index'
-        );
-
-        $this->setParameters($defaultValues);
+        $this->setParameters([PageKeys::KEY_ID => "index"]);
     }
 
     /**
      * Guarda la edició i retorna la informació de la pàgina
-     *
      * @return array amb la informació de la pàgina 'id', 'ns', 'tittle' i 'content'
      */
-    protected function process()
-    {
+    protected function process() {
         if (isset($this->params[PageKeys::KEY_IN_EDITING_CHUNKS]) && !is_array($this->params[PageKeys::KEY_IN_EDITING_CHUNKS])) {
             $this->params[PageKeys::KEY_IN_EDITING_CHUNKS] = explode(',', $this->params[PageKeys::KEY_IN_EDITING_CHUNKS]);
         }
@@ -57,12 +46,12 @@ class save_partial_command extends abstract_command_class {
 
             for ($i = 0; $i < count($toSaveChunks); $i++) {
 
-                $toSaveChunks[$i]['cancel_all'] = $this->params[PageKeys::KEY_CANCEL];
-                if ($this->params['close']) {
-                    $toSaveChunks[$i]['close'] =$this->params['close'];
+                $toSaveChunks[$i][PageKeys::KEY_CANCEL_ALL] = $this->params[PageKeys::KEY_CANCEL];
+                if ($this->params[PageKeys::KEY_CLOSE]) {
+                    $toSaveChunks[$i][PageKeys::KEY_CLOSE] =$this->params[PageKeys::KEY_CLOSE];
                 }
 
-                $toSaveChunks[$i]['cancel_all'] = $this->params[PageKeys::KEY_CANCEL];
+                $toSaveChunks[$i][PageKeys::KEY_CANCEL_ALL] = $this->params[PageKeys::KEY_CANCEL];
 
                 $contentData = $this->modelWrapper->savePartialEdition($toSaveChunks[$i]); // ALERTA[Xavi] Només cal retornar la resposta de l'ultim, la resta de respostes es descarten
 
@@ -80,28 +69,16 @@ class save_partial_command extends abstract_command_class {
         } else {
             $contentData = $this->modelWrapper->savePartialEdition($this->params);
         }
-
-
-//        $contentData = $this->modelWrapper->savePartialEdition(
-//            $this->params['id'], $this->params['rev'],
-//            $this->params['range'], $this->params['date'],
-//            $this->params['prefix'], $this->params['wikitext'],
-//            $this->params['suffix'], $this->params['summary'],
-//            $this->params['section_id'], explode(',', $this->params['editing_chunks'])
-//        );
         return $contentData;
     }
 
     /**
      * Afegeix el array passat com argument com resposta de tipus DATA_TYPE al generador de respostes.
-     *
      * @param array $response informació de la pàgina
      * @param AjaxCmdResponseGenerator $ret objecte on s'afegeix la resposta
-     *
      * @return void
      */
-    protected function getDefaultResponse($response, &$ret)
-    {
+    protected function getDefaultResponse($response, &$ret) {
         $ret->addInfoDta(" default ");
     }
 }

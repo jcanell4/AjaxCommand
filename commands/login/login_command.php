@@ -1,32 +1,19 @@
 <?php
 if(!defined('DOKU_INC')) die();
-if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
-if(!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_PLUGIN . "ajaxcommand/");
-require_once(DOKU_COMMAND . 'AjaxCmdResponseGenerator.php');
-require_once(DOKU_COMMAND . 'JsonGenerator.php');
-require_once(DOKU_COMMAND . 'abstract_command_class.php');
 
 /**
  * Class login_command
- *
  * @author Josep Cañellas <jcanell4@ioc.cat>
  */
 class login_command extends abstract_command_class {
 
-    /**
-     * El constructor extableix que no es necessari estar autenticat, el tipus,
-     * els valors per defecte i els estableix
-     * com a paràmetres.
-     * El valor per defecte es el paràmetre 'do' amb valor 'login'.
-     */
     public function __construct() {
         parent::__construct();
-        $this->types['do'] = abstract_command_class::T_STRING;
-        $this->types['unlock'] = abstract_command_class::T_ARRAY;
-        $this->types['u'] = abstract_command_class::T_STRING;
+        $this->types[AjaxKeys::KEY_DO] = self::T_STRING;
+        $this->types['unlock'] = self::T_ARRAY;
+        $this->types['u'] = self::T_STRING;
 
-        $defaultValues = array('do' => 'login');
-        $this->setParameters($defaultValues);
+        $this->setParameters([AjaxKeys::KEY_DO => 'login']);
     }
 
     public function init($modelManager = NULL) {
@@ -48,76 +35,53 @@ class login_command extends abstract_command_class {
      */
     protected function process(){
 
-
-        if ($this->params[PageKeys::KEY_DO] === 'relogin') {
+        if ($this->params[AjaxKeys::KEY_DO] === 'relogin') {
             $response = $this->processCheck();
         } else {
             $response = $this->processLogin(); // ALERTA[Xavi] Aquesta funció conté el codi de login original sense modificar (inclou el logout);
         }
 
         if (!$response["loginResult"] || !$response["loginRequest"]) {
-            $response = array_merge($response, $this->modelWrapper->notify(['do' => 'close']));
+            $response = array_merge($response, $this->modelWrapper->notify([AjaxKeys::KEY_DO => 'close']));
         }
 
         return $response;
     }
 
-    private function processCheck()
-    {
-
+    private function processCheck() {
 
         $response = array(
-//            "loginRequest" => $this->authorization->isUserAuthenticated($this->params['userId']),
-//            "loginResult" => $this->authorization->isUserAuthenticated()
-
             "loginRequest" => true,
             "loginResult" => $this->authorization->isUserAuthenticated($this->params['userId'])
         );
 
-        if ($response["loginResult"] /*&& $response["loginRequest"]*/) {
+        if ($response["loginResult"]) {
             $response["userId"] = $this->params['userId'];
-
-            $notifications = $this->modelWrapper->notify(['do' => 'init']);
+            $notifications = $this->modelWrapper->notify([AjaxKeys::KEY_DO => 'init']);
             $response = array_merge($response, $notifications);
             $response['user_state'] = $this->getUserConfig($this->params['userId']);
-
-
-        } else if ($response["loginResult"]) {
-            $this->_logoff();
-            $response["loginResult"] = FALSE;
         }
-
-
-
         return $response;
-
     }
 
-    private function processLogin()
-    {
+    private function processLogin() {
         $response = array(
-             "loginRequest"  => $this->params['do'] === 'login'
-            ,"loginResult" => $this->authorization->isUserAuthenticated()
+            "loginRequest" => ($this->params[AjaxKeys::KEY_DO] === 'login'),
+            "loginResult" => $this->authorization->isUserAuthenticated()
         );
 
-        if($this->params['do'] === 'login'  && $response["loginResult"] ) {
+        if($response["loginRequest"]  && $response["loginResult"] ) {
             $response["userId"] = $this->params['u'];
 
-            $notifications = $this->modelWrapper->notify(['do' => 'init']);
+            $notifications = $this->modelWrapper->notify([AjaxKeys::KEY_DO => 'init']);
             $response = array_merge($response, $notifications);
             $response['user_state'] = $this->getUserConfig($this->params['u']);
 
-
         } else if ($response["loginResult"]) {
             $this->_logoff();
             $response["loginResult"] = FALSE;
-            $response = array_merge($response, $this->modelWrapper->notify(['do' => 'close']));
+            $response = array_merge($response, $this->modelWrapper->notify([AjaxKeys::KEY_DO => 'close']));
         }
-
-
-
-
-
         return $response;
     }
 
@@ -126,7 +90,7 @@ class login_command extends abstract_command_class {
 //        $dir = WikiGlobalConfig::getConf("userdatadir"); // TODO[Xavi]: Afegit el directori al ownInit/init.php
         $dir = fullpath(DOKU_INC .'/data/user_state');
 
-//        $filename = $dir . '/' . md5(cleanID($user)) . '.config'; // TODO[Xavi]: deixem el nom de fitxer hashejat o en textpla?
+        //$filename = $dir . '/' . md5(cleanID($user)) . '.config'; // TODO[Xavi]: deixem el nom de fitxer hashejat o en textpla?
         $filename = $dir . '/' . cleanID($user) . '.config';
 
         if (@file_exists($filename)) {
@@ -134,7 +98,7 @@ class login_command extends abstract_command_class {
         } else {
             // PROVISIONAL[Xavi] si no existeix el fitxer es crea un amb la configuració per defecta: editor ACE
             $config = ['editor' => 'ACE'];
-//            $config = ['editor' => 'Dojo'];
+            //$config = ['editor' => 'Dojo'];
             io_saveFile($filename, json_encode($config));
         }
 
@@ -143,10 +107,8 @@ class login_command extends abstract_command_class {
 
     /**
      * Afegeix una resposta de tipus LOGIN_INFO al generador de respostes a partir de la informació passada com argument.
-     *
      * @param array $response array associatiu amb els valors de 'loginRequest' i 'loginResult'
      * @param AjaxCmdResponseGenerator $responseGenerator objecte al que s'afegirà la resposta
-     *
      * @return void
      */
     protected function getDefaultResponse($response, &$responseGenerator) {

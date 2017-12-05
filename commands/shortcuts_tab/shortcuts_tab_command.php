@@ -1,17 +1,13 @@
 <?php
+if (!defined('DOKU_INC')) die();
+if (!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_INC."lib/plugins/ajaxcommand/");
+require_once(DOKU_COMMAND.'defkeys/ResponseParameterKeys.php');
+require_once(DOKU_COMMAND.'defkeys/PageKeys.php');
+
 /**
  * Class shortcuts_tab_command
  * @author Xavier Garcia <xaviergaro.dev@gmail.com>
  */
-if (!defined('DOKU_INC')) die();
-if (!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_INC."lib/plugins/ajaxcommand/");
-
-require_once(DOKU_COMMAND.'AjaxCmdResponseGenerator.php');
-require_once(DOKU_COMMAND.'JsonGenerator.php');
-require_once(DOKU_COMMAND.'abstract_command_class.php');
-require_once(DOKU_COMMAND.'defkeys/ResponseParameterKeys.php');
-require_once(DOKU_COMMAND.'defkeys/PageKeys.php');
-
 class shortcuts_tab_command extends abstract_command_class {
     /**
      * El constructor extableix el tipus, els valors per defecte i els estableix com a paràmetres.
@@ -19,16 +15,14 @@ class shortcuts_tab_command extends abstract_command_class {
      */
     public function __construct() {
         parent::__construct();
-
         $this->authenticatedUsersOnly = TRUE;
-        $this->types['do'] = abstract_command_class::T_STRING;
-        $defaultValues = ['do' => 'shortcuts'];
-        $this->setParameters($defaultValues);
+        $this->types[PageKeys::KEY_DO] = self::T_STRING;
+
+        $this->setParameters([PageKeys::KEY_DO => "shortcuts"]);
     }
 
     /**
      * Retorna la informació de la pestanya admin
-     *
      * @return array amb la informació de la pàgina formatada amb 'id', 'tittle' i 'content'
      */
     protected function process() {
@@ -39,23 +33,21 @@ class shortcuts_tab_command extends abstract_command_class {
 
     /**
      * Afegeix el contingut com una resposta al generador de respostes passat com argument.
-     *
      * @param array $contentData array amb la informació de la pàgina 'id', 'tittle' i 'content'
      * @param AjaxCmdResponseGenerator $responseGenerator
      * @return void
      */
-    protected function getDefaultResponse($contentData, &$responseGenerator)
-    {
+    protected function getDefaultResponse($contentData, &$responseGenerator) {
         //TO DO [JOSEP] Xavier, Aixo s'hauria de passar a una classe Shortcuts_tabResponseHandler,
         //perque el retorn no es neutre, implica que a la interficie hi ha un widget amb pestanyes
         //i aixo nomes ho pot saber el template!
         if($contentData["content"]){
             $containerClass = "ioc/gui/ContentTabNsTreeListFromPage";
-            $urlBase = "lib/plugins/ajaxcommand/ajax.php?call=page";
-            $urlTree = "lib/plugins/ajaxcommand/ajaxrest.php/ns_tree_rest/";
+            $urlBase = "lib/exe/ioc_ajax.php?call=page";
+            $urlTree = "lib/exe/ioc_ajaxrest.php/ns_tree_rest/";
 
             $contantParams = array(
-                "id" => cfgIdConstants::TB_SHORTCUTS,
+                PageKeys::KEY_ID => cfgIdConstants::TB_SHORTCUTS,
                 "title" =>  $contentData['title'],
                 "standbyId" => cfgIdConstants::BODY_CONTENT,
                 "urlBase" => $urlBase,
@@ -63,10 +55,8 @@ class shortcuts_tab_command extends abstract_command_class {
                 "treeDataSource" => $urlTree,
                 'typeDictionary' => array (
                                       'p' => array (
-                                                'urlBase' => '\'lib/plugins/ajaxcommand/ajax.php?call=project\'',
-                                                'params' => array (
-                                                                0 => PageKeys::PROJECT_TYPE,
-                                                            ),
+                                                'urlBase' => '\'lib/exe/ioc_ajax.php?call=project\'',
+                                                'params' => array (0 => PageKeys::PROJECT_TYPE),
                                              ),
                                     ),
             );

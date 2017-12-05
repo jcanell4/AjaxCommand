@@ -7,19 +7,17 @@ if (!defined('DOKU_INC')) die();
 require_once (DOKU_INC . 'lib/plugins/ajaxcommand/defkeys/RequestParameterKeys.php');
 
 class PageKeys extends RequestParameterKeys {
-
-//    const KEY_ID        = "id";
-    //const KEY_DO        = "do";
     const KEY_REV       = "rev";
     const KEY_RANGE     = "range";
     const KEY_DATE      = "date";
     const KEY_PRE       = "prefix";
-    const KEY_TEXT      = "wikitext";  //const KEY_TEXT      = "text";
+    const KEY_TEXT      = "wikitext";  //antes: KEY_TEXT = "text";
     const KEY_WIKITEXT  = "wikitext";
     const KEY_SUF       = "suffix";
     const KEY_SUM       = "summary";
     const KEY_MINOR     = "minor";
     const KEY_TEMPLATE  = "template";
+    const KEY_TARGET    = "target";
 
     const KEY_IN_EDITING_CHUNKS = "editing_chunks";
     const KEY_EDITING_CHUNKS    = "editingChunks";
@@ -34,36 +32,35 @@ class PageKeys extends RequestParameterKeys {
     const KEY_DISCARD_DRAFT         = "discard_draft";
     const KEY_KEEP_DRAFT            = "keep_draft";
 
-    const KEY_UNLOCK = "unlock";
-    const KEY_RELOAD = "reload";
-    const KEY_CANCEL = "cancel";
+    const KEY_UNLOCK     = "unlock";
+    const KEY_RELOAD     = "reload";
+    const KEY_CANCEL     = "cancel";
     const KEY_CANCEL_ALL = "cancel_all";
+    const KEY_CLOSE      = "close";
 
-    const KEY_PARAMS = "params"; // response
+    const KEY_PARAMS  = "params"; // response
     const KEY_USER_ID = "user_id";
-
-    const DISCARD_CHANGES = "discard_changes";
 
     const NO_DRAFT            = "none";
     const PARTIAL_DRAFT       = "partial";
     const FULL_DRAFT          = "full";
     const LOCAL_PARTIAL_DRAFT = "local_partial";
     const LOCAL_FULL_DRAFT    = "local_full";
+    const DISCARD_CHANGES     = "discard_changes";
+    const CHANGE_CHECK        = "changecheck";
 
-    const STRUCTURED_LAST_LOCAL_DRAFT_TIME  = "structured_last_local_draft_time";
-    const FULL_LAST_LOCAL_DRAFT_TIME        = "full_last_local_draft_time";
+    const STRUCTURED_LAST_LOCAL_DRAFT_TIME = "structured_last_local_draft_time";
+    const FULL_LAST_LOCAL_DRAFT_TIME       = "full_last_local_draft_time";
 
-    const KEY_LOCK_STATE    = "lock_state";
-    const KEY_INFO          = "info";
-
+    const KEY_LOCK_STATE  = "lock_state";
+    const KEY_INFO        = "info";
     const KEY_NO_RESPONSE = "no_response";
-    const KEY_AUTO = "auto";
-    const KEY_REFRESH = "refresh";
+    const KEY_AUTO        = "auto";
+    const KEY_REFRESH     = "refresh";
 
-    const KEY_FILTER = "filter";
+    const KEY_FILTER    = "filter";
     const KEY_START_POS = "start";
-    const KEY_PROJECT = "project";
-
-    const KEY_OFFSET = "offset";
+    const KEY_PROJECT   = "project";
+    const KEY_OFFSET    = "offset";
 
 }

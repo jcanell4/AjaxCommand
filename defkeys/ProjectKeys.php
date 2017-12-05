@@ -7,8 +7,7 @@ if (!defined('DOKU_INC')) die();
 require_once(DOKU_INC.'lib/plugins/ajaxcommand/defkeys/RequestParameterKeys.php');
 
 class ProjectKeys extends RequestParameterKeys  {
-    const KEY_NS           = "ns";
-    const KEY_PROJECT_TYPE = RequestParameterKeys::PROJECT_TYPE;
+    const KEY_PROJECT_TYPE = AjaxKeys::PROJECT_TYPE;
 
     const KEY_EDIT      = "edit";
     const KEY_CREATE    = "create";
@@ -17,6 +16,7 @@ class ProjectKeys extends RequestParameterKeys  {
 
     const KEY_ROL             = "rol";
     const KEY_FILTER          = "filter";
+    const KEY_TEMPLATE        = "template";
     const KEY_ID_RESOURCE     = "idResource";
     const KEY_PERSISTENCE     = "persistence";
     const KEY_DEFAULTSUBSET   = "defaultSubSet";

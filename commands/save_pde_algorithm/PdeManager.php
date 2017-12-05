@@ -1,22 +1,13 @@
 <?php
-
-/**
- * Description 
- *
- * @author Daniel Criado Casas<dani.criado.casas@gmail.com>
- */
-if (!defined('DOKU_INC'))
-    die();
-if (!defined('DOKU_PLUGIN'))
-    define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
-if (!defined('DOKU_COMMAND'))
-    define('DOKU_COMMAND', DOKU_PLUGIN . "ajaxcommand/");
-if (!defined('DOKU_COMMAND_PDE'))
-    define('DOKU_COMMAND_PDE', DOKU_COMMAND . "commands/save_pde_algorithm/");
-
+if (!defined('DOKU_INC')) die();
+if (!defined('DOKU_COMMAND_PDE')) define('DOKU_COMMAND_PDE', DOKU_INC . "lib/plugins/ajaxcommand/commands/save_pde_algorithm/");
 require_once (DOKU_COMMAND_PDE . 'PdeJavaManager.php');
 require_once (DOKU_COMMAND_PDE . 'PdeXmlManager.php');
 
+/**
+ * PdeManager
+ * @author Daniel Criado Casas<dani.criado.casas@gmail.com>
+ */
 class PdeManager {
 
     private $javaManager;
@@ -41,9 +32,9 @@ class PdeManager {
      * @return int response code information
      */
     function existsAlgorithm() {
-        $response = save_pde_algorithm_command::$UNDEFINED_ALGORITHM_NAME_CODE;
-        if (array_key_exists(save_pde_algorithm_command::$ALGORITHM_NAME_PARAM, $this->params)) {
-            $fileName = $this->params[save_pde_algorithm_command::$ALGORITHM_NAME_PARAM]; //fitxer pde
+        $response = save_pde_algorithm_command::UNDEFINED_ALGORITHM_NAME_CODE;
+        if (array_key_exists(save_pde_algorithm_command::ALGORITHM_NAME_PARAM, $this->params)) {
+            $fileName = $this->params[save_pde_algorithm_command::ALGORITHM_NAME_PARAM]; //fitxer pde
             $className = ucfirst(substr($fileName, 0, -4)); //Li treu la extensio .pde i capitalitza el string
             $response = $this->xmlManager->existsAlgorithm($className);
         }
@@ -55,12 +46,12 @@ class PdeManager {
      * @return int response code information
      */
     function modifyAlgorithm() {
-        $response = save_pde_algorithm_command::$UNLOADED_ALGORITHM_CODE;
-        if (array_key_exists(save_pde_algorithm_command::$FILE_PARAM, $this->params)) {
+        $response = save_pde_algorithm_command::UNLOADED_ALGORITHM_CODE;
+        if (array_key_exists(save_pde_algorithm_command::FILE_PARAM, $this->params)) {
 
-            $file = $this->params[save_pde_algorithm_command::$FILE_PARAM];
-            $filePath = $file[save_pde_algorithm_command::$FILE_CONTENT_PARAM]; //path del fitxer temporal
-            $fileName = $this->params[save_pde_algorithm_command::$ALGORITHM_NAME_PARAM]; //nomdelfitxer.pde
+            $file = $this->params[save_pde_algorithm_command::FILE_PARAM];
+            $filePath = $file[save_pde_algorithm_command::FILE_CONTENT_PARAM]; //path del fitxer temporal
+            $fileName = $this->params[save_pde_algorithm_command::ALGORITHM_NAME_PARAM]; //nomdelfitxer.pde
             $repositoryPdePath = $this->getPdeRepositoryDir();
             $pdePath = $repositoryPdePath . $fileName;
             if ($this->isPdeFile($file)) {
@@ -70,7 +61,7 @@ class PdeManager {
                         $response = $this->xmlManager->modifyPdeAlgorithm($className);
                     } else {
                         $this->removePdeFromRepository($pdePath);
-                        $response = save_pde_algorithm_command::$UNCOMPILED_ALGORITHM_CODE;
+                        $response = save_pde_algorithm_command::UNCOMPILED_ALGORITHM_CODE;
                     }
                 }
             }
@@ -83,12 +74,12 @@ class PdeManager {
      * @return int response code information
      */
     function appendAlgorithm() {
-        $response = save_pde_algorithm_command::$UNLOADED_ALGORITHM_CODE;
+        $response = save_pde_algorithm_command::UNLOADED_ALGORITHM_CODE;
         //Validar fitxer perque sigui .pde, https://dojotoolkit.org/reference-guide/1.9/dojox/form/Uploader.html#missing-features
-        if (array_key_exists(save_pde_algorithm_command::$FILE_PARAM, $this->params)) {
-            $file = $this->params[save_pde_algorithm_command::$FILE_PARAM];
-            $filePath = $file[save_pde_algorithm_command::$FILE_CONTENT_PARAM]; //path del fitxer temporal
-            $fileName = $this->params[save_pde_algorithm_command::$ALGORITHM_NAME_PARAM]; //nomdelfitxer.pde
+        if (array_key_exists(save_pde_algorithm_command::FILE_PARAM, $this->params)) {
+            $file = $this->params[save_pde_algorithm_command::FILE_PARAM];
+            $filePath = $file[save_pde_algorithm_command::FILE_CONTENT_PARAM]; //path del fitxer temporal
+            $fileName = $this->params[save_pde_algorithm_command::ALGORITHM_NAME_PARAM]; //nomdelfitxer.pde
             $repositoryPdePath = $this->getPdeRepositoryDir();
             $pdePath = $repositoryPdePath . $fileName;
             if ($this->isPdeFile($file)) {
@@ -97,13 +88,13 @@ class PdeManager {
                     $className = ucfirst(substr($fileName, 0, -4)); //Li treu la extensio .pde i capitalitza el string
                     if ($this->javaManager->generateJavaClass($className, $pdePath)) {
                         if ($this->xmlManager->addPdeAlgorithm($className)) {
-                            $response = save_pde_algorithm_command::$OK_CODE;
+                            $response = save_pde_algorithm_command::OK_CODE;
                         } else {
-                            $response = save_pde_algorithm_command::$XML_ERROR_CODE;
+                            $response = save_pde_algorithm_command::XML_ERROR_CODE;
                         }
                     } else {
                         $this->removePdeFromRepository($pdePath);
-                        $response = save_pde_algorithm_command::$UNCOMPILED_ALGORITHM_CODE;
+                        $response = save_pde_algorithm_command::UNCOMPILED_ALGORITHM_CODE;
                     }
                 }
             }
@@ -137,7 +128,7 @@ class PdeManager {
      */
     private function isPdeFile($file) {
         $pdeFile = false;
-        if ($file[save_pde_algorithm_command::$FILE_ERROR_PARAM] == UPLOAD_ERR_OK && $file[save_pde_algorithm_command::$FILE_TYPE_PARAM] == save_pde_algorithm_command::$PDE_MIME_TYPE && $this->endsWith($file[save_pde_algorithm_command::$FILENAME_PARAM], save_pde_algorithm_command::$PDE_EXTENSION) && is_uploaded_file($file[save_pde_algorithm_command::$FILE_CONTENT_PARAM])) {
+        if ($file[save_pde_algorithm_command::FILE_ERROR_PARAM] == UPLOAD_ERR_OK && $file[save_pde_algorithm_command::FILE_TYPE_PARAM] == save_pde_algorithm_command::PDE_MIME_TYPE && $this->endsWith($file[save_pde_algorithm_command::FILENAME_PARAM], save_pde_algorithm_command::PDE_EXTENSION) && is_uploaded_file($file[save_pde_algorithm_command::FILE_CONTENT_PARAM])) {
             $pdeFile = true;
         }
         return $pdeFile;
