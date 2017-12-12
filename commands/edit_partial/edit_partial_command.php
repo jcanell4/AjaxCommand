@@ -33,8 +33,9 @@ class edit_partial_command extends abstract_command_class {
             $this->params[PageKeys::KEY_EDITING_CHUNKS] = explode(',', $this->params[PageKeys::KEY_IN_EDITING_CHUNKS]);
             $this->params[PageKeys::KEY_EDITING_CHUNKS][] = $this->params[PageKeys::KEY_SECTION_ID];
         }
-
-        $contentData = $this->modelWrapper->getPartialEdit($this->params);
+//        $contentData = $this->modelWrapper->getPartialEdit($this->params);
+        $action = $this->modelManager->getActionInstance("RawPartialPageAction", $this->getModelWrapper()->getPersistenceEngine());
+        $contentData = $action->get($this->params);
         return $contentData;
     }
 

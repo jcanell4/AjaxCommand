@@ -42,7 +42,9 @@ class login_command extends abstract_command_class {
         }
 
         if (!$response["loginResult"] || !$response["loginRequest"]) {
-            $response = array_merge($response, $this->modelWrapper->notify([AjaxKeys::KEY_DO => 'close']));
+//            $response = array_merge($response, $this->modelWrapper->notify([AjaxKeys::KEY_DO => 'close']));
+            $notifications = $this->_getContentNotifyAction("close");
+            $response = array_merge($response, $notifications);
         }
 
         return $response;
@@ -57,7 +59,8 @@ class login_command extends abstract_command_class {
 
         if ($response["loginResult"]) {
             $response["userId"] = $this->params['userId'];
-            $notifications = $this->modelWrapper->notify([AjaxKeys::KEY_DO => 'init']);
+//            $notifications = $this->modelWrapper->notify([AjaxKeys::KEY_DO => 'init']);
+            $notifications = $this->_getContentNotifyAction("init");
             $response = array_merge($response, $notifications);
             $response['user_state'] = $this->getUserConfig($this->params['userId']);
         }
@@ -72,15 +75,17 @@ class login_command extends abstract_command_class {
 
         if($response["loginRequest"]  && $response["loginResult"] ) {
             $response["userId"] = $this->params['u'];
-
-            $notifications = $this->modelWrapper->notify([AjaxKeys::KEY_DO => 'init']);
+//            $notifications = $this->modelWrapper->notify([AjaxKeys::KEY_DO => 'init']);
+            $notifications = $this->_getContentNotifyAction("init");
             $response = array_merge($response, $notifications);
             $response['user_state'] = $this->getUserConfig($this->params['u']);
 
         } else if ($response["loginResult"]) {
             $this->_logoff();
             $response["loginResult"] = FALSE;
-            $response = array_merge($response, $this->modelWrapper->notify([AjaxKeys::KEY_DO => 'close']));
+//            $response = array_merge($response, $this->modelWrapper->notify([AjaxKeys::KEY_DO => 'close']));
+            $notifications = $this->_getContentNotifyAction("close");
+            $response = array_merge($response, $notifications);
         }
         return $response;
     }
@@ -124,5 +129,12 @@ class login_command extends abstract_command_class {
      */
     private function _logoff() {
         $this->getModelWrapper()->logoff();
+    }
+
+    private function _getContentNotifyAction($do) {
+        $params = array(AjaxKeys::KEY_DO => $do);
+        $action = $this->modelManager->getActionInstance("NotifyAction", $this->getModelWrapper()->getPersistenceEngine());
+        $content = $action->get($params, false);
+        return $content;
     }
 }

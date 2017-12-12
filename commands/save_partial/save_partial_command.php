@@ -58,14 +58,12 @@ class save_partial_command extends abstract_command_class {
                 if ($i < count($toSaveChunks) - 1) {
                     $toSaveChunks[$i + 1]['date'] = $contentData['structure']['date']+ $i + 2; // Afegim 1ms de diferencia entre cadascun per evitar els conflictes
 
-                } else {
+                }else {
                     $contentData['inputs']['date']+= $i + 1;
                 }
 
             }
-
-
-        } else {
+        }else {
 //            $contentData = $this->modelWrapper->savePartialEdition($this->params);
             $action = $this->modelManager->getActionInstance("SavePartialPageAction", $this->getModelWrapper()->getPersistenceEngine());
             $contentData = $action->get($this->params);

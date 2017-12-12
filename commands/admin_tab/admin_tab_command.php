@@ -22,10 +22,9 @@ class admin_tab_command extends abstract_command_class {
     */
     protected function process() {
 //        $contentData = $this->modelWrapper->getAdminTaskList();
-//        return $contentData;
         $action = $this->modelManager->getActionInstance("AdminTaskListAction");
-        $content = $action->get();
-        return $content;
+        $contentData = $action->get();
+        return $contentData;
     }
 
     protected function getDefaultResponse($contentData, &$responseGenerator) {}

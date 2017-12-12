@@ -24,12 +24,13 @@ class notify_command extends abstract_command_class {
         if (isset($this->params['params'])) {
             $this->params['params'] = json_decode($this->params['params'], true);
         }
-
         if (isset($this->params['changes'])) {
             $this->params['changes'] = json_decode($this->params['changes'], true);
         }
-
-        return $this->modelWrapper->notify($this->params);
+//        return $this->modelWrapper->notify($this->params);
+        $action = $this->modelManager->getActionInstance("NotifyAction", $this->getModelWrapper()->getPersistenceEngine());
+        $contentData = $action->get($this->params, false);
+        return $contentData;
     }
 
     protected function getDefaultResponse($response, &$ajaxCmdResponseGenerator) {
