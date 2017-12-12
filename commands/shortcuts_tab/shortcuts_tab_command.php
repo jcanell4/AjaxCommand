@@ -1,4 +1,7 @@
 <?php
+/**
+ * [Rafa] Me sabe grave pero parece ser que este comando es un pobre huerfanito al que nadie llama
+ */
 if (!defined('DOKU_INC')) die();
 if (!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_INC."lib/plugins/ajaxcommand/");
 require_once(DOKU_COMMAND.'defkeys/ResponseParameterKeys.php');
@@ -17,7 +20,6 @@ class shortcuts_tab_command extends abstract_command_class {
         parent::__construct();
         $this->authenticatedUsersOnly = TRUE;
         $this->types[PageKeys::KEY_DO] = self::T_STRING;
-
         $this->setParameters([PageKeys::KEY_DO => "shortcuts"]);
     }
 
@@ -26,9 +28,17 @@ class shortcuts_tab_command extends abstract_command_class {
      * @return array amb la informació de la pàgina formatada amb 'id', 'tittle' i 'content'
      */
     protected function process() {
-        // TODO[Xavi] Aqui s'ha d'obtenir la pàgina de les dreceres de l'usuari
-        $contentData = $this->getModelWrapper()->getShortcutsTaskList($this->params[PageKeys::KEY_USER_ID]);
-        return $contentData;
+//        $contentData = $this->getModelWrapper()->getShortcutsTaskList($this->params[PageKeys::KEY_USER_ID]);
+//        return $contentData;
+        $user_id = $this->params[PageKeys::KEY_USER_ID];
+        if (!$user_id) {
+            throw new Exception("No es troba cap usuari al userinfo"); // TDOD[Xavi] canviar per una excepció més adient i localitzar el missatge.
+        }else {
+            $params = ['id' => WikiGlobalConfig::getConf('userpage_ns','wikiiocmodel').$user_id.':'.WikiGlobalConfig::getConf('shortcut_page_name','wikiiocmodel')]; // TODO[Xavi] Obtenir el nom d'usuari d'altre manera, canviar dreceres per un valor del CONF
+        }
+        $action = $this->modelManager->getActionInstance("ShortcutsTaskListAction", $this->getModelWrapper()->getPersistenceEngine());
+        $content = $action->get($params);
+        return $content;
     }
 
     /**

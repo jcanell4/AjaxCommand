@@ -13,7 +13,6 @@ class page_command extends abstract_command_class {
         parent::__construct();
 	$this->types[PageKeys::KEY_ID]  = self::T_STRING;
 	$this->types[PageKeys::KEY_REV] = self::T_STRING;
-
 	$this->setParameters( [PageKeys::KEY_ID => 'start'] );
     }
 
@@ -22,7 +21,7 @@ class page_command extends abstract_command_class {
      * @return array amb la informació de la pàgina formatada amb 'id', 'ns', 'tittle' i 'content'
      */
     protected function process() {
-        $persistenceEngine = $this->modelWrapper->getPersistenceEngine();
+        $persistenceEngine = $this->getModelWrapper()->getPersistenceEngine();
         if ($this->params[PageKeys::KEY_REV]) {
             $action = new HtmlRevisionPageAction($persistenceEngine);
         }else{

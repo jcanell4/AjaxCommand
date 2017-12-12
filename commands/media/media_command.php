@@ -1,4 +1,9 @@
 <?php
+/**
+ * media_command: Este comando es llamado cuando:
+ * - se carga una página que contiene imágenes
+ * - se llama al elemento 'Media manager' del menú
+ */
 if (!defined('DOKU_INC')) die();
 if (!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_INC."lib/plugins/ajaxcommand/");
 require_once DOKU_COMMAND . "defkeys/MediaKeys.php";
@@ -40,9 +45,24 @@ class media_command extends abstract_command_class {
             $this->params['fromId'] = $this->params[MediaKeys::KEY_ID];
         }
         if($this->params[MediaKeys::KEY_DELETE]){
-            $contentData =$this->modelWrapper->deleteMediaManager($this->params);
+//            $contentData =$this->modelWrapper->deleteMediaManager($this->params);
+            $params = array(MediaKeys::KEY_NS => $this->params[MediaKeys::KEY_NS],
+                            MediaKeys::KEY_ID => $this->params[MediaKeys::KEY_ID],
+                            MediaKeys::KEY_DO => $this->params[MediaKeys::KEY_DO],
+                            MediaKeys::KEY_DELETE => $this->params[MediaKeys::KEY_DELETE]
+                      );
+            $action = $this->modelManager->getActionInstance("DeleteMediaAction", $this->getModelWrapper()->getPersistenceEngine());
+            $contentData = $action->get($params);
+
         }else if($this->params[MediaKeys::KEY_IS_UPLOAD]){
-            $contentData =$this->modelWrapper->uploadMediaManager($this->params);
+//            $contentData =$this->modelWrapper->uploadMediaManager($this->params);
+            $params = array(MediaKeys::KEY_NS => $this->params[MediaKeys::KEY_NS],
+                            MediaKeys::KEY_ID => $this->params[MediaKeys::KEY_ID],
+                            MediaKeys::KEY_DO => $this->params[MediaKeys::KEY_DO]
+                      );
+            $action = $this->modelManager->getActionInstance("UploadMediaAction", $this->getModelWrapper()->getPersistenceEngine());
+            $contentData = $action->get($params);
+
         }else{
             $contentData = $this->modelWrapper->getMediaManager(
             $this->params[MediaKeys::KEY_IMAGE_ID], $this->params[MediaKeys::KEY_FROM_ID], $this->params[MediaKeys::KEY_REV]

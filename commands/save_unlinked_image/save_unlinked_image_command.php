@@ -120,9 +120,20 @@ class save_unlinked_image_command extends abstract_command_class {
                 if (file_exists($imagePath)) {//El nom de fitxer ja existeix
                     unlink($filePath); //Elimina el fitxer temporal
                     $response = self::FILENAME_EXISTS_CODE;
-                } else {
-                    if ($this->modelWrapper->uploadImage($nsImage, $nameImage, $filePath)==0) {
-                    //if (move_uploaded_file($filePath, $imagePath)==0) {
+                }
+                else {
+//                    if ($this->modelWrapper->uploadImage($nsImage, $nameImage, $filePath)==0) {
+//                    //if (move_uploaded_file($filePath, $imagePath)==0) {
+//                        $response = self::SAVE_FILE_CORRECT_CODE;
+//                    }
+                    $params = array('nsTarget' => $nsImage,
+                                    'mediaName' => $nameImage,
+                                    'filePathSource' => $filePath,
+                                    'overWrite' => FALSE
+                              );
+                    $action = $this->modelManager->getActionInstance("UploadMediaAction", $this->getModelWrapper()->getPersistenceEngine());
+                    $content = $action->get($params);
+                    if ($content["resultCode"] == 0) {
                         $response = self::SAVE_FILE_CORRECT_CODE;
                     }
                 }

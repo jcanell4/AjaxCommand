@@ -79,31 +79,31 @@ class copy_image_to_project_command extends abstract_command_class {
         $info         = "";
         switch($responseCode) {
             case self::BAD_CONTENT:
-                $info = $this->modelWrapper->getGlobalMessage('uploadbadcontent');
+                $info = WikiIocLangManager::getLang('uploadbadcontent');
                 break;
             case self::COPY_FAILS:
-                $info = $this->modelWrapper->getGlobalMessage('uploadfail');
+                $info = WikiIocLangManager::getLang('uploadfail');
                 break;
             case self::OK:
-                $info = $this->modelWrapper->getGlobalMessage('uploadsucc');
+                $info = WikiIocLangManager::getLang('uploadsucc');
                 break;
             case self::OVER_WRITING_UNAUTHORIZED:
                 $info = $this->getLang('unauthorized_request');
                 break;
             case self::OVER_WRITING_NOT_ALLOWED:
-                $info = $this->modelWrapper->getGlobalMessage('uploadexist');
+                $info = WikiIocLangManager::getLang('uploadexist');
                 break;
             case self::SPAM_CONTENT:
-                $info = $this->modelWrapper->getGlobalMessage('uploadspam');
+                $info = WikiIocLangManager::getLang('uploadspam');
                 break;
             case self::UNAUTHORIZED_USER:
                 $info = $this->getLang('unauthorized_request');
                 break;
             case self::WRONG_PARAMS:
-                $info = $this->modelWrapper->getGlobalMessage('uploadwrong');
+                $info = WikiIocLangManager::getLang('uploadwrong');
                 break;
             case self::XSS_CONTENT:
-                $info = $this->modelWrapper->getGlobalMessage('uploadxss');
+                $info = WikiIocLangManager::getLang('uploadxss');
                 break;
             case self::UNDEFINED_PROJECT_CODE:
                 $info = $this->getLang('undefinedProject');

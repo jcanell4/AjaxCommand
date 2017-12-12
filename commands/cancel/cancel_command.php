@@ -25,8 +25,18 @@ class cancel_command extends abstract_command_class {
      * @return string[] array associatiu amb la resposta formatada (id, ns, tittle i content)
      */
     protected function process() {
-        $contentData = $this->modelWrapper->cancelEdition($this->params);
-        return $contentData;
+//        $contentData = $this->modelWrapper->cancelEdition($this->params);
+//        return $contentData;
+        $params = array(PageKeys::KEY_ID          => $this->params[PageKeys::KEY_ID],
+                        PageKeys::KEY_DO          => $this->params[PageKeys::KEY_DO],
+                        PageKeys::KEY_AUTO        => $this->params[PageKeys::KEY_AUTO],
+                        PageKeys::DISCARD_CHANGES => $this->params[PageKeys::DISCARD_CHANGES],
+                        PageKeys::KEY_KEEP_DRAFT  => $this->params[PageKeys::KEY_KEEP_DRAFT],
+                        PageKeys::KEY_NO_RESPONSE => $this->params[PageKeys::KEY_NO_RESPONSE]
+                  );
+        $action = $this->modelManager->getActionInstance("CancelEditPageAction", $this->getModelWrapper()->getPersistenceEngine());
+        $content = $action->get($params);
+        return $content;
     }
 
     /**

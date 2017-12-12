@@ -24,13 +24,19 @@ class mediadetails_command extends abstract_command_class {
      * @return array amb la informació de la pàgina formatada amb 'id', 'ns', 'tittle' i 'content'
      */
     protected function process() {
-
         if ($this->params[MediaKeys::KEY_MEDIA]) {
             $this->params[MediaKeys::KEY_IMAGE_ID] = $this->params[MediaKeys::KEY_MEDIA];
         }
-        if($this->params[MediaKeys::KEY_DELETE]){
-            $contentData = $this->modelWrapper->deleteMediaManager($this->params);
-        }else{
+        if ($this->params[MediaKeys::KEY_DELETE]){
+//            $contentData = $this->modelWrapper->deleteMediaManager($this->params);
+            $params = array(MediaKeys::KEY_NS => $this->params[MediaKeys::KEY_NS],
+                            MediaKeys::KEY_DO => $this->params[MediaKeys::KEY_DO],
+                            MediaKeys::KEY_DELETE => $this->params[MediaKeys::KEY_DELETE]
+                      );
+            $action = $this->modelManager->getActionInstance("DeleteMediaAction", $this->getModelWrapper()->getPersistenceEngine());
+            $contentData = $action->get($params);
+        }
+        else{
             $contentData = $this->modelWrapper->getMediaDetails($this->params[MediaKeys::KEY_IMAGE_ID]);
         }
 
