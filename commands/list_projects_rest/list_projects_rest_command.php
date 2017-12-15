@@ -30,7 +30,7 @@ class list_projects_rest_command extends abstract_rest_command_class {
      * @return json
      */
     public function processGet() {
-        $action = new ListProjectsAction($this->modelWrapper->getPersistenceEngine());
+        $action = new ListProjectsAction($this->modelAdapter->getPersistenceEngine());
         $projectMetaData = $action->get();
         return $projectMetaData;
     }

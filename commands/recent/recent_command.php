@@ -22,7 +22,7 @@ class recent_command extends abstract_command_class {
     }
 
     protected function process() {
-        $action = new RecentListAction($this->modelWrapper->getPersistenceEngine());
+        $action = new RecentListAction($this->modelAdapter->getPersistenceEngine());
         $response = $action->get($this->params);
         return $response;
     }

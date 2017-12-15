@@ -17,7 +17,7 @@ class unlock_command extends abstract_command_class {
      * @return string[] array associatiu amb la resposta formatada (id, ns, tittle i content)
      */
     protected function process() {
-        return $this->modelWrapper->unlock($this->params['id']);
+        return $this->modelAdapter->unlock($this->params['id']);
     }
 
     /**

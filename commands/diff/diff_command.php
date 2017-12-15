@@ -19,7 +19,7 @@ class diff_command extends abstract_command_class {
      */
     protected function process() {
         // TODO[Xavi] Al getDiffPage s'haura de pasar un array amb 2 valors amb el nom 'rev2' per comparar 2 revisions
-        $contentData = $this->modelWrapper->getDiffPage(
+        $contentData = $this->modelAdapter->getDiffPage(
                 $this->params['id'],
                 $this->params['rev'],
                 $this->params['rev2']

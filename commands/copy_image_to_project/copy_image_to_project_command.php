@@ -49,7 +49,7 @@ class copy_image_to_project_command extends abstract_command_class {
             $filename   = $this->params[self::CHECK_IMAGE_PARAM];
             $imageName  = $this->params[self::IMAGE_NAME_PARAM];
             $ext        = strrchr($filename, self::DOT);
-            $response   = $this->modelWrapper->saveImage(
+            $response   = $this->modelAdapter->saveImage(
                                              $this->params[self::PROJECT_PATH_PARAM],
                                              $imageName . $ext,
                                              $imagesPath . $filename,

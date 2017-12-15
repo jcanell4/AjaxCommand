@@ -45,7 +45,7 @@ class ns_tree_rest_command extends abstract_rest_command_class {
      */
     public function processGet() {
         $json = new JSON();
-        $tree = $this->modelWrapper->getNsTree(
+        $tree = $this->modelAdapter->getNsTree(
                                    $this->params['currentnode'],
                                    $this->params['sortBy'],
                                    $this->params['onlyDirs'],

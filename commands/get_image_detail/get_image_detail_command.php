@@ -29,7 +29,7 @@ class get_image_detail_command extends abstract_command_class {
         if ($this->params[MediaKeys::KEY_ID]) {
             $this->params[MediaKeys::KEY_FROM_ID] = $this->params[MediaKeys::KEY_ID];
         }
-        $contentData = $this->modelWrapper->getImageDetail(
+        $contentData = $this->modelAdapter->getImageDetail(
                                               $this->params[self::KEY_IMAGE_ID],
                                               $this->params[MediaKeys::KEY_FROM_ID]
                                             );

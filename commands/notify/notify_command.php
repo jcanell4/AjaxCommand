@@ -27,9 +27,8 @@ class notify_command extends abstract_command_class {
         if (isset($this->params['changes'])) {
             $this->params['changes'] = json_decode($this->params['changes'], true);
         }
-//        return $this->modelWrapper->notify($this->params);
-        $action = $this->modelManager->getActionInstance("NotifyAction", $this->getModelWrapper()->getPersistenceEngine());
-        $contentData = $action->get($this->params, false);
+        $action = $this->modelManager->getActionInstance("NotifyAction", FALSE);
+        $contentData = $action->get($this->params, FALSE);
         return $contentData;
     }
 

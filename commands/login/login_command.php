@@ -42,7 +42,6 @@ class login_command extends abstract_command_class {
         }
 
         if (!$response["loginResult"] || !$response["loginRequest"]) {
-//            $response = array_merge($response, $this->modelWrapper->notify([AjaxKeys::KEY_DO => 'close']));
             $notifications = $this->_getContentNotifyAction("close");
             $response = array_merge($response, $notifications);
         }
@@ -59,7 +58,6 @@ class login_command extends abstract_command_class {
 
         if ($response["loginResult"]) {
             $response["userId"] = $this->params['userId'];
-//            $notifications = $this->modelWrapper->notify([AjaxKeys::KEY_DO => 'init']);
             $notifications = $this->_getContentNotifyAction("init");
             $response = array_merge($response, $notifications);
             $response['user_state'] = $this->getUserConfig($this->params['userId']);
@@ -73,9 +71,8 @@ class login_command extends abstract_command_class {
             "loginResult" => $this->authorization->isUserAuthenticated()
         );
 
-        if($response["loginRequest"]  && $response["loginResult"] ) {
+        if ($response["loginRequest"] && $response["loginResult"] ) {
             $response["userId"] = $this->params['u'];
-//            $notifications = $this->modelWrapper->notify([AjaxKeys::KEY_DO => 'init']);
             $notifications = $this->_getContentNotifyAction("init");
             $response = array_merge($response, $notifications);
             $response['user_state'] = $this->getUserConfig($this->params['u']);
@@ -83,7 +80,6 @@ class login_command extends abstract_command_class {
         } else if ($response["loginResult"]) {
             $this->_logoff();
             $response["loginResult"] = FALSE;
-//            $response = array_merge($response, $this->modelWrapper->notify([AjaxKeys::KEY_DO => 'close']));
             $notifications = $this->_getContentNotifyAction("close");
             $response = array_merge($response, $notifications);
         }
@@ -128,13 +124,13 @@ class login_command extends abstract_command_class {
      * Crida al mètode auth_logoff() de dokuwiki per tancar la sessió del usuari.
      */
     private function _logoff() {
-        $this->getModelWrapper()->logoff();
+        $this->getModelAdapter()->logoff();
     }
 
     private function _getContentNotifyAction($do) {
+        $action = $this->modelManager->getActionInstance("NotifyAction", FALSE);
         $params = array(AjaxKeys::KEY_DO => $do);
-        $action = $this->modelManager->getActionInstance("NotifyAction", $this->getModelWrapper()->getPersistenceEngine());
-        $content = $action->get($params, false);
+        $content = $action->get($params, FALSE);
         return $content;
     }
 }

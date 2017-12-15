@@ -50,8 +50,7 @@ class save_partial_command extends abstract_command_class {
                 if ($this->params[PageKeys::KEY_CLOSE]) {
                     $toSaveChunks[$i][PageKeys::KEY_CLOSE] =$this->params[PageKeys::KEY_CLOSE];
                 }
-//                $contentData = $this->modelWrapper->savePartialEdition($toSaveChunks[$i]); // ALERTA[Xavi] Només cal retornar la resposta de l'ultim, la resta de respostes es descarten
-                $action = $this->modelManager->getActionInstance("SavePartialPageAction", $this->getModelWrapper()->getPersistenceEngine());
+                $action = $this->modelManager->getActionInstance("SavePartialPageAction");
                 $contentData = $action->get($toSaveChunks[$i]);
 
                 // Actualitzem el changecheck pel següent chunk
@@ -64,8 +63,7 @@ class save_partial_command extends abstract_command_class {
 
             }
         }else {
-//            $contentData = $this->modelWrapper->savePartialEdition($this->params);
-            $action = $this->modelManager->getActionInstance("SavePartialPageAction", $this->getModelWrapper()->getPersistenceEngine());
+            $action = $this->modelManager->getActionInstance("SavePartialPageAction");
             $contentData = $action->get($this->params);
         }
         return $contentData;

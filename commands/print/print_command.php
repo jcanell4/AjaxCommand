@@ -22,7 +22,7 @@ class print_command extends abstract_command_class {
      * @return array amb la informació de la pàgina formatada amb 'id', 'ns', 'tittle' i 'content'
      */
     protected function process() {
-        $action = new PrintPageAction($this->modelWrapper->getPersistenceEngine());
+        $action = new PrintPageAction($this->modelAdapter->getPersistenceEngine());
         $ret = $action->get($this->params);
         return $ret;
     }

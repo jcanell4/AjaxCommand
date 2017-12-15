@@ -17,7 +17,7 @@ class testform_command extends abstract_command_class {
      * @return array amb el contingut de la pàgina (id, ns, tittle i content)
      */
     protected function process() {
-        $projectMetaData = $this->modelWrapper->getProjectMetaData($this->params);
+        $projectMetaData = $this->modelAdapter->getProjectMetaData($this->params);
         return $projectMetaData;
     }
 

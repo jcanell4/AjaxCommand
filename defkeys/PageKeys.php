@@ -63,4 +63,21 @@ class PageKeys extends RequestParameterKeys {
     const KEY_PROJECT   = "project";
     const KEY_OFFSET    = "offset";
 
+    const DW_ACT_CREATE        = "create";
+    const DW_ACT_DENIED        = "denied";
+    const DW_ACT_DRAFTDEL      = "draftdel";
+    const DW_ACT_EDIT          = "edit";
+    const DW_ACT_EXPORT_ADMIN  = "admin";
+    const DW_ACT_LOCK          = "lock";
+    const DW_ACT_MEDIA_DETAIL  = "media_detail";
+    const DW_ACT_MEDIA_DETAILS = "mediadetails";
+    const DW_ACT_MEDIA_MANAGER = "media";
+    const DW_ACT_PREVIEW       = "preview";
+    const DW_ACT_RECENT        = "recent";
+    const DW_ACT_RECOVER       = "recover";
+    const DW_ACT_REMOVE        = "remove";
+    const DW_ACT_SAVE          = "save";
+    const DW_ACT_SHOW          = "show";
+    const DW_DEFAULT_PAGE      = "start";
+
 }

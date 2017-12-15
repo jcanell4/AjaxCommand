@@ -17,7 +17,7 @@ class lock_command extends abstract_command_class {
      * @return string[] array associatiu amb la resposta formatada (id, ns, tittle i content)
      */
     protected function process() {
-        return $this->modelWrapper->lock($this->params[AjaxKeys::KEY_ID]);
+        return $this->modelAdapter->lock($this->params[AjaxKeys::KEY_ID]);
     }
 
     /**

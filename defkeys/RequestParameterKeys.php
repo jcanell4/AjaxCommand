@@ -3,7 +3,8 @@
  * @author josep, Rafa
  */
 if (!defined('DOKU_INC')) die();
-require_once (DOKU_INC . "lib/plugins/ajaxcommand/defkeys/AjaxKeys.php");
+if (!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
+require_once (DOKU_PLUGIN . "ajaxcommand/defkeys/AjaxKeys.php");
 
 class RequestParameterKeys extends AjaxKeys {
     const PLUGIN           = 'plugin';

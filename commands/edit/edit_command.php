@@ -38,14 +38,14 @@ class edit_command extends abstract_command_class {
     }
 
     private function refreshEdition() {
-        $persistenceEngine = $this->modelWrapper->getPersistenceEngine();
+        $persistenceEngine = $this->modelAdapter->getPersistenceEngine();
         $action = new RefreshEditionAction($persistenceEngine);
         $contentData = $action->get($this->params);
         return $contentData;
     }
 
     private function getEditionPage() {
-        $persistenceEngine = $this->modelWrapper->getPersistenceEngine();
+        $persistenceEngine = $this->modelAdapter->getPersistenceEngine();
         $action = new RawPageAction($persistenceEngine);
         $contentData = $action->get($this->params);
         return $contentData;

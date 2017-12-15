@@ -18,11 +18,11 @@ class new_page_command extends abstract_command_class {
      */
     protected function process() {
         PagePermissionManager::updateMyOwnPagePermission($this->authorization->getPermission());
-        $pageModel = new DokuPageModel($this->modelWrapper->getPersistenceEngine());
+        $pageModel = new DokuPageModel($this->modelAdapter->getPersistenceEngine());
 
         //sólo se ejecuta si no existe un proyecto en la ruta especificada
         if (!$pageModel->existProject($this->params[AjaxKeys::KEY_ID])) {
-            $action = new CreatePageAction($this->modelWrapper->getPersistenceEngine());
+            $action = new CreatePageAction($this->modelAdapter->getPersistenceEngine());
             $contentData = $action->get($this->params);
         }
         if ($contentData)

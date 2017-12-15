@@ -17,8 +17,7 @@ class draft_command extends abstract_command_class {
      * @return string[] array associatiu amb la resposta formatada (id, ns, tittle i content)
      */
     protected function process() {
-//        return $this->modelWrapper->draft($this->params);
-        $action = $this->modelManager->getActionInstance("DraftPageAction", $this->getModelWrapper()->getPersistenceEngine());
+        $action = $this->modelManager->getActionInstance("DraftPageAction");
         $contentData = $action->get($this->params);
         return $contentData;
     }
@@ -27,7 +26,6 @@ class draft_command extends abstract_command_class {
      * Afegeix una resposta de tipus HTML_TYPE al generador de respostes passat com argument.
      * @param mixed                    $response
      * @param AjaxCmdResponseGenerator $ret      objecte al que s'afegirà la resposta
-     * @return void
      */
     protected function getDefaultResponse($response, &$ret) {
         if ($response['lockInfo']){

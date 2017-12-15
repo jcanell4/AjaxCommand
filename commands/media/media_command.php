@@ -45,28 +45,28 @@ class media_command extends abstract_command_class {
             $this->params['fromId'] = $this->params[MediaKeys::KEY_ID];
         }
         if($this->params[MediaKeys::KEY_DELETE]){
-//            $contentData =$this->modelWrapper->deleteMediaManager($this->params);
             $params = array(MediaKeys::KEY_NS => $this->params[MediaKeys::KEY_NS],
                             MediaKeys::KEY_ID => $this->params[MediaKeys::KEY_ID],
                             MediaKeys::KEY_DO => $this->params[MediaKeys::KEY_DO],
                             MediaKeys::KEY_DELETE => $this->params[MediaKeys::KEY_DELETE]
                       );
-            $action = $this->modelManager->getActionInstance("DeleteMediaAction", $this->getModelWrapper()->getPersistenceEngine());
+            $action = $this->modelManager->getActionInstance("DeleteMediaAction");
             $contentData = $action->get($params);
 
         }else if($this->params[MediaKeys::KEY_IS_UPLOAD]){
-//            $contentData =$this->modelWrapper->uploadMediaManager($this->params);
             $params = array(MediaKeys::KEY_NS => $this->params[MediaKeys::KEY_NS],
                             MediaKeys::KEY_ID => $this->params[MediaKeys::KEY_ID],
                             MediaKeys::KEY_DO => $this->params[MediaKeys::KEY_DO]
                       );
-            $action = $this->modelManager->getActionInstance("UploadMediaAction", $this->getModelWrapper()->getPersistenceEngine());
+            $action = $this->modelManager->getActionInstance("UploadMediaAction");
             $contentData = $action->get($params);
 
         }else{
-            $contentData = $this->modelWrapper->getMediaManager(
-            $this->params[MediaKeys::KEY_IMAGE_ID], $this->params[MediaKeys::KEY_FROM_ID], $this->params[MediaKeys::KEY_REV]
-            );
+            $contentData = $this->modelAdapter->getMediaManager(
+                                                    $this->params[MediaKeys::KEY_IMAGE_ID],
+                                                    $this->params[MediaKeys::KEY_FROM_ID],
+                                                    $this->params[MediaKeys::KEY_REV]
+                                                );
         }
         return $contentData;
     }

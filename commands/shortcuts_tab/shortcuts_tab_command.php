@@ -28,17 +28,15 @@ class shortcuts_tab_command extends abstract_command_class {
      * @return array amb la informació de la pàgina formatada amb 'id', 'tittle' i 'content'
      */
     protected function process() {
-//        $contentData = $this->getModelWrapper()->getShortcutsTaskList($this->params[PageKeys::KEY_USER_ID]);
-//        return $contentData;
         $user_id = $this->params[PageKeys::KEY_USER_ID];
         if (!$user_id) {
             throw new Exception("No es troba cap usuari al userinfo"); // TDOD[Xavi] canviar per una excepció més adient i localitzar el missatge.
         }else {
-            $params = ['id' => WikiGlobalConfig::getConf('userpage_ns','wikiiocmodel').$user_id.':'.WikiGlobalConfig::getConf('shortcut_page_name','wikiiocmodel')]; // TODO[Xavi] Obtenir el nom d'usuari d'altre manera, canviar dreceres per un valor del CONF
+            $params = ['id' => WikiGlobalConfig::getConf('userpage_ns','wikiiocmodel').$user_id.':'.WikiGlobalConfig::getConf('shortcut_page_name','wikiiocmodel')];
         }
-        $action = $this->modelManager->getActionInstance("ShortcutsTaskListAction", $this->getModelWrapper()->getPersistenceEngine());
-        $content = $action->get($params);
-        return $content;
+        $action = $this->modelManager->getActionInstance("ShortcutsTaskListAction");
+        $contentData = $action->get($params);
+        return $contentData;
     }
 
     /**

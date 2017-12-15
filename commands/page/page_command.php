@@ -21,7 +21,7 @@ class page_command extends abstract_command_class {
      * @return array amb la informació de la pàgina formatada amb 'id', 'ns', 'tittle' i 'content'
      */
     protected function process() {
-        $persistenceEngine = $this->getModelWrapper()->getPersistenceEngine();
+        $persistenceEngine = $this->getModelAdapter()->getPersistenceEngine();
         if ($this->params[PageKeys::KEY_REV]) {
             $action = new HtmlRevisionPageAction($persistenceEngine);
         }else{

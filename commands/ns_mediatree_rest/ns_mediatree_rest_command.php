@@ -29,7 +29,7 @@ class ns_mediatree_rest_command extends ns_tree_rest_command {
         $strData; // TODO[Xavi] Error, no s'ha assignat cap valor.
         $json = new JSON();
 
-        $tree = $this->modelWrapper->getNsMediaTree(
+        $tree = $this->modelAdapter->getNsMediaTree(
                                    $this->params['currentnode'],
                                    $this->params['sortBy'],
                                    $this->params['onlyDirs'],
