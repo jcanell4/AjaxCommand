@@ -6,6 +6,7 @@ if (!defined('DOKU_INC')) die();
 if (!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_INC."lib/plugins/ajaxcommand/");
 require_once(DOKU_COMMAND.'defkeys/ResponseParameterKeys.php');
 require_once(DOKU_COMMAND.'defkeys/PageKeys.php');
+require_once(DOKU_TPL_INCDIR . 'conf/cfgIdConstants.php');
 
 /**
  * Class shortcuts_tab_command
