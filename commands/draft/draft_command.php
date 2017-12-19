@@ -17,7 +17,7 @@ class draft_command extends abstract_command_class {
      * @return string[] array associatiu amb la resposta formatada (id, ns, tittle i content)
      */
     protected function process() {
-        $action = $this->modelManager->getActionInstance("DraftPageAction");
+        $action = $this->getModelManager()->getActionInstance("DraftPageAction");
         $contentData = $action->get($this->params);
         return $contentData;
     }

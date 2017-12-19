@@ -37,7 +37,7 @@ class user_list_command extends abstract_command_class {
             }
         }
 
-        $action = new UserListAction($this->modelAdapter->getPersistenceEngine());
+        $action = $this->getModelManager()->getActionInstance("UserListAction");
         $response = $action->get($this->params);
         return $response;
     }

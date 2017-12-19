@@ -13,7 +13,7 @@ class page_command extends abstract_command_class {
         parent::__construct();
 	$this->types[PageKeys::KEY_ID]  = self::T_STRING;
 	$this->types[PageKeys::KEY_REV] = self::T_STRING;
-	$this->setParameters( [PageKeys::KEY_ID => 'start'] );
+	$this->setParameters( [PageKeys::KEY_ID => PageKeys::DW_DEFAULT_PAGE] );
     }
 
     /**
@@ -21,11 +21,10 @@ class page_command extends abstract_command_class {
      * @return array amb la informació de la pàgina formatada amb 'id', 'ns', 'tittle' i 'content'
      */
     protected function process() {
-        $persistenceEngine = $this->getModelAdapter()->getPersistenceEngine();
         if ($this->params[PageKeys::KEY_REV]) {
-            $action = new HtmlRevisionPageAction($persistenceEngine);
+            $action = $this->getModelManager()->getActionInstance("HtmlRevisionPageAction");
         }else{
-            $action = new HtmlPageAction($persistenceEngine);
+            $action = $this->getModelManager()->getActionInstance("HtmlPageAction");
         }
         $response = $action->get($this->params);
 	return $response;
@@ -41,8 +40,8 @@ class page_command extends abstract_command_class {
     	$responseGenerator->addHtmlDoc(
 		$contentData[PageKeys::KEY_ID],
                 $contentData[PageKeys::KEY_NS],
-		$contentData["title"],
-                $contentData["content"]
+		$contentData[PageKeys::KEY_TITLE],
+                $contentData[PageKeys::KEY_CONTENT]
 	);
     }
 }

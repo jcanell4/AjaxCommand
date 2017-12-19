@@ -43,7 +43,7 @@ class cancel_partial_command extends abstract_command_class {
             unset($editingChunks[$key]);
         }
         $this->params[PageKeys::KEY_EDITING_CHUNKS] = $editingChunks;
-        $action = $this->modelManager->getActionInstance("CancelPartialEditPageAction");
+        $action = $this->getModelManager()->getActionInstance("CancelPartialEditPageAction");
         $contentData = $action->get($this->params);
 
         return $contentData;

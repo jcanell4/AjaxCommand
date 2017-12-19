@@ -50,7 +50,7 @@ class save_partial_command extends abstract_command_class {
                 if ($this->params[PageKeys::KEY_CLOSE]) {
                     $toSaveChunks[$i][PageKeys::KEY_CLOSE] =$this->params[PageKeys::KEY_CLOSE];
                 }
-                $action = $this->modelManager->getActionInstance("SavePartialPageAction");
+                $action = $this->getModelManager()->getActionInstance("SavePartialPageAction");
                 $contentData = $action->get($toSaveChunks[$i]);
 
                 // Actualitzem el changecheck pel següent chunk
@@ -63,7 +63,7 @@ class save_partial_command extends abstract_command_class {
 
             }
         }else {
-            $action = $this->modelManager->getActionInstance("SavePartialPageAction");
+            $action = $this->getModelManager()->getActionInstance("SavePartialPageAction");
             $contentData = $action->get($this->params);
         }
         return $contentData;

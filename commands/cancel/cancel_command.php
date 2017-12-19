@@ -32,7 +32,7 @@ class cancel_command extends abstract_command_class {
                         PageKeys::KEY_KEEP_DRAFT  => $this->params[PageKeys::KEY_KEEP_DRAFT],
                         PageKeys::KEY_NO_RESPONSE => $this->params[PageKeys::KEY_NO_RESPONSE]
                   );
-        $action = $this->modelManager->getActionInstance("CancelEditPageAction");
+        $action = $this->getModelManager()->getActionInstance("CancelEditPageAction");
         $content = $action->get($params);
         return $content;
     }

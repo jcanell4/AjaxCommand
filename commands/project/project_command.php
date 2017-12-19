@@ -14,14 +14,14 @@ class project_command extends abstract_project_command_class {
 
         switch ($this->params[ProjectKeys::KEY_DO]) {
             case ProjectKeys::KEY_EDIT:
-                $action = new GetProjectMetaDataAction($this->persistenceEngine);
+                $action = $this->getModelManager()->getActionInstance("GetProjectMetaDataAction");
                 $projectMetaData = $action->get($this->params);
                 $projectMetaData['projectExtraData'] = [ProjectKeys::KEY_PROJECT_TYPE => $this->params[ProjectKeys::KEY_PROJECT_TYPE],
                                                         ProjectKeys::KEY_ROL          => $this->authorization->getPermission()->getRol()];
                 break;
 
             case ProjectKeys::KEY_SAVE:
-                $action = new SetProjectMetaDataAction($this->persistenceEngine);
+                $action = $this->getModelManager()->getActionInstance("SetProjectMetaDataAction");
                 $parms['dataProject'] = $this->params;
                 $parms['extraProject']['old_autor'] = $this->dataProject['autor'];
                 $parms['extraProject']['old_responsable'] = $this->dataProject['responsable'];
@@ -29,14 +29,14 @@ class project_command extends abstract_project_command_class {
                 break;
 
             case ProjectKeys::KEY_CREATE:
-                $action = new CreateProjectMetaDataAction($this->persistenceEngine);
+                $action = $this->getModelManager()->getActionInstance("CreateProjectMetaDataAction");
                 $projectMetaData = $action->get($this->params);
                 $projectMetaData['projectExtraData'] = [ProjectKeys::KEY_PROJECT_TYPE => $this->params[ProjectKeys::KEY_PROJECT_TYPE],
                                                         ProjectKeys::KEY_ROL          => $this->authorization->getPermission()->getRol()];
                 break;
 
             case ProjectKeys::KEY_GENERATE:
-                $action = new GenerateProjectMetaDataAction($this->persistenceEngine);
+                $action = $this->getModelManager()->getActionInstance("GenerateProjectMetaDataAction");
                 $projectMetaData = $action->get($this->params);
                 break;
 

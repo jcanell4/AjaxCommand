@@ -23,7 +23,7 @@ class admin_task_command extends abstract_command_class {
         $params = array(AdminKeys::KEY_DO   => $this->params[AdminKeys::KEY_DO],
                         AdminKeys::KEY_PAGE => $this->params[AdminKeys::KEY_PAGE]
                   );
-        $action = $this->modelManager->getActionInstance("AdminTaskAction");
+        $action = $this->getModelManager()->getActionInstance("AdminTaskAction");
         $content = $action->get($params);
         return $content;
     }

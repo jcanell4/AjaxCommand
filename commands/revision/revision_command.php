@@ -21,7 +21,7 @@ class revision_command extends abstract_command_class {
      * @return string[] array associatiu amb la resposta formatada (id, ns, tittle i content)
      */
     protected function process() {
-        $action = $this->modelManager->getActionInstance("RevisionsListAction");
+        $action = $this->getModelManager()->getActionInstance("RevisionsListAction");
         $response['revs'] = $action->get($this->params);
         $response['revs']['urlBase'] = "lib/exe/ioc_ajax.php?call=diff";
         $response[PageKeys::KEY_ID] = $this->params['targetId'];

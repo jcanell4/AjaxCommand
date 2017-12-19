@@ -35,7 +35,7 @@ class shortcuts_tab_command extends abstract_command_class {
         }else {
             $params = ['id' => WikiGlobalConfig::getConf('userpage_ns','wikiiocmodel').$user_id.':'.WikiGlobalConfig::getConf('shortcut_page_name','wikiiocmodel')];
         }
-        $action = $this->modelManager->getActionInstance("ShortcutsTaskListAction");
+        $action = $this->getModelManager()->getActionInstance("ShortcutsTaskListAction");
         $contentData = $action->get($params);
         return $contentData;
     }

@@ -19,7 +19,7 @@ class list_templates_rest_command extends abstract_rest_command_class {
      * @return string llista en format JSON
      */
     public function processGet() {
-        $action = new ListTemplatesAction();
+        $action = $this->getModelManager()->getActionInstance("ListTemplatesAction");
         $projectMetaData = $action->get();
         return $projectMetaData;
     }

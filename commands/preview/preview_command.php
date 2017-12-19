@@ -20,7 +20,7 @@ class preview_command extends abstract_command_class {
      * @return array amb la informació de la pàgina formatada amb 'id', 'ns', 'tittle' i 'content'
      */
     protected function process() {
-        $action = new PreviewAction();
+        $action = $this->getModelManager()->getActionInstance("PreviewAction");
         $ret = $action->get($this->params);
         return $ret;
     }

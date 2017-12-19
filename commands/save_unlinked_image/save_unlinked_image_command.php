@@ -127,7 +127,7 @@ class save_unlinked_image_command extends abstract_command_class {
                                     'filePathSource' => $filePath,
                                     'overWrite' => FALSE
                               );
-                    $action = $this->modelManager->getActionInstance("UploadMediaAction");
+                    $action = $this->getModelManager()->getActionInstance("UploadMediaAction");
                     $content = $action->get($params);
                     if ($content["resultCode"] == 0) {
                         $response = self::SAVE_FILE_CORRECT_CODE;

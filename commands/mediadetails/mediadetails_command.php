@@ -32,7 +32,7 @@ class mediadetails_command extends abstract_command_class {
                             MediaKeys::KEY_DO => $this->params[MediaKeys::KEY_DO],
                             MediaKeys::KEY_DELETE => $this->params[MediaKeys::KEY_DELETE]
                       );
-            $action = $this->modelManager->getActionInstance("DeleteMediaAction");
+            $action = $this->getModelManager()->getActionInstance("DeleteMediaAction");
             $contentData = $action->get($params);
         }
         else{
@@ -67,10 +67,10 @@ class mediadetails_command extends abstract_command_class {
         if ($this->params[MediaKeys::KEY_DELETE]) {
             $className .= "_delete";
         }
-        elseif ($this->params[MediaKeys::KEY_IS_UPLOAD] === 'upload') {
+        elseif ($this->params[MediaKeys::KEY_IS_UPLOAD] === MediaKeys::KEY_UPLOAD) {
             $className .= ($this->params['ow'] === "1") ? "_delete" : "_upload";
         }
-        elseif ($this->params['tab_details'] === 'edit' || $this->params[MediaKeys::KEY_MEDIA_DO] === 'save') {
+        elseif ($this->params['tab_details'] === MediaKeys::KEY_EDIT || $this->params[MediaKeys::KEY_MEDIA_DO] === MediaKeys::KEY_SAVE) {
             $className .= "_edit";
         }
         return $className;

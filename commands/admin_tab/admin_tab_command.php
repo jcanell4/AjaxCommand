@@ -21,7 +21,7 @@ class admin_tab_command extends abstract_command_class {
     * @return array amb la informació de la pàgina formatada amb 'id', 'tittle' i 'content'
     */
     protected function process() {
-        $action = $this->modelManager->getActionInstance("AdminTaskListAction");
+        $action = $this->getModelManager()->getActionInstance("AdminTaskListAction");
         $contentData = $action->get();
         return $contentData;
     }

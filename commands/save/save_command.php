@@ -39,7 +39,7 @@ class save_command extends abstract_command_class {
                         PageKeys::KEY_TARGET   => $this->params[PageKeys::KEY_TARGET],
                         PageKeys::KEY_WIKITEXT => $this->params[PageKeys::KEY_WIKITEXT]
                   );
-        $action = $this->modelManager->getActionInstance("SavePageAction");
+        $action = $this->getModelManager()->getActionInstance("SavePageAction");
         $content = $action->get($params);
         return $content;
     }

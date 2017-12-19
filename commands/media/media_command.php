@@ -50,7 +50,7 @@ class media_command extends abstract_command_class {
                             MediaKeys::KEY_DO => $this->params[MediaKeys::KEY_DO],
                             MediaKeys::KEY_DELETE => $this->params[MediaKeys::KEY_DELETE]
                       );
-            $action = $this->modelManager->getActionInstance("DeleteMediaAction");
+            $action = $this->getModelManager()->getActionInstance("DeleteMediaAction");
             $contentData = $action->get($params);
 
         }else if($this->params[MediaKeys::KEY_IS_UPLOAD]){
@@ -58,7 +58,7 @@ class media_command extends abstract_command_class {
                             MediaKeys::KEY_ID => $this->params[MediaKeys::KEY_ID],
                             MediaKeys::KEY_DO => $this->params[MediaKeys::KEY_DO]
                       );
-            $action = $this->modelManager->getActionInstance("UploadMediaAction");
+            $action = $this->getModelManager()->getActionInstance("UploadMediaAction");
             $contentData = $action->get($params);
 
         }else{

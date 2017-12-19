@@ -18,6 +18,8 @@ class PageKeys extends RequestParameterKeys {
     const KEY_MINOR     = "minor";
     const KEY_TEMPLATE  = "template";
     const KEY_TARGET    = "target";
+    const KEY_TITLE     = "title";
+    const KEY_CONTENT   = "content";
 
     const KEY_IN_EDITING_CHUNKS = "editing_chunks";
     const KEY_EDITING_CHUNKS    = "editingChunks";
