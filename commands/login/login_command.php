@@ -107,8 +107,8 @@ class login_command extends abstract_command_class
         } else {
             // PROVISIONAL[Xavi] si no existeix el fitxer es crea un amb la configuració per defecta: editor ACE
             $config = [
-//                'editor' => UserStateKeys::KEY_ACE, 'contentFormat' => UserStateKeys::KEY_DOKUWIKI
-                'editor' => UserStateKeys::KEY_DOJO, 'contentFormat' => UserStateKeys::KEY_HTML
+//                'editor' => UserStateKeys::KEY_ACE
+                'editor' => UserStateKeys::KEY_DOJO
             ];
             //$config = ['editor' => 'Dojo'];
             io_saveFile($filename, json_encode($config));
