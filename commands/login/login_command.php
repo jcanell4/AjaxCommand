@@ -1,5 +1,7 @@
 <?php
-if(!defined('DOKU_INC')) die();
+if (!defined('DOKU_INC')) die();
+
+require_once(DOKU_COMMAND . "defkeys/UserStateKeys.php");
 
 /**
  * Class login_command
@@ -71,7 +73,7 @@ class login_command extends abstract_command_class {
             "loginResult" => $this->authorization->isUserAuthenticated()
         );
 
-        if ($response["loginRequest"] && $response["loginResult"] ) {
+        if ($response["loginRequest"] && $response["loginResult"]) {
             $response["userId"] = $this->params['u'];
             $notifications = $this->_getContentNotifyAction("init");
             $response = array_merge($response, $notifications);
@@ -89,7 +91,7 @@ class login_command extends abstract_command_class {
     function getUserConfig($user) {
         // Carregar fitxer amb la configuració
 //        $dir = WikiGlobalConfig::getConf("userdatadir"); // TODO[Xavi]: Afegit el directori al ownInit/init.php
-        $dir = fullpath(DOKU_INC .'/data/user_state');
+        $dir = fullpath(DOKU_INC . '/data/user_state');
 
         //$filename = $dir . '/' . md5(cleanID($user)) . '.config'; // TODO[Xavi]: deixem el nom de fitxer hashejat o en textpla?
         $filename = $dir . '/' . cleanID($user) . '.config';
@@ -98,8 +100,10 @@ class login_command extends abstract_command_class {
             $config = json_decode(io_readFile($filename, false), t);
         } else {
             // PROVISIONAL[Xavi] si no existeix el fitxer es crea un amb la configuració per defecta: editor ACE
-            $config = ['editor' => 'ACE'];
-            //$config = ['editor' => 'Dojo'];
+            $config = [
+                'editor' => UserStateKeys::KEY_ACE
+//                'editor' => UserStateKeys::KEY_DOJO
+            ];
             io_saveFile($filename, json_encode($config));
         }
 
@@ -114,9 +118,9 @@ class login_command extends abstract_command_class {
      */
     protected function getDefaultResponse($response, &$responseGenerator) {
         $responseGenerator->addLoginInfo(
-                          $response["loginRequest"],
-                          $response["loginResult"],
-                          $response["userId"]
+            $response["loginRequest"],
+            $response["loginResult"],
+            $response["userId"]
         );
     }
 
