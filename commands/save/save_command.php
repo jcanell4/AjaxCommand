@@ -48,12 +48,7 @@ class save_command extends abstract_command_class {
         $ret->addInfoDta(" default ");
     }
 
-    public function setPermission($command) {
-        parent::setPermission($command);
-        $this->permission->setIsEmptyText($this->isEmptyText());
-    }
-
-    private function isEmptyText() {
+    public function isEmptyText() {
         $text = trim($this->params[PageKeys::KEY_PRE].
                      $this->params[PageKeys::KEY_WIKITEXT].
                      $this->params[PageKeys::KEY_SUF]
