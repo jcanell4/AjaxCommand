@@ -1,12 +1,12 @@
 <?php
-if(!defined('DOKU_INC')) die();
-if (!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_INC."lib/plugins/ajaxcommand/");
-require_once (DOKU_COMMAND . "defkeys/PageKeys.php");
-
 /**
  * Class save_command
  * @author Josep Cañellas <jcanell4@ioc.cat>
  */
+if(!defined('DOKU_INC')) die();
+if (!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_INC."lib/plugins/ajaxcommand/");
+require_once (DOKU_COMMAND . "defkeys/PageKeys.php");
+
 class save_command extends abstract_command_class {
 
     public function __construct() {
@@ -25,7 +25,8 @@ class save_command extends abstract_command_class {
         $this->types[PageKeys::KEY_CANCEL]    = self::T_BOOLEAN;
         $this->types[PageKeys::KEY_KEEP_DRAFT]= self::T_BOOLEAN;
 
-        $this->setParameters([PageKeys::KEY_ID => "index"]);
+        $params = [PageKeys::KEY_ID => "index"];
+        $this->setParameters($params);
     }
 
     /**
@@ -45,5 +46,18 @@ class save_command extends abstract_command_class {
      */
     protected function getDefaultResponse($response, &$ret) {
         $ret->addInfoDta(" default ");
+    }
+
+    public function setPermission($command) {
+        parent::setPermission($command);
+        $this->permission->setIsEmptyText($this->isEmptyText());
+    }
+
+    private function isEmptyText() {
+        $text = trim($this->params[PageKeys::KEY_PRE].
+                     $this->params[PageKeys::KEY_WIKITEXT].
+                     $this->params[PageKeys::KEY_SUF]
+                    );
+        return ($text == ".");
     }
 }
