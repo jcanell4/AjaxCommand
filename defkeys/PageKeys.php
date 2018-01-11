@@ -25,12 +25,12 @@ class PageKeys extends RequestParameterKeys {
     const KEY_SELECTED          = "selected";
 
     const KEY_COPY_REMOTE_DRAFT_TO_LOCAL = "copy_remote_draft";
-    const KEY_TO_REQUIRE            = "to_require";
-    const KEY_FORCE_REQUIRE         = "force_require";
-    const KEY_RECOVER_DRAFT         = "recover_draft";
-    const KEY_RECOVER_LOCAL_DRAFT   = "recover_local";
-    const KEY_DISCARD_DRAFT         = "discard_draft";
-    const KEY_KEEP_DRAFT            = "keep_draft";
+    const KEY_TO_REQUIRE                 = "to_require";
+    const KEY_FORCE_REQUIRE              = "force_require";
+    const KEY_RECOVER_DRAFT              = "recover_draft";
+    const KEY_RECOVER_LOCAL_DRAFT        = "recover_local";
+    const KEY_DISCARD_DRAFT              = "discard_draft";
+    const KEY_KEEP_DRAFT                 = "keep_draft";
 
     const KEY_UNLOCK     = "unlock";
     const KEY_RELOAD     = "reload";
@@ -63,4 +63,21 @@ class PageKeys extends RequestParameterKeys {
     const KEY_PROJECT   = "project";
     const KEY_OFFSET    = "offset";
 
+    const DW_ACT_CREATE        = "create";
+    const DW_ACT_DENIED        = "denied";
+    const DW_ACT_DRAFTDEL      = "draftdel";
+    const DW_ACT_EDIT          = "edit";
+    const DW_ACT_EXPORT_ADMIN  = "admin";
+    const DW_ACT_LOCK          = "lock";
+    const DW_ACT_MEDIA_DETAIL  = "media_detail";
+    const DW_ACT_MEDIA_DETAILS = "mediadetails";
+    const DW_ACT_MEDIA_MANAGER = "media";
+    const DW_ACT_PREVIEW       = "preview";
+    const DW_ACT_RECENT        = "recent";
+    const DW_ACT_RECOVER       = "recover";
+    const DW_ACT_REMOVE        = "remove";
+    const DW_ACT_SAVE          = "save";
+    const DW_ACT_SAVE_REV      = "save_rev";
+    const DW_ACT_SHOW          = "show";
+    const DW_DEFAULT_PAGE      = "start";
 }

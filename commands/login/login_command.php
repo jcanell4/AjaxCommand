@@ -1,13 +1,17 @@
 <?php
-if(!defined('DOKU_INC')) die();
+if (!defined('DOKU_INC')) die();
+
+require_once(DOKU_COMMAND . "defkeys/UserStateKeys.php");
 
 /**
  * Class login_command
  * @author Josep Cañellas <jcanell4@ioc.cat>
  */
-class login_command extends abstract_command_class {
+class login_command extends abstract_command_class
+{
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         $this->types[AjaxKeys::KEY_DO] = self::T_STRING;
         $this->types['unlock'] = self::T_ARRAY;
@@ -16,7 +20,8 @@ class login_command extends abstract_command_class {
         $this->setParameters([AjaxKeys::KEY_DO => 'login']);
     }
 
-    public function init($modelManager = NULL) {
+    public function init($modelManager = NULL)
+    {
         parent::init($modelManager);
         $this->authenticatedUsersOnly = FALSE;
     }
@@ -33,7 +38,8 @@ class login_command extends abstract_command_class {
      *
      * @return array associatium amb el valor del index loginResult cert o fals
      */
-    protected function process(){
+    protected function process()
+    {
 
         if ($this->params[AjaxKeys::KEY_DO] === 'relogin') {
             $response = $this->processCheck();
@@ -48,7 +54,8 @@ class login_command extends abstract_command_class {
         return $response;
     }
 
-    private function processCheck() {
+    private function processCheck()
+    {
 
         $response = array(
             "loginRequest" => true,
@@ -64,13 +71,14 @@ class login_command extends abstract_command_class {
         return $response;
     }
 
-    private function processLogin() {
+    private function processLogin()
+    {
         $response = array(
             "loginRequest" => ($this->params[AjaxKeys::KEY_DO] === 'login'),
             "loginResult" => $this->authorization->isUserAuthenticated()
         );
 
-        if($response["loginRequest"]  && $response["loginResult"] ) {
+        if ($response["loginRequest"] && $response["loginResult"]) {
             $response["userId"] = $this->params['u'];
 
             $notifications = $this->modelWrapper->notify([AjaxKeys::KEY_DO => 'init']);
@@ -85,10 +93,11 @@ class login_command extends abstract_command_class {
         return $response;
     }
 
-    function getUserConfig($user) {
+    function getUserConfig($user)
+    {
         // Carregar fitxer amb la configuració
 //        $dir = WikiGlobalConfig::getConf("userdatadir"); // TODO[Xavi]: Afegit el directori al ownInit/init.php
-        $dir = fullpath(DOKU_INC .'/data/user_state');
+        $dir = fullpath(DOKU_INC . '/data/user_state');
 
         //$filename = $dir . '/' . md5(cleanID($user)) . '.config'; // TODO[Xavi]: deixem el nom de fitxer hashejat o en textpla?
         $filename = $dir . '/' . cleanID($user) . '.config';
@@ -97,7 +106,10 @@ class login_command extends abstract_command_class {
             $config = json_decode(io_readFile($filename, false), t);
         } else {
             // PROVISIONAL[Xavi] si no existeix el fitxer es crea un amb la configuració per defecta: editor ACE
-            $config = ['editor' => 'ACE'];
+            $config = [
+//                'editor' => UserStateKeys::KEY_ACE
+                'editor' => UserStateKeys::KEY_DOJO
+            ];
             //$config = ['editor' => 'Dojo'];
             io_saveFile($filename, json_encode($config));
         }
@@ -111,18 +123,20 @@ class login_command extends abstract_command_class {
      * @param AjaxCmdResponseGenerator $responseGenerator objecte al que s'afegirà la resposta
      * @return void
      */
-    protected function getDefaultResponse($response, &$responseGenerator) {
+    protected function getDefaultResponse($response, &$responseGenerator)
+    {
         $responseGenerator->addLoginInfo(
-                          $response["loginRequest"],
-                          $response["loginResult"],
-                          $response["userId"]
+            $response["loginRequest"],
+            $response["loginResult"],
+            $response["userId"]
         );
     }
 
     /**
      * Crida al mètode auth_logoff() de dokuwiki per tancar la sessió del usuari.
      */
-    private function _logoff() {
+    private function _logoff()
+    {
         $this->getModelWrapper()->logoff();
     }
 }
