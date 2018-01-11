@@ -7,11 +7,9 @@ require_once(DOKU_COMMAND . "defkeys/UserStateKeys.php");
  * Class login_command
  * @author Josep Cañellas <jcanell4@ioc.cat>
  */
-class login_command extends abstract_command_class
-{
+class login_command extends abstract_command_class {
 
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
         $this->types[AjaxKeys::KEY_DO] = self::T_STRING;
         $this->types['unlock'] = self::T_ARRAY;
@@ -20,8 +18,7 @@ class login_command extends abstract_command_class
         $this->setParameters([AjaxKeys::KEY_DO => 'login']);
     }
 
-    public function init($modelManager = NULL)
-    {
+    public function init($modelManager = NULL) {
         parent::init($modelManager);
         $this->authenticatedUsersOnly = FALSE;
     }
@@ -38,8 +35,7 @@ class login_command extends abstract_command_class
      *
      * @return array associatium amb el valor del index loginResult cert o fals
      */
-    protected function process()
-    {
+    protected function process(){
 
         if ($this->params[AjaxKeys::KEY_DO] === 'relogin') {
             $response = $this->processCheck();
@@ -54,8 +50,7 @@ class login_command extends abstract_command_class
         return $response;
     }
 
-    private function processCheck()
-    {
+    private function processCheck() {
 
         $response = array(
             "loginRequest" => true,
@@ -71,8 +66,7 @@ class login_command extends abstract_command_class
         return $response;
     }
 
-    private function processLogin()
-    {
+    private function processLogin() {
         $response = array(
             "loginRequest" => ($this->params[AjaxKeys::KEY_DO] === 'login'),
             "loginResult" => $this->authorization->isUserAuthenticated()
@@ -93,8 +87,7 @@ class login_command extends abstract_command_class
         return $response;
     }
 
-    function getUserConfig($user)
-    {
+    function getUserConfig($user) {
         // Carregar fitxer amb la configuració
 //        $dir = WikiGlobalConfig::getConf("userdatadir"); // TODO[Xavi]: Afegit el directori al ownInit/init.php
         $dir = fullpath(DOKU_INC . '/data/user_state');
@@ -107,10 +100,9 @@ class login_command extends abstract_command_class
         } else {
             // PROVISIONAL[Xavi] si no existeix el fitxer es crea un amb la configuració per defecta: editor ACE
             $config = [
-//                'editor' => UserStateKeys::KEY_ACE
-                'editor' => UserStateKeys::KEY_DOJO
+                'editor' => UserStateKeys::KEY_ACE
+//                'editor' => UserStateKeys::KEY_DOJO
             ];
-            //$config = ['editor' => 'Dojo'];
             io_saveFile($filename, json_encode($config));
         }
 
@@ -123,8 +115,7 @@ class login_command extends abstract_command_class
      * @param AjaxCmdResponseGenerator $responseGenerator objecte al que s'afegirà la resposta
      * @return void
      */
-    protected function getDefaultResponse($response, &$responseGenerator)
-    {
+    protected function getDefaultResponse($response, &$responseGenerator) {
         $responseGenerator->addLoginInfo(
             $response["loginRequest"],
             $response["loginResult"],
@@ -135,8 +126,7 @@ class login_command extends abstract_command_class
     /**
      * Crida al mètode auth_logoff() de dokuwiki per tancar la sessió del usuari.
      */
-    private function _logoff()
-    {
+    private function _logoff() {
         $this->getModelWrapper()->logoff();
     }
 }
