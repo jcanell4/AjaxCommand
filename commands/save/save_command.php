@@ -34,14 +34,8 @@ class save_command extends abstract_command_class {
      * @return array amb la informació de la pàgina 'id', 'ns', 'tittle' i 'content'
      */
     protected function process() {
-        $params = array(PageKeys::KEY_ID       => $this->params[PageKeys::KEY_ID],
-                        PageKeys::KEY_DATE     => $this->params[PageKeys::KEY_DATE],
-                        PageKeys::KEY_PRE      => $this->params[PageKeys::KEY_PRE],
-                        PageKeys::KEY_TARGET   => $this->params[PageKeys::KEY_TARGET],
-                        PageKeys::KEY_WIKITEXT => $this->params[PageKeys::KEY_WIKITEXT]
-                  );
         $action = $this->getModelManager()->getActionInstance("SavePageAction");
-        $content = $action->get($params);
+        $content = $action->get($this->params);
         return $content;
     }
 
