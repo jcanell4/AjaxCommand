@@ -20,4 +20,5 @@ class ResponseHandlerKeys extends ResponseParameterKeys {
     const PRINT_ACTION   = 'print';
     const PREVIEW_ACTION = 'preview';
     const PROJECT        = 'project';
+    const PROFILE        = "profile";
 }
