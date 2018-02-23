@@ -64,7 +64,7 @@ class shortcuts_tab_command extends abstract_command_class {
                 "treeDataSource" => $urlTree,
                 'typeDictionary' => array (
                                       'p' => array (
-                                                'urlBase' => '\'lib/exe/ioc_ajax.php?call=project\'',
+                                                'urlBase' => "'lib/exe/ioc_ajax.php?call=project'",
                                                 'params' => array (0 => PageKeys::PROJECT_TYPE),
                                              ),
                                     ),
