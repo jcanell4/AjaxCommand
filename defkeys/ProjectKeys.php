@@ -11,12 +11,14 @@ class ProjectKeys extends RequestParameterKeys  {
     const KEY_PROJECT_TYPE = AjaxKeys::PROJECT_TYPE;
     const REVISION_SUFFIX  = "-rev-";
 
-    const KEY_PROJECT   = "project";
-    const KEY_EDIT      = "edit";
-    const KEY_CREATE    = "create";
-    const KEY_GENERATE  = "generate";
-    const KEY_SAVE      = "save";
-    const KEY_REV       = "rev";
+    const KEY_PROJECT  = "project";
+    const KEY_EDIT     = "edit";
+    const KEY_CREATE   = "create";
+    const KEY_GENERATE = "generate";
+    const KEY_SAVE     = "save";
+    const KEY_REV      = "rev";
+    const KEY_SAVE_PROJECT_DRAFT   = "save_project_draft";
+    const KEY_REMOVE_PROJECT_DRAFT = "remove_project_draft";
 
     const KEY_ROL             = "rol";
     const KEY_FILTER          = "filter";

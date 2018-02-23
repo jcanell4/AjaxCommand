@@ -2,7 +2,7 @@
 if (!defined('DOKU_INC')) die();
 
 /**
- * Class project_command
+ * Class project_command: Llama a las Actions correspondientes por cada petición recibida en &do=
  * @culpable Rafael Claver
  */
 class project_command extends abstract_project_command_class {
@@ -13,6 +13,7 @@ class project_command extends abstract_project_command_class {
             throw new UnknownPojectTypeException();
 
         switch ($this->params[ProjectKeys::KEY_DO]) {
+
             case ProjectKeys::KEY_EDIT:
                 $action = $this->getModelManager()->getActionInstance("GetProjectMetaDataAction");
                 $projectMetaData = $action->get($this->params);
@@ -40,6 +41,14 @@ class project_command extends abstract_project_command_class {
                 $projectMetaData = $action->get($this->params);
                 break;
 
+            case ProjectKeys::KEY_SAVE_PROJECT_DRAFT:
+                $action = $this->getModelManager()->getActionInstance("DraftProjectMetaDataAction");
+                $projectMetaData = $action->get($this->params);
+                break;
+
+            case ProjectKeys::KEY_REMOVE_PROJECT_DRAFT:
+                throw new Exception("Excepció a project_command:[ ".ProjectKeys::KEY_REMOVE_PROJECT_DRAFT)."]";
+
             default:
                 throw new UnknownProjectException();
         }
@@ -50,6 +59,18 @@ class project_command extends abstract_project_command_class {
             throw new UnknownProjectException();
     }
 
-    protected function getDefaultResponse($response, &$ret) {}
+    protected function getDefaultResponse($response, &$ret) {
+        if (isset($this->params[ProjectKeys::KEY_SAVE_PROJECT_DRAFT])) {
+            if ($response['lockInfo']){
+                $timeout = ($response["lockInfo"]["locker"]["time"] + WikiGlobalConfig::getConf("locktime") - 60 - time()) * 1000;
+                $ret->addRefreshLock($response["id"], $this->params["id"], $timeout);
+            }
+            if (isset($response['info'])){
+                $ret->addInfoDta($response['info']);
+            }else{
+                $ret->addCodeTypeResponse(0);
+            }
+        }
+    }
 
 }
