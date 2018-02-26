@@ -7,7 +7,7 @@ require_once (DOKU_COMMAND . "defkeys/PageKeys.php");
  * Class
  * @author Josep Cañellas <jcanell4@ioc.cat>, Xavier García <xaviergaro.dev@gmail.com>
  */
-class save_partial_command extends abstract_command_class {
+class save_partial_command extends abstract_writer_command_class {
     /**
      * El constructor estableix els tipus per 'id', 'rev', 'range', 'date', 'prefix', 'suffix', 'changecheck', 'target'
      * i 'summary', i el valor per defecte de 'id' a 'index' que s'estableix com a paràmetre.

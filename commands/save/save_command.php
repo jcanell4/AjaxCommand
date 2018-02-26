@@ -7,7 +7,7 @@ if(!defined('DOKU_INC')) die();
 if (!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_INC."lib/plugins/ajaxcommand/");
 require_once (DOKU_COMMAND . "defkeys/PageKeys.php");
 
-class save_command extends abstract_command_class {
+class save_command extends abstract_writer_command_class {
 
     public function __construct() {
         parent::__construct();
@@ -49,11 +49,11 @@ class save_command extends abstract_command_class {
         $ret->addInfoDta(" default ");
     }
 
-    public function isEmptyText() {
-        $text = trim($this->params[PageKeys::KEY_PRE].
-                     $this->params[PageKeys::KEY_WIKITEXT].
-                     $this->params[PageKeys::KEY_SUF]
-                    );
-        return ($text == ".");
-    }
+//    public function isEmptyText() {
+//        $text = trim($this->params[PageKeys::KEY_PRE].
+//                     $this->params[PageKeys::KEY_WIKITEXT].
+//                     $this->params[PageKeys::KEY_SUF]
+//                    );
+//        return ($text == ".");
+//    }
 }

@@ -7,7 +7,7 @@ require_once (DOKU_COMMAND . "defkeys/PageKeys.php");
  * Class revision_command
  * @author Xavier García <xaviergaro.dev@gmail.com>
  */
-class revision_command extends abstract_command_class {
+class revision_command extends abstract_writer_command_class {
 
     public function __construct() {
         parent::__construct();

@@ -6,7 +6,7 @@ require_once DOKU_COMMAND . "defkeys/MediaKeys.php";
 /**
  * Clase del comando que controla la presentación del detalle de un 'media' (un archivo que no es texto plano)
  */
-class mediadetails_command extends abstract_command_class {
+class mediadetails_command extends abstract_writer_command_class {
 
     public function __construct() {
         parent::__construct();
