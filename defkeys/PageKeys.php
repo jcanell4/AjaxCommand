@@ -7,9 +7,7 @@ if (!defined('DOKU_INC')) die();
 require_once (DOKU_INC . 'lib/plugins/ajaxcommand/defkeys/RequestParameterKeys.php');
 
 class PageKeys extends RequestParameterKeys {
-    const KEY_REV       = "rev";
     const KEY_RANGE     = "range";
-    const KEY_DATE      = "date";
     const KEY_PRE       = "prefix";
     const KEY_TEXT      = "wikitext";  //antes: KEY_TEXT = "text";
     const KEY_WIKITEXT  = "wikitext";
@@ -29,14 +27,10 @@ class PageKeys extends RequestParameterKeys {
     const KEY_COPY_REMOTE_DRAFT_TO_LOCAL = "copy_remote_draft";
     const KEY_TO_REQUIRE                 = "to_require";
     const KEY_FORCE_REQUIRE              = "force_require";
-    const KEY_RECOVER_DRAFT              = "recover_draft";
-    const KEY_RECOVER_LOCAL_DRAFT        = "recover_local";
     const KEY_DISCARD_DRAFT              = "discard_draft";
-    const KEY_KEEP_DRAFT                 = "keep_draft";
 
     const KEY_UNLOCK     = "unlock";
     const KEY_RELOAD     = "reload";
-    const KEY_CANCEL     = "cancel";
     const KEY_CANCEL_ALL = "cancel_all";
     const KEY_CLOSE      = "close";
 
@@ -56,7 +50,6 @@ class PageKeys extends RequestParameterKeys {
 
     const KEY_LOCK_STATE  = "lock_state";
     const KEY_INFO        = "info";
-    const KEY_NO_RESPONSE = "no_response";
     const KEY_AUTO        = "auto";
     const KEY_REFRESH     = "refresh";
 

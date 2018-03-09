@@ -41,6 +41,11 @@ class project_command extends abstract_project_command_class {
                 $projectMetaData = $action->get($this->params);
                 break;
 
+            case ProjectKeys::KEY_CANCEL:
+                $action = $this->getModelManager()->getActionInstance("CancelProjectMetaDataAction");
+                $projectMetaData = $action->get($this->params);
+                break;
+
             case ProjectKeys::KEY_SAVE_PROJECT_DRAFT:
                 $action = $this->getModelManager()->getActionInstance("DraftProjectMetaDataAction");
                 $projectMetaData = $action->get($this->params);
@@ -59,18 +64,6 @@ class project_command extends abstract_project_command_class {
             throw new UnknownProjectException();
     }
 
-    protected function getDefaultResponse($response, &$ret) {
-        if (isset($this->params[ProjectKeys::KEY_SAVE_PROJECT_DRAFT])) {
-            if ($response['lockInfo']){
-                $timeout = ($response["lockInfo"]["locker"]["time"] + WikiGlobalConfig::getConf("locktime") - 60 - time()) * 1000;
-                $ret->addRefreshLock($response["id"], $this->params["id"], $timeout);
-            }
-            if (isset($response['info'])){
-                $ret->addInfoDta($response['info']);
-            }else{
-                $ret->addCodeTypeResponse(0);
-            }
-        }
-    }
+    protected function getDefaultResponse($response, &$ret) {}
 
 }
