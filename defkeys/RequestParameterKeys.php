@@ -17,6 +17,7 @@ class RequestParameterKeys extends AjaxKeys {
     const KEY_CLOSE       = "close";
     const KEY_KEEP_DRAFT  = "keep_draft";
     const KEY_NO_RESPONSE = "no_response";
+    const KEY_CODETYPE    = "codeType";
 
     const KEY_RECOVER_DRAFT       = "recover_draft";
     const KEY_RECOVER_LOCAL_DRAFT = "recover_local_draft";

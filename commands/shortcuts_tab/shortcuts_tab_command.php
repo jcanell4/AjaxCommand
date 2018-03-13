@@ -4,7 +4,6 @@
  */
 if (!defined('DOKU_INC')) die();
 if (!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_INC."lib/plugins/ajaxcommand/");
-require_once(DOKU_COMMAND.'defkeys/ResponseParameterKeys.php');
 require_once(DOKU_COMMAND.'defkeys/PageKeys.php');
 require_once(DOKU_TPL_INCDIR . 'conf/cfgIdConstants.php');
 
@@ -71,7 +70,7 @@ class shortcuts_tab_command extends abstract_command_class {
             );
             $responseGenerator->addAddTab(cfgIdConstants::ZONA_NAVEGACIO,
                     $contantParams,
-                    ResponseParameterKeys::FIRST_POSITION,
+                    PageKeys::FIRST_KEY,
                     FALSE,
                     $containerClass);
         }else{
