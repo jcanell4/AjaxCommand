@@ -6,6 +6,15 @@ if (!defined('DOKU_INC')) die();
  * @culpable Rafael Claver
  */
 class project_command extends abstract_project_command_class {
+    
+     public function __construct() {
+        parent::__construct();
+        $this->types[ProjectKeys::KEY_KEEP_DRAFT] = self::T_BOOLEAN;
+        $this->types[ProjectKeys::KEY_NO_RESPONSE] = self::T_BOOLEAN;
+
+//        $defaultValues = [ProjectKeys::KEY_KEEP_DRAFT => false];
+//        $this->setParameters($defaultValues);
+    }
 
     protected function process() {
 
