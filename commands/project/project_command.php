@@ -6,7 +6,7 @@ if (!defined('DOKU_INC')) die();
  * @culpable Rafael Claver
  */
 class project_command extends abstract_project_command_class {
-    
+
      public function __construct() {
         parent::__construct();
         $this->types[ProjectKeys::KEY_KEEP_DRAFT] = self::T_BOOLEAN;
@@ -22,6 +22,13 @@ class project_command extends abstract_project_command_class {
             throw new UnknownPojectTypeException();
 
         switch ($this->params[ProjectKeys::KEY_DO]) {
+
+            case ProjectKeys::KEY_VIEW:
+                $action = $this->getModelManager()->getActionInstance("ViewProjectMetaDataAction");
+                $projectMetaData = $action->get($this->params);
+                $projectMetaData['projectExtraData'] = [ProjectKeys::KEY_PROJECT_TYPE => $this->params[ProjectKeys::KEY_PROJECT_TYPE],
+                                                        ProjectKeys::KEY_ROL          => $this->authorization->getPermission()->getRol()];
+                break;
 
             case ProjectKeys::KEY_EDIT:
                 $action = $this->getModelManager()->getActionInstance("GetProjectMetaDataAction");
