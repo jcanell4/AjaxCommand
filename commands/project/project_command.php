@@ -11,6 +11,7 @@ class project_command extends abstract_project_command_class {
         parent::__construct();
         $this->types[ProjectKeys::KEY_KEEP_DRAFT] = self::T_BOOLEAN;
         $this->types[ProjectKeys::KEY_NO_RESPONSE] = self::T_BOOLEAN;
+        $this->setParameterDefaultValues([ProjectKeys::KEY_DO => ProjectKeys::KEY_VIEW]);
     }
 
     protected function process() {
