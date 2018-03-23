@@ -17,6 +17,7 @@ class ProjectKeys extends RequestParameterKeys  {
     const KEY_CREATE   = "create";
     const KEY_GENERATE = "generate";
     const KEY_SAVE     = "save";
+    const KEY_DIFF     = "diff";
 
     const KEY_SAVE_PROJECT_DRAFT   = "save_project_draft";
     const KEY_REMOVE_PROJECT_DRAFT = "remove_project_draft";

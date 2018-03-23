@@ -20,6 +20,13 @@ class project_command extends abstract_project_command_class {
 
         switch ($this->params[ProjectKeys::KEY_DO]) {
 
+            case ProjectKeys::KEY_DIFF:
+                $action = $this->getModelManager()->getActionInstance("DiffProjectMetaDataAction");
+                $projectMetaData = $action->get($this->params);
+                $projectMetaData['projectExtraData'] = [ProjectKeys::KEY_PROJECT_TYPE => $this->params[ProjectKeys::KEY_PROJECT_TYPE],
+                                                        ProjectKeys::KEY_ROL          => $this->authorization->getPermission()->getRol()];
+                break;
+
             case ProjectKeys::KEY_VIEW:
                 $action = $this->getModelManager()->getActionInstance("ViewProjectMetaDataAction");
                 $projectMetaData = $action->get($this->params);
