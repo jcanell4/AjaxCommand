@@ -32,6 +32,9 @@ class project_command extends abstract_project_command_class {
                 $projectMetaData = $action->get($this->params);
                 $projectMetaData['projectExtraData'] = [ProjectKeys::KEY_PROJECT_TYPE => $this->params[ProjectKeys::KEY_PROJECT_TYPE],
                                                         ProjectKeys::KEY_ROL          => $this->authorization->getPermission()->getRol()];
+                if ($this->params[ProjectKeys::KEY_REV]) {
+                    $projectMetaData['projectExtraData'][ProjectKeys::KEY_REV] = $this->params[ProjectKeys::KEY_REV];
+                }
                 break;
 
             case ProjectKeys::KEY_EDIT:
@@ -63,6 +66,11 @@ class project_command extends abstract_project_command_class {
 
             case ProjectKeys::KEY_CANCEL:
                 $action = $this->getModelManager()->getActionInstance("CancelProjectMetaDataAction");
+                $projectMetaData = $action->get($this->params);
+                break;
+
+            case ProjectKeys::KEY_REVERT:
+                $action = $this->getModelManager()->getActionInstance("RevertProjectMetaDataAction");
                 $projectMetaData = $action->get($this->params);
                 break;
 
