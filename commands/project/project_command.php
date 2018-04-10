@@ -70,8 +70,7 @@ class project_command extends abstract_project_command_class {
                 break;
 
             case ProjectKeys::KEY_REVERT:
-                $action = $this->getModelManager()->getActionInstance("RevertProjectMetaDataAction");
-                $projectMetaData = $action->get($this->params);
+                //Està en: wikiocmodel/projects/documentation/command/projectRevert.php
                 break;
 
             case ProjectKeys::KEY_SAVE_PROJECT_DRAFT:
@@ -86,10 +85,9 @@ class project_command extends abstract_project_command_class {
                 throw new UnknownProjectException();
         }
 
-        if ($projectMetaData)
-            return $projectMetaData;
-        else
-            throw new UnknownProjectException();
+        if (!$projectMetaData) throw new UnknownProjectException();
+        return $projectMetaData;
+
     }
 
     protected function getDefaultResponse($response, &$ret) {}

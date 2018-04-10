@@ -11,13 +11,14 @@ class RequestParameterKeys extends AjaxKeys {
     const FIRST_KEY        = 'first';
     const SHOW_CHANGES_KEY = 'show_changes';
 
-    const KEY_DATE        = "date";
-    const KEY_REV         = "rev";
-    const KEY_CANCEL      = "cancel";
-    const KEY_CLOSE       = "close";
-    const KEY_KEEP_DRAFT  = "keep_draft";
-    const KEY_NO_RESPONSE = "no_response";
-    const KEY_CODETYPE    = "codeType";
+    const KEY_DATE           = "date";
+    const KEY_REV            = "rev";
+    const KEY_CANCEL         = "cancel";
+    const KEY_CLOSE          = "close";
+    const KEY_KEEP_DRAFT     = "keep_draft";
+    const KEY_NO_RESPONSE    = "no_response";
+    const KEY_DISCARD_CHANGES= "discard_changes";
+    const KEY_CODETYPE       = "codeType";
 
     const KEY_RECOVER_DRAFT       = "recover_draft";
     const KEY_RECOVER_LOCAL_DRAFT = "recover_local_draft";
