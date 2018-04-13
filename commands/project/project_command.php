@@ -11,6 +11,8 @@ class project_command extends abstract_project_command_class {
         parent::__construct();
         $this->types[ProjectKeys::KEY_KEEP_DRAFT] = self::T_BOOLEAN;
         $this->types[ProjectKeys::KEY_NO_RESPONSE] = self::T_BOOLEAN;
+        $this->types[ProjectKeys::KEY_CANCEL] = self::T_BOOLEAN;
+        $this->types[ProjectKeys::KEY_CLOSE] = self::T_BOOLEAN;
     }
 
     protected function process() {
@@ -67,6 +69,8 @@ class project_command extends abstract_project_command_class {
             case ProjectKeys::KEY_CANCEL:
                 $action = $this->getModelManager()->getActionInstance("CancelProjectMetaDataAction");
                 $projectMetaData = $action->get($this->params);
+                $projectMetaData['projectExtraData'] = [ProjectKeys::KEY_PROJECT_TYPE => $this->params[ProjectKeys::KEY_PROJECT_TYPE],
+                                                        ProjectKeys::KEY_ROL          => $this->authorization->getPermission()->getRol()];
                 break;
 
             case ProjectKeys::KEY_REVERT:
