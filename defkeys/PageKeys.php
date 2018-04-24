@@ -25,7 +25,6 @@ class PageKeys extends RequestParameterKeys {
     const KEY_SELECTED          = "selected";
 
     const KEY_COPY_REMOTE_DRAFT_TO_LOCAL = "copy_remote_draft";
-    const KEY_TO_REQUIRE                 = "to_require";
     const KEY_FORCE_REQUIRE              = "force_require";
     const KEY_DISCARD_DRAFT              = "discard_draft";
 
@@ -42,7 +41,7 @@ class PageKeys extends RequestParameterKeys {
     const FULL_DRAFT          = "full";
     const LOCAL_PARTIAL_DRAFT = "local_partial";
     const LOCAL_FULL_DRAFT    = "local_full";
-    const DISCARD_CHANGES     = "discard_changes";
+    const DISCARD_CHANGES     = RequestParameterKeys::KEY_DISCARD_CHANGES;
     const CHANGE_CHECK        = "changecheck";
 
     const STRUCTURED_LAST_LOCAL_DRAFT_TIME = "structured_last_local_draft_time";
@@ -51,7 +50,6 @@ class PageKeys extends RequestParameterKeys {
     const KEY_LOCK_STATE  = "lock_state";
     const KEY_INFO        = "info";
     const KEY_AUTO        = "auto";
-    const KEY_REFRESH     = "refresh";
 
     const KEY_FILTER    = "filter";
     const KEY_START_POS = "start";

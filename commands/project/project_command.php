@@ -13,6 +13,9 @@ class project_command extends abstract_project_command_class {
         $this->types[ProjectKeys::KEY_NO_RESPONSE] = self::T_BOOLEAN;
         $this->types[ProjectKeys::KEY_CANCEL] = self::T_BOOLEAN;
         $this->types[ProjectKeys::KEY_CLOSE] = self::T_BOOLEAN;
+        $this->types[ProjectKeys::KEY_TO_REQUIRE] = self::T_BOOLEAN;
+        $this->types[ProjectKeys::KEY_LEAVERESOURCE] = self::T_BOOLEAN;
+        $this->types[ProjectKeys::KEY_REFRESH] = self::T_BOOLEAN;
     }
 
     protected function process() {
@@ -40,7 +43,11 @@ class project_command extends abstract_project_command_class {
                 break;
 
             case ProjectKeys::KEY_EDIT:
-                $action = $this->getModelManager()->getActionInstance("GetProjectMetaDataAction");
+                if ($this->params[ProjectKeys::KEY_REFRESH]) {
+                    $action = $this->getModelManager()->getActionInstance("RefreshProjectAction");
+                }else {
+                    $action = $this->getModelManager()->getActionInstance("GetProjectMetaDataAction");
+                }
                 $projectMetaData = $action->get($this->params);
                 $projectMetaData['projectExtraData'] = [ProjectKeys::KEY_PROJECT_TYPE => $this->params[ProjectKeys::KEY_PROJECT_TYPE],
                                                         ProjectKeys::KEY_ROL          => $this->authorization->getPermission()->getRol()];
@@ -78,7 +85,11 @@ class project_command extends abstract_project_command_class {
                 break;
 
             case ProjectKeys::KEY_SAVE_PROJECT_DRAFT:
-                $action = $this->getModelManager()->getActionInstance("DraftProjectMetaDataAction");
+                if ($this->params[ProjectKeys::KEY_REFRESH]) {
+                    $action = $this->getModelManager()->getActionInstance("RefreshProjectAction");
+                }else {
+                    $action = $this->getModelManager()->getActionInstance("DraftProjectMetaDataAction");
+                }
                 $projectMetaData = $action->get($this->params);
                 break;
 
