@@ -85,11 +85,7 @@ class project_command extends abstract_project_command_class {
                 break;
 
             case ProjectKeys::KEY_SAVE_PROJECT_DRAFT:
-                if ($this->params[ProjectKeys::KEY_REFRESH]) {
-                    $action = $this->getModelManager()->getActionInstance("RefreshProjectAction");
-                }else {
-                    $action = $this->getModelManager()->getActionInstance("DraftProjectMetaDataAction");
-                }
+                $action = $this->getModelManager()->getActionInstance("DraftProjectMetaDataAction");
                 $projectMetaData = $action->get($this->params);
                 break;
 
