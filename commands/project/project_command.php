@@ -16,6 +16,7 @@ class project_command extends abstract_project_command_class {
         $this->types[ProjectKeys::KEY_TO_REQUIRE] = self::T_BOOLEAN;
         $this->types[ProjectKeys::KEY_LEAVERESOURCE] = self::T_BOOLEAN;
         $this->types[ProjectKeys::KEY_REFRESH] = self::T_BOOLEAN;
+        $this->types[ProjectKeys::KEY_HAS_DRAFT] = self::T_BOOLEAN;
     }
 
     protected function process() {
