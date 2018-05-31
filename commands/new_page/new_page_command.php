@@ -21,7 +21,7 @@ class new_page_command extends abstract_command_class {
         $pageModel = new DokuPageModel($this->getPersistenceEngine());
 
         //sólo se ejecuta si no existe un proyecto en la ruta especificada
-        if (!$pageModel->existProject($this->params[AjaxKeys::KEY_ID])) {
+        if (!$pageModel->haveADirProject($this->params[AjaxKeys::KEY_ID])) {
             $action = $this->getModelManager()->getActionInstance("CreatePageAction");
             $contentData = $action->get($this->params);
         }
