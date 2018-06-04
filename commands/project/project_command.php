@@ -28,6 +28,16 @@ class project_command extends abstract_project_command_class {
 
         switch ($this->params[ProjectKeys::KEY_DO]) {
 
+            case 'new_folder':
+                $action = $this->getModelManager()->getActionInstance("CreatePageAction");
+                $projectMetaData = $action->get($this->params);
+                break;
+
+            case 'new_page':
+                $action = $this->getModelManager()->getActionInstance("CreatePageAction");
+                $projectMetaData = $action->get($this->params);
+                break;
+
             case ProjectKeys::KEY_DIFF:
                 $action = $this->getModelManager()->getActionInstance("DiffProjectMetaDataAction");
                 $projectMetaData = $action->get($this->params);
