@@ -33,8 +33,8 @@ class project_command extends abstract_project_command_class {
                 $projectMetaData = $action->get($this->params);
                 break;
 
-            case 'new_page':
-                $action = $this->getModelManager()->getActionInstance("CreatePageAction");
+            case 'new_document':
+                $action = $this->getModelManager()->getActionInstance("CreateDocumentAction");
                 $projectMetaData = $action->get($this->params);
                 break;
 
