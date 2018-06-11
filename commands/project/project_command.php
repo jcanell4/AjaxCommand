@@ -103,7 +103,7 @@ class project_command extends abstract_project_command_class {
                 break;
 
             case ProjectKeys::KEY_REMOVE_PROJECT_DRAFT:
-                throw new Exception("Excepció a project_command:[ ".ProjectKeys::KEY_REMOVE_PROJECT_DRAFT."]");
+                throw new Exception("Excepció a project_command:[ ".ProjectKeys::KEY_REMOVE_PROJECT_DRAFT."]"); //[JOSEP] ALERTA: Caldria usar una exepció que hereti de WikiIocModelException!
 
             default:
                 throw new UnknownProjectException();
