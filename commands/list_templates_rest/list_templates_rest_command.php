@@ -20,7 +20,7 @@ class list_templates_rest_command extends abstract_rest_command_class {
      */
     public function processGet() {
         $action = $this->getModelManager()->getActionInstance("ListTemplatesAction");
-        $projectMetaData = $action->get();
+        $projectMetaData = $action->get($this->params);
         return $projectMetaData;
     }
 
