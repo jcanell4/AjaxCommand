@@ -41,15 +41,13 @@ class project_command extends abstract_project_command_class {
             case ProjectKeys::KEY_DIFF:
                 $action = $this->getModelManager()->getActionInstance("DiffProjectMetaDataAction");
                 $projectMetaData = $action->get($this->params);
-                $projectMetaData['projectExtraData'] = [ProjectKeys::KEY_PROJECT_TYPE => $this->params[ProjectKeys::KEY_PROJECT_TYPE],
-                                                        ProjectKeys::KEY_ROL          => $this->authorization->getPermission()->getRol()];
+                $this->_addExtraData($projectMetaData);
                 break;
 
             case ProjectKeys::KEY_VIEW:
                 $action = $this->getModelManager()->getActionInstance("ViewProjectMetaDataAction");
                 $projectMetaData = $action->get($this->params);
-                $projectMetaData['projectExtraData'] = [ProjectKeys::KEY_PROJECT_TYPE => $this->params[ProjectKeys::KEY_PROJECT_TYPE],
-                                                        ProjectKeys::KEY_ROL          => $this->authorization->getPermission()->getRol()];
+                $this->_addExtraData($projectMetaData);
                 if ($this->params[ProjectKeys::KEY_REV]) {
                     $projectMetaData['projectExtraData'][ProjectKeys::KEY_REV] = $this->params[ProjectKeys::KEY_REV];
                 }
@@ -62,8 +60,7 @@ class project_command extends abstract_project_command_class {
                     $action = $this->getModelManager()->getActionInstance("GetProjectMetaDataAction");
                 }
                 $projectMetaData = $action->get($this->params);
-                $projectMetaData['projectExtraData'] = [ProjectKeys::KEY_PROJECT_TYPE => $this->params[ProjectKeys::KEY_PROJECT_TYPE],
-                                                        ProjectKeys::KEY_ROL          => $this->authorization->getPermission()->getRol()];
+                $this->_addExtraData($projectMetaData);
                 break;
 
             case ProjectKeys::KEY_SAVE:
@@ -74,11 +71,16 @@ class project_command extends abstract_project_command_class {
                 $projectMetaData = $action->get($parms);
                 break;
 
-            case ProjectKeys::KEY_CREATE:
+            case ProjectKeys::KEY_CREATE_PROJET:
                 $action = $this->getModelManager()->getActionInstance("CreateProjectMetaDataAction");
                 $projectMetaData = $action->get($this->params);
-                $projectMetaData['projectExtraData'] = [ProjectKeys::KEY_PROJECT_TYPE => $this->params[ProjectKeys::KEY_PROJECT_TYPE],
-                                                        ProjectKeys::KEY_ROL          => $this->authorization->getPermission()->getRol()];
+                $this->_addExtraData($projectMetaData);
+                break;
+
+            case ProjectKeys::KEY_CREATE_SUBPROJET:
+                $action = $this->getModelManager()->getActionInstance("CreateSubprojectMetaDataAction");
+                $projectMetaData = $action->get($this->params);
+                $this->_addExtraData($projectMetaData);
                 break;
 
             case ProjectKeys::KEY_GENERATE:
@@ -89,8 +91,7 @@ class project_command extends abstract_project_command_class {
             case ProjectKeys::KEY_CANCEL:
                 $action = $this->getModelManager()->getActionInstance("CancelProjectMetaDataAction");
                 $projectMetaData = $action->get($this->params);
-                $projectMetaData['projectExtraData'] = [ProjectKeys::KEY_PROJECT_TYPE => $this->params[ProjectKeys::KEY_PROJECT_TYPE],
-                                                        ProjectKeys::KEY_ROL          => $this->authorization->getPermission()->getRol()];
+                $this->_addExtraData($projectMetaData);
                 break;
 
             case ProjectKeys::KEY_REVERT:
@@ -115,5 +116,14 @@ class project_command extends abstract_project_command_class {
     }
 
     protected function getDefaultResponse($response, &$ret) {}
+
+    private function _addExtraData(&$projectMetaData) {
+        $projectMetaData['projectExtraData'] = [ProjectKeys::KEY_ROL => $this->authorization->getPermission()->getRol()];
+        if ($projectMetaData[ProjectKeys::KEY_PROJECT_TYPE]) {
+            $projectMetaData['projectExtraData'][ProjectKeys::KEY_PROJECT_TYPE] = $projectMetaData[ProjectKeys::KEY_PROJECT_TYPE];
+        }else{
+            $projectMetaData['projectExtraData'][ProjectKeys::KEY_PROJECT_TYPE] = $this->params[ProjectKeys::KEY_PROJECT_TYPE];
+        }
+    }
 
 }
