@@ -125,5 +125,4 @@ class project_command extends abstract_project_command_class {
             $projectMetaData['projectExtraData'][ProjectKeys::KEY_PROJECT_TYPE] = $this->params[ProjectKeys::KEY_PROJECT_TYPE];
         }
     }
-
 }
