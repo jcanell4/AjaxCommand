@@ -4,8 +4,6 @@
  * @culpable Rafael
 */
 if (!defined('DOKU_INC')) die();
-if (!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
-require_once (DOKU_PLUGIN.'ajaxcommand/defkeys/AjaxKeys.php');
 
 class profile_command extends abstract_command_class {
 
