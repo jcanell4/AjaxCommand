@@ -21,6 +21,10 @@ class ProjectKeys extends RequestParameterKeys  {
     const KEY_DIFF     = "diff";
     const KEY_REVERT   = "revert";
 
+    const KEY_MODE        = "mode";
+    const KEY_RENDER_TYPE = "renderType";
+    const KEY_FILE_TYPE   = "filetype";
+
     const KEY_SAVE_PROJECT_DRAFT   = "save_project_draft";
     const KEY_REMOVE_PROJECT_DRAFT = "remove_project_draft";
 
