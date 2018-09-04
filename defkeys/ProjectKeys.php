@@ -16,6 +16,8 @@ class ProjectKeys extends RequestParameterKeys  {
     const KEY_VIEW     = "view";
     const KEY_CREATE_PROJET    = "create_project";
     const KEY_CREATE_SUBPROJET = "create_subproject";
+    const KEY_NEW_DOCUMENT     = "new_document";
+    const KEY_NEW_FOLDER       = "new_folder";
     const KEY_GENERATE = "generate";
     const KEY_SAVE     = "save";
     const KEY_DIFF     = "diff";

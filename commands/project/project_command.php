@@ -28,12 +28,12 @@ class project_command extends abstract_project_command_class {
 
         switch ($this->params[ProjectKeys::KEY_DO]) {
 
-            case 'new_folder':
+            case ProjectKeys::KEY_NEW_FOLDER:
                 $action = $this->getModelManager()->getActionInstance("CreateFolderAction");
                 $projectMetaData = $action->get($this->params);
                 break;
 
-            case 'new_document':
+            case ProjectKeys::KEY_NEW_DOCUMENT:
                 $action = $this->getModelManager()->getActionInstance("CreateDocumentAction");
                 $projectMetaData = $action->get($this->params);
                 break;
