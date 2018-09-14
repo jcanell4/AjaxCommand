@@ -44,9 +44,10 @@ class ProjectKeys extends RequestParameterKeys  {
 
     const KEY_METADATA_PROJECT_STRUCTURE  = "metaDataProjectStructure";
     const KEY_METADATA_CLASSES_NAMESPACES = "metaDataClassesNameSpaces";
-    const KEY_METADATA_SUB_PROJECTS       = "metaDataSubProjects";
     const KEY_METADATA_COMPONENT_TYPES    = "metaDataComponentTypes";
+    const KEY_METADATA_PROJECT_CONFIG     = "metaDataProjectConfig";
     const KEY_MD_CT_SUBPROJECTS           = "subprojects";
     const KEY_MD_CT_DOCUMENTS             = "documents";
     const KEY_MD_CT_FOLDERS               = "folders";
+    const KEY_MD_PROJECTTYPECONFIGFILE    = "projectTypeConfigFile";
 }
