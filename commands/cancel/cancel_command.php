@@ -44,6 +44,4 @@ class cancel_command extends abstract_command_class {
                 $contentData["content"]
             );
     }
-
-
 }
