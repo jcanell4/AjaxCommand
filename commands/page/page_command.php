@@ -32,16 +32,17 @@ class page_command extends abstract_command_class {
 
     /**
      * Afegeix el contingut com una resposta de tipus HTML_TYPE al generador de respostes passat com argument.
-     * @param array                    $contentData array amb informació de la pàgina 'id', 'ns', 'tittle' i 'content'
+     * @param array                    $response array amb informació de la pàgina 'id', 'ns', 'tittle' i 'content'
      * @param AjaxCmdResponseGenerator $responseGenerator
      * @return void
      */
-    protected function getDefaultResponse( $contentData, &$responseGenerator ) {
+    protected function getDefaultResponse($response, &$responseGenerator) {
     	$responseGenerator->addHtmlDoc(
-		$contentData[PageKeys::KEY_ID],
-                $contentData[PageKeys::KEY_NS],
-		$contentData[PageKeys::KEY_TITLE],
-                $contentData[PageKeys::KEY_CONTENT]
+		$response[PageKeys::KEY_ID],
+                $response[PageKeys::KEY_NS],
+		$response[PageKeys::KEY_TITLE],
+                $response[PageKeys::KEY_CONTENT]
 	);
     }
+
 }
