@@ -46,7 +46,9 @@ class project_command extends abstract_project_command_class {
 
             case ProjectKeys::KEY_VIEW:
                 $action = $this->getModelManager()->getActionInstance("ViewProjectMetaDataAction");
-                $projectMetaData = $action->get($this->params);
+                $p = $this->params;
+                $p[ProjectKeys::KEY_PROJECTTYPE_DIR] = $this->getKeyDataProject(ProjectKeys::KEY_PROJECTTYPE_DIR);
+                $projectMetaData = $action->get($p);
                 $this->_addExtraData($projectMetaData);
                 if ($this->params[ProjectKeys::KEY_REV]) {
                     $projectMetaData['projectExtraData'][ProjectKeys::KEY_REV] = $this->params[ProjectKeys::KEY_REV];
@@ -65,10 +67,9 @@ class project_command extends abstract_project_command_class {
 
             case ProjectKeys::KEY_SAVE:
                 $action = $this->getModelManager()->getActionInstance("SetProjectMetaDataAction");
-                $parms['dataProject'] = $this->params;
-                $parms['extraProject']['old_autor'] = $this->dataProject['autor'];
-                $parms['extraProject']['old_responsable'] = $this->dataProject['responsable'];
-                $projectMetaData = $action->get($parms);
+                $this->params['extraProject']['old_autor'] = $this->getKeyDataProject('autor');
+                $this->params['extraProject']['old_responsable'] = $this->getKeyDataProject('responsable');
+                $projectMetaData = $action->get($this->params);
                 break;
 
             case ProjectKeys::KEY_CREATE_PROJET:
