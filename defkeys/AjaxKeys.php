@@ -11,8 +11,9 @@ class AjaxKeys {
     const KEY_NS       = "ns";
     const KEY_DO       = "do";
     const CALL_KEY     = 'call';
-    const PROJECT_TYPE = 'projectType';
-    const PROJECT_SOURCE_TYPE = 'projectSourceType';
-    const PROJECT_OWNER  = 'projectOwner';
     const KEY_PROFILE  = "profile";
+    const PROJECT_TYPE        = 'projectType';
+    const PROJECT_SOURCE_TYPE = 'projectSourceType';
+    const PROJECT_OWNER       = 'projectOwner';
+    const PROJECT_TYPE_DIR    = "projectTypeDir";
 }
