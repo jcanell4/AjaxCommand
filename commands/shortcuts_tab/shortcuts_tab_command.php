@@ -1,5 +1,6 @@
 <?php
 /**
+ * [WARNING] [JOSEP] Mira este pobre, huérfano y desgraciado código
  * [Rafa] Me sabe grave pero parece ser que este comando es un pobre huerfanito al que nadie llama
  */
 if (!defined('DOKU_INC')) die();
@@ -63,10 +64,15 @@ class shortcuts_tab_command extends abstract_command_class {
                 "treeDataSource" => $urlTree,
                 'typeDictionary' => array (
                                       'p' => array (
-                                                'urlBase' => "'lib/exe/ioc_ajax.php?call=project'",
-                                                'params' => array (0 => PageKeys::PROJECT_TYPE),
+                                                'urlBase' => "lib/exe/ioc_ajax.php?call=project",
+                                                'params' => [PageKeys::PROJECT_TYPE]
                                              ),
-                                    ),
+                                      'pf' => array (
+                                                'urlBase' => "lib/exe/ioc_ajax.php?call=page",
+                                                'params' => [PageKeys::PROJECT_OWNER,
+                                                             PageKeys::PROJECT_SOURCE_TYPE]
+                                             )
+                                    )
             );
             $responseGenerator->addAddTab(cfgIdConstants::ZONA_NAVEGACIO,
                     $contantParams,
