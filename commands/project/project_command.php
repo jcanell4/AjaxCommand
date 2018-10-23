@@ -72,16 +72,17 @@ class project_command extends abstract_project_command_class {
                 $projectMetaData = $action->get($this->params);
                 break;
 
-            case ProjectKeys::KEY_CREATE_PROJET:
+            case ProjectKeys::KEY_CREATE_PROJECT:
                 $action = $this->getModelManager()->getActionInstance("CreateProjectMetaDataAction");
                 $projectMetaData = $action->get($this->params);
                 $this->_addExtraData($projectMetaData);
                 break;
 
-            case ProjectKeys::KEY_CREATE_SUBPROJET:
-                $action = $this->getModelManager()->getActionInstance("CreateSubprojectMetaDataAction");
-                $projectMetaData = $action->get($this->params);
-                $this->_addExtraData($projectMetaData);
+            case ProjectKeys::KEY_CREATE_SUBPROJECT:
+                //ahora está en: lib/plugins/ajaxcommand/commands/create_subproject/create_subproject_command.php
+//                $action = $this->getModelManager()->getActionInstance("CreateSubprojectMetaDataAction");
+//                $projectMetaData = $action->get($this->params);
+//                $this->_addExtraData($projectMetaData);
                 break;
 
             case ProjectKeys::KEY_GENERATE:
@@ -96,7 +97,7 @@ class project_command extends abstract_project_command_class {
                 break;
 
             case ProjectKeys::KEY_REVERT:
-                //Està en: wikiocmodel/projects/documentation/command/projectRevert.php
+                //Està en: <en_algún_plugin>/projects/documentation/command/projectRevert.php
                 break;
 
             case ProjectKeys::KEY_SAVE_PROJECT_DRAFT:
@@ -105,7 +106,7 @@ class project_command extends abstract_project_command_class {
                 break;
 
             case ProjectKeys::KEY_REMOVE_PROJECT_DRAFT:
-                throw new Exception("Excepció a project_command:[ ".ProjectKeys::KEY_REMOVE_PROJECT_DRAFT."]"); //[JOSEP] ALERTA: Caldria usar una exepció que hereti de WikiIocModelException!
+                throw new NotAllowedPojectCommandException(ProjectKeys::KEY_REMOVE_PROJECT_DRAFT);
 
             default:
                 throw new UnknownProjectException();
@@ -118,8 +119,11 @@ class project_command extends abstract_project_command_class {
 
     protected function getDefaultResponse($response, &$ret) {}
 
-    private function _addExtraData(&$projectMetaData) {
-        $projectMetaData['projectExtraData'] = [ProjectKeys::KEY_ROL => $this->authorization->getPermission()->getRol()];
+    protected function _addExtraData(&$projectMetaData) {
+        $rol = $this->authorization->getPermission()->getRol();
+        if ($rol) {
+            $projectMetaData['projectExtraData'] = [ProjectKeys::KEY_ROL => $rol];
+        }
         if ($projectMetaData[ProjectKeys::KEY_PROJECT_TYPE]) {
             $projectMetaData['projectExtraData'][ProjectKeys::KEY_PROJECT_TYPE] = $projectMetaData[ProjectKeys::KEY_PROJECT_TYPE];
         }else{
