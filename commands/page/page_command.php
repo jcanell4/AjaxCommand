@@ -30,7 +30,7 @@ class page_command extends abstract_command_class
         $format = $this->getFormat();
 
         if ($this->params[PageKeys::KEY_REV]) {
-            $action = $this->getModelManager()->getActionInstance("HtmlRevisionPageAction");
+            $action = $this->getModelManager()->getActionInstance("HtmlRevisionPageAction", ['format' => $format]);
         } else {
             $action = $this->getModelManager()->getActionInstance("HtmlPageAction", ['format' => $format]);
         }
