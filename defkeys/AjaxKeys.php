@@ -12,8 +12,9 @@ class AjaxKeys {
     const KEY_DO       = "do";
     const CALL_KEY     = 'call';
     const KEY_PROFILE  = "profile";
-    const PROJECT_TYPE        = 'projectType';
-    const PROJECT_SOURCE_TYPE = 'projectSourceType';
-    const PROJECT_OWNER       = 'projectOwner';
+    const PROJECT_TYPE        = "projectType";
+    const PROJECT_SOURCE_TYPE = "projectSourceType";
+    const PROJECT_OWNER       = "projectOwner";
     const PROJECT_TYPE_DIR    = "projectTypeDir";
+    const METADATA_SUBSET     = "metaDataSubSet";
 }
