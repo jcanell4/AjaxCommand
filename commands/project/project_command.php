@@ -54,9 +54,6 @@ class project_command extends abstract_project_command_class {
                 if ($this->params[ProjectKeys::KEY_REV]) {
                     $projectMetaData['projectExtraData'][ProjectKeys::KEY_REV] = $this->params[ProjectKeys::KEY_REV];
                 }
-                if ($projectMetaData['isSubSet'] || $this->params[ProjectKeys::KEY_METADATA_SUBSET] !== ProjectKeys::VAL_DEFAULTSUBSET) {
-                    $projectMetaData['projectExtraData'][ProjectKeys::KEY_METADATA_SUBSET] = $this->params[ProjectKeys::KEY_METADATA_SUBSET];
-                }
                 break;
 
             case ProjectKeys::KEY_EDIT:
