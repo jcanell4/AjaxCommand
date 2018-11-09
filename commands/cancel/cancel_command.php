@@ -25,7 +25,7 @@ class cancel_command extends abstract_command_class {
      * @return string[] array associatiu amb la resposta formatada (id, ns, tittle i content)
      */
     protected function process() {
-        $action = $this->getModelManager()->getActionInstance("CancelEditPageAction");
+        $action = $this->getModelManager()->getActionInstance("CancelEditPageAction", ['format' => $this->getFormat()]);
         $content = $action->get($this->params);
         return $content;
     }

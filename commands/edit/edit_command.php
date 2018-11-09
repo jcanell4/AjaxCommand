@@ -29,6 +29,7 @@ class edit_command extends abstract_command_class {
      * @return array amb el contingut de la pàgina (id, ns, tittle i content)
      */
     protected function process() {
+
         if ($this->params["refresh"]){
             $contentData = $this->refreshEdition();
         }else{
@@ -38,13 +39,13 @@ class edit_command extends abstract_command_class {
     }
 
     private function refreshEdition() {
-        $action = $this->getModelManager()->getActionInstance("RefreshEditionAction");
+        $action = $this->getModelManager()->getActionInstance("RefreshEditionAction", ['format' => $this->getFormat()]);
         $contentData = $action->get($this->params);
         return $contentData;
     }
 
     private function getEditionPage() {
-        $action = $this->getModelManager()->getActionInstance("RawPageAction");
+        $action = $this->getModelManager()->getActionInstance("RawPageAction", ['format' => $this->getFormat()]);
         $contentData = $action->get($this->params);
         return $contentData;
     }
