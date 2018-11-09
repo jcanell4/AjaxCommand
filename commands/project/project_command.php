@@ -46,12 +46,16 @@ class project_command extends abstract_project_command_class {
 
             case ProjectKeys::KEY_VIEW:
                 $action = $this->getModelManager()->getActionInstance("ViewProjectMetaDataAction");
-                $p = $this->params;
-                $p[ProjectKeys::KEY_PROJECTTYPE_DIR] = $this->getKeyDataProject(ProjectKeys::KEY_PROJECTTYPE_DIR);
-                $projectMetaData = $action->get($p);
+                $parms = $this->params;
+                if (!$this->params[ProjectKeys::KEY_PROJECTTYPE_DIR])
+                    $parms[ProjectKeys::KEY_PROJECTTYPE_DIR] = $this->getKeyDataProject(ProjectKeys::KEY_PROJECTTYPE_DIR);
+                $projectMetaData = $action->get($parms);
                 $this->_addExtraData($projectMetaData);
                 if ($this->params[ProjectKeys::KEY_REV]) {
                     $projectMetaData['projectExtraData'][ProjectKeys::KEY_REV] = $this->params[ProjectKeys::KEY_REV];
+                }
+                if ($projectMetaData['isSubSet'] || $this->params[ProjectKeys::KEY_METADATA_SUBSET] !== ProjectKeys::VAL_DEFAULTSUBSET) {
+                    $projectMetaData['projectExtraData'][ProjectKeys::KEY_METADATA_SUBSET] = $this->params[ProjectKeys::KEY_METADATA_SUBSET];
                 }
                 break;
 
