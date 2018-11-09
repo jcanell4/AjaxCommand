@@ -34,7 +34,7 @@ class save_command extends abstract_writer_command_class {
      * @return array amb la informació de la pàgina 'id', 'ns', 'tittle' i 'content'
      */
     protected function process() {
-        $action = $this->getModelManager()->getActionInstance("SavePageAction");
+        $action = $this->getModelManager()->getActionInstance("SavePageAction", ['format' => $this->getFormat()]);
         $content = $action->get($this->params);
         return $content;
     }

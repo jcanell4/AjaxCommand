@@ -51,4 +51,6 @@ class ProjectKeys extends RequestParameterKeys  {
     const KEY_MD_CT_DOCUMENTS             = "documents";
     const KEY_MD_CT_FOLDERS               = "folders";
     const KEY_MD_PROJECTTYPECONFIGFILE    = "projectTypeConfigFile";
+    
+    const VIEW_CONFIG_NAME                = "viewConfigName";
 }
