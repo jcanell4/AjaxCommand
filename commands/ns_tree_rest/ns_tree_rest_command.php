@@ -2,7 +2,7 @@
 if (!defined('DOKU_INC')) die();
 require_once(DOKU_INC . 'inc/search.php');
 require_once(DOKU_INC . 'inc/pageutils.php');
-require_once(DOKU_INC . 'inc/JSON.php');
+//require_once(DOKU_INC . 'inc/JSON.php');
 
 /**
  * Class ns_tree_rest_command
@@ -44,17 +44,9 @@ class ns_tree_rest_command extends abstract_rest_command_class {
      * @return string arbre formatat com a JSON
      */
     public function processGet() {
-        $json = new JSON();
-        $tree = $this->modelAdapter->getNsTree(
-                                   $this->params['currentnode'],
-                                   $this->params['sortBy'],
-                                   $this->params['onlyDirs'],
-                                   $this->params['expandProject'],
-				   $this->params['hiddenProjects'],
-                                   $this->params['fromRoot']
-        );
-        $strData = $json->enc($tree);
-        return $strData;
+        $action = $this->getModelManager()->getActionInstance("NsTreeAction");
+        $contentData = $action->get($this->params);
+        return $contentData;
     }
 
     /**
