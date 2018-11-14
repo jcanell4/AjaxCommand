@@ -45,7 +45,7 @@ class edit_command extends abstract_command_class {
     }
 
     private function getEditionPage() {
-        $action = $this->getModelManager()->getActionInstance("RawPageAction", ['format' => $this->getFormat()]);
+        $action = $this->getModelManager()->getActionInstance("RawPageAction", [AjaxKeys::FORMAT => $this->getFormat()]);
         $contentData = $action->get($this->params);
         return $contentData;
     }

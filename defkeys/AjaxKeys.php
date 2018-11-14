@@ -15,4 +15,5 @@ class AjaxKeys {
     const PROJECT_SOURCE_TYPE = 'projectSourceType';
     const PROJECT_OWNER  = 'projectOwner';
     const KEY_PROFILE  = "profile";
+    const FORMAT = "format";
 }
