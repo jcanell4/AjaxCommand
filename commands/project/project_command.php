@@ -47,8 +47,6 @@ class project_command extends abstract_project_command_class {
             case ProjectKeys::KEY_VIEW:
                 $action = $this->getModelManager()->getActionInstance("ViewProjectMetaDataAction");
                 $parms = $this->params;
-                if (!$this->params[ProjectKeys::KEY_PROJECTTYPE_DIR])
-                    $parms[ProjectKeys::KEY_PROJECTTYPE_DIR] = $this->getKeyDataProject(ProjectKeys::KEY_PROJECTTYPE_DIR);
                 $projectMetaData = $action->get($parms);
                 $this->_addExtraData($projectMetaData);
                 if ($this->params[ProjectKeys::KEY_REV]) {
