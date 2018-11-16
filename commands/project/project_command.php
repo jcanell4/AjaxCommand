@@ -121,7 +121,7 @@ class project_command extends abstract_project_command_class {
     protected function _addExtraData(&$projectMetaData) {
         $rol = $this->authorization->getPermission()->getRol();
         if ($rol) {
-            $projectMetaData['projectExtraData'] = [ProjectKeys::KEY_ROL => $rol];
+            $projectMetaData['projectExtraData'][ProjectKeys::KEY_ROL] = $rol;
         }
         if ($projectMetaData[ProjectKeys::KEY_PROJECT_TYPE]) {
             $projectMetaData['projectExtraData'][ProjectKeys::KEY_PROJECT_TYPE] = $projectMetaData[ProjectKeys::KEY_PROJECT_TYPE];
