@@ -18,7 +18,6 @@ class ns_mediatree_rest_command extends ns_tree_rest_command {
      * els resultats i excloent els directoris segons els valors dels paràmetres emmagatzemats en aquest objecte.
      *
      * @param string[] $extra_url_params paràmetres passats a travès de la URL.
-     *
      * @return string arbre formatat com a JSON
      */
     public function processGet() {
@@ -26,8 +25,7 @@ class ns_mediatree_rest_command extends ns_tree_rest_command {
 //        $sortOptions=array(0 => 'name', 'date');
 //        $tree = array();
 //        $tree_json=  array();
-        $strData; // TODO[Xavi] Error, no s'ha assignat cap valor.
-        $json = new JSON();
+        $strData;
 
         $tree = $this->modelAdapter->getNsMediaTree(
                                    $this->params['currentnode'],
@@ -36,11 +34,11 @@ class ns_mediatree_rest_command extends ns_tree_rest_command {
                                    $this->params['hiddenProjects']
         );
 
-        $strData = $json->enc($tree);
+        $strData = json_encode($tree);
         return $strData;
 
     }
-    
+
      /**
      * @return string Nnom de l'autorització a fer servir
      */
