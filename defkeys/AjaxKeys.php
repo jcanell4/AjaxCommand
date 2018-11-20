@@ -15,7 +15,6 @@ class AjaxKeys {
     const PROJECT_TYPE        = "projectType";
     const PROJECT_SOURCE_TYPE = "projectSourceType";
     const PROJECT_OWNER       = "projectOwner";
-//    const PROJECT_TYPE_DIR    = "projectTypeDir";
     const METADATA_SUBSET     = "metaDataSubSet";
     const VAL_DEFAULTSUBSET   = "main";
     const VAL_DEFAULTPROJECTTYPE   = "defaultProject";

@@ -46,8 +46,7 @@ class project_command extends abstract_project_command_class {
 
             case ProjectKeys::KEY_VIEW:
                 $action = $this->getModelManager()->getActionInstance("ViewProjectMetaDataAction");
-                $parms = $this->params;
-                $projectMetaData = $action->get($parms);
+                $projectMetaData = $action->get($this->params);
                 $this->_addExtraData($projectMetaData);
                 if ($this->params[ProjectKeys::KEY_REV]) {
                     $projectMetaData['projectExtraData'][ProjectKeys::KEY_REV] = $this->params[ProjectKeys::KEY_REV];

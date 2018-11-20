@@ -45,9 +45,6 @@ class ProjectKeys extends RequestParameterKeys  {
     const VAL_DEFAULTSUBSET   = "main";
     const KEY_METADATA_VALUE  = "metaDataValue";
     const KEY_METADATA_SUBSET = AjaxKeys::METADATA_SUBSET;
-//    const KEY_PROJECTTYPE_DIR = AjaxKeys::PROJECT_TYPE_DIR;
-//    const KEY_PROJECT_FILENAME= "projectFileName";
-//    const KEY_PROJECT_FILEPATH= "projectFilePath";
 
     const KEY_METADATA_PROJECT_STRUCTURE  = "metaDataProjectStructure";
     const KEY_METADATA_CLASSES_NAMESPACES = "metaDataClassesNameSpaces";
@@ -57,6 +54,6 @@ class ProjectKeys extends RequestParameterKeys  {
     const KEY_MD_CT_DOCUMENTS             = "documents";
     const KEY_MD_CT_FOLDERS               = "folders";
     const KEY_MD_PROJECTTYPECONFIGFILE    = "projectTypeConfigFile";
-    
+
     const VIEW_CONFIG_NAME                = "viewConfigName";
 }
