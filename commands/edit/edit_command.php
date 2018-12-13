@@ -30,7 +30,7 @@ class edit_command extends abstract_command_class {
      */
     protected function process() {
 
-        if ($this->params["refresh"]){
+        if ($this->params[PageKeys::KEY_REFRESH]){
             $contentData = $this->refreshEdition();
         }else{
             $contentData = $this->getEditionPage();
@@ -39,13 +39,13 @@ class edit_command extends abstract_command_class {
     }
 
     private function refreshEdition() {
-        $action = $this->getModelManager()->getActionInstance("RefreshEditionAction", ['format' => $this->getFormat()]);
+        $action = $this->getModelManager()->getActionInstance("RefreshEditionAction", [PageKeys::FORMAT => $this->getFormat()]);
         $contentData = $action->get($this->params);
         return $contentData;
     }
 
     private function getEditionPage() {
-        $action = $this->getModelManager()->getActionInstance("RawPageAction", [AjaxKeys::FORMAT => $this->getFormat()]);
+        $action = $this->getModelManager()->getActionInstance("RawPageAction", [PageKeys::FORMAT => $this->getFormat()]);
         $contentData = $action->get($this->params);
         return $contentData;
     }

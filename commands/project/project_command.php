@@ -77,10 +77,7 @@ class project_command extends abstract_project_command_class {
                 break;
 
             case ProjectKeys::KEY_CREATE_SUBPROJECT:
-                //ahora está en: lib/plugins/ajaxcommand/commands/create_subproject/create_subproject_command.php
-//                $action = $this->getModelManager()->getActionInstance("CreateSubprojectMetaDataAction");
-//                $projectMetaData = $action->get($this->params);
-//                $this->_addExtraData($projectMetaData);
+                //Está en: lib/plugins/ajaxcommand/commands/create_subproject/create_subproject_command.php
                 break;
 
             case ProjectKeys::KEY_GENERATE:
