@@ -19,6 +19,8 @@ class ProjectKeys extends RequestParameterKeys  {
     const KEY_DIFF     = "diff";
     const KEY_REVERT   = "revert";
     const KEY_CREATE   = "create";
+
+    const KEY_PROJECT_EXTRADATA = "projectExtraData";
     const KEY_CREATE_PROJECT    = "create_project";
     const KEY_CREATE_SUBPROJECT = "create_subproject";
     const KEY_NEW_DOCUMENT      = "new_document";

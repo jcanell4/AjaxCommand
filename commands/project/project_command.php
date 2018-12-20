@@ -49,7 +49,7 @@ class project_command extends abstract_project_command_class {
                 $projectMetaData = $action->get($this->params);
                 $this->_addExtraData($projectMetaData);
                 if ($this->params[ProjectKeys::KEY_REV]) {
-                    $projectMetaData['projectExtraData'][ProjectKeys::KEY_REV] = $this->params[ProjectKeys::KEY_REV];
+                    $projectMetaData[ProjectKeys::KEY_PROJECT_EXTRADATA][ProjectKeys::KEY_REV] = $this->params[ProjectKeys::KEY_REV];
                 }
                 break;
 
@@ -117,12 +117,12 @@ class project_command extends abstract_project_command_class {
     protected function _addExtraData(&$projectMetaData) {
         $rol = $this->authorization->getPermission()->getRol();
         if ($rol) {
-            $projectMetaData['projectExtraData'][ProjectKeys::KEY_ROL] = $rol;
+            $projectMetaData[ProjectKeys::KEY_PROJECT_EXTRADATA][ProjectKeys::KEY_ROL] = $rol;
         }
         if ($projectMetaData[ProjectKeys::KEY_PROJECT_TYPE]) {
-            $projectMetaData['projectExtraData'][ProjectKeys::KEY_PROJECT_TYPE] = $projectMetaData[ProjectKeys::KEY_PROJECT_TYPE];
+            $projectMetaData[ProjectKeys::KEY_PROJECT_EXTRADATA][ProjectKeys::KEY_PROJECT_TYPE] = $projectMetaData[ProjectKeys::KEY_PROJECT_TYPE];
         }else{
-            $projectMetaData['projectExtraData'][ProjectKeys::KEY_PROJECT_TYPE] = $this->params[ProjectKeys::KEY_PROJECT_TYPE];
+            $projectMetaData[ProjectKeys::KEY_PROJECT_EXTRADATA][ProjectKeys::KEY_PROJECT_TYPE] = $this->params[ProjectKeys::KEY_PROJECT_TYPE];
         }
     }
 }
