@@ -23,6 +23,7 @@ class RequestParameterKeys extends AjaxKeys {
     const KEY_LEAVERESOURCE  = "leaveResource";
     const KEY_TO_REQUIRE     = "to_require";
     const KEY_REFRESH        = "refresh";
+    const KEY_INFO           = "info";
 
     const KEY_RECOVER_DRAFT       = "recover_draft";
     const KEY_RECOVER_LOCAL_DRAFT = "recover_local_draft";
