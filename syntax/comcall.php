@@ -29,15 +29,14 @@ class syntax_plugin_ajaxcommand_comcall extends DokuWiki_Syntax_Plugin {
     }
 
     function render($mode, &$renderer, $indata) {
-
-        if($mode == 'xhtml'){
+        if ($mode == 'xhtml'){
             list($call, $msg) = $indata;
             //$pos = strlen(DOKU_INC);
             //$path = substr(__DIR__, $pos)."/../ajax.php";
             $path = "lib/exe/ioc_ajax.php";
             $renderer->doc .= '<a href ="'.DOKU_BASE.$path.'?'.$call.'" class="wikilink1">'.$msg.'</a>';
             return true;
-        } elseif($mode == 'iocexportl' or $mode == 'iocxhtml' or $mode == 'ioccounter'){
+        }elseif (strpos("iocexportl/iocxhtml/wikiiocmodel_ptxhtml/ioccounter", $mode)!==FALSE ) {
             return true;
         }
         // unsupported $mode
