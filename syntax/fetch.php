@@ -29,14 +29,13 @@ class syntax_plugin_ajaxcommand_fetch extends DokuWiki_Syntax_Plugin {
     }
 
     function render($mode, &$renderer, $indata) {
-
-        if($mode == 'xhtml'){
-          list($mediaId, $msg) = $indata;
-          $path = "lib/exe/fetch.php";
-          $renderer->doc .= '<a href ="'.DOKU_BASE.$path.'?media='.$mediaId.'" class="wikilink1 nocommand">'.$msg.'</a>';
-          return true;
-        } elseif($mode == 'iocexportl' or $mode == 'iocxhtml' or $mode == 'ioccounter'){
-          return true;
+        if ($mode == 'xhtml'){
+            list($mediaId, $msg) = $indata;
+            $path = "lib/exe/fetch.php";
+            $renderer->doc .= '<a href ="'.DOKU_BASE.$path.'?media='.$mediaId.'" class="wikilink1 nocommand">'.$msg.'</a>';
+            return true;
+        }elseif (strpos("iocexportl/iocxhtml/wikiiocmodel_ptxhtml/ioccounter", $mode)!==FALSE ) {
+            return true;
         }
         // unsupported $mode
         return false;
