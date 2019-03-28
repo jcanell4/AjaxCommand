@@ -53,6 +53,7 @@ class project_command extends abstract_project_command_class {
                 }
                 break;
 
+            case ProjectKeys::KEY_PARTIAL: // Fallthrough intencionat
             case ProjectKeys::KEY_EDIT:
                 if ($this->params[ProjectKeys::KEY_REFRESH]) {
                     $action = $this->getModelManager()->getActionInstance("RefreshProjectAction");
