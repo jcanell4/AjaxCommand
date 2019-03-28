@@ -39,6 +39,8 @@ class ProjectKeys extends RequestParameterKeys  {
     const KEY_SAVE_PROJECT_DRAFT   = "save_project_draft";
     const KEY_REMOVE_PROJECT_DRAFT = "remove_project_draft";
 
+    const KEY_ACTIVA_UPDATE_BTN    = "activaUpdateButton";
+
     const KEY_ROL             = "rol";
     const KEY_FILTER          = "filter";
     const KEY_TEMPLATE        = "template";
