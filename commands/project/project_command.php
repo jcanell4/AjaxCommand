@@ -68,6 +68,7 @@ class project_command extends abstract_project_command_class {
                 $action = $this->getModelManager()->getActionInstance("SetProjectMetaDataAction");
                 $this->params['extraProject']['old_autor'] = $this->getKeyDataProject('autor');
                 $this->params['extraProject']['old_responsable'] = $this->getKeyDataProject('responsable');
+                $this->params['extraProject']['old_supervisor'] = $this->getKeyDataProject('supervisor');
                 $projectMetaData = $action->get($this->params);
                 break;
 
