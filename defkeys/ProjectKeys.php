@@ -20,6 +20,7 @@ class ProjectKeys extends RequestParameterKeys  {
     const KEY_DIFF     = "diff";
     const KEY_REVERT   = "revert";
     const KEY_CREATE   = "create";
+    const KEY_FTP_SEND = "ftpsend";
 
     const KEY_PROJECT_EXTRADATA = "projectExtraData";
     const KEY_GENERATED         = "generated";
@@ -40,6 +41,7 @@ class ProjectKeys extends RequestParameterKeys  {
     const KEY_REMOVE_PROJECT_DRAFT = "remove_project_draft";
 
     const KEY_ACTIVA_UPDATE_BTN    = "activaUpdateButton";
+    const KEY_ACTIVA_FTPSEND_BTN   = "activaFtpSendButton";
 
     const KEY_ROL             = "rol";
     const KEY_FILTER          = "filter";
@@ -56,6 +58,7 @@ class ProjectKeys extends RequestParameterKeys  {
     const KEY_METADATA_CLASSES_NAMESPACES = "metaDataClassesNameSpaces";
     const KEY_METADATA_COMPONENT_TYPES    = "metaDataComponentTypes";
     const KEY_METADATA_PROJECT_CONFIG     = "metaDataProjectConfig";
+    const KEY_METADATA_FTP_SENDER         = "metaDataFtpSender";
     const KEY_MD_CT_SUBPROJECTS           = "subprojects";
     const KEY_MD_CT_DOCUMENTS             = "documents";
     const KEY_MD_CT_FOLDERS               = "folders";
