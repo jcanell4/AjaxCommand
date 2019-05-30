@@ -97,7 +97,7 @@ class login_command extends abstract_command_class {
         $filename = $dir . '/' . cleanID($user) . '.config';
 
         if (@file_exists($filename)) {
-            $config = json_decode(io_readFile($filename, false), t);
+            $config = json_decode(io_readFile($filename, false), true);
         } else {
             // PROVISIONAL[Xavi] si no existeix el fitxer es crea un amb la configuració per defecta: editor ACE
             $config = [
