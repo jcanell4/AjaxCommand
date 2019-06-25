@@ -44,6 +44,7 @@ class ProjectKeys extends RequestParameterKeys  {
     const KEY_ACTIVA_FTPSEND_BTN   = "activaFtpSendButton";
     const KEY_FTPSEND_BUTTON       = "ftpSendButton";
     const KEY_FTPID                = "ftpId";
+    const KEY_FTP_CONFIG           = "ftp_config";
 
     const KEY_ROL             = "rol";
     const KEY_FILTER          = "filter";
