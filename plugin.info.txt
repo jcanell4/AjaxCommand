@@ -1,7 +1,7 @@
-base   ajaxcommad
+base   ajaxcommand
 author Josep Cañellas
 email  jcanell4@ioc.cat
 date   2012-11-01
-name   ajaxcommad plugin
+name   ajaxcommand plugin
 desc   manage ajax commands returning JSON data
 url    ???
