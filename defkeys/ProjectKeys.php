@@ -40,11 +40,7 @@ class ProjectKeys extends RequestParameterKeys  {
     const KEY_SAVE_PROJECT_DRAFT   = "save_project_draft";
     const KEY_REMOVE_PROJECT_DRAFT = "remove_project_draft";
 
-    const KEY_ACTIVA_UPDATE_BTN    = "activaUpdateButton";
-    const KEY_ACTIVA_FTPSEND_BTN   = "activaFtpSendButton";
-    const KEY_FTPSEND_BUTTON       = "ftpSendButton";
     const KEY_FTPID                = "ftpId";
-    const KEY_FTP_CONFIG           = "ftp_config";
 
     const KEY_ROL             = "rol";
     const KEY_FILTER          = "filter";

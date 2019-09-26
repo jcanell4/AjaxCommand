@@ -19,4 +19,9 @@ class AjaxKeys {
     const METADATA_SUBSET     = "metaDataSubSet";
     const VAL_DEFAULTSUBSET   = "main";
     const VAL_DEFAULTPROJECTTYPE   = "defaultProject";
+
+    const KEY_ACTIVA_UPDATE_BTN    = "activaUpdateButton";
+    const KEY_ACTIVA_FTPSEND_BTN   = "activaFtpSendButton";
+    const KEY_FTPSEND_BUTTON       = "ftpSendButton";
+    const KEY_FTP_CONFIG           = "ftp_config";
 }
