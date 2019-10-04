@@ -102,6 +102,9 @@ class project_command extends abstract_project_command_class {
             case ProjectKeys::KEY_REMOVE_PROJECT_DRAFT:
                 throw new NotAllowedPojectCommandException(ProjectKeys::KEY_REMOVE_PROJECT_DRAFT);
 
+            case ProjectKeys::KEY_RENAME_PROJECT:
+                throw new NotAllowedPojectCommandException(ProjectKeys::KEY_RENAME_PROJECT);
+
             default:
                 throw new UnknownProjectException();
         }
