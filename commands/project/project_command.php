@@ -103,7 +103,9 @@ class project_command extends abstract_project_command_class {
                 throw new NotAllowedPojectCommandException(ProjectKeys::KEY_REMOVE_PROJECT_DRAFT);
 
             case ProjectKeys::KEY_RENAME_PROJECT:
-                throw new NotAllowedPojectCommandException(ProjectKeys::KEY_RENAME_PROJECT);
+                $action = $this->getModelManager()->getActionInstance("RenameProjectAction");
+                $projectMetaData = $action->get($this->params);
+                break;
 
             default:
                 throw new UnknownProjectException();
