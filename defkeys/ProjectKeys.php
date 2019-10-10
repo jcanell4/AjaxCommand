@@ -26,7 +26,6 @@ class ProjectKeys extends RequestParameterKeys  {
     const KEY_GENERATED         = "generated";
     const KEY_CREATE_PROJECT    = "create_project";
     const KEY_CREATE_SUBPROJECT = "create_subproject";
-    const KEY_RENAME_PROJECT    = "rename_project";
     const KEY_NEW_DOCUMENT      = "new_document";
     const KEY_NEW_FOLDER        = "new_folder";
 
@@ -38,10 +37,16 @@ class ProjectKeys extends RequestParameterKeys  {
     const KEY_NSPROJECT = "nsproject";
     const KEY_TYPE      = "type";
 
+    const KEY_NEWNAME   = "newname";
+    const KEY_OLD_ID    = "old_id";
+    const KEY_OLD_NS    = "old_ns";
+    const KEY_FTPID     = "ftpId";
+
+    const KEY_RENAME_PROJECT       = "rename_project";
+    const KEY_REMOVE_PROJECT       = "remove_project";
     const KEY_SAVE_PROJECT_DRAFT   = "save_project_draft";
     const KEY_REMOVE_PROJECT_DRAFT = "remove_project_draft";
 
-    const KEY_FTPID                = "ftpId";
 
     const KEY_ROL             = "rol";
     const KEY_FILTER          = "filter";

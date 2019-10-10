@@ -105,6 +105,12 @@ class project_command extends abstract_project_command_class {
             case ProjectKeys::KEY_RENAME_PROJECT:
                 $action = $this->getModelManager()->getActionInstance("RenameProjectAction");
                 $projectMetaData = $action->get($this->params);
+                $this->_addExtraData($projectMetaData);
+                break;
+
+            case ProjectKeys::KEY_REMOVE_PROJECT:
+                $action = $this->getModelManager()->getActionInstance("RemoveProjectAction");
+                $projectMetaData = $action->get($this->params);
                 break;
 
             default:
