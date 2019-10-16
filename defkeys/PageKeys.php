@@ -35,6 +35,7 @@ class PageKeys extends RequestParameterKeys {
 
     const KEY_PARAMS  = "params"; // response
     const KEY_USER_ID = "user_id";
+    const KEY_HTML_SC = "html_sc"; //contingut HTML del shortcut
 
     const NO_DRAFT            = "none";
     const PARTIAL_DRAFT       = "partial";

@@ -28,4 +28,7 @@ class RequestParameterKeys extends AjaxKeys {
     const KEY_RECOVER_DRAFT       = "recover_draft";
     const KEY_RECOVER_LOCAL_DRAFT = "recover_local_draft";
 
+    const VAL_CODETYPE_OK     = 0;   //retorno correcto
+    const VAL_CODETYPE_ERROR  = -1;  //retorno con error
+    const VAL_CODETYPE_REMOVE = 1;   //retorno para el comando remove_project
 }
