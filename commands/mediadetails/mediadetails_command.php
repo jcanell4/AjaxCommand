@@ -12,7 +12,7 @@ class mediadetails_command extends abstract_writer_command_class {
         parent::__construct();
         $this->types[MediaKeys::KEY_ID] = self::T_STRING;
         $this->types[MediaKeys::KEY_MEDIA] = self::T_STRING;
-        $this->types[MediaKeys::KEY_IMAGE_ID] = self::T_STRING;
+        $this->types[MediaKeys::KEY_IMAGE] = self::T_STRING;
         $this->types[MediaKeys::KEY_FROM_ID] = self::T_STRING;
         $this->types[MediaKeys::KEY_REV] = self::T_STRING;
         $this->types[MediaKeys::KEY_IS_UPLOAD] = self::T_STRING;
@@ -25,7 +25,7 @@ class mediadetails_command extends abstract_writer_command_class {
      */
     protected function process() {
         if ($this->params[MediaKeys::KEY_MEDIA]) {
-            $this->params[MediaKeys::KEY_IMAGE_ID] = $this->params[MediaKeys::KEY_MEDIA];
+            $this->params[MediaKeys::KEY_IMAGE] = $this->params[MediaKeys::KEY_MEDIA];
         }
         if ($this->params[MediaKeys::KEY_DELETE]){
             $params = array(MediaKeys::KEY_NS => $this->params[MediaKeys::KEY_NS],
@@ -36,7 +36,7 @@ class mediadetails_command extends abstract_writer_command_class {
             $contentData = $action->get($params);
         }
         else{
-            $contentData = $this->modelAdapter->getMediaDetails($this->params[MediaKeys::KEY_IMAGE_ID]);
+            $contentData = $this->modelAdapter->getMediaDetails($this->params[MediaKeys::KEY_IMAGE]);
         }
 
         return $contentData;
@@ -51,7 +51,7 @@ class mediadetails_command extends abstract_writer_command_class {
     protected function getDefaultResponse($contentData, &$responseGenerator) {
 
         $responseGenerator->addHtmlDoc(
-                $contentData[MediaKeys::KEY_IMAGE_ID], null,
+                $contentData[MediaKeys::KEY_IMAGE], null,
                 $contentData["imageTitle"],
                 $contentData["content"]
         );

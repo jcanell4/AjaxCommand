@@ -8,8 +8,8 @@ require_once (DOKU_INC . 'lib/plugins/ajaxcommand/defkeys/RequestParameterKeys.p
 
 class MediaKeys extends RequestParameterKeys {
     const KEY_FROM_ID           = "fromId";
-    const KEY_IMAGE_ID          = "image";
-    const KEY_IMG_ID            = "img";
+    const KEY_IMAGE             = "image";
+    const KEY_IMG               = "img";
     const KEY_FILE_PATH_SOURCE  = "filePathSource";
     const KEY_OVERWRITE         = "ow";
     const KEY_NS_TARGET         = "nsTarget";
