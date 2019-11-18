@@ -54,9 +54,11 @@ class media_command extends abstract_writer_command_class {
             $contentData = $action->get($params);
 
         }else if($this->params[MediaKeys::KEY_IS_UPLOAD]){
-            $params = array(MediaKeys::KEY_NS => $this->params[MediaKeys::KEY_NS],
-                            MediaKeys::KEY_ID => $this->params[MediaKeys::KEY_ID],
-                            MediaKeys::KEY_DO => $this->params[MediaKeys::KEY_DO]
+            $params = array(MediaKeys::KEY_NS       => $this->params[MediaKeys::KEY_NS],
+                            MediaKeys::KEY_ID       => $this->params[MediaKeys::KEY_ID],
+                            MediaKeys::KEY_DO       => $this->params[MediaKeys::KEY_DO],
+                            MediaKeys::KEY_MEDIA_ID => $this->params[MediaKeys::KEY_MEDIA_ID],
+                            MediaKeys::KEY_UPLOAD   => $this->params[MediaKeys::KEY_UPLOAD]
                       );
             $action = $this->getModelManager()->getActionInstance("UploadMediaAction");
             $contentData = $action->get($params);
