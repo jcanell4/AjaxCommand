@@ -105,9 +105,28 @@ class login_command extends abstract_command_class {
 //                'editor' => UserStateKeys::KEY_DOJO
             ];
             io_saveFile($filename, json_encode($config));
-        }
+        }        
 
+        if($this->moodleToken("has")){
+            $config['moodleToken'] = $this->moodleToken("get");
+        }
         return $config;
+    }
+    
+    private function moodleToken($act="has"){
+        global $auth;
+        if($act==="get"){
+            $ret="";
+            if(is_callable(array($auth, "getMoodleToken"))){
+                $ret =  $auth->getMoodleToken();
+            }
+        }else{
+            $ret = FALSE;
+            if(is_callable(array($auth, "hasMoodleToken"))){
+                $ret = $auth->hasMoodleToken();
+            }
+        }        
+        return $ret;
     }
 
     /**
