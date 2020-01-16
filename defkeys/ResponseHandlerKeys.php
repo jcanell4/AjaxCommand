@@ -8,6 +8,7 @@ if (!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
 require_once (DOKU_PLUGIN . 'ajaxcommand/defkeys/RequestParameterKeys.php');
 
 class ResponseHandlerKeys extends RequestParameterKeys {
+    const ALERT  = "alert";
     const LOGIN  = "login";
     const PAGE   = "page";
     const EDIT   = "edit";

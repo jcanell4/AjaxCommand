@@ -25,7 +25,14 @@ class ftpsend_command extends abstract_command_class {
         return $response;
     }
 
-    protected function getDefaultResponse($contentData, &$responseGenerator) {}
+    protected function getDefaultResponse($responseData, &$ajaxCmdResponseGenerator) {
+        if ($responseData[ProjectKeys::KEY_INFO]) {
+            $ajaxCmdResponseGenerator->addInfoDta($responseData[ProjectKeys::KEY_INFO]);
+        }
+        if ($responseData[ResponseHandlerKeys::ALERT]) {
+            $ajaxCmdResponseGenerator->addAlert($responseData[ResponseHandlerKeys::ALERT]);
+        }
+    }
 
     /**
      * @return string (nom del command, a partir del nom de la clase,
