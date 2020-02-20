@@ -20,8 +20,9 @@ class AjaxKeys {
     const VAL_DEFAULTSUBSET   = "main";
     const VAL_DEFAULTPROJECTTYPE   = "defaultProject";
 
-    const KEY_ACTIVA_UPDATE_BTN    = "activaUpdateButton";
-    const KEY_ACTIVA_FTPSEND_BTN   = "activaFtpSendButton";
-    const KEY_FTPSEND_BUTTON       = "ftpSendButton";
-    const KEY_FTP_CONFIG           = "ftp_config";
+    const KEY_ACTIVA_UPDATE_BTN  = "activaUpdateButton";
+    const KEY_ACTIVA_FTPSEND_BTN = "activaFtpSendButton";
+    const KEY_FTPSEND_BUTTON     = "ftpSendButton";
+    const KEY_FTPSEND_HTML       = "ftpsend_html";
+    const KEY_FTP_CONFIG         = "ftp_config";
 }
