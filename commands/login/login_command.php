@@ -89,24 +89,9 @@ class login_command extends abstract_command_class {
     }
 
     function getUserConfig($user) {
-        // Carregar fitxer amb la configuració
-//        $dir = WikiGlobalConfig::getConf("userdatadir"); // TODO[Xavi]: Afegit el directori al ownInit/init.php
-        $dir = fullpath(DOKU_INC . '/data/user_state');
-
-        //$filename = $dir . '/' . md5(cleanID($user)) . '.config'; // TODO[Xavi]: deixem el nom de fitxer hashejat o en textpla?
-        $filename = $dir . '/' . cleanID($user) . '.config';
-
-        if (@file_exists($filename)) {
-            $config = json_decode(io_readFile($filename, false), true);
-        } else {
-            // PROVISIONAL[Xavi] si no existeix el fitxer es crea un amb la configuració per defecta: editor ACE
-            $config = [
-                'editor' => UserStateKeys::KEY_ACE
-//                'editor' => UserStateKeys::KEY_DOJO
-            ];
-            io_saveFile($filename, json_encode($config));
-        }        
-
+        $config = array();
+        $config['editor'] = WikiIocInfoManager::getInfo("userinfo")['editor'];
+        
         if($this->moodleToken("has")){
             $config['moodleToken'] = $this->moodleToken("get");
         }
