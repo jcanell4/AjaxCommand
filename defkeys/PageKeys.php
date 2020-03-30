@@ -32,6 +32,8 @@ class PageKeys extends RequestParameterKeys {
     const KEY_RELOAD     = "reload";
     const KEY_CANCEL_ALL = "cancel_all";
     const KEY_CLOSE      = "close";
+    const KEY_NEW_NAME   = "new_name";
+    const KEY_OLD_NAME   = "old_name";
 
     const KEY_PARAMS  = "params"; // response
     const KEY_USER_ID = "user_id";
