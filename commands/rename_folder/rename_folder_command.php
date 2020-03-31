@@ -18,20 +18,22 @@ class rename_folder_command extends abstract_command_class {
         $pageModel = new DokuPageModel($this->getPersistenceEngine());
 
         //sólo se ejecuta si no existe un proyecto en la ruta especificada
-        if (!$pageModel->haveADirProject($this->params[AjaxKeys::KEY_ID])) {
+        if (!$pageModel->haveAnyDirProject($this->params[PageKeys::KEY_OLD_NAME])) {
             $action = $this->getModelManager()->getActionInstance("RenameFolderAction");
             $action->get($this->params);
+        }else {
+            throw new Exception("No és permés el canvi de nom. La ruta sol·licitada conté directoris de projecte");
         }
         return TRUE;
     }
 
     /**
      * Afegeix un missatge al generador de respostes.
-     * @param array                    $contentData
+     * @param array                    $responseData
      * @param AjaxCmdResponseGenerator $responseGenerator
      * @return void
      */
-    protected function getDefaultResponse($contentData, &$responseGenerator) {
-        $responseGenerator->addInfoDta(" default ");
+    protected function getDefaultResponse($responseData, &$responseGenerator) {
+        $responseGenerator->addInfoDta(AjaxCmdResponseGenerator::generateInfo('info', WikiIocLangManager::getLang("renamed"),NULL,20));
     }
 }
