@@ -1,9 +1,11 @@
 <?php
+/**
+ * rename_folder_command: Renombra un directorio y modifica los archivos cuyo nombre haya sido constuido
+ *                        a partir de la wiki ruta y modifica las referencias a esa ruta
+ *                        dentro del contenido de los archivos existentes a partir de la ruta cambiada.
+ */
 if(!defined('DOKU_INC')) die();
 
-/**
- * Class rename_folder_command
- */
 class rename_folder_command extends abstract_command_class {
 
     public function __construct() {
@@ -15,15 +17,8 @@ class rename_folder_command extends abstract_command_class {
      */
     protected function process() {
         PagePermissionManager::updateMyOwnPagePermission($this->authorization->getPermission());
-        $pageModel = new DokuPageModel($this->getPersistenceEngine());
-
-        //sólo se ejecuta si no existe un proyecto en la ruta especificada
-        if (!$pageModel->haveAnyDirProject($this->params[PageKeys::KEY_OLD_NAME])) {
-            $action = $this->getModelManager()->getActionInstance("RenameFolderAction");
-            $action->get($this->params);
-        }else {
-            throw new Exception("No és permés el canvi de nom. La ruta sol·licitada conté directoris de projecte");
-        }
+        $action = $this->getModelManager()->getActionInstance("RenameFolderAction");
+        $action->get($this->params);
         return TRUE;
     }
 
