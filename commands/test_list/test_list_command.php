@@ -1,15 +1,10 @@
 <?php
-if (!defined('DOKU_INC')) die();
-if (!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
-if (!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_PLUGIN . "ajaxcommand/");
-
-require_once(DOKU_COMMAND . 'defkeys/PageKeys.php');
-//require_once(DOKU_PLUGIN . 'wikiiocmodel/actions/UserListAction.php');
-
 /**
  * Class test_list_command
  * @author Xavier Garcia <xaviergaro.dev@gmail.com>
  */
+if (!defined('DOKU_INC')) die();
+
 class test_list_command extends abstract_command_class
 {
     public function __construct()
