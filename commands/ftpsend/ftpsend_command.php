@@ -40,7 +40,7 @@ class ftpsend_command extends abstract_command_class {
      *                 amb autoritzacions específiques)
      */
     public function getAuthorizationType() {
-        return "_none";
+        return "ftp";
     }
 
 }
