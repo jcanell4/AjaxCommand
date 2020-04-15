@@ -1,12 +1,10 @@
 <?php
-if (!defined('DOKU_INC')) die();
-
-require_once(DOKU_COMMAND . "defkeys/UserStateKeys.php");
-
 /**
  * Class login_command
  * @author Josep Cañellas <jcanell4@ioc.cat>
  */
+if (!defined('DOKU_INC')) die();
+
 class login_command extends abstract_command_class {
 
     public function __construct() {
@@ -91,13 +89,13 @@ class login_command extends abstract_command_class {
     function getUserConfig($user) {
         $config = array();
         $config['editor'] = WikiIocInfoManager::getInfo("userinfo")['editor'];
-        
+
         if($this->moodleToken("has")){
             $config['moodleToken'] = $this->moodleToken("get");
         }
         return $config;
     }
-    
+
     private function moodleToken($act="has"){
         global $auth;
         if($act==="get"){
@@ -110,7 +108,7 @@ class login_command extends abstract_command_class {
             if(is_callable(array($auth, "hasMoodleToken"))){
                 $ret = $auth->hasMoodleToken();
             }
-        }        
+        }
         return $ret;
     }
 

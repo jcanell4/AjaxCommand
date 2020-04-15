@@ -1,12 +1,10 @@
 <?php
-if (!defined('DOKU_INC')) die();
-if (!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_INC . "lib/plugins/ajaxcommand/");
-require_once (DOKU_COMMAND . "defkeys/PageKeys.php");
-
 /**
  * Class revision_command
  * @author Xavier García <xaviergaro.dev@gmail.com>
  */
+if (!defined('DOKU_INC')) die();
+
 class revision_command extends abstract_writer_command_class {
 
     public function __construct() {

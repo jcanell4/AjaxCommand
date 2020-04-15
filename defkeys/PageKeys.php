@@ -4,7 +4,6 @@
  * @modified by Rafael Claver
  */
 if (!defined('DOKU_INC')) die();
-require_once (DOKU_INC . 'lib/plugins/ajaxcommand/defkeys/RequestParameterKeys.php');
 
 class PageKeys extends RequestParameterKeys {
     const KEY_RANGE     = "range";

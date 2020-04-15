@@ -4,8 +4,6 @@
  * @author Josep Cañellas <jcanell4@ioc.cat>
  */
 if(!defined('DOKU_INC')) die();
-if (!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_INC."lib/plugins/ajaxcommand/");
-require_once (DOKU_COMMAND . "defkeys/PageKeys.php");
 
 class save_command extends abstract_writer_command_class {
 

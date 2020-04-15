@@ -1,12 +1,10 @@
 <?php
-if(!defined('DOKU_INC')) die();
-if (!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_INC."lib/plugins/ajaxcommand/");
-require_once DOKU_COMMAND . "defkeys/MediaKeys.php";
-
 /**
  * Class get_image_detail_command
  * @author Josep Cañellas <jcanell4@ioc.cat>
  */
+if(!defined('DOKU_INC')) die();
+
 class get_image_detail_command extends abstract_command_class {
     const KEY_IMAGE_ID = "imageId";
 

@@ -1,12 +1,10 @@
 <?php
-if (!defined('DOKU_INC')) die();
-if (!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_INC . "lib/plugins/ajaxcommand/");
-require_once(DOKU_COMMAND . "defkeys/PageKeys.php");
-
 /**
  * Class edit_command
  * @author Josep Cañellas <jcanell4@ioc.cat>
  */
+if (!defined('DOKU_INC')) die();
+
 class edit_command extends abstract_command_class {
 
     public function __construct() {

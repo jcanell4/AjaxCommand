@@ -5,9 +5,7 @@
  */
 if (!defined('DOKU_INC')) die();
 if (!defined('DOKU_LIB_IOC')) define('DOKU_LIB_IOC', DOKU_INC . "lib/lib_ioc/");
-if (!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN', DOKU_INC . "lib/plugins/");
 include_once (DOKU_LIB_IOC . "wikiiocmodel/ResourceLockerInterface.php");
-include_once (DOKU_PLUGIN . "ajaxcommand/defkeys/ResponseHandlerKeys.php");
 
 class LockKeys extends ResponseHandlerKeys {
     const LOCKED        = ResourceLockerInterface::LOCKED;  //Si es fa una consulta: indica que el recurs es pot bloquejar

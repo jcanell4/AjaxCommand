@@ -1,12 +1,10 @@
 <?php
-if (!defined('DOKU_INC')) die();
-if (!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_INC."lib/plugins/ajaxcommand/");
-require_once (DOKU_COMMAND . "defkeys/PageKeys.php");
-
 /**
- * Class
+ * Class save_partial_command
  * @author Josep Cañellas <jcanell4@ioc.cat>, Xavier García <xaviergaro.dev@gmail.com>
  */
+if (!defined('DOKU_INC')) die();
+
 class save_partial_command extends abstract_writer_command_class {
     /**
      * El constructor estableix els tipus per 'id', 'rev', 'range', 'date', 'prefix', 'suffix', 'changecheck', 'target'

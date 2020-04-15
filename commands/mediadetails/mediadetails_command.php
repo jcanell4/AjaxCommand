@@ -1,11 +1,9 @@
 <?php
-if (!defined('DOKU_INC')) die();
-if (!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_INC."lib/plugins/ajaxcommand/");
-require_once DOKU_COMMAND . "defkeys/MediaKeys.php";
-
 /**
  * Clase del comando que controla la presentación del detalle de un 'media' (un archivo que no es texto plano)
  */
+if (!defined('DOKU_INC')) die();
+
 class mediadetails_command extends abstract_writer_command_class {
 
     public function __construct() {

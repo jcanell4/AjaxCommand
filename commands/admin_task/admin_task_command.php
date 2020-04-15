@@ -1,11 +1,10 @@
 <?php
-if (!defined('DOKU_INC')) die();
-if (!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN', DOKU_INC . 'lib/plugins/');
-require_once (DOKU_PLUGIN.'ajaxcommand/defkeys/AdminKeys.php');
 /**
  * Class admin_task_command
  * @author Eduard Latorre
 */
+if (!defined('DOKU_INC')) die();
+
 class admin_task_command extends abstract_command_class {
 
     public function __construct() {

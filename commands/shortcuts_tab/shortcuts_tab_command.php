@@ -3,15 +3,13 @@
  * [WARNING] [JOSEP] Mira este pobre, huérfano y desgraciado código
  * [Rafa] Me sabe grave pero parece ser que este comando es un pobre huerfanito al que nadie llama
  */
-if (!defined('DOKU_INC')) die();
-if (!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_INC."lib/plugins/ajaxcommand/");
-require_once(DOKU_COMMAND.'defkeys/PageKeys.php');
-require_once(DOKU_TPL_INCDIR . 'conf/cfgIdConstants.php');
-
 /**
  * Class shortcuts_tab_command
  * @author Xavier Garcia <xaviergaro.dev@gmail.com>
  */
+if (!defined('DOKU_INC')) die();
+require_once(DOKU_TPL_INCDIR . 'conf/cfgIdConstants.php');
+
 class shortcuts_tab_command extends abstract_command_class {
     /**
      * El constructor extableix el tipus, els valors per defecte i els estableix com a paràmetres.

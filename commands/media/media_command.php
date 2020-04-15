@@ -5,8 +5,6 @@
  * - se llama al elemento 'Media manager' del menú
  */
 if (!defined('DOKU_INC')) die();
-if (!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_INC."lib/plugins/ajaxcommand/");
-require_once DOKU_COMMAND . "defkeys/MediaKeys.php";
 
 class media_command extends abstract_writer_command_class {
 

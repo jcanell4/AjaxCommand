@@ -1,7 +1,4 @@
 <?php
-if (!defined('DOKU_INC')) die();
-if (!defined('DOKU_COMMAND')) define('DOKU_COMMAND', DOKU_INC . "lib/plugins/ajaxcommand/");
-require_once(DOKU_COMMAND."defkeys/PageKeys.php");
 /**
  * Class comment_command
  *
@@ -9,6 +6,8 @@ require_once(DOKU_COMMAND."defkeys/PageKeys.php");
  *
  * @author Xavier Garcia <xaviergaro.dev@gmail.com>
  */
+if (!defined('DOKU_INC')) die();
+
 class comment_command extends abstract_command_class {
 
     public function __construct() {
