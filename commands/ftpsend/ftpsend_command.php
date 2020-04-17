@@ -17,7 +17,7 @@ class ftpsend_command extends abstract_command_class {
 
     protected function process() {
         if ($this->params[ProjectKeys::PROJECT_TYPE]) {
-            $action = $this->getModelManager()->getActionInstance("FtpProjectSendAction");
+            $action = $this->getModelManager()->getActionInstance("FtpProjectAction");
         }else{
             $action = $this->getModelManager()->getActionInstance("FtpSendAction");
         }
