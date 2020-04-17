@@ -113,6 +113,11 @@ class project_command extends abstract_project_command_class {
                 $projectMetaData = $action->get($this->params);
                 break;
 
+            case ProjectKeys::KEY_FTP_PROJECT:
+                $action = $this->getModelManager()->getActionInstance("FtpProjectAction");
+                $projectMetaData = $action->get($this->params);
+                break;
+
             default:
                 throw new UnknownProjectException();
         }
