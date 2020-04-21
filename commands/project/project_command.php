@@ -119,12 +119,13 @@ class project_command extends abstract_project_command_class {
                 break;
 
             default:
-                throw new UnknownProjectException();
+                throw new UnknownProjectException($this->params[ProjectKeys::KEY_ID]);
         }
 
-        if (!$projectMetaData) throw new UnknownProjectException();
+        if (!$projectMetaData)
+            throw new UnknownProjectException($this->params[ProjectKeys::KEY_ID]);
+        
         return $projectMetaData;
-
     }
 
     protected function getDefaultResponse($response, &$ret) {}
