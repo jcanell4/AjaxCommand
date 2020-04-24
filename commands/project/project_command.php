@@ -124,7 +124,7 @@ class project_command extends abstract_project_command_class {
 
         if (!$projectMetaData)
             throw new UnknownProjectException($this->params[ProjectKeys::KEY_ID]);
-        
+
         return $projectMetaData;
     }
 
@@ -132,8 +132,10 @@ class project_command extends abstract_project_command_class {
 
     protected function _addExtraData(&$projectMetaData) {
         $rol = $this->authorization->getPermission()->getRol();
+        $rolOrder = $this->authorization->getPermission()->getRolOrder();
         if ($rol) {
             $projectMetaData[ProjectKeys::KEY_PROJECT_EXTRADATA][ProjectKeys::KEY_ROL] = $rol;
+            $projectMetaData[ProjectKeys::KEY_PROJECT_EXTRADATA][ProjectKeys::KEY_ROL."Order"] = $rolOrder;
         }
         if ($projectMetaData[ProjectKeys::KEY_PROJECT_TYPE]) {
             $projectMetaData[ProjectKeys::KEY_PROJECT_EXTRADATA][ProjectKeys::KEY_PROJECT_TYPE] = $projectMetaData[ProjectKeys::KEY_PROJECT_TYPE];
