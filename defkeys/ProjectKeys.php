@@ -21,6 +21,7 @@ class ProjectKeys extends RequestParameterKeys  {
     const KEY_CREATE   = "create";
     const KEY_FTP_SEND = "ftpsend";
 
+    const KEY_PROJECT_ID        = "projectId";
     const KEY_PROJECT_EXTRADATA = "projectExtraData";
     const KEY_GENERATED         = "generated";
     const KEY_CREATE_PROJECT    = "create_project";
@@ -42,7 +43,7 @@ class ProjectKeys extends RequestParameterKeys  {
     const KEY_FTPID     = "ftpId";
 
     const KEY_FTP_PROJECT_BUTTON   = "ftpProjectButton";
-    
+
     const KEY_FTP_PROJECT          = "ftp_project";
     const KEY_RENAME_PROJECT       = "rename_project";
     const KEY_REMOVE_PROJECT       = "remove_project";
