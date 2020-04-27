@@ -42,14 +42,11 @@ class ProjectKeys extends RequestParameterKeys  {
     const KEY_OLD_NS    = "old_ns";
     const KEY_FTPID     = "ftpId";
 
-    const KEY_FTP_PROJECT_BUTTON   = "ftpProjectButton";
-
     const KEY_FTP_PROJECT          = "ftp_project";
     const KEY_RENAME_PROJECT       = "rename_project";
     const KEY_REMOVE_PROJECT       = "remove_project";
     const KEY_SAVE_PROJECT_DRAFT   = "save_project_draft";
     const KEY_REMOVE_PROJECT_DRAFT = "remove_project_draft";
-
 
     const KEY_ROL             = "rol";
     const KEY_FILTER          = "filter";
