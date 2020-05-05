@@ -82,6 +82,7 @@ class project_command extends abstract_project_command_class {
             case ProjectKeys::KEY_GENERATE:
                 $action = $this->getModelManager()->getActionInstance("GenerateProjectMetaDataAction");
                 $projectMetaData = $action->get($this->params);
+                $this->_addExtraData($projectMetaData);
                 break;
 
             case ProjectKeys::KEY_CANCEL:
@@ -129,5 +130,5 @@ class project_command extends abstract_project_command_class {
     }
 
     protected function getDefaultResponse($response, &$ret) {}
-    
+
 }
