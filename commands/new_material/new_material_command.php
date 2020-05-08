@@ -13,18 +13,14 @@ class new_material_command extends abstract_command_class {
     }
 
     /**
-     * Retorna la pàgina corresponent a la 'id' i 'rev'.
-     * @return array amb la informació de la pàgina formatada amb 'id', 'ns', 'tittle' i 'content'
+     * Retorna la pàgina htmlindex corresponent al "material" creat.
+     * @return array amb la informació de la pàgina formatada amb 'id', 'ns', 'title' i 'content'
      */
     protected function process() {
         PagePermissionManager::updateMyOwnPagePermission($this->authorization->getPermission());
-        $pageModel = new DokuPageModel($this->getPersistenceEngine());
+        $action = $this->getModelManager()->getActionInstance("CreateNewMaterialAction");
+        $contentData = $action->get($this->params);
 
-        //sólo se ejecuta si no existe un proyecto en la ruta especificada
-        if (!$pageModel->haveADirProject($this->params[AjaxKeys::KEY_ID])) {
-//            $action = $this->getModelManager()->getActionInstance("CreatePageAction");
-//            $contentData = $action->get($this->params);
-        }
         if ($contentData)
             return $contentData;
         else
