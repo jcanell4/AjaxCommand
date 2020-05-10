@@ -39,8 +39,8 @@ class cancel_command extends abstract_command_class {
         $ret->addHtmlDoc(
                 $contentData[PageKeys::KEY_ID],
                 $contentData[PageKeys::KEY_NS],
-                $contentData["title"],
-                $contentData["content"]
+                $contentData[PageKeys::KEY_TITLE],
+                $contentData[PageKeys::KEY_CONTENT]
             );
     }
 }

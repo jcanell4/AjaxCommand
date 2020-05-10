@@ -9,6 +9,7 @@ class MediaKeys extends RequestParameterKeys {
     const KEY_FROM_ID           = "fromId";
     const KEY_IMAGE             = "image";
     const KEY_IMG               = "img";
+    const KEY_IMAGE_TITLE       = "imageTitle";
     const KEY_FILE_PATH_SOURCE  = "filePathSource";
     const KEY_OVERWRITE         = "ow";
     const KEY_NS_TARGET         = "nsTarget";

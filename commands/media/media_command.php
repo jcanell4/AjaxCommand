@@ -81,8 +81,8 @@ class media_command extends abstract_writer_command_class {
         $responseGenerator->addHtmlDoc(
                 $contentData[MediaKeys::KEY_IMAGE],
                 null,
-                $contentData["imageTitle"],
-                $contentData["content"]
+                $contentData[MediaKeys::KEY_IMAGE_TITLE],
+                $contentData[PageKeys::KEY_CONTENT]
         );
     }
 

@@ -43,12 +43,11 @@ class edit_partial_command extends abstract_command_class {
      * @return mixed|void
      */
     protected function getDefaultResponse($response, &$ret) {
-
         $ret->addWikiCodeDoc(
-                $response["id"],
-                $response["ns"],
-                $response["title"],
-                $response["content"]
+                $response[AjaxKeys::KEY_ID],
+                $response[AjaxKeys::KEY_NS],
+                $response[PageKeys::KEY_TITLE],
+                $response[PageKeys::KEY_CONTENT]
             );
     }
 

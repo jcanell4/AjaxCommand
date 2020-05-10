@@ -49,9 +49,10 @@ class mediadetails_command extends abstract_writer_command_class {
     protected function getDefaultResponse($contentData, &$responseGenerator) {
 
         $responseGenerator->addHtmlDoc(
-                $contentData[MediaKeys::KEY_IMAGE], null,
-                $contentData["imageTitle"],
-                $contentData["content"]
+                $contentData[MediaKeys::KEY_IMAGE],
+                null,
+                $contentData[MediaKeys::KEY_IMAGE_TITLE],
+                $contentData[PageKeys::KEY_CONTENT]
         );
     }
 

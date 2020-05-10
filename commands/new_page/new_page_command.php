@@ -38,11 +38,12 @@ class new_page_command extends abstract_command_class {
      * @return void
      */
     protected function getDefaultResponse($contentData, &$responseGenerator) {
+        //NUNCA SE EJECUTA: Tiene su propio New_pageResponseHandler
         $responseGenerator->addHtmlDoc(
                             $contentData[AjaxKeys::KEY_ID],
                             $contentData[AjaxKeys::KEY_NS],
-                            $contentData["title"],
-                            $contentData["content"]
+                            $contentData[PageKeys::KEY_TITLE],
+                            $contentData[PageKeys::KEY_CONTENT]
                         );
     }
 }
