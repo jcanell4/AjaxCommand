@@ -21,24 +21,10 @@ class new_material_command extends abstract_command_class {
         $action = $this->getModelManager()->getActionInstance("CreateNewMaterialAction");
         $contentData = $action->get($this->params);
 
-        if ($contentData)
-            return $contentData;
-        else
+        if (!$contentData)
             throw new CantCreatePageInProjectException();
+
+        return $contentData;
     }
 
-    /**
-     * Afegeix el contingut com una resposta de tipus HTML_TYPE al generador de respostes passat com argument.
-     * @param array                    $contentData array amb la informació de la pàgina 'id', 'ns', 'tittle' i 'content'
-     * @param AjaxCmdResponseGenerator $responseGenerator
-     * @return void
-     */
-    protected function getDefaultResponse($contentData, &$responseGenerator) {
-        $responseGenerator->addHtmlDoc(
-                            $contentData[AjaxKeys::KEY_ID],
-                            $contentData[AjaxKeys::KEY_NS],
-                            $contentData["title"],
-                            $contentData["content"]
-                        );
-    }
 }
