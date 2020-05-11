@@ -27,4 +27,6 @@ class new_material_command extends abstract_command_class {
         return $contentData;
     }
 
+    protected function getDefaultResponse($response, &$responseGenerator) {}
+
 }
