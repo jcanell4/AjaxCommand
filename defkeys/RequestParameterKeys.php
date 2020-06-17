@@ -20,6 +20,7 @@ class RequestParameterKeys extends AjaxKeys {
     const KEY_CODETYPE       = "codeType";
     const KEY_LEAVERESOURCE  = "leaveResource";
     const KEY_TO_REQUIRE     = "to_require";
+    const KEY_EDITOR_TYPE    = "editorType";
     const KEY_REFRESH        = "refresh";
     const KEY_INFO           = "info";
 
