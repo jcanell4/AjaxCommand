@@ -109,6 +109,12 @@ class project_command extends abstract_project_command_class {
                 $this->_addExtraData($projectMetaData); //Potser millor posar-ho al postResponse del command i del ResponseHandler que és on s'afegeixen altres extra datas.
                 break;
 
+            case ProjectKeys::KEY_DUPLICATE_PROJECT:
+                $action = $this->getModelManager()->getActionInstance("DuplicateProjectAction");
+                $projectMetaData = $action->get($this->params);
+                $this->_addExtraData($projectMetaData);
+                break;
+
             case ProjectKeys::KEY_REMOVE_PROJECT:
                 $action = $this->getModelManager()->getActionInstance("RemoveProjectAction");
                 $projectMetaData = $action->get($this->params);
