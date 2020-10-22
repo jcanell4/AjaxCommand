@@ -11,7 +11,7 @@ class AjaxKeys {
     const KEY_NS      = "ns";
     const KEY_DO      = "do";
     const KEY_SECTOK  = 'sectok';
-    const CALL_KEY    = 'call';
+    const KEY_CALL    = 'call';
     const KEY_PROFILE = "profile";
     const FORMAT      = "format";
 
