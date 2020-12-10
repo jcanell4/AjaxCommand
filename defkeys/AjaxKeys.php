@@ -29,4 +29,7 @@ class AjaxKeys {
     const KEY_FTP_PROJECT_BUTTON     = "ftpProjectButton";
     const KEY_FTPSEND_HTML           = "ftpsend_html";
     const KEY_FTP_CONFIG             = "ftp_config";
+    const KEY_EXTRA_STATE            = "extraState";
+    const KEY_EXTRA_STATE_ID         = "extraStateId";
+    const KEY_EXTRA_STATE_VALUE      = "extraStateValue";
 }
