@@ -75,4 +75,6 @@ class PageKeys extends RequestParameterKeys {
     const DW_ACT_SAVE_REV      = "save_rev";
     const DW_ACT_SHOW          = "show";
     const DW_DEFAULT_PAGE      = "start";
+
+    const KEY_WIOCCL_STRUCTURE   = "wioccl_structure";
 }

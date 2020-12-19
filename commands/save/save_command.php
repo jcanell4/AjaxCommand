@@ -23,6 +23,8 @@ class save_command extends abstract_writer_command_class {
         $this->types[PageKeys::KEY_CANCEL]    = self::T_BOOLEAN;
         $this->types[PageKeys::KEY_KEEP_DRAFT]= self::T_BOOLEAN;
 
+        $this->types[PageKeys::KEY_WIOCCL_STRUCTURE] = self::T_JSON;
+
         $params = [PageKeys::KEY_ID => "index"];
         $this->setParameters($params);
     }
