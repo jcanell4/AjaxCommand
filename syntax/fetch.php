@@ -23,12 +23,12 @@ class syntax_plugin_ajaxcommand_fetch extends DokuWiki_Syntax_Plugin {
         $this->Lexer->addSpecialPattern("<<__fetch__<(?:(?:[^[\]]*?\[.*?\])|.*?)>>>",$mode , 'plugin_ajaxcommand_fetch');
     }
 
-    function handle($match, $state, $pos, &$handler){
+    function handle($match, $state, $pos, Doku_Handler $handler){
         list($call, $msg)= array_pad(explode('|', preg_replace(array('/^<<__fetch__</','/>>>$/u'),'',$match)), 2, "");
         return array($call, $msg);
     }
 
-    function render($mode, &$renderer, $indata) {
+    function render($mode, Doku_Renderer $renderer, $indata) {
         if ($mode == 'xhtml'){
             list($mediaId, $msg) = $indata;
             $path = "lib/exe/fetch.php";

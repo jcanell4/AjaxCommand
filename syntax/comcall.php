@@ -23,12 +23,12 @@ class syntax_plugin_ajaxcommand_comcall extends DokuWiki_Syntax_Plugin {
         $this->Lexer->addSpecialPattern("<<__cc__<(?:(?:[^[\]]*?\[.*?\])|.*?)>>>",$mode , 'plugin_ajaxcommand_comcall');
     }
 
-    function handle($match, $state, $pos, &$handler){
+    function handle($match, $state, $pos, Doku_Handler $handler){
         list($call, $msg)= array_pad(explode('|', preg_replace(array('/^<<__cc__</','/>>>$/u'),'',$match)), 2, "");
         return array($call, $msg);
     }
 
-    function render($mode, &$renderer, $indata) {
+    function render($mode, Doku_Renderer $renderer, $indata) {
         if ($mode == 'xhtml'){
             list($call, $msg) = $indata;
             //$pos = strlen(DOKU_INC);
