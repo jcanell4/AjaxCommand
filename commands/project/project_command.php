@@ -91,8 +91,10 @@ class project_command extends abstract_project_command_class {
                 $this->_addExtraData($projectMetaData);
                 break;
 
-            case ProjectKeys::KEY_REVERT:
-                //Està en: <en_algún_plugin>/projects/documentation/command/projectRevert.php
+            case ProjectKeys::KEY_REVERT_PROJECT:
+                //También està, como ejemplo, en: <en_algún_plugin>/projects/documentation/command/projectRevert.php
+                $action = $this->getModelManager()->getActionInstance("RevertProjectMetaDataAction");
+                $projectMetaData = $action->get($this->params);
                 break;
 
             case ProjectKeys::KEY_SAVE_PROJECT_DRAFT:

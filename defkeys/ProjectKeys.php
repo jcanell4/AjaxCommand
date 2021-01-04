@@ -46,6 +46,7 @@ class ProjectKeys extends RequestParameterKeys  {
     const KEY_DUPLICATE_PROJECT    = "duplicate_project";
     const KEY_RENAME_PROJECT       = "rename_project";
     const KEY_REMOVE_PROJECT       = "remove_project";
+    const KEY_REVERT_PROJECT       = "revert_project";
     const KEY_SAVE_PROJECT_DRAFT   = "save_project_draft";
     const KEY_REMOVE_PROJECT_DRAFT = "remove_project_draft";
 

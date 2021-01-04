@@ -11,7 +11,7 @@ class AjaxKeys {
     const KEY_NS      = "ns";
     const KEY_DO      = "do";
     const KEY_SECTOK  = 'sectok';
-    const CALL_KEY    = 'call';
+    const KEY_CALL    = 'call';
     const KEY_PROFILE = "profile";
     const FORMAT      = "format";
 
@@ -29,4 +29,7 @@ class AjaxKeys {
     const KEY_FTP_PROJECT_BUTTON     = "ftpProjectButton";
     const KEY_FTPSEND_HTML           = "ftpsend_html";
     const KEY_FTP_CONFIG             = "ftp_config";
+    const KEY_EXTRA_STATE            = "extraState";
+    const KEY_EXTRA_STATE_ID         = "extraStateId";
+    const KEY_EXTRA_STATE_VALUE      = "extraStateValue";
 }
