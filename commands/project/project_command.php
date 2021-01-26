@@ -130,7 +130,7 @@ class project_command extends abstract_project_command_class {
             case "workflow":
                 switch ($this->params[ProjectKeys::KEY_ACTION]) {
                     case ProjectKeys::KEY_EDIT:
-                        $action = $this->getModelManager()->getActionInstance("RefreshProjectAction");
+                        $action = $this->getModelManager()->getActionInstance("GetProjectMetaDataAction");
                         $projectMetaData = $action->get($this->params);
                         $this->_addExtraData($projectMetaData);
                         break;
