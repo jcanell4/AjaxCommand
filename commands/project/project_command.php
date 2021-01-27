@@ -127,16 +127,11 @@ class project_command extends abstract_project_command_class {
                 $projectMetaData = $action->get($this->params);
                 break;
 
-            case "workflow":
-                switch ($this->params[ProjectKeys::KEY_ACTION]) {
-                    case ProjectKeys::KEY_EDIT:
-                        $action = $this->getModelManager()->getActionInstance("GetProjectMetaDataAction");
-                        $projectMetaData = $action->get($this->params);
-                        $this->_addExtraData($projectMetaData);
-                        break;
-                    default:
-                        throw new UnknownProjectException("workflow command: " . $this->params[ProjectKeys::KEY_ID] );
-                }
+            case ProjectKeys::KEY_WORKFLOW:
+                $disp_action = $this->getModelManager()->getActionInstance("WorkflowProjectMetaDataAction");
+                $action = $disp_action->getActionInstance($this->params[ProjectKeys::KEY_ACTION]);
+                $projectMetaData = $action->get($this->params);
+                $this->_addExtraData($projectMetaData);
                 break;
 
             default:
