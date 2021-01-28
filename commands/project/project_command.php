@@ -128,8 +128,7 @@ class project_command extends abstract_project_command_class {
                 break;
 
             case ProjectKeys::KEY_WORKFLOW:
-                $disp_action = $this->getModelManager()->getActionInstance("WorkflowProjectMetaDataAction");
-                $action = $disp_action->getActionInstance($this->params[ProjectKeys::KEY_ACTION]);
+                $action = $this->getModelManager()->getActionInstance("WorkflowProjectMetaDataAction");
                 $projectMetaData = $action->get($this->params);
                 $this->_addExtraData($projectMetaData);
                 break;

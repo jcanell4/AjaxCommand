@@ -20,6 +20,7 @@ class ProjectKeys extends RequestParameterKeys  {
     const KEY_REVERT   = "revert";
     const KEY_CREATE   = "create";
     const KEY_FTP_SEND = "ftpsend";
+    const KEY_IMPORT   = "import";
     const KEY_WORKFLOW = "workflow";
 
     const KEY_PROJECT_ID        = "projectId";
