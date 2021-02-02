@@ -124,10 +124,13 @@ class project_command extends abstract_project_command_class {
 
             case ProjectKeys::KEY_FTP_PROJECT:
                 $action = $this->getModelManager()->getActionInstance("FtpProjectAction");
-                //Logger::init(1);
-                //Logger::debug(basename(__FILE__,".php")."::process:ProjectKeys::KEY_FTP_PROJECT:", 0, __LINE__, basename(__FILE__), 1, TRUE);
                 $projectMetaData = $action->get($this->params);
-                //Logger::debug(basename(__FILE__,".php")."::process:ProjectKeys::KEY_FTP_PROJECT:\n\t\t\$this->params: ".json_encode($this->params)."\n\t\t\$projectMetaData: ".json_encode($projectMetaData), 0, __LINE__, basename(__FILE__), 1);
+                break;
+
+            case ProjectKeys::KEY_WORKFLOW:
+                $action = $this->getModelManager()->getActionInstance("WorkflowProjectMetaDataAction");
+                $projectMetaData = $action->get($this->params);
+                $this->_addExtraData($projectMetaData);
                 break;
 
             default:
