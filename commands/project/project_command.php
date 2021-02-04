@@ -39,13 +39,13 @@ class project_command extends abstract_project_command_class {
                 break;
 
             case ProjectKeys::KEY_DIFF:
-                $action = $this->getModelManager()->getActionInstance("DiffProjectMetaDataAction");
+                $action = $this->getModelManager()->getActionInstance("DiffProjectAction");
                 $projectMetaData = $action->get($this->params);
                 $this->_addExtraData($projectMetaData);
                 break;
 
             case ProjectKeys::KEY_VIEW:
-                $action = $this->getModelManager()->getActionInstance("ViewProjectMetaDataAction");
+                $action = $this->getModelManager()->getActionInstance("ViewProjectAction");
                 $projectMetaData = $action->get($this->params);
                 $this->_addExtraData($projectMetaData);
                 if ($this->params[ProjectKeys::KEY_REV]) {
@@ -58,19 +58,19 @@ class project_command extends abstract_project_command_class {
                 if ($this->params[ProjectKeys::KEY_REFRESH]) {
                     $action = $this->getModelManager()->getActionInstance("RefreshProjectAction");
                 }else {
-                    $action = $this->getModelManager()->getActionInstance("GetProjectMetaDataAction");
+                    $action = $this->getModelManager()->getActionInstance("GetProjectAction");
                 }
                 $projectMetaData = $action->get($this->params);
                 $this->_addExtraData($projectMetaData);
                 break;
 
             case ProjectKeys::KEY_SAVE:
-                $action = $this->getModelManager()->getActionInstance("SetProjectMetaDataAction");
+                $action = $this->getModelManager()->getActionInstance("SetProjectAction");
                 $projectMetaData = $action->get($this->params);
                 break;
 
             case ProjectKeys::KEY_CREATE_PROJECT:
-                $action = $this->getModelManager()->getActionInstance("CreateProjectMetaDataAction");
+                $action = $this->getModelManager()->getActionInstance("CreateProjectAction");
                 $projectMetaData = $action->get($this->params);
                 $this->_addExtraData($projectMetaData);
                 break;
@@ -80,25 +80,25 @@ class project_command extends abstract_project_command_class {
                 break;
 
             case ProjectKeys::KEY_GENERATE:
-                $action = $this->getModelManager()->getActionInstance("GenerateProjectMetaDataAction");
+                $action = $this->getModelManager()->getActionInstance("GenerateProjectAction");
                 $projectMetaData = $action->get($this->params);
                 $this->_addExtraData($projectMetaData);
                 break;
 
             case ProjectKeys::KEY_CANCEL:
-                $action = $this->getModelManager()->getActionInstance("CancelProjectMetaDataAction");
+                $action = $this->getModelManager()->getActionInstance("CancelProjectAction");
                 $projectMetaData = $action->get($this->params);
                 $this->_addExtraData($projectMetaData);
                 break;
 
             case ProjectKeys::KEY_REVERT_PROJECT:
                 //También està, como ejemplo, en: <en_algún_plugin>/projects/documentation/command/projectRevert.php
-                $action = $this->getModelManager()->getActionInstance("RevertProjectMetaDataAction");
+                $action = $this->getModelManager()->getActionInstance("RevertProjectAction");
                 $projectMetaData = $action->get($this->params);
                 break;
 
             case ProjectKeys::KEY_SAVE_PROJECT_DRAFT:
-                $action = $this->getModelManager()->getActionInstance("DraftProjectMetaDataAction");
+                $action = $this->getModelManager()->getActionInstance("DraftProjectAction");
                 $projectMetaData = $action->get($this->params);
                 break;
 
@@ -128,7 +128,7 @@ class project_command extends abstract_project_command_class {
                 break;
 
             case ProjectKeys::KEY_WORKFLOW:
-                $action = $this->getModelManager()->getActionInstance("WorkflowProjectMetaDataAction");
+                $action = $this->getModelManager()->getActionInstance("WorkflowProjectAction");
                 $projectMetaData = $action->get($this->params);
                 $this->_addExtraData($projectMetaData);
                 break;
