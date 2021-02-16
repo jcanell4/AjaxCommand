@@ -24,6 +24,7 @@ class ProjectKeys extends RequestParameterKeys  {
     const KEY_WORKFLOW = "workflow";
 
     const KEY_PROJECT_ID        = "projectId";
+    const KEY_DATA_ERROR_LIST   = "dataErrorList";
     const KEY_PROJECT_METADATA  = "projectMetaData";
     const KEY_PROJECT_EXTRADATA = "projectExtraData";
     const KEY_GENERATED         = "generated";
