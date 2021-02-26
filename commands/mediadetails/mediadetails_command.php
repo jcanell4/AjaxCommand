@@ -34,7 +34,9 @@ class mediadetails_command extends abstract_writer_command_class {
             $contentData = $action->get($params);
         }
         else{
-            $contentData = $this->modelAdapter->getMediaDetails($this->params[MediaKeys::KEY_IMAGE]);
+//            $contentData = $this->modelAdapter->getMediaDetails($this->params[MediaKeys::KEY_IMAGE]);
+            $action = $this->getModelManager()->getActionInstance("ViewMediaDetailsAction", $this->params);
+            $contentData = $action->get($this->params);
         }
 
         return $contentData;

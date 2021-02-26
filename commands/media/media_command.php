@@ -40,9 +40,9 @@ class media_command extends abstract_writer_command_class {
             $this->params[MediaKeys::KEY_IMAGE] = $this->params[MediaKeys::KEY_MEDIA];
         }
         if ($this->params[MediaKeys::KEY_ID]) {
-            $this->params['fromId'] = $this->params[MediaKeys::KEY_ID];
+            $this->params[MediaKeys::KEY_FROM_ID] = $this->params[MediaKeys::KEY_ID];
         }
-        if($this->params[MediaKeys::KEY_DELETE]){
+        if ($this->params[MediaKeys::KEY_DELETE]) {
             $params = array(MediaKeys::KEY_NS => $this->params[MediaKeys::KEY_NS],
                             MediaKeys::KEY_ID => $this->params[MediaKeys::KEY_ID],
                             MediaKeys::KEY_DO => $this->params[MediaKeys::KEY_DO],
@@ -51,7 +51,7 @@ class media_command extends abstract_writer_command_class {
             $action = $this->getModelManager()->getActionInstance("DeleteMediaAction");
             $contentData = $action->get($params);
 
-        }else if($this->params[MediaKeys::KEY_IS_UPLOAD]){
+        }elseif ($this->params[MediaKeys::KEY_IS_UPLOAD]) {
             $params = array(MediaKeys::KEY_NS       => $this->params[MediaKeys::KEY_NS],
                             MediaKeys::KEY_ID       => $this->params[MediaKeys::KEY_ID],
                             MediaKeys::KEY_DO       => $this->params[MediaKeys::KEY_DO],
@@ -61,12 +61,7 @@ class media_command extends abstract_writer_command_class {
             $action = $this->getModelManager()->getActionInstance("UploadMediaAction");
             $contentData = $action->get($params);
 
-        }else{
-//            $contentData = $this->modelAdapter->getMediaManager(
-//                                                    $this->params[MediaKeys::KEY_IMAGE],
-//                                                    $this->params[MediaKeys::KEY_FROM_ID],
-//                                                    $this->params[MediaKeys::KEY_REV]
-//                                                );
+        }else {
             $action = $this->getModelManager()->getActionInstance("ViewMediaAction", $this->params);
             $contentData = $action->get($this->params);
         }
