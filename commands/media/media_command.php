@@ -67,10 +67,8 @@ class media_command extends abstract_writer_command_class {
 //                                                    $this->params[MediaKeys::KEY_FROM_ID],
 //                                                    $this->params[MediaKeys::KEY_REV]
 //                                                );
-            $params = $this->params;
-            $params['modelAdapter'] = $this->modelAdapter;
-            $action = $this->getModelManager()->getActionInstance("ViewMediaAction", $params);
-            $contentData = $action->get($params);
+            $action = $this->getModelManager()->getActionInstance("ViewMediaAction", $this->params);
+            $contentData = $action->get($this->params);
         }
         return $contentData;
     }
