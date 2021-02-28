@@ -14,7 +14,7 @@ class MediaKeys extends RequestParameterKeys {
     const KEY_OVERWRITE         = "ow";
     const KEY_NS_TARGET         = "nsTarget";
     const KEY_MEDIA_NAME        = "mediaName";
-    const KEY_REV               = "rev";
+    const KEY_REV               = RequestParameterKeys::KEY_REV;
     const KEY_META              = "meta";
     const KEY_EDIT              = "edit";
     const KEY_DELETE            = "delete";
@@ -29,4 +29,6 @@ class MediaKeys extends RequestParameterKeys {
     const KEY_IS_UPLOAD         = 'isupload';
     const KEY_QUERY             = 'q';
     const KEY_SORT              = 'sort';
+    const KEY_DO                = AjaxKeys::KEY_DO;
+    const KEY_ACTION            = AjaxKeys::KEY_ACTION;
 }
