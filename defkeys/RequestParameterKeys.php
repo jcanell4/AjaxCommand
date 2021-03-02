@@ -13,6 +13,7 @@ class RequestParameterKeys extends AjaxKeys {
     const KEY_REV            = "rev";
     const KEY_CANCEL         = "cancel";
     const KEY_CLOSE          = "close";
+    const KEY_DIFF           = "diff";
     const KEY_KEEP_DRAFT     = "keep_draft";
     const KEY_HAS_DRAFT      = "hasDraft";
     const KEY_NO_RESPONSE    = "no_response";

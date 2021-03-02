@@ -16,7 +16,6 @@ class ProjectKeys extends RequestParameterKeys  {
     const KEY_PARTIAL  = "partial";
     const KEY_GENERATE = "generate";
     const KEY_SAVE     = "save";
-    const KEY_DIFF     = "diff";
     const KEY_REVERT   = "revert";
     const KEY_CREATE   = "create";
     const KEY_FTP_SEND = "ftpsend";
