@@ -11,6 +11,7 @@ class RequestParameterKeys extends AjaxKeys {
 
     const KEY_DATE           = "date";
     const KEY_REV            = "rev";
+    const REVISION_SUFFIX    = "-rev-";
     const KEY_CANCEL         = "cancel";
     const KEY_CLOSE          = "close";
     const KEY_DIFF           = "diff";

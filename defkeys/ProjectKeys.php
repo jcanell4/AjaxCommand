@@ -8,7 +8,6 @@ if (!defined('DOKU_INC')) die();
 class ProjectKeys extends RequestParameterKeys  {
 
     const KEY_PROJECT_TYPE = AjaxKeys::PROJECT_TYPE;
-    const REVISION_SUFFIX  = "-rev-";
 
     const KEY_PROJECT  = "project";
     const KEY_EDIT     = "edit";
