@@ -29,7 +29,7 @@ class list_projects_rest_command extends abstract_rest_command_class {
     public function setParamValuesFromUrl($extra_url_params) {
         if ($extra_url_params && is_array($extra_url_params)) {
             if ($extra_url_params[0])
-                $this->params['projectType'] = $extra_url_params[0];
+                $this->params[ProjectKeys::KEY_PROJECT_TYPE] = $extra_url_params[0];
             if ($extra_url_params[1])
                 $this->params[ProjectKeys::KEY_ID] = $extra_url_params[1];
             if ($extra_url_params[2])
