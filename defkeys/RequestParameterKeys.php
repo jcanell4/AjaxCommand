@@ -27,6 +27,8 @@ class RequestParameterKeys extends AjaxKeys {
 
     const KEY_RECOVER_DRAFT       = "recover_draft";
     const KEY_RECOVER_LOCAL_DRAFT = "recover_local_draft";
+    const KEY_PARAMETERS = "parameters";
+    const KEY_COMMAND = "command";
 
     const VAL_CODETYPE_OK     = 0;   //retorno correcto
     const VAL_CODETYPE_ERROR  = -1;  //retorno con error
