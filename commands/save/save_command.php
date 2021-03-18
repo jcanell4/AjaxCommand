@@ -22,7 +22,6 @@ class save_command extends abstract_writer_command_class {
         $this->types[PageKeys::KEY_RELOAD]    = self::T_BOOLEAN;
         $this->types[PageKeys::KEY_CANCEL]    = self::T_BOOLEAN;
         $this->types[PageKeys::KEY_KEEP_DRAFT]= self::T_BOOLEAN;
-
         $this->types[PageKeys::KEY_WIOCCL_STRUCTURE] = self::T_JSON;
 
         $params = [PageKeys::KEY_ID => "index"];
@@ -35,6 +34,13 @@ class save_command extends abstract_writer_command_class {
      */
     protected function process() {
         $action = $this->getModelManager()->getActionInstance("SavePageAction", ['format' => $this->getFormat()]);
+        if ($this->params[PageKeys::KEY_PROJECT_SOURCE_TYPE]) {
+            //Añade al summary la versión actual del template para que se guarde en el log .changes
+            $metaDataQuery = $this->getModelManager()->getPersistenceEngine()->createProjectMetaDataQuery($this->params[PageKeys::KEY_PROJECT_OWNER], "main", $this->params[PageKeys::KEY_PROJECT_SOURCE_TYPE]);
+            $versions = $metaDataQuery->getMetaDataAnyAttr("versions");
+            $filename = array_pop(explode(":", $this->params[PageKeys::KEY_ID]));
+            $this->params[PageKeys::KEY_SUM] .= '{"'.$filename.'":"'.$versions['templates'][$filename].'"}';
+        }
         $content = $action->get($this->params);
         return $content;
     }
@@ -49,11 +55,4 @@ class save_command extends abstract_writer_command_class {
         $ret->addInfoDta(" default ");
     }
 
-//    public function isEmptyText() {
-//        $text = trim($this->params[PageKeys::KEY_PRE].
-//                     $this->params[PageKeys::KEY_WIKITEXT].
-//                     $this->params[PageKeys::KEY_SUF]
-//                    );
-//        return ($text == ".");
-//    }
 }

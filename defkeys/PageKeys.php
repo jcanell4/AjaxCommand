@@ -77,4 +77,8 @@ class PageKeys extends RequestParameterKeys {
     const DW_DEFAULT_PAGE      = "start";
 
     const KEY_WIOCCL_STRUCTURE   = "wioccl_structure";
+
+    const KEY_PROJECT_OWNER       = 'projectOwner';
+    const KEY_PROJECT_SOURCE_TYPE = 'projectSourceType';
+
 }
