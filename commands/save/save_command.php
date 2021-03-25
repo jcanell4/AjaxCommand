@@ -41,6 +41,9 @@ class save_command extends abstract_writer_command_class {
             $filename = array_pop(explode(":", $this->params[PageKeys::KEY_ID]));
             $this->params[PageKeys::KEY_SUM] .= '{"'.$filename.'":"'.$versions['templates'][$filename].'"}';
         }
+//        if ($this->params[PageKeys::KEY_DO] === PageKeys::DW_ACT_SAVE_REV) {
+//            $this->params[PageKeys::KEY_SUM] .= "reversió a ".$this->params[PageKeys::KEY_REV];
+//        }
         $content = $action->get($this->params);
         return $content;
     }
