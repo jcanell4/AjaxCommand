@@ -136,7 +136,7 @@ class login_command extends abstract_command_class {
     private function _getContentNotifyAction($do) {
         $action = $this->getModelManager()->getActionInstance("NotifyAction", FALSE);
         $params = array(AjaxKeys::KEY_DO => $do);
-        $content = $action->get($params, FALSE);
+        $content = $action->get($params);
         return $content;
     }
 }

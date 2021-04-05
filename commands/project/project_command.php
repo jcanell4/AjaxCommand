@@ -23,8 +23,8 @@ class project_command extends abstract_project_command_class {
 
     protected function process() {
 
-        if (!$this->params[ProjectKeys::KEY_PROJECT_TYPE])
-            throw new UnknownPojectTypeException();
+//        if (!$this->params[ProjectKeys::KEY_PROJECT_TYPE])
+//            throw new UnknownPojectTypeException();
 
         switch ($this->params[ProjectKeys::KEY_DO]) {
 
