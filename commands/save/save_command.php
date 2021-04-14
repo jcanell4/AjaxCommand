@@ -34,16 +34,6 @@ class save_command extends abstract_writer_command_class {
      */
     protected function process() {
         $action = $this->getModelManager()->getActionInstance("SavePageAction", ['format' => $this->getFormat()]);
-        if ($this->params[PageKeys::KEY_PROJECT_SOURCE_TYPE]) {
-            //Añade al summary la versión actual del template para que se guarde en el log .changes
-            $metaDataQuery = $this->getModelManager()->getPersistenceEngine()->createProjectMetaDataQuery($this->params[PageKeys::KEY_PROJECT_OWNER], "main", $this->params[PageKeys::KEY_PROJECT_SOURCE_TYPE]);
-            $versions = $metaDataQuery->getMetaDataAnyAttr("versions");
-            $filename = array_pop(explode(":", $this->params[PageKeys::KEY_ID]));
-            $this->params[PageKeys::KEY_SUM] .= '{"'.$filename.'":"'.$versions['templates'][$filename].'"}';
-        }
-//        if ($this->params[PageKeys::KEY_DO] === PageKeys::DW_ACT_SAVE_REV) {
-//            $this->params[PageKeys::KEY_SUM] .= "reversió a ".$this->params[PageKeys::KEY_REV];
-//        }
         $content = $action->get($this->params);
         return $content;
     }
