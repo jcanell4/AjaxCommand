@@ -68,6 +68,7 @@ class ProjectKeys extends RequestParameterKeys  {
     const KEY_METADATA_COMPONENT_TYPES    = "metaDataComponentTypes";
     const KEY_METADATA_PROJECT_CONFIG     = "metaDataProjectConfig";
     const KEY_METADATA_FTP_SENDER         = "metaDataFtpSender";
+    const KEY_METADATA_EXPORT             = "metaDataExport";
     const KEY_MD_CT_SUBPROJECTS           = "subprojects";
     const KEY_MD_CT_DOCUMENTS             = "documents";
     const KEY_MD_CT_FOLDERS               = "folders";
