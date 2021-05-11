@@ -72,6 +72,10 @@ class project_command extends abstract_project_command_class {
             case ProjectKeys::KEY_CREATE_PROJECT:
                 $action = $this->getModelManager()->getActionInstance("CreateProjectAction");
                 $projectMetaData = $action->get($this->params);
+                $roles = $this->getModelManager()->getProjectRoleData($this->params[ProjectKeys::KEY_ID], $this->params[ProjectKeys::KEY_PROJECT_TYPE]);
+                $permis = $this->authorization->getPermission();
+                $permis->setAllRoleMembers($roles["roleData"]);
+                $permis->setRol(array_keys($roles["roleData"]));
                 $this->_addExtraData($projectMetaData);
                 break;
 
