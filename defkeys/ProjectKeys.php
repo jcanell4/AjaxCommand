@@ -34,6 +34,7 @@ class ProjectKeys extends RequestParameterKeys  {
     const KEY_MODE        = "mode";
     const KEY_RENDER_TYPE = "renderType";
     const KEY_FILE_TYPE   = "filetype";
+    const KEY_ISONVIEW    = "isOnView";
 
     const KEY_NAME      = "name";
     const KEY_NSPROJECT = "nsproject";
