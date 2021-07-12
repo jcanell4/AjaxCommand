@@ -15,7 +15,7 @@ class get_toc_page_command extends abstract_command_class {
 
     /**
      * Busca la Table Of Contents d'una página
-     * @return JSON {'html': 'elementos del TOC'}
+     * @return JSON {'htmlTOC': 'elementos del TOC'}
      */
     public function process() {
         $action = $this->getModelManager()->getActionInstance("GetTocAction");
