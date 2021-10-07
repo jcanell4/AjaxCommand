@@ -48,6 +48,7 @@ class ProjectKeys extends RequestParameterKeys  {
     const KEY_FTP_PROJECT          = "ftp_project";
     const KEY_DUPLICATE            = "duplicate";
     const KEY_DUPLICATE_PROJECT    = "duplicate_project";
+    const KEY_RENAME               = "rename";
     const KEY_RENAME_PROJECT       = "rename_project";
     const KEY_REMOVE_PROJECT       = "remove_project";
     const KEY_REVERT_PROJECT       = "revert_project";
