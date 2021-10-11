@@ -134,6 +134,9 @@ class project_command extends abstract_project_command_class {
             case ProjectKeys::KEY_WORKFLOW:
                 $parms = ['roles' => $this->authorization->getPermission()->getRol(),
                           'groups' => $this->authorization->getPermission()->getUserGroups()];
+                if ($this->params['action'] === "rename") {
+                    $parms['newname'] = $this->params['newname'];
+                }
                 $action = $this->getModelManager()->getActionInstance("WorkflowProjectAction", $parms);
                 $projectMetaData = $action->get($this->params);
                 $this->_addExtraData($projectMetaData);
