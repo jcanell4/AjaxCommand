@@ -22,19 +22,6 @@ class wioccl_command extends abstract_command_class {
     }
 
     protected function process() {
-//        if (!isset($this->params[AjaxKeys::KEY_DO])) {
-//            if (isset($this->params[PageKeys::KEY_ID])) {
-//                if (isset($this->params[PageKeys::KEY_PROJECT])) {
-//                    $this->params[PageKeys::KEY_DO] = UserListAction::OF_A_PROJECT;
-//                }elseif(isset($this->params[PageKeys::KEY_FILTER])) {
-//                    $this->params[PageKeys::KEY_DO] = UserListAction::BY_NAME;
-//                }else {
-//                    $this->params[PageKeys::KEY_DO] = UserListAction::BY_PAGE_PERMSION;
-//                }
-//            }else {
-//                throw new IncorrectParametersException();
-//            }
-//        }
 
         $action = $this->getModelManager()->getActionInstance("WiocclAction");
         $response = $action->get($this->params);
