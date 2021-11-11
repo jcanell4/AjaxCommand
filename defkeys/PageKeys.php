@@ -19,6 +19,9 @@ class PageKeys extends RequestParameterKeys {
     const KEY_CONTENT   = "content";
     const KEY_VERSION   = "version";
 
+    const DOJO_EDITOR = "DOJO";
+    const ACE_EDITOR  = "ACE";
+
     const KEY_IN_EDITING_CHUNKS = "editing_chunks";
     const KEY_EDITING_CHUNKS    = "editingChunks";
     const KEY_SECTION_ID        = "section_id";
