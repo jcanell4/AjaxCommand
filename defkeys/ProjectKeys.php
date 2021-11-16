@@ -25,6 +25,7 @@ class ProjectKeys extends RequestParameterKeys  {
     const KEY_DATA_ERROR_LIST   = "dataErrorList";
     const KEY_PROJECT_METADATA  = "projectMetaData";
     const KEY_PROJECT_EXTRADATA = "projectExtraData";
+    const KEY_PROJECT_VIEWDATA  = "projectViewData";
     const KEY_GENERATED         = "generated";
     const KEY_CREATE_PROJECT    = "create_project";
     const KEY_CREATE_SUBPROJECT = "create_subproject";

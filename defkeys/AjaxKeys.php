@@ -15,6 +15,7 @@ class AjaxKeys {
     const KEY_PROFILE = "profile";
     const FORMAT      = "format";
     const KEY_ACTION  = "action";
+    const KEY_DRAFT   = "draft";
 
     const PROJECT_TYPE           = "projectType";
     const PROJECT_SOURCE_TYPE    = "projectSourceType";
