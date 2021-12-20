@@ -54,7 +54,6 @@ class PageKeys extends RequestParameterKeys {
     const FULL_LAST_LOCAL_DRAFT_TIME       = "full_last_local_draft_time";
 
     const KEY_LOCK_STATE  = "lock_state";
-    const KEY_INFO        = "info";
     const KEY_AUTO        = "auto";
 
     const KEY_FILTER    = "filter";
