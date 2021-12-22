@@ -17,7 +17,7 @@ class list_projects_rest_command extends abstract_rest_command_class {
      * @return json
      */
     public function processGet() {
-        $action = $this->getModelManager()->getActionInstance("ListProjectsAction");
+        $action = $this->getModelManager()->getActionInstance("ListProjectTypesAction");
         $projectMetaData = $action->get($this->params);
         return $projectMetaData;
     }
