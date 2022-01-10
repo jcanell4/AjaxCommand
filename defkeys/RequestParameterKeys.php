@@ -25,6 +25,7 @@ class RequestParameterKeys extends AjaxKeys {
     const KEY_EDITOR_TYPE    = "editorType";
     const KEY_REFRESH        = "refresh";
     const KEY_INFO           = "info";
+    const KEY_TYPE           = "type";
 
     const KEY_RECOVER_DRAFT       = "recover_draft";
     const KEY_RECOVER_LOCAL_DRAFT = "recover_local_draft";

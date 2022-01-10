@@ -25,24 +25,14 @@ class select_projects_command extends abstract_admin_command_class {
     }
 
     protected function getDefaultResponse($contentData, &$responseGenerator) {
-        if (isset($contentData['projectType'])) {
-            $responseGenerator->addInfoDta(AjaxCmdResponseGenerator::generateInfo(
-                    RequestParameterKeys::KEY_INFO,
-                    WikiIocLangManager::getLang("list_projects_showed"),
-                    $contentData[AjaxKeys::KEY_ID]
-            ));
-        }else {
-            $responseGenerator->addInfoDta(AjaxCmdResponseGenerator::generateInfo(
-                    RequestParameterKeys::KEY_INFO,
-                    WikiIocLangManager::getLang("select_projects_loaded"),
-                    $contentData[AjaxKeys::KEY_ID]
-            ));
-        }
+        $responseGenerator->addInfoDta(AjaxCmdResponseGenerator::generateInfo(
+                                            RequestParameterKeys::KEY_INFO,
+                                            WikiIocLangManager::getLang("list_projects_showed"),
+                                            $contentData[AjaxKeys::KEY_ID]
+                                        ));
     }
 
-    /**
-     * @return string (nom del command per establir autoritzacions específiques)
-     */
+    //@return string (nom del command per establir autoritzacions específiques)
     public function getAuthorizationType() {
         /*
          * JOSEP: Caldrà definir les autoritzacions! Queda pendent.

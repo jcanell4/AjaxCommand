@@ -39,7 +39,6 @@ class ProjectKeys extends RequestParameterKeys  {
 
     const KEY_NAME      = "name";
     const KEY_NSPROJECT = "nsproject";
-    const KEY_TYPE      = "type";
 
     const KEY_NEWNAME   = "newname";
     const KEY_OLD_ID    = "old_id";
