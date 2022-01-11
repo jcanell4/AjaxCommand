@@ -6,19 +6,15 @@
 if (!defined('DOKU_INC')) die();
 
 class select_projects_command extends abstract_admin_command_class {
-    /*
-     * Crec que caldria definir dos commands independents en funció del que demanin (igual que proposo amb els actions):
-     *   1) Command adminform_command o utilform_command o ...
-     *   2) Command específic per fer la petoció especíifica d'acord amb els seu formulari. Concretament ara caldria aquest: select_projects_command
-     */
 
     public function __construct(){
         parent::__construct();
         $this->types[AjaxKeys::KEY_ID] = self::T_STRING;
-        $this->setParameters([AjaxKeys::KEY_ID => "select_projects"]);
+        $this->setParameters([AjaxKeys::KEY_ACTION_COMMAND => "select_projects"]);
     }
 
     protected function process() {
+        $this->setParameters([AjaxKeys::KEY_ID => "select_projects"]);
         $action = $this->getModelManager()->getActionInstance("SelectProjectsAction");
         $response = $action->get($this->params);
         return $response;
