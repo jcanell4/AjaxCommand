@@ -78,4 +78,8 @@ class ProjectKeys extends RequestParameterKeys  {
     const KEY_MD_PROJECTTYPECONFIGFILE    = "projectTypeConfigFile";
 
     const VIEW_CONFIG_NAME                = "viewConfigName";
+    const KEY_VIEW_DEFAULTVIEW            = "defaultView";
+    const KEY_VIEW_FIRSTVIEW              = "firstView";
+    const KEY_VIEW_UPDATEVIEW             = "updateView";
+
 }
