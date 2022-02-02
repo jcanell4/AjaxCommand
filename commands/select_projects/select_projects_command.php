@@ -10,11 +10,11 @@ class select_projects_command extends abstract_admin_command_class {
     public function __construct(){
         parent::__construct();
         $this->types[AjaxKeys::KEY_ID] = self::T_STRING;
-        $this->setParameters([AjaxKeys::KEY_ACTION_COMMAND => "select_projects"]);
     }
 
     protected function process() {
-        $this->setParameters([AjaxKeys::KEY_ID => "select_projects"]);
+//        $this->setParameters([AjaxKeys::KEY_ID => "select_projects"]);
+        $this->setParameters([AjaxKeys::KEY_ID => $this->getResponseHandler()->getCommandName()]);
         $action = $this->getModelManager()->getActionInstance("SelectProjectsAction");
         $response = $action->get($this->params);
         return $response;
