@@ -23,6 +23,7 @@ class ResponseHandlerKeys extends RequestParameterKeys {
     const PROFILE        = "profile";
     const FIRST_POSITION = "first";
     const TEXT           = "text";
+    const TYPE           = "type";
     const VALUE          = "value";
 
 }
