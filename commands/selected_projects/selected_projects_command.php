@@ -16,21 +16,34 @@ class selected_projects_command extends abstract_admin_command_class {
             $this->setParameters([AjaxKeys::KEY_ID => "selected_projects"]);
         }
         if ($this->params[AjaxKeys::KEY_DO] === "send_message") {
-            $rols = $this->params['rols'];
-            $missatge = $this->params['missatge'];
-            $grups = $this->params['grups'];
+            $this->setParameters(['type' => "warning",
+                                  'to' => "",
+                                  'send_email' => true
+                                 ]);
+            $action = $this->getModelManager()->getActionInstance("SendMessageAction");
+            $response = $action->get($this->params);
+        }else {
+            $action = $this->getModelManager()->getActionInstance("SelectedProjectsAction");
+            $response = $action->get($this->params);
         }
-        $action = $this->getModelManager()->getActionInstance("SelectedProjectsAction");
-        $response = $action->get($this->params);
         return $response;
     }
 
-    protected function getDefaultResponse($contentData, &$responseGenerator) {
-        $responseGenerator->addInfoDta(AjaxCmdResponseGenerator::generateInfo(
+    protected function getDefaultResponse($response, &$responseGenerator) {
+        if ($this->params[AjaxKeys::KEY_DO] === "send_message") {
+            if (isset($response['info'])) {
+                $responseGenerator->addInfoDta($response['info']);
+            }
+            foreach ($response['notifications'] as $notification) {
+                $responseGenerator->addNotificationResponse($notification['action'], $notification['params']);
+            }
+        }else {
+            $responseGenerator->addInfoDta(AjaxCmdResponseGenerator::generateInfo(
                                             RequestParameterKeys::KEY_INFO,
                                             WikiIocLangManager::getLang("list_projects_showed"),
-                                            $contentData[AjaxKeys::KEY_ID]
+                                            $response[AjaxKeys::KEY_ID]
                                         ));
+        }
     }
 
     //@return string (nom del command per establir autoritzacions específiques)
