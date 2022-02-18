@@ -1,11 +1,11 @@
 <?php
 /**
- * send_message_command: Envia missatges als usuaris de projectes seleccionats per rol
+ * send_list_to_users_command: Envia missatges als usuaris seleccionats
  * @author Rafael <rclaver@xtec.cat>
  */
 if (!defined('DOKU_INC')) die();
 
-class send_message_command extends abstract_admin_command_class {
+class send_list_to_users_command extends abstract_admin_command_class {
 
     public function __construct(){
         parent::__construct();
@@ -16,7 +16,7 @@ class send_message_command extends abstract_admin_command_class {
                               'to' => "",
                               'send_email' => true
                              ]);
-        $action = $this->getModelManager()->getActionInstance("SendMessageAction");
+        $action = $this->getModelManager()->getActionInstance("SendListToUsersAction");
         $response = $action->get($this->params);
         return $response;
     }
