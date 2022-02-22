@@ -12,10 +12,6 @@ class send_list_to_users_command extends abstract_admin_command_class {
     }
 
     protected function process() {
-        $this->setParameters(['type' => "warning",
-                              'to' => "",
-                              'send_email' => true
-                             ]);
         $action = $this->getModelManager()->getActionInstance("SendListToUsersAction");
         $response = $action->get($this->params);
         return $response;
