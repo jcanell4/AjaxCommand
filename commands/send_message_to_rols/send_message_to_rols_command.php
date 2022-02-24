@@ -25,8 +25,10 @@ class send_message_to_rols_command extends abstract_admin_command_class {
         if (isset($response['info'])) {
             $responseGenerator->addInfoDta($response['info']);
         }
-        foreach ($response['notifications'] as $notification) {
-            $responseGenerator->addNotificationResponse($notification['action'], $notification['params']);
+        if (isset($response['notifications'])) {
+            foreach ($response['notifications'] as $notification) {
+                $responseGenerator->addNotificationResponse($notification['action'], $notification['params']);
+            }
         }
     }
 
