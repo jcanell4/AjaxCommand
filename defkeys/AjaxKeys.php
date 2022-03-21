@@ -35,6 +35,7 @@ class AjaxKeys {
     const KEY_EXTRA_STATE_ID         = "extraStateId";
     const KEY_EXTRA_STATE_VALUE      = "extraStateValue";
     const KEY_ACTION_COMMAND         = "actionCommand";
+    const KEY_REVISIONS              = "revs";
 
     const KEY_NAMESPACE = "namespace";
 }
