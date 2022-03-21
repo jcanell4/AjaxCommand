@@ -40,7 +40,15 @@ class revision_command extends abstract_writer_command_class {
      * @return void
      */
     protected function getDefaultResponse($response, &$ret) {
-        $revs = ($this->params[PageKeys::PROJECT_TYPE] == "defaultProject") ? $response[AjaxKeys::KEY_REVISIONS] : $response[ProjectKeys::KEY_REV];
-        $ret->addRevisionsTypeResponse($response[PageKeys::KEY_ID], $revs);
+        if ($this->params[PageKeys::PROJECT_TYPE] == "defaultProject") {
+            $ret->addRevisionsTypeResponse($response[PageKeys::KEY_ID], $response[AjaxKeys::KEY_REVISIONS]);
+        }else {
+            $pType = $response[ProjectKeys::KEY_PROJECT_TYPE];
+            $subSet = ($response[ProjectKeys::KEY_METADATA_SUBSET]) ? "&metaDataSubSet=".$response[ProjectKeys::KEY_METADATA_SUBSET] : "";
+            $response[ProjectKeys::KEY_REV]['call_diff'] = "project&do=diff&projectType=$pType$subSet";
+            $response[ProjectKeys::KEY_REV]['call_view'] = "project&do=view&projectType=$pType$subSet";
+            $response[ProjectKeys::KEY_REV]['urlBase'] = "lib/exe/ioc_ajax.php?call=" . $response[ProjectKeys::KEY_REV]['call_diff'];
+            $ret->addRevisionsTypeResponse($response[ProjectKeys::KEY_ID], $response[ProjectKeys::KEY_REV]);
+        }
     }
 }
