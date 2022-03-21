@@ -15,14 +15,21 @@ class revision_command extends abstract_writer_command_class {
     }
 
     /**
-     * Cancela la edició.
+     * Genera la llista de revisions per a les metadades
      * @return string[] array associatiu amb la resposta formatada (id, ns, tittle i content)
      */
     protected function process() {
-        $action = $this->getModelManager()->getActionInstance("RevisionsListAction");
-        $response['revs'] = $action->get($this->params);
-        $response['revs']['urlBase'] = "lib/exe/ioc_ajax.php?call=diff";
-        $response[PageKeys::KEY_ID] = $this->params['targetId'];
+        $this->params[PageKeys::PROJECT_TYPE] = $this->getModelManager()->getProjectType();
+        if ($this->params[PageKeys::PROJECT_TYPE] == "defaultProject") {
+            $action = $this->getModelManager()->getActionInstance("RevisionsListAction");
+            $response[PageKeys::KEY_REVISIONS] = $action->get($this->params);
+            $response[PageKeys::KEY_REVISIONS]['urlBase'] = "lib/exe/ioc_ajax.php?call=diff";
+            $response[PageKeys::KEY_ID] = $this->params['targetId'];
+        }else {
+            $action = $this->getModelManager()->getActionInstance("RevisionsProjectListAction");
+            $response = $action->get($this->params);
+            $response[ProjectKeys::KEY_REV]['urlBase'] = "lib/exe/ioc_ajax.php?call=diff";
+        }
         return $response;
     }
 
@@ -33,6 +40,7 @@ class revision_command extends abstract_writer_command_class {
      * @return void
      */
     protected function getDefaultResponse($response, &$ret) {
-        $ret->addRevisionsTypeResponse($response[PageKeys::KEY_ID], $response['revs']);
+        $revs = ($this->params[PageKeys::PROJECT_TYPE] == "defaultProject") ? $response[AjaxKeys::KEY_REVISIONS] : $response[ProjectKeys::KEY_REV];
+        $ret->addRevisionsTypeResponse($response[PageKeys::KEY_ID], $revs);
     }
 }
