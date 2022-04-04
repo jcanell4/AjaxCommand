@@ -34,7 +34,6 @@ class login_command extends abstract_command_class {
      * @return array associatium amb el valor del index loginResult cert o fals
      */
     protected function process(){
-
         if ($this->params[AjaxKeys::KEY_DO] === 'relogin') {
             $response = $this->processCheck();
         } else {
@@ -50,7 +49,6 @@ class login_command extends abstract_command_class {
     }
 
     private function processCheck() {
-
         $response = array(
             "loginRequest" => true,
             "loginResult" => $this->authorization->isUserAuthenticated($this->params['userId'])
@@ -61,6 +59,10 @@ class login_command extends abstract_command_class {
             $notifications = $this->_getContentNotifyAction("init");
             $response = array_merge($response, $notifications);
             $response['user_state'] = $this->getUserConfig($this->params['userId']);
+
+            //Refresca la sessió de moodle donat que el timer del client es posarà a 0 amb aquest relogin
+            $action = $this->getModelManager()->getActionInstance("RefreshMoodleSessionAction", FALSE);
+            $action->get($this->params);
         }
         return $response;
     }
