@@ -90,8 +90,10 @@ class login_command extends abstract_command_class {
         $config = array();
         $config['editor'] = WikiIocInfoManager::getInfo("userinfo")['editor'];
 
-        if($this->moodleToken("has")){
+        if ($this->moodleToken("has")){
             $config['moodleToken'] = $this->moodleToken("get");
+        }elseif($this->params["moodleToken"]) {
+            $config['moodleToken'] = $this->params["moodleToken"];
         }
         return $config;
     }
