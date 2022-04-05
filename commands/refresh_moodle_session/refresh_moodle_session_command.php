@@ -7,7 +7,7 @@ if(!defined('DOKU_INC')) die();
 class refresh_moodle_session_command extends abstract_command_class {
 
     protected function process() {
-        if (isset($this->params['moodleToken'])) {
+        if (isset($this->params['moodleToken']) && $this->params['moodleToken'] && $this->params['moodleToken']!="null") {
             $action = $this->getModelManager()->getActionInstance("RefreshMoodleSessionAction", FALSE);
             $contentData = $action->get($this->params);
         }
