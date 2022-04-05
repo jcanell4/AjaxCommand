@@ -60,9 +60,11 @@ class login_command extends abstract_command_class {
             $response = array_merge($response, $notifications);
             $response['user_state'] = $this->getUserConfig($this->params['userId']);
 
-            //Refresca la sessió de moodle donat que el timer del client es posarà a 0 amb aquest relogin
-            $action = $this->getModelManager()->getActionInstance("RefreshMoodleSessionAction", FALSE);
-            $action->get($this->params);
+            if (isset($this->params['moodleToken'])) {
+                //Refresca la sessió de moodle donat que el timer del client es posarà a 0 amb aquest relogin
+                $action = $this->getModelManager()->getActionInstance("RefreshMoodleSessionAction", FALSE);
+                $action->get($this->params);
+            }
         }
         return $response;
     }
