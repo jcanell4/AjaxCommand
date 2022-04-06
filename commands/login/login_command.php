@@ -49,6 +49,8 @@ class login_command extends abstract_command_class {
     }
 
     private function processCheck() {
+        $hasMoodleToken = (isset($this->params['moodleToken']) && $this->params['moodleToken'] && $this->params['moodleToken']!="null");
+        $isUserMoodle = WikiIocInfoManager::getInfo('userinfo')['moodle'];
         $response = array(
             "loginRequest" => true,
             "loginResult" => $this->authorization->isUserAuthenticated($this->params['userId'])
@@ -60,10 +62,17 @@ class login_command extends abstract_command_class {
             $response = array_merge($response, $notifications);
             $response['user_state'] = $this->getUserConfig($this->params['userId']);
 
-            if (isset($this->params['moodleToken']) && $this->params['moodleToken'] && $this->params['moodleToken']!="null") {
+            if ($hasMoodleToken) {
                 //Refresca la sessió de moodle donat que el timer del client es posarà a 0 amb aquest relogin
                 $action = $this->getModelManager()->getActionInstance("RefreshMoodleSessionAction", FALSE);
                 $action->get($this->params);
+            }elseif ($isUserMoodle) {
+                $this->_logoff();
+                unset($response['user_state']);
+                $response["loginRequest"] = FALSE;
+                $response["loginResult"] = FALSE;
+                $notifications = $this->_getContentNotifyAction("close");
+                $response = array_merge($response, $notifications);
             }
         }
         return $response;
