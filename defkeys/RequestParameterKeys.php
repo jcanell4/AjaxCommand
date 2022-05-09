@@ -32,6 +32,8 @@ class RequestParameterKeys extends AjaxKeys {
     const KEY_PARAMETERS = "parameters";
     const KEY_COMMAND = "command";
 
+    const KEY_MISSING_CONTENT_TOOL = "missingContentTool";
+
     const VAL_CODETYPE_OK     = 0;   //retorno correcto
     const VAL_CODETYPE_ERROR  = -1;  //retorno con error
     const VAL_CODETYPE_REMOVE = 1;   //retorno para el comando remove_project
