@@ -117,7 +117,11 @@ class project_command extends abstract_project_command_class {
                 break;
 
             case ProjectKeys::KEY_DUPLICATE_PROJECT:
-                $action = $this->getModelManager()->getActionInstance("DuplicateProjectAction");
+                if ($this->params['accio'] === "move") {
+                    $action = $this->getModelManager()->getActionInstance("MoveProjectAction");
+                }else {
+                    $action = $this->getModelManager()->getActionInstance("DuplicateProjectAction");
+                }
                 $projectMetaData = $action->get($this->params);
                 $this->_addExtraData($projectMetaData);
                 break;
