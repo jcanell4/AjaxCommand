@@ -65,6 +65,8 @@ class ProjectKeys extends RequestParameterKeys  {
     const VAL_DEFAULTSUBSET   = "main";
     const KEY_METADATA_VALUE  = "metaDataValue";
     const KEY_METADATA_SUBSET = AjaxKeys::METADATA_SUBSET;
+    const KEY_METADATA_TYPES_DEFINITION = "metaDataTypesDefinition";
+    const KEY_METADATA_STRUCTURE        = "metaDataStructure";
 
     const KEY_METADATA_PROJECT_STRUCTURE  = "metaDataProjectStructure";
     const KEY_METADATA_CLASSES_NAMESPACES = "metaDataClassesNameSpaces";
