@@ -18,8 +18,9 @@ class edit_command extends abstract_command_class {
         $this->types[PageKeys::KEY_RECOVER_DRAFT] = self::T_BOOLEAN;
         $this->types[PageKeys::KEY_TO_REQUIRE] = self::T_BOOLEAN;
         $this->types[PageKeys::KEY_REFRESH] = self::T_BOOLEAN;
+        $this->types[PageKeys::KEY_EDITOR_TYPE] = self::T_STRING;
 
-        $this->setParameters([PageKeys::KEY_DO => 'edit']);
+        $this->setParameters([PageKeys::KEY_DO => 'edit', PageKeys::KEY_EDITOR_TYPE => "ACE"]);
     }
 
     /**
