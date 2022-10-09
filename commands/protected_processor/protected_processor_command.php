@@ -26,8 +26,8 @@ class protected_processor_command extends abstract_command_class {
 
     protected function process() {
         if(!isset($this->protectedCommands[$this->params[RequestParameterKeys::KEY_DO]])
-                || $this->protectedCommands[$this->params[RequestParameterKeys::KEY_DO]] !== "*"
-                || !in_array($this->params[RequestParameterKeys::KEY_COMMAND], $this->protectedCommands[$this->params[RequestParameterKeys::KEY_DO]])){
+                || ($this->protectedCommands[$this->params[RequestParameterKeys::KEY_DO]] !== "*"
+                && !in_array($this->params[RequestParameterKeys::KEY_COMMAND], $this->protectedCommands[$this->params[RequestParameterKeys::KEY_DO]]))){
             throw new Exception("Unsupported action or command");
         }
         $actionName = $this->params[RequestParameterKeys::KEY_DO];
