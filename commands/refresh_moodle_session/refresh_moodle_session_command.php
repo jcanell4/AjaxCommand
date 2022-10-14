@@ -7,7 +7,7 @@ if(!defined('DOKU_INC')) die();
 class refresh_moodle_session_command extends abstract_command_class {
 
     protected function process() {
-        $hasMoodleToken = (isset($this->params['moodleToken']) && $this->params['moodleToken'] && $this->params['moodleToken']!="null");
+        $hasMoodleToken = (isset($this->params[ProjectKeys::KEY_MOODLE_TOKEN]) && $this->params[ProjectKeys::KEY_MOODLE_TOKEN] && $this->params[ProjectKeys::KEY_MOODLE_TOKEN]!="null");
         $isUserMoodle = WikiIocInfoManager::getInfo('userinfo')['moodle'];
         if ($hasMoodleToken && $isUserMoodle) {
             $action = $this->getModelManager()->getActionInstance("RefreshMoodleSessionAction", FALSE);

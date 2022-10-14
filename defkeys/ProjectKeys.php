@@ -36,6 +36,12 @@ class ProjectKeys extends RequestParameterKeys  {
     const KEY_RENDER_TYPE = "renderType";
     const KEY_FILE_TYPE   = "filetype";
     const KEY_ISONVIEW    = "isOnView";
+    const KEY_USER_STATE  = JsonGenerator::USER_STATE;
+
+    const KEY_USER_ID      = "userId";
+    const KEY_MOODLE_TOKEN = "moodleToken";
+    const KEY_LOGIN_REQUEST= "loginRequest";
+    const KEY_LOGIN_RESULT = "loginResult";
 
     const KEY_NAME      = "name";
     const KEY_NSPROJECT = "nsproject";

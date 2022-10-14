@@ -40,7 +40,7 @@ class login_command extends abstract_command_class {
             $response = $this->processLogin(); // ALERTA[Xavi] Aquesta funció conté el codi de login original sense modificar (inclou el logout);
         }
 
-        if (!$response["loginResult"] || !$response["loginRequest"]) {
+        if (!$response[ProjectKeys::KEY_LOGIN_RESULT] || !$response[ProjectKeys::KEY_LOGIN_REQUEST]) {
             $notifications = $this->_getContentNotifyAction("close");
             $response = array_merge($response, $notifications);
         }
@@ -49,28 +49,30 @@ class login_command extends abstract_command_class {
     }
 
     private function processCheck() {
-        $hasMoodleToken = (isset($this->params['moodleToken']) && $this->params['moodleToken'] && $this->params['moodleToken']!="null");
+        $hasMoodleToken = !empty($this->params[ProjectKeys::KEY_MOODLE_TOKEN]);
         $isUserMoodle = WikiIocInfoManager::getInfo('userinfo')['moodle'];
         $response = array(
-            "loginRequest" => true,
-            "loginResult" => $this->authorization->isUserAuthenticated($this->params['userId'])
+            ProjectKeys::KEY_LOGIN_REQUEST => true,
+            ProjectKeys::KEY_LOGIN_RESULT => $this->authorization->isUserAuthenticated($this->params[ProjectKeys::KEY_USER_ID])
         );
 
-        if ($response["loginResult"]) {
-            $response["userId"] = $this->params['userId'];
+        if ($response[ProjectKeys::KEY_LOGIN_RESULT]) {
+            $response[ProjectKeys::KEY_USER_ID] = $this->params[ProjectKeys::KEY_USER_ID];
+            $response[ProjectKeys::KEY_MOODLE_TOKEN] = $this->getMoodleToken();
             $notifications = $this->_getContentNotifyAction("init");
             $response = array_merge($response, $notifications);
-            $response['user_state'] = $this->getUserConfig($this->params['userId']);
+            $response[ProjectKeys::KEY_USER_STATE] = $this->getUserConfig();
 
             if ($hasMoodleToken) {
                 //Refresca la sessió de moodle donat que el timer del client es posarà a 0 amb aquest relogin
+                $response[ProjectKeys::KEY_MOODLE_TOKEN] = $this->params[ProjectKeys::KEY_MOODLE_TOKEN];
                 $action = $this->getModelManager()->getActionInstance("RefreshMoodleSessionAction", FALSE);
                 $action->get($this->params);
             }elseif ($isUserMoodle) {
                 $this->_logoff();
-                unset($response['user_state']);
-                $response["loginRequest"] = FALSE;
-                $response["loginResult"] = FALSE;
+                unset($response[ProjectKeys::KEY_USER_STATE]);
+                $response[ProjectKeys::KEY_LOGIN_REQUEST] = FALSE;
+                $response[ProjectKeys::KEY_LOGIN_RESULT] = FALSE;
                 $notifications = $this->_getContentNotifyAction("close");
                 $response = array_merge($response, $notifications);
             }
@@ -80,35 +82,39 @@ class login_command extends abstract_command_class {
 
     private function processLogin() {
         $response = array(
-            "loginRequest" => ($this->params[AjaxKeys::KEY_DO] === 'login'),
-            "loginResult" => $this->authorization->isUserAuthenticated()
+            ProjectKeys::KEY_LOGIN_REQUEST => ($this->params[AjaxKeys::KEY_DO] === 'login'),
+            ProjectKeys::KEY_LOGIN_RESULT => $this->authorization->isUserAuthenticated()
         );
 
-        if ($response["loginRequest"] && $response["loginResult"]) {
-            $response["userId"] = $this->params['u'];
+        if ($response[ProjectKeys::KEY_LOGIN_REQUEST] && $response[ProjectKeys::KEY_LOGIN_RESULT]) {
+            $response[ProjectKeys::KEY_USER_ID] = $this->params['u'];
+            $response[ProjectKeys::KEY_MOODLE_TOKEN] = $this->getMoodleToken();
             $notifications = $this->_getContentNotifyAction("init");
             $response = array_merge($response, $notifications);
-            $response['user_state'] = $this->getUserConfig($this->params['u']);
+            $response[ProjectKeys::KEY_USER_STATE] = $this->getUserConfig();
 
-        } else if ($response["loginResult"]) {
+        }else if ($response[ProjectKeys::KEY_LOGIN_RESULT]) {
             $this->_logoff();
-            $response["loginResult"] = FALSE;
+            $response[ProjectKeys::KEY_LOGIN_RESULT] = FALSE;
             $notifications = $this->_getContentNotifyAction("close");
             $response = array_merge($response, $notifications);
         }
         return $response;
     }
 
-    function getUserConfig($user) {
+    function getUserConfig() {
         $config = array();
         $config['editor'] = WikiIocInfoManager::getInfo("userinfo")['editor'];
-
-        if ($this->moodleToken("has")){
-            $config['moodleToken'] = $this->moodleToken("get");
-        }elseif($this->params["moodleToken"]) {
-            $config['moodleToken'] = $this->params["moodleToken"];
-        }
         return $config;
+    }
+
+    private function getMoodleToken() {
+        if ($this->moodleToken("has")){
+            $moodleToken = $this->moodleToken("get");
+        }elseif($this->params[ProjectKeys::KEY_MOODLE_TOKEN]) {
+            $moodleToken = $this->params[ProjectKeys::KEY_MOODLE_TOKEN];
+        }
+        return $moodleToken;
     }
 
     private function moodleToken($act="has"){
@@ -135,9 +141,10 @@ class login_command extends abstract_command_class {
      */
     protected function getDefaultResponse($response, &$responseGenerator) {
         $responseGenerator->addLoginInfo(
-            $response["loginRequest"],
-            $response["loginResult"],
-            $response["userId"]
+            $response[ProjectKeys::KEY_LOGIN_REQUEST],
+            $response[ProjectKeys::KEY_LOGIN_RESULT],
+            $response[ProjectKeys::KEY_USER_ID],
+            $response[ProjectKeys::KEY_MOODLE_TOKEN]
         );
     }
 
