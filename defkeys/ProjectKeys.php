@@ -75,7 +75,7 @@ class ProjectKeys extends RequestParameterKeys  {
     const KEY_METADATA_STRUCTURE        = "metaDataStructure";
 
     const KEY_METADATA_PROJECT_STRUCTURE  = "metaDataProjectStructure";
-    const KEY_METADATA_CLASSES_NAMESPACES = "metaDataClassesNameSpaces";
+    const KEY_METADATA_SUBSETS_LIST       = "metaDataSubsetsList";
     const KEY_METADATA_COMPONENT_TYPES    = "metaDataComponentTypes";
     const KEY_METADATA_PROJECT_CONFIG     = "metaDataProjectConfig";
     const KEY_METADATA_FTP_SENDER         = "metaDataFtpSender";
