@@ -50,7 +50,8 @@ class login_command extends abstract_command_class {
 
     private function processCheck() {
         $hasMoodleToken = !empty($this->params[ProjectKeys::KEY_MOODLE_TOKEN]);
-        $isUserMoodle = WikiIocInfoManager::getInfo('userinfo')['moodle'];
+        $userinfo = WikiIocInfoManager::getInfo('userinfo');
+        $isUserMoodle = (isset($userinfo['moodle'])) ? $userinfo['moodle'] : false;
         $response = array(
             ProjectKeys::KEY_LOGIN_REQUEST => true,
             ProjectKeys::KEY_LOGIN_RESULT => $this->authorization->isUserAuthenticated($this->params[ProjectKeys::KEY_USER_ID])
