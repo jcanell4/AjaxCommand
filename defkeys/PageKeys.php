@@ -35,8 +35,8 @@ class PageKeys extends RequestParameterKeys {
     const KEY_RELOAD     = "reload";
     const KEY_CANCEL_ALL = "cancel_all";
     const KEY_CLOSE      = "close";
-    const KEY_OLD_FOLDER_NAME = "old_folder_name";  //rename folder
-    const KEY_NEW_FOLDER_NAME = "new_folder_name";  //rename folder
+    const KEY_OLD_FOLDER_NAME = "old_folder_name";  //rename/duplicate folder
+    const KEY_NEW_FOLDER_NAME = "new_folder_name";  //rename/duplicate folder
 
     const KEY_PARAMS  = "params"; // response
     const KEY_USER_ID = "user_id";
